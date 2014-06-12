@@ -1,0 +1,402 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{3D24A281-31B1-4E94-8A07-D0CB11732CDC}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>WebSite</RootNamespace>
+    <AssemblyName>WebSite</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <UseIISExpress>true</UseIISExpress>
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="MySql.Data">
+      <HintPath>Dll\MySql.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>Dll\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Entity" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.EnterpriseServices" />
+    <Reference Include="Tools">
+      <HintPath>Dll\Tools.dll</HintPath>
+    </Reference>
+    <Reference Include="Tools.Utilities">
+      <HintPath>Dll\Tools.Utilities.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Css\default.css" />
+    <Content Include="Css\login.css" />
+    <Content Include="Css\main.css" />
+    <Content Include="Css\style.css" />
+    <Content Include="Images\bar1.gif" />
+    <Content Include="Images\body_background.png" />
+    <Content Include="Images\border_bg.png" />
+    <Content Include="Images\border_end.png" />
+    <Content Include="Images\BoxOver_bd.png" />
+    <Content Include="Images\btu_ok.png" />
+    <Content Include="Images\bt_bg.gif" />
+    <Content Include="Images\button_login2.gif" />
+    <Content Include="Images\close.gif" />
+    <Content Include="Images\content_li_top.png" />
+    <Content Include="Images\Folder_bigbtu.png" />
+    <Content Include="Images\ico.gif" />
+    <Content Include="Images\left_tabid_cnt_top.png" />
+    <Content Include="Images\left_tab_Selected.gif" />
+    <Content Include="Images\left_tab_Selectedno.gif" />
+    <Content Include="Images\line_2.gif" />
+    <Content Include="Images\login-welcome.gif" />
+    <Content Include="Images\login_03.gif" />
+    <Content Include="Images\login_05.gif" />
+    <Content Include="Images\login_09.png" />
+    <Content Include="Images\login_11.gif" />
+    <Content Include="Images\login_13.gif" />
+    <Content Include="Images\login_16.gif" />
+    <Content Include="Images\login_18.gif" />
+    <Content Include="Images\logo.png" />
+    <Content Include="Images\manage_arrow_down.gif" />
+    <Content Include="Images\manage_arrow_left.gif" />
+    <Content Include="Images\manage_arrow_right.gif" />
+    <Content Include="Images\manage_arrow_up.gif" />
+    <Content Include="Images\manage_back.gif" />
+    <Content Include="Images\manage_top_bg.gif" />
+    <Content Include="Images\minus.gif" />
+    <Content Include="Images\nopic.gif" />
+    <Content Include="Images\offline.gif" />
+    <Content Include="Images\oicq.gif" />
+    <Content Include="Images\online.gif" />
+    <Content Include="Images\open.gif" />
+    <Content Include="Images\plus.gif" />
+    <Content Include="Images\progress.jpg" />
+    <Content Include="Images\progress1.jpg" />
+    <Content Include="Images\quote.gif" />
+    <Content Include="Images\re.gif" />
+    <Content Include="Images\Setting_TabPage2.png" />
+    <Content Include="Images\skinpic.png" />
+    <Content Include="Images\Skin_onmouseout_bg.gif" />
+    <Content Include="Images\Skin_onmouseout_bg.png" />
+    <Content Include="Images\Skin_onmouseover_bg.gif" />
+    <Content Include="Images\Skin_onmouseover_bg.png" />
+    <Content Include="Images\skin_used.png" />
+    <Content Include="Images\sword03.gif" />
+    <Content Include="Images\tab.gif" />
+    <Content Include="Images\Template_bg.png" />
+    <Content Include="Images\used.png" />
+    <Content Include="Images\UserIco_bg.png" />
+    <Content Include="Images\user_btu_left.png" />
+    <Content Include="Images\user_btu_right.png" />
+    <Content Include="Images\user_dleft_tab7.png" />
+    <Content Include="Images\user_err.gif" />
+    <Content Include="Images\user_login_01.gif" />
+    <Content Include="Images\user_login_02.gif" />
+    <Content Include="Images\user_login_03.gif" />
+    <Content Include="Images\user_login_04.gif" />
+    <Content Include="Images\user_login_05.gif" />
+    <Content Include="Images\user_msg.gif" />
+    <Content Include="Images\user_post_input.png" />
+    <Content Include="Images\user_post_inputtxt.png" />
+    <Content Include="Images\user_post_inputtxt1.png" />
+    <Content Include="Images\user_post_title_bg.png" />
+    <Content Include="Images\user_post_top_bg.png" />
+    <Content Include="Images\user_setting_title_tab_bg.png" />
+    <Content Include="Images\user_suc.gif" />
+    <Content Include="Images\user_team_bg.png" />
+    <Content Include="Images\user_team_top.png" />
+    <Content Include="Images\win_top.png" />
+    <Content Include="Images\worldmap.jpg" />
+    <Content Include="Images\X.gif" />
+    <Content Include="Index.aspx" />
+    <Content Include="Script\jquery-pagination\demo.htm" />
+    <Content Include="Script\jquery-pagination\lib\jquery_pagination\jquery.pagination.js" />
+    <Content Include="Script\jquery-pagination\lib\jquery_pagination\jquery.pagination.lt1.3.js" />
+    <Content Include="Script\jquery-pagination\lib\jquery_pagination\pagination.css" />
+    <Content Include="Script\jquery-pagination\new\demo\demo.css" />
+    <Content Include="Script\jquery-pagination\new\demo\demo.htm" />
+    <Content Include="Script\jquery-pagination\new\demo\demo_ajax.htm" />
+    <Content Include="Script\jquery-pagination\new\demo\demo_multi.htm" />
+    <Content Include="Script\jquery-pagination\new\demo\demo_options.htm" />
+    <Content Include="Script\jquery-pagination\new\demo\images\abstract1.jpg" />
+    <Content Include="Script\jquery-pagination\new\demo\images\abstract2.jpg" />
+    <Content Include="Script\jquery-pagination\new\demo\images\abstract3.jpg" />
+    <Content Include="Script\jquery-pagination\new\demo\images\abstract4.jpg" />
+    <Content Include="Script\jquery-pagination\new\demo\images\abstract5.jpg" />
+    <Content Include="Script\jquery-pagination\new\demo\images\abstract6.jpg" />
+    <Content Include="Script\jquery-pagination\new\demo\lib\jquery.min.js" />
+    <Content Include="Script\jquery-pagination\new\demo\members.js" />
+    <Content Include="Script\jquery-pagination\new\demo\snippet.html" />
+    <Content Include="Script\jquery-pagination\new\jquery.pagination.js" />
+    <Content Include="Script\jquery-pagination\new\pagination.css" />
+    <Content Include="Script\jquery.pagination\demo\demo.css" />
+    <Content Include="Script\jquery.pagination\demo\demo.htm" />
+    <Content Include="Script\jquery.pagination\demo\demo_ajax.htm" />
+    <Content Include="Script\jquery.pagination\demo\demo_events.htm" />
+    <Content Include="Script\jquery.pagination\demo\demo_multi.htm" />
+    <Content Include="Script\jquery.pagination\demo\demo_options.htm" />
+    <Content Include="Script\jquery.pagination\demo\images\abstract1.jpg" />
+    <Content Include="Script\jquery.pagination\demo\images\abstract2.jpg" />
+    <Content Include="Script\jquery.pagination\demo\images\abstract3.jpg" />
+    <Content Include="Script\jquery.pagination\demo\images\abstract4.jpg" />
+    <Content Include="Script\jquery.pagination\demo\images\abstract5.jpg" />
+    <Content Include="Script\jquery.pagination\demo\images\abstract6.jpg" />
+    <Content Include="Script\jquery.pagination\demo\lib\jquery.min.js" />
+    <Content Include="Script\jquery.pagination\demo\members.js" />
+    <Content Include="Script\jquery.pagination\demo\snippet.html" />
+    <Content Include="Script\jquery.pagination\jquery.pagination.js" />
+    <Content Include="Script\jquery.pagination\pagination.css" />
+    <Content Include="Script\menu.js" />
+    <Content Include="Script\My97DatePicker\4.72.txt" />
+    <Content Include="Script\My97DatePicker\calendar.js" />
+    <Content Include="Script\My97DatePicker\config.js" />
+    <Content Include="Script\My97DatePicker\demo.htm" />
+    <Content Include="Script\My97DatePicker\lang\en.js" />
+    <Content Include="Script\My97DatePicker\lang\zh-cn.js" />
+    <Content Include="Script\My97DatePicker\lang\zh-tw.js" />
+    <Content Include="Script\My97DatePicker\My97DatePicker.htm" />
+    <Content Include="Script\My97DatePicker\skin\datePicker.gif" />
+    <Content Include="Script\My97DatePicker\skin\default\datepicker.css" />
+    <Content Include="Script\My97DatePicker\skin\default\img.gif" />
+    <Content Include="Script\My97DatePicker\skin\WdatePicker.css" />
+    <Content Include="Script\My97DatePicker\skin\whyGreen\bg.jpg" />
+    <Content Include="Script\My97DatePicker\skin\whyGreen\datepicker.css" />
+    <Content Include="Script\My97DatePicker\skin\whyGreen\img.gif" />
+    <Content Include="Script\My97DatePicker\WdatePicker.js" />
+    <Content Include="Script\My97DatePicker\开发包\lang\en.js" />
+    <Content Include="Script\My97DatePicker\开发包\lang\zh-cn.js" />
+    <Content Include="Script\My97DatePicker\开发包\lang\zh-tw.js" />
+    <Content Include="Script\My97DatePicker\开发包\readme.txt" />
+    <Content Include="Script\My97DatePicker\开发包\skin\datePicker.gif" />
+    <Content Include="Script\My97DatePicker\开发包\skin\default\datepicker.css" />
+    <Content Include="Script\My97DatePicker\开发包\skin\default\img.gif" />
+    <Content Include="Script\My97DatePicker\开发包\skin\WdatePicker.css" />
+    <Content Include="Script\My97DatePicker\开发包\skin\whyGreen\bg.jpg" />
+    <Content Include="Script\My97DatePicker\开发包\skin\whyGreen\datepicker.css" />
+    <Content Include="Script\My97DatePicker\开发包\skin\whyGreen\img.gif" />
+    <Content Include="Script\template\demo.html" />
+    <Content Include="Script\template\trimpath-template.js" />
+    <Content Include="Script\template\trimpath-template_o.js" />
+    <Content Include="Script\trimpath-template\trimpath-template-1.0.38.js" />
+    <Content Include="Script\utility.js" />
+    <Content Include="Script\Util\jquery-latest.pack.js" />
+    <Content Include="Login.aspx" />
+    <Content Include="Script\View\UCenter\ManagerList.js" />
+    <Content Include="View\UCenter\ManagerList.aspx" />
+    <Content Include="Web.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Core\BasePage.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Core\CommonEntity.cs" />
+    <Compile Include="Core\Enums.cs" />
+    <Compile Include="Core\Handler\BaseHandler.cs" />
+    <Compile Include="Core\Handler\LoginHandler.cs" />
+    <Compile Include="Core\Handler\UCenter\DefaultHandler.cs" />
+    <Compile Include="Core\HashDict.cs" />
+    <Compile Include="Core\JsonTransfer_.cs" />
+    <Compile Include="Core\MySQLHelper.cs" />
+    <Compile Include="Core\SessionHelper.cs" />
+    <Compile Include="Core\SqlMapper.cs" />
+    <Compile Include="Core\Utility.cs" />
+    <Compile Include="Index.aspx.cs">
+      <DependentUpon>Index.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Index.aspx.designer.cs">
+      <DependentUpon>Index.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Login.aspx.cs">
+      <DependentUpon>Login.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Login.aspx.designer.cs">
+      <DependentUpon>Login.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="View\UCenter\ManagerList.aspx.cs">
+      <DependentUpon>ManagerList.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Handler\LoginHandler.ashx" />
+    <Content Include="Images\Thumbs.db" />
+    <Content Include="Script\jquery.pagination\README.rst" />
+    <Content Include="log4net.config" />
+    <Content Include="Handler\UCenter\DefaultHandler.ashx" />
+    <Content Include="Script\jquery-pagination\new\README.rst" />
+    <None Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+    <None Include="Web.Release.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Script\jquery.pagination\.svn\prop-base\" />
+    <Folder Include="Script\jquery.pagination\.svn\props\" />
+    <Folder Include="Script\jquery.pagination\.svn\text-base\" />
+    <Folder Include="Script\jquery.pagination\.svn\tmp\prop-base\" />
+    <Folder Include="Script\jquery.pagination\.svn\tmp\props\" />
+    <Folder Include="Script\jquery.pagination\.svn\tmp\text-base\" />
+    <Folder Include="Script\jquery.pagination\demo\.svn\prop-base\" />
+    <Folder Include="Script\jquery.pagination\demo\.svn\props\" />
+    <Folder Include="Script\jquery.pagination\demo\.svn\text-base\" />
+    <Folder Include="Script\jquery.pagination\demo\.svn\tmp\prop-base\" />
+    <Folder Include="Script\jquery.pagination\demo\.svn\tmp\props\" />
+    <Folder Include="Script\jquery.pagination\demo\.svn\tmp\text-base\" />
+    <Folder Include="Script\jquery.pagination\demo\images\.svn\prop-base\" />
+    <Folder Include="Script\jquery.pagination\demo\images\.svn\props\" />
+    <Folder Include="Script\jquery.pagination\demo\images\.svn\text-base\" />
+    <Folder Include="Script\jquery.pagination\demo\images\.svn\tmp\prop-base\" />
+    <Folder Include="Script\jquery.pagination\demo\images\.svn\tmp\props\" />
+    <Folder Include="Script\jquery.pagination\demo\images\.svn\tmp\text-base\" />
+    <Folder Include="Script\jquery.pagination\demo\lib\.svn\prop-base\" />
+    <Folder Include="Script\jquery.pagination\demo\lib\.svn\props\" />
+    <Folder Include="Script\jquery.pagination\demo\lib\.svn\text-base\" />
+    <Folder Include="Script\jquery.pagination\demo\lib\.svn\tmp\prop-base\" />
+    <Folder Include="Script\jquery.pagination\demo\lib\.svn\tmp\props\" />
+    <Folder Include="Script\jquery.pagination\demo\lib\.svn\tmp\text-base\" />
+    <Folder Include="Script\My97DatePicker\.svn\prop-base\" />
+    <Folder Include="Script\My97DatePicker\.svn\props\" />
+    <Folder Include="Script\My97DatePicker\.svn\text-base\" />
+    <Folder Include="Script\My97DatePicker\.svn\tmp\prop-base\" />
+    <Folder Include="Script\My97DatePicker\.svn\tmp\props\" />
+    <Folder Include="Script\My97DatePicker\.svn\tmp\text-base\" />
+    <Folder Include="Script\My97DatePicker\lang\.svn\prop-base\" />
+    <Folder Include="Script\My97DatePicker\lang\.svn\props\" />
+    <Folder Include="Script\My97DatePicker\lang\.svn\text-base\" />
+    <Folder Include="Script\My97DatePicker\lang\.svn\tmp\prop-base\" />
+    <Folder Include="Script\My97DatePicker\lang\.svn\tmp\props\" />
+    <Folder Include="Script\My97DatePicker\lang\.svn\tmp\text-base\" />
+    <Folder Include="Script\My97DatePicker\skin\.svn\prop-base\" />
+    <Folder Include="Script\My97DatePicker\skin\.svn\props\" />
+    <Folder Include="Script\My97DatePicker\skin\.svn\text-base\" />
+    <Folder Include="Script\My97DatePicker\skin\.svn\tmp\prop-base\" />
+    <Folder Include="Script\My97DatePicker\skin\.svn\tmp\props\" />
+    <Folder Include="Script\My97DatePicker\skin\.svn\tmp\text-base\" />
+    <Folder Include="Script\My97DatePicker\skin\default\.svn\prop-base\" />
+    <Folder Include="Script\My97DatePicker\skin\default\.svn\props\" />
+    <Folder Include="Script\My97DatePicker\skin\default\.svn\text-base\" />
+    <Folder Include="Script\My97DatePicker\skin\default\.svn\tmp\prop-base\" />
+    <Folder Include="Script\My97DatePicker\skin\default\.svn\tmp\props\" />
+    <Folder Include="Script\My97DatePicker\skin\default\.svn\tmp\text-base\" />
+    <Folder Include="Script\My97DatePicker\skin\whyGreen\.svn\prop-base\" />
+    <Folder Include="Script\My97DatePicker\skin\whyGreen\.svn\props\" />
+    <Folder Include="Script\My97DatePicker\skin\whyGreen\.svn\text-base\" />
+    <Folder Include="Script\My97DatePicker\skin\whyGreen\.svn\tmp\prop-base\" />
+    <Folder Include="Script\My97DatePicker\skin\whyGreen\.svn\tmp\props\" />
+    <Folder Include="Script\My97DatePicker\skin\whyGreen\.svn\tmp\text-base\" />
+    <Folder Include="Script\My97DatePicker\开发包\.svn\prop-base\" />
+    <Folder Include="Script\My97DatePicker\开发包\.svn\props\" />
+    <Folder Include="Script\My97DatePicker\开发包\.svn\text-base\" />
+    <Folder Include="Script\My97DatePicker\开发包\.svn\tmp\prop-base\" />
+    <Folder Include="Script\My97DatePicker\开发包\.svn\tmp\props\" />
+    <Folder Include="Script\My97DatePicker\开发包\.svn\tmp\text-base\" />
+    <Folder Include="Script\My97DatePicker\开发包\lang\.svn\prop-base\" />
+    <Folder Include="Script\My97DatePicker\开发包\lang\.svn\props\" />
+    <Folder Include="Script\My97DatePicker\开发包\lang\.svn\text-base\" />
+    <Folder Include="Script\My97DatePicker\开发包\lang\.svn\tmp\prop-base\" />
+    <Folder Include="Script\My97DatePicker\开发包\lang\.svn\tmp\props\" />
+    <Folder Include="Script\My97DatePicker\开发包\lang\.svn\tmp\text-base\" />
+    <Folder Include="Script\My97DatePicker\开发包\skin\.svn\prop-base\" />
+    <Folder Include="Script\My97DatePicker\开发包\skin\.svn\props\" />
+    <Folder Include="Script\My97DatePicker\开发包\skin\.svn\text-base\" />
+    <Folder Include="Script\My97DatePicker\开发包\skin\.svn\tmp\prop-base\" />
+    <Folder Include="Script\My97DatePicker\开发包\skin\.svn\tmp\props\" />
+    <Folder Include="Script\My97DatePicker\开发包\skin\.svn\tmp\text-base\" />
+    <Folder Include="Script\My97DatePicker\开发包\skin\default\.svn\prop-base\" />
+    <Folder Include="Script\My97DatePicker\开发包\skin\default\.svn\props\" />
+    <Folder Include="Script\My97DatePicker\开发包\skin\default\.svn\text-base\" />
+    <Folder Include="Script\My97DatePicker\开发包\skin\default\.svn\tmp\prop-base\" />
+    <Folder Include="Script\My97DatePicker\开发包\skin\default\.svn\tmp\props\" />
+    <Folder Include="Script\My97DatePicker\开发包\skin\default\.svn\tmp\text-base\" />
+    <Folder Include="Script\My97DatePicker\开发包\skin\whyGreen\.svn\prop-base\" />
+    <Folder Include="Script\My97DatePicker\开发包\skin\whyGreen\.svn\props\" />
+    <Folder Include="Script\My97DatePicker\开发包\skin\whyGreen\.svn\text-base\" />
+    <Folder Include="Script\My97DatePicker\开发包\skin\whyGreen\.svn\tmp\prop-base\" />
+    <Folder Include="Script\My97DatePicker\开发包\skin\whyGreen\.svn\tmp\props\" />
+    <Folder Include="Script\My97DatePicker\开发包\skin\whyGreen\.svn\tmp\text-base\" />
+    <Folder Include="Script\trimpath-template\.svn\prop-base\" />
+    <Folder Include="Script\trimpath-template\.svn\props\" />
+    <Folder Include="Script\trimpath-template\.svn\text-base\" />
+    <Folder Include="Script\trimpath-template\.svn\tmp\prop-base\" />
+    <Folder Include="Script\trimpath-template\.svn\tmp\props\" />
+    <Folder Include="Script\trimpath-template\.svn\tmp\text-base\" />
+  </ItemGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>True</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>0</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost:6893/</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

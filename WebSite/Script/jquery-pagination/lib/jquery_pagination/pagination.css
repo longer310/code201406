@@ -1,0 +1,50 @@
+﻿.pagination 
+{
+	line-height:100%;/*解决IE下汉字和数字一起排版时高度多出1px的BUG*/
+}
+        
+.pagination a {
+    text-decoration: none;
+	border: solid 1px #AAE;
+	color: #15B;
+}
+
+.pagination a:hover {
+	border: solid 1px #000;
+}
+
+.pagination a, .pagination span {
+    display: block;
+    float: left;
+    padding: 0.3em 0.5em;
+    margin-right: 3px;
+	margin-bottom: 3px;
+}
+
+.pagination .current {
+    background: #FFF3D2;
+    color: #775746;
+	border: solid 1px #AAE;
+}
+
+.pagination .current.prev, .pagination .current.next{
+	color:#999;
+	border-color:#999;
+	background:#fff;
+	
+}
+/*清除浮动的CSS，暂时没用上*/
+.clearfix:after {
+  content: ".";
+  clear: both;
+  height: 0;
+  visibility: hidden;
+  display: block;
+}            /* 这是对Firefox进行的处理，因为Firefox支持生成元素，而IE所有版本都不支持生成元素 */
+.clearfix {
+  display: inline-block;     
+}                /* 这是对 Mac 上的IE浏览器进行的处理 */
+/* Hides from IE-mac \*/
+* html .clearfix {height: 1%;}        /* 这是对 win 上的IE浏览器进行的处理 */
+.clearfix {display: block;}        /* 这是对display: inline-block;进行的修改，重置为区块元素*/
+/* End hide from IE-mac */    

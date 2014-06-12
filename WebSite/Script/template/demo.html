@@ -1,0 +1,78 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <META HTTP-EQUIV="Pragma"  CONTENT="no-cache">
+  <META HTTP-EQUIV="Expires" CONTENT="-1">
+  <title>TrimPath JavaScript Templates Demo</title>
+  <script language="javascript" src="trimpath-template.js"></script>
+ </head>
+ <body>
+  <h1>Demo for JavaScript Templates.</h1>
+
+  <p>Edit the <a href="http://trimpath.com/project/wiki/JavaScriptTemplates">JavaScript Template</a> and the input data.  
+     Press the Process button to see JST in action.</p>
+
+<div>
+<label for="template_jst">Input JST Template:</label><br/>
+<textarea name="template_jst" id="template_jst" cols="70" rows="22">
+Hello @{customer.first} @{customer.last}.<br/>
+Your shopping cart has @{products.length} item(s):
+<table>
+ <tr><td>Name</td>
+     <td>Description</td>
+     <td>Price</td>
+     <td>Quantity & Alert</td>
+     </tr>
+ {for p in products}
+     <tr><td>@{p.name|capitalize}</td><td>@{p.desc}</td>
+         <td>$@{p.price}</td><td>@{p.quantity} : 
+             @{p.alert|default:""|capitalize}</td>
+         </tr>
+ {forelse}
+     <tr><td colspan="4">No products in your cart.</tr>
+ {/for}
+</table>
+{if customer.level == "gold"}
+    We love you!  Please check out our Gold Customer specials!
+{else}
+    Become a Gold Customer by buying more stuff here.
+{/if}
+</textarea>
+</div>
+
+<div>
+<label for="jsData">Input Data:</label><br/>
+<textarea name="jsData" id="jsData" cols="70" rows="9">
+var data = {
+    products : [ { name: "mac", desc: "computer",     
+                   price: 1000, quantity: 100, alert:null },
+                 { name: "ipod", desc: "music player", 
+                   price:  200, quantity: 200, alert:"on sale now!" },
+                 { name: "cinema display", desc: "screen",       
+                   price:  800, quantity: 300, alert:"best deal!" } ],
+    customer : { first: "John", last: "Public", level: "gold" }
+};
+</textarea>
+</div>
+
+  <div><input type="submit" name="Process" onclick="go()">
+     </div>
+
+  <div>
+    <hr/>
+    Output: <div id="output"></div>
+
+    <script language="javascript">
+        var dataTextarea = document.getElementById("jsData");
+        var outputEl     = document.getElementById("output");
+
+        var go = function() {
+            eval(dataTextarea.value);
+            outputEl.innerHTML = TrimPath.processDOMTemplate("template_jst", data);
+        }
+
+        go();
+    </script>
+  </div>
+ </body>
+</html>

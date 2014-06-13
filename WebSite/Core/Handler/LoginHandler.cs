@@ -46,7 +46,9 @@ namespace Backstage.Handler
         {
             Utility.SetLogOut();
             //Response.Redirect("../login.aspx");
-            Response.Write(JsonHelpr.ResponseData("1", "退出成功"));
+            JsonTransfer jt = new JsonTransfer();
+            jt.Add("success", "退出成功");
+            Response.Write(jt.ToJson());
         }
 
         private void GetUserList()

@@ -11,6 +11,6 @@ namespace Backstage.Core
         public string UserName { get; set; }
         public string Pwd { get; set; }
         public RoleType RoleType { get; set; }
-        public List<int> Servers { get; set; }
+        //public List<int> Servers { get; set; }
     }
 }

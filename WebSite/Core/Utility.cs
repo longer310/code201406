@@ -39,7 +39,7 @@ namespace Backstage.Core
                         user.UserName = reader.GetString(1);
                         user.Pwd = reader.GetString(2);
                         user.RoleType = (RoleType)reader.GetInt32(3);
-                        user.Servers = reader["ServerList"].ToString().Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries).Select(p => Convert.ToInt32(p)).ToList();
+                        //user.Servers = reader["ServerList"].ToString().Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries).Select(p => Convert.ToInt32(p)).ToList();
                         return user;
                     }
                 }
@@ -66,12 +66,12 @@ namespace Backstage.Core
             entry.Id = Int32.Parse(arr[0]);
             entry.UserName = arr[1];
             entry.RoleType = (RoleType)Int32.Parse(arr[2]);
-            if (arr.Length == 4)
-            {
-                entry.Servers =
-                    arr[3].Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries).Select(
-                        p => Convert.ToInt32(p)).ToList();
-            }
+            //if (arr.Length == 4)
+            //{
+            //    entry.Servers =
+            //        arr[3].Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries).Select(
+            //            p => Convert.ToInt32(p)).ToList();
+            //}
             return entry;
         }
 
@@ -82,11 +82,10 @@ namespace Backstage.Core
         /// <returns></returns>
         public static string GetStringFromEntity(User entry)
         {
-            return string.Format("{0}^{1}^{2}^{3}",
+            return string.Format("{0}^{1}^{2}",
                 entry.Id,
                 entry.UserName,
-                (int)entry.RoleType,
-                string.Join(",", entry.Servers)
+                (int)entry.RoleType
                 );
         }
 

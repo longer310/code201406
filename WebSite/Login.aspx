@@ -31,7 +31,7 @@
 		<!-- Title -->
 		<h1>Archon</h1><hr>
 		<!-- Login Form -->
-		<form class="form-horizontal" role="form">
+		<form class="form-horizontal" id="center_middle" role="form">
 			<div class="form-group">
 				<label for="userName" class="col-lg-4 control-label">用户名</label>
 				<div class="col-lg-8">
@@ -54,22 +54,22 @@
 				<div class="col-lg-offset-2 col-lg-10">
 					<div class="checkbox">
 						<label>
-							<input type="checkbox"> Remember me
+							<input type="checkbox"> 记住我
 						</label>
 					</div>
 				</div>
 			</div>
 			<div class="form-group">
 				<div class="col-lg-offset-2 col-lg-10" id="center_middle">
-					<a href="javascript:void(0);"  onclick="page.login();" id="btnlogin" class="btn btn-default">登录</a>
+					<a href="javascript:void(0);" onclick="page.login();" id="btnlogin" class="btn btn-default">登录</a>
 				</div>
 			</div>
 		</form>
 		<hr>
 		<!-- Create and forget links -->
-		<ul class="list-inline"><li><a href="signup.html">Create Account </a></li>
+		<ul class="list-inline"><li><a href="archon/signup.html">注册 </a></li>
 			<li>&nbsp;&nbsp;</li>
-			<li><a href="forgot.html">Forgot password?</a></li>
+			<li><a href="archon/forgot.html">忘记密码?</a></li>
 		</ul><!-- /Create and forget links -->
 	</div>
 </body>
@@ -81,7 +81,7 @@
         hander: "Handler/LoginHandler.ashx?action=",
 
         init: function () {
-            $("#center_middle button").bind("keyup", function (event) {
+            $("#center_middle input").bind("keyup", function (event) {
                 if (event.keyCode == 13) {
                     $(this).blur();
                     page.login();

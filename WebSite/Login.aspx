@@ -6,6 +6,7 @@
 	<meta http-equiv="content-type" content="text/html; charset=gb2312" />
     <title>我的站点</title>
     <script src="Script/Util/jquery-latest.pack.js" type="text/javascript"></script>
+	<script type="text/javascript" src="archon/js/jquery.gritter.js"></script>
     <%--<link href="Css/login.css" rel="stylesheet" type="text/css" />--%>
     
 	<title>Archon Admin Template</title>
@@ -25,6 +26,7 @@
 	<link href="archon/css/custom.css" rel="stylesheet">
 
 	<link rel="shortcut icon" href="archon/images/favicon.ico">
+	<link href="archon/css/jquery.gritter.css" rel="stylesheet">
 </head>
 <body>
     <div class="box-holder row">
@@ -93,13 +95,37 @@
             $("#btnlogin").unbind("click").html("登录中");
             var userName = $.trim($("#userName").val());
             if (userName == "") {
-                alert("用户名不能为空");
+                //alert("用户名不能为空");
+                $.gritter.add({
+                    position: 'center', // possibilities: bottom-left, bottom-right, top-left, top-right
+                    // (string | mandatory) the heading of the notification
+                    title: '登录失败',
+                    // (string | mandatory) the text inside the notification
+                    text: '用户名不能为空',
+                    // (int | optional) the time you want it to be alive for before fading out
+                    time: '2000',
+                    // (string | optional) the class name you want to apply to that specific message
+                    class_name: 'warning'
+                });
+                $("#btnlogin").html("登录");
                 return;
             }
 
             var pwd = $.trim($("#pwd").val());
             if (pwd == "") {
-                alert("密码不能为空");
+                //alert("密码不能为空");
+                $.gritter.add({
+                    position: 'center', // possibilities: bottom-left, bottom-right, top-left, top-right
+                    // (string | mandatory) the heading of the notification
+                    title: '登录失败',
+                    // (string | mandatory) the text inside the notification
+                    text: '密码不能为空',
+                    // (int | optional) the time you want it to be alive for before fading out
+                    time: '2000',
+                    // (string | optional) the class name you want to apply to that specific message
+                    class_name: 'warning'
+                });
+                $("#btnlogin").html("登录");
                 return;
             }
 
@@ -112,7 +138,20 @@
                     location.href = "Index.aspx"; //跳转到首页
                 }
                 else {
-                    alert(data.error);
+                    //alert(data.error);
+                    $.gritter.add({
+                        position: 'center', // possibilities: bottom-left, bottom-right, top-left, top-right
+                        // (string | mandatory) the heading of the notification
+                        title: '登录失败',
+                        // (string | mandatory) the text inside the notification
+                        text: data.error,
+                        // (int | optional) the time you want it to be alive for before fading out
+                        time: '2000',
+                        // (string | optional) the class name you want to apply to that specific message
+                        class_name: 'warning'
+                    });
+                    $("#userName").val("");
+                    $("#pwd").val("");
                     $("#btnlogin").bind("click").html("登陆");
                 }
             }, "json");
@@ -120,7 +159,7 @@
 
         clear: function () {
             $("#userName").val("");
-            $("#pwd").val("")
+            $("#pwd").val("");
         },
 
         getQueryString: function (url, name) {

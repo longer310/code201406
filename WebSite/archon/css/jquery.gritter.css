@@ -22,6 +22,12 @@
     bottom: 20px;
     left: 20px;
 }
+#gritter-notice-wrapper.center {
+    top: 60px;
+    right: auto;
+    bottom: auto;
+    left: 535px;
+}
 .gritter-item-wrapper {
 	position:relative;
 	margin:0 0 10px 0;

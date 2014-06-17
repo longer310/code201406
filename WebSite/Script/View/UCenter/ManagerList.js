@@ -17,7 +17,7 @@ var page = {
         }
         var id = $.trim($("#Id").val());
         page.itemIndex = 0;
-        $.getJSON(page.url.Format("getManagerList"), { pageSize: page.pageSize, pageIndex: page.pageIndex +1, id: id, r: Math.random() }, function (data) {
+        $.getJSON(page.url.Format("getManagerList"), { pageSize: page.pageSize, pageIndex: page.pageIndex +1, r: Math.random() }, function (data) {
             page.showData(data);
             if (page.pageIndex == 0) {
                 page.showPaper(data.count);

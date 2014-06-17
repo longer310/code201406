@@ -20,7 +20,15 @@ namespace Backstage.Handler
         }
         private void GetManagerList()
         {
+            int pageIndex = GetInt("pageIndex");
+            int pageSize = GetInt("pageSize");
+            int totalnum;
+            var list = Utility.GetUserList(pageIndex, pageSize, out totalnum);
 
+            JsonTransfer jt = new JsonTransfer();
+            jt.Add("list", list);
+            jt.Add("count", totalnum);
+            Response.Write(jt.ToJson());
         }
     }
 }

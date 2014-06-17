@@ -17,9 +17,6 @@
 	<!-- Loading Custom Stylesheets -->    
 	<link href="archon/css/custom.css" rel="stylesheet">
 
-	<!-- Loading Custom Stylesheets -->    
-	<link href="archon/css/custom.css" rel="stylesheet">
-
 	<link rel="shortcut icon" href="archon/images/favicon.ico">
 </head>
 <body>
@@ -33,60 +30,35 @@
 					<!-- sidebar input search box -->
 
 					<!-- Sidebar header @add class nav-header for sidebar header -->
-					<li class="nav-header">Overview</li>
-					<li  class="active"><a href="archon/Index.aspx"><i class="icon-dashboard"></i>Dashboard </a></li>
-					<li>
-						<a class="dropdown" href="#"><i class="icon-tint"></i> UI Features <span class="label">2</span></a>
-						<ul>
-							<li><a href="archon/buttons.html"><i class="icon-bullhorn"></i> Buttons &amp; Notifications</a></li>
-							<li><a href="archon/slidersnprogress.html"><i class="icon-minus"></i>Sliders &amp; Progress </a></li>
-						</ul>	
-					</li>
-					<li><a href="archon/widgets.html"><i class="icon-group"></i>Widgets</a></li>
+					<li class="nav-header">管理者</li>
+					<li  class="active"><a href="javascript:void(0);" onclick="page.setiframe('View/UCenter/ManagerList.aspx')"><i class="icon-dashboard"></i>管理员管理 </a></li>
 
 					<!-- Sidebar header @add class nav-header for sidebar header -->
-					<li class="nav-header">Pages</li>
-					<li><a href="archon/calendar.html"><i class="icon-calendar"></i>Calendar</a></li>
-					<li><a href="archon/gallery.html"><i class="icon-picture"></i>Gallery</a></li>
-					<li><a href="archon/login.html"><i class="icon-signin"></i>Login</a></li>
-					<li> <!-- Example for second level menu -->
-						<a class="dropdown" href="#"><i class="icon-user"></i> Profile <span class="label">2</span></a>
+					<li class="nav-header">开发者后台</li>
+					<li>
+						<a class="dropdown" href="#"><i class="icon-tint"></i> 数据管理 <span class="label">2</span></a>
 						<ul>
-							<li><a href="archon/profile.html"><i class="icon-usre"></i> Model One</a></li>
-							<li><a href="archon/profileTwo.html"><i class="icon-usre"></i> Model Two</a></li>
+							<li><a href="#"><i class="icon-bullhorn"></i> 消息管理</a></li>
+							<li><a href="#"><i class="icon-minus"></i>数据统计 </a></li>
 						</ul>	
 					</li>
-					<li> <!-- Example for second level menu -->
-						<a class="dropdown" href="#"><i class="icon-folder-close-alt"></i> Dropdown menu <span class="label">3</span></a>
-						<ul>
-							<li><a href="archon/#"><i class="icon-hdd"></i> Submenu item</a></li>
-							<li><a href="archon/#"><i class="icon-coffee"></i>Submenu item</a></li>
-							<li><a href="archon/#"><i class="icon-crop"></i> Submenu item</a></li>
-						</ul>	
-					</li>
+					<li><a href="#"><i class="icon-group"></i>商户管理</a></li>
+					<li><a href="#"><i class="icon-calendar"></i>结算管理</a></li>
+					<li><a href="#"><i class="icon-picture"></i>系统设置</a></li>
 
 					<!-- Sidebar header @add class nav-header for sidebar header -->
-					<li class="nav-header">Components</li>
-					<li><a href="archon/tables.html"><i class="icon-table"></i>Tables</a></li>
-					<li> <!-- Example for second level menu -->
-						<a class="dropdown" href="#"><i class="icon-folder-close-alt"></i> Charts <span class="label">3</span></a>
-						<ul>
-							<li><a href="archon/nvd.html"><i class="icon-hdd"></i> NVD</a></li>
-							<li><a href="archon/flot.html"><i class="icon-coffee"></i>Flot</a></li>
-							<li><a href="archon/knobs.html"><i class="icon-coffee"></i>Knobs</a></li>
-						</ul>	
-					</li>
-					<li><a href="archon/typography.html"><i class="icon-text-width"></i>Typography</a></li>
-					<li>
-						<a class="dropdown" href="forms.html"><i class="icon-list-alt"></i>Forms  <span class="label">4</span></a>
-						<ul>
-							<li><a href="archon/form-elements.html"><i class="icon-indent-right"></i> Form Elements</a></li>
-							<li><a href="archon/forms.html"><i class="icon-indent-left"></i>Forms</a></li>
-							<li><a href="archon/form-wizard.html"><i class="icon-coffee"></i>Form wizard</a></li>
-							<li><a href="archon/file-uploads.html"><i class="icon-indent-right"></i> File Upload</a></li>
-						</ul>	
-					</li>
-					<li><a href="archon/icons.html"><i class="icon-truck"></i>Icons</a></li>
+					<li class="nav-header">后台管理</li>
+					<li><a href="#"><i class="icon-table"></i>活动管理</a></li>
+					<li><a href="#"><i class="icon-text-width"></i>产品管理</a></li>
+					<li><a href="#"><i class="icon-truck"></i>订单管理</a></li>
+					<li><a href="#"><i class="icon-truck"></i>图墙管理</a></li>
+					<li><a href="#"><i class="icon-truck"></i>会员管理</a></li>
+					<li><a href="#"><i class="icon-truck"></i>留言管理</a></li>
+					<li><a href="#"><i class="icon-truck"></i>电子券管理</a></li>
+					<li><a href="#"><i class="icon-truck"></i>广告管理</a></li>
+					<li><a href="#"><i class="icon-truck"></i>数据管理</a></li>
+					<li><a href="#"><i class="icon-truck"></i>系统管理</a></li>
+					<li><a href="#"><i class="icon-truck"></i>位置管理</a></li>
 				</ul>
 
 			</div><!-- /Wrapper -->
@@ -101,7 +73,7 @@
 				<!-- Top right user menu -->
 				<ul class="nav navbar-nav user-menu pull-right">
 					<!-- First nav user item -->
-					<li class="dropdown hidden-xs">
+					<%--<li class="dropdown hidden-xs">
 						<a class="dropdown-toggle" data-toggle="dropdown"><i class="icon-envelope-alt"></i></a>
 						<ul class="dropdown-menu right inbox">
 							<li class="dropdown-menu-title">
@@ -210,14 +182,15 @@
 								<a href="#">View All Notifications</a>
 							</li>
 						</ul>
-					</li><!-- / dropdown -->
-
+					</li>--%><!-- / dropdown -->
+                    
+                    <li class="rolename"><%=RoleName %></li>
 					<li class="dropdown user-name">
-						<a class="dropdown-toggle" data-toggle="dropdown"><img src="archon/images/theme/avatarSeven.png" class="user-avatar" alt="" />Admin</a>
+						<a class="dropdown-toggle" data-toggle="dropdown"><img src="archon/images/theme/avatarSeven.png" class="user-avatar" alt="" /><%=UserName %></a>
 							<ul class="dropdown-menu right inbox user">
 								<li class="user-avatar">
 									<img src="archon/images/theme/avatarSeven.png" class="user-avatar" alt="" />
-									Vijay Kumar
+									<%=UserName %>
 								</li>
 							<li>
 								<i class="icon-user avatar"></i>
@@ -244,7 +217,9 @@
 
 			</div><!-- / Navbar-->
 <!-- /Main Content  @7 -->
-
+            <div id="main-content">
+                <iframe width=420 height=330 frameborder=0 scrolling=auto src="#"></iframe>
+             </div>
 		</div><!-- / Content @5 -->
 
 	</div> <!-- Frame -->
@@ -304,6 +279,9 @@
                         location.href = "Login.aspx";
                     }
                 }, "json");
+            },
+            setiframe:function(page) {
+                $("#main-content iframe").src = page;
             }
         }
     </script>

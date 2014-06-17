@@ -16,27 +16,33 @@ namespace Backstage
     public partial class Index : BasePage
     {
         public string RoleName = string.Empty;
+        public string UserName = string.Empty;
         protected void Page_Load(object sender, EventArgs e)
         {
-            //if (CurrentUser != null)
-            //{
-            //    switch (CurrentUser.RoleType)
-            //    {
-            //        case RoleType.User:
-            //            RoleName = "普通用户";
-            //            now17.Visible = false;
-            //            break;
-            //        case RoleType.Manage:
-            //            RoleName = "管理员";
-            //            now17.Visible = false;
-            //            break;
-            //        case RoleType.SuperManage:
-            //            RoleName = "超级管理员";
-            //            now17.Visible = true;
-            //            break;
-            //        default: break;
-            //    }
-            //}
+            if (CurrentUser != null)
+            {
+                UserName = CurrentUser.UserName;
+                switch (CurrentUser.RoleType)
+                {
+                    case RoleType.User:
+                        RoleName = "商家";
+                        //now17.Visible = false;
+                        break;
+                    case RoleType.Manage:
+                        RoleName = "一级管理员";
+                        //now17.Visible = false;
+                        break;
+                    case RoleType.SecondManage:
+                        RoleName = "二级管理员";
+                        //now17.Visible = false;
+                        break;
+                    case RoleType.SuperManage:
+                        RoleName = "超级管理员";
+                        //now17.Visible = true;
+                        break;
+                    default: break;
+                }
+            }
         }
 
         //protected void ResetCache(object sender, EventArgs e)

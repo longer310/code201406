@@ -51,6 +51,47 @@ namespace Backstage.Core
             return null;
         }
 
+        public static List<User> GetUserList(int pageIndex, int pageSize, out int totalnum)
+        {
+            int skipnum = pageSize * pageIndex;
+            totalnum = 0;
+            var sql = string.Format("select * from account where roletype=2 or roletype = 3 LIMIT {0},{1};", skipnum,
+                pageSize);
+            try
+            {
+                List<User> list = new List<User>();
+                MySqlDataReader reader = MySqlHelper.ExecuteReader(_gameDbConn, CommandType.Text, sql);
+                while (reader.HasRows)
+                {
+                    if (reader.Read())
+                    {
+                        User user = new User();
+                        user.Id = reader.GetInt32(0);
+                        user.UserName = reader.GetString(1);
+                        user.Pwd = reader.GetString(2);
+                        user.RoleType = (RoleType)reader.GetInt32(3);
+
+                        list.Add(user);
+                    }
+                }
+
+                sql = "select count(*) from account where roletype=2 or roletype = 3;";
+                reader = MySqlHelper.ExecuteReader(_gameDbConn, CommandType.Text, sql);
+                if (reader.HasRows)
+                {
+                    if (reader.Read())
+                    {
+                        totalnum = reader.GetInt32(0);
+                    }
+                }
+            }
+            catch (System.Exception ex)
+            {
+                throw;
+            }
+            return null;
+        }
+
         /// <summary>
         /// 根据基本信息构成实体
         /// </summary>
@@ -385,6 +426,5 @@ namespace Backstage.Core
             return true;
         }
         #endregion
-
     }
 }

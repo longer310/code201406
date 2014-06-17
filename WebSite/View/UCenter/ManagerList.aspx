@@ -14,27 +14,25 @@
     <script type="text/javascript" src="/Script/jquery-pagination/lib/jquery_pagination/jquery.pagination.js"></script>
     <script type="text/javascript" src="/Script/template/trimpath-template.js"></script>
 </head>
-<body onload="javascript:border_left('left_tab1','left_menu_cnt1');">
-    <form id="form1" runat="server">
-        <div style="margin:0 auto;width:960px;">
-            <div id="managerList"></div>
-            <div id="pager" style="margin-top:10px;"></div>
-        </div>
-    </form>
+<body>
+	<div style="margin:0 auto;">
+        <div id="managerList"></div>
+        <div id="pager" style="margin-top:10px;"></div>
+    </div>
 </body>
 </html>
 <%--数据模板--%>
 <textarea name="template_jst_list" id="template_jst_list" style="display: none" cols="0" rows="0">
     <table width="100%" class="niceTab">
         <tr>
-        <th width="30px">ID</th><th width="80px">名称</th><th width="80px">创建时间</th><th width="80px">维护人</th>
+        <th width="30px">ID</th><th width="80px">用户名</th><th width="80px">密码</th><th width="80px">管理员级别</th>
         </tr>
        {for p in list}
-        <tr class="{if (page.itemIndex++)%2==0 }odd{/if}">
+        <tr>
         <td>@{p.Id}</td>
-        <td>@{p.Title}</td>
-        <td>@{p.CreateTime.ToDate().Format('yyyy-MM-dd hh:mm:ss')}</td>
         <td>@{p.UserName}</td>
+        <td>@{p.Pwd}</td>
+        <td>@{p.RoleType - 1}</td>
         </tr>
         {forelse}
         <tr><td colspan="6"><div class="info">暂时管理员列表数据</div></td></tr>

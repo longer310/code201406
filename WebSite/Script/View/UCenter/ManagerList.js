@@ -1,5 +1,6 @@
 ﻿//入口
 jQuery(function ($) {
+    alert(1);
     page.getList();
 });
 
@@ -12,12 +13,12 @@ var page = {
     type: "post",
 
     getList: function (pageIndex) {//得到列表
+        alert(1);
         if (typeof pageIndex != 'undefined') {
             page.pageIndex = pageIndex;
         }
-        var id = $.trim($("#Id").val());
         page.itemIndex = 0;
-        $.getJSON(page.url.Format("getManagerList"), { pageSize: page.pageSize, pageIndex: page.pageIndex +1, r: Math.random() }, function (data) {
+        $.getJSON(page.url.Format("getManagerList"), { pageSize: page.pageSize, pageIndex: page.pageIndex +1 }, function (data) {
             page.showData(data);
             if (page.pageIndex == 0) {
                 page.showPaper(data.count);

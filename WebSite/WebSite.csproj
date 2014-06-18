@@ -242,6 +242,7 @@
     <Content Include="archon\profileTwo.html" />
     <Content Include="archon\signup.html" />
     <Content Include="archon\slidersnprogress.html" />
+    <Content Include="archon\tables_2.html" />
     <Content Include="archon\tables.html" />
     <Content Include="archon\typography.html" />
     <Content Include="archon\ui-features.html" />
@@ -397,8 +398,10 @@
     <Content Include="Script\template\trimpath-template_o.js" />
     <Content Include="Script\trimpath-template\trimpath-template-1.0.38.js" />
     <Content Include="Script\utility.js" />
+    <Content Include="Script\Util\jqAjaxSettings.js" />
     <Content Include="Script\Util\jquery-latest.pack.js" />
     <Content Include="Login.aspx" />
+    <Content Include="Script\Util\jquery.js" />
     <Content Include="Script\View\UCenter\ManagerList.js" />
     <Content Include="View\UCenter\ManagerList.aspx" />
     <Content Include="Web.config" />

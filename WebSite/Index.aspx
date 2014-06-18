@@ -31,7 +31,7 @@
 
 					<!-- Sidebar header @add class nav-header for sidebar header -->
 					<li class="nav-header">管理者</li>
-					<li  class="active"><a href="javascript:void(0);" onclick="page.setiframe('View/UCenter/ManagerList.aspx')"><i class="icon-dashboard"></i>管理员管理 </a></li>
+					<li  class="active"><a href="javascript:void(0);" onclick="page.setiframe('archon/tables_2.html')"><i class="icon-dashboard"></i>管理员管理 </a></li>
 
 					<!-- Sidebar header @add class nav-header for sidebar header -->
 					<li class="nav-header">开发者后台</li>
@@ -72,118 +72,6 @@
 
 				<!-- Top right user menu -->
 				<ul class="nav navbar-nav user-menu pull-right">
-					<!-- First nav user item -->
-					<%--<li class="dropdown hidden-xs">
-						<a class="dropdown-toggle" data-toggle="dropdown"><i class="icon-envelope-alt"></i></a>
-						<ul class="dropdown-menu right inbox">
-							<li class="dropdown-menu-title">
-								INBOX <span>(25)</span>
-							</li>
-							<li>
-								<img src="archon/images/theme/avatarTwo.png" alt="" class="avatar">
-								<div class="message">
-									<span class="username">Anusha</span> 
-									<span class="mini-details">(6) <i class="icon-paper-clip"></i></span>
-									<span class="time pull-right"> 06:58 PM</span>
-									<p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's ... </p>
-								</div>
-							</li>
-							<li>
-								<img src="archon/images/theme/avatarFive.png" alt="" class="avatar">
-								<div class="message">
-									<span class="username">Veeru</span> 
-									<span class="mini-details">(2) <i class="icon-paper-clip"></i></span>
-									<span class="time pull-right"> 09:58 AM</span>
-									<p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's ... </p>
-								</div>
-							</li>
-							<li>
-								<img src="archon/images/theme/avatarSix.png" alt="" class="avatar">
-								<div class="message">
-									<span class="username">Nag</span> 
-									<span class="mini-details">(6) <i class="icon-paper-clip"></i></span>
-									<span class="time pull-right">Yesterday</span>
-									<p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's ... </p>
-								</div>
-							</li>
-							<li>
-								<img src="archon/images/theme/avatarSeven.png" alt="" class="avatar">
-								<div class="message">
-									<span class="username">Harish</span> 
-									<span class="mini-details"> <i class="icon-picture"></i></span>
-									<span class="time pull-right">14/12/2013</span>
-									<p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's ... </p>
-								</div>
-							</li>
-							<li class="dropdown-menu-footer">
-								<a href="#">View All Messages</a>
-							</li>
-						</ul>
-					</li><!-- /dropdown -->
-
-					<!-- Second nav user item -->
-					<li class="dropdown hidden-xs">
-						<a class="dropdown-toggle" data-toggle="dropdown"><i class="icon-bell"></i></a>
-						<ul class="dropdown-menu right notifications">
-							<li class="dropdown-menu-title">
-								Notifications
-							</li>
-							<li>
-								<i class="icon-cog avatar text-success"></i>
-								<div class="message">
-									<span class="username text-success">New settings activated</span> 
-									<span class="time pull-right"> 06:58 PM</span>
-								</div>
-							</li>
-							<li>
-								<i class="icon-shopping-cart avatar text-danger"></i>
-								<div class="message">
-									<span class="username text-danger">You have 2 returns</span> 
-									<span class="time pull-right"> 04:29 PM</span>
-								</div>
-							</li>
-							<li>
-								<i class="icon-user avatar text-success"></i>
-								<div class="message">
-									<span class="username text-success">New User registered</span> 
-									<span class="time pull-right"> Yesterday</span>
-								</div>
-							</li>
-							<li>
-								<i class="icon-comment avatar text-info"></i>
-								<div class="message">
-									<span class="username text-info">New Comment received</span> 
-									<span class="time pull-right"> Yesterday</span>
-								</div>
-							</li>
-							<li>
-								<i class="icon-cog avatar text-warning"></i>
-								<div class="message">
-									<span class="username text-warning">User deleted</span> 
-									<span class="time pull-right"> 2 days ago</span>
-								</div>
-							</li>
-							<li>
-								<i class="icon-dollar avatar"></i>
-								<div class="message">
-									<span class="username">Earned 200 points</span> 
-									<span class="time pull-right">3 days ago</span>
-								</div>
-							</li>
-							<li>
-								<i class="icon-hdd avatar text-danger"></i>
-								<div class="message">
-									<span class="username text-danger">Memory size exceeded </span> 
-									<span class="time pull-right"> 1 week ago</span>
-								</div>
-							</li>
-
-							<li class="dropdown-menu-footer">
-								<a href="#">View All Notifications</a>
-							</li>
-						</ul>
-					</li>--%><!-- / dropdown -->
-                    
                     <li class="rolename"><%=RoleName %></li>
 					<li class="dropdown user-name">
 						<a class="dropdown-toggle" data-toggle="dropdown"><img src="archon/images/theme/avatarSeven.png" class="user-avatar" alt="" /><%=UserName %></a>
@@ -218,7 +106,7 @@
 			</div><!-- / Navbar-->
 <!-- /Main Content  @7 -->
             <div id="main-content">
-                <iframe width=420 height=330 frameborder=0 scrolling=auto src="#"></iframe>
+                <iframe width=1080 height=1000 frameborder=0 scrolling=auto src="archon/tables_2.html"></iframe>
              </div>
 		</div><!-- / Content @5 -->
 

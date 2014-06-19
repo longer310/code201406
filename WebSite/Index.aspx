@@ -106,7 +106,7 @@
 			</div><!-- / Navbar-->
 <!-- /Main Content  @7 -->
             <div id="main-content">
-                <iframe width=1080 height=1000 frameborder=0 scrolling=auto src="archon/tables_2.html"></iframe>
+                <iframe width=1030 height=1000 frameborder=0 scrolling="no"  src="archon/tables_2.html"></iframe>
              </div>
 		</div><!-- / Content @5 -->
 

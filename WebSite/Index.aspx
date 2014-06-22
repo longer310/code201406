@@ -31,7 +31,7 @@
 
 					<!-- Sidebar header @add class nav-header for sidebar header -->
 					<li class="nav-header">管理者</li>
-					<li  class="active"><a href="javascript:void(0);" onclick="page.setiframe('archon/tables_2.html')"><i class="icon-dashboard"></i>管理员管理 </a></li>
+					<li  class="active"><a href="javascript:void(0);" onclick="page.setiframe('View/UCenter/ManagerList.aspx')"><i class="icon-dashboard"></i>管理员管理 </a></li>
 
 					<!-- Sidebar header @add class nav-header for sidebar header -->
 					<li class="nav-header">开发者后台</li>
@@ -106,13 +106,13 @@
 			</div><!-- / Navbar-->
 <!-- /Main Content  @7 -->
             <div id="main-content">
-                <iframe width=1030 height=1000 frameborder=0 scrolling="no"  src="archon/tables_2.html"></iframe>
+                <iframe width=1030 height=1000 frameborder=0 scrolling="no"  src="View/UCenter/ManagerList.aspx"></iframe>
              </div>
 		</div><!-- / Content @5 -->
 
 	</div> <!-- Frame -->
 
-
+    
 	<!-- Load JS here for greater good =============================-->
 	<script src="archon/js/jquery-1.8.3.min.js"></script>
 	<script src="archon/js/jquery-ui-1.10.3.custom.min.js"></script>
@@ -168,7 +168,8 @@
                     }
                 }, "json");
             },
-            setiframe:function(page) {
+            setiframe: function (page) {
+                alert(page);
                 $("#main-content iframe").src = page;
             }
         }

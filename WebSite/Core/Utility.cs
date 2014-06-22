@@ -53,26 +53,23 @@ namespace Backstage.Core
 
         public static List<User> GetUserList(int pageIndex, int pageSize, out int totalnum)
         {
+            List<User> list = new List<User>();
             int skipnum = pageSize * pageIndex;
             totalnum = 0;
             var sql = string.Format("select * from account where roletype=2 or roletype = 3 LIMIT {0},{1};", skipnum,
                 pageSize);
             try
             {
-                List<User> list = new List<User>();
                 MySqlDataReader reader = MySqlHelper.ExecuteReader(_gameDbConn, CommandType.Text, sql);
-                while (reader.HasRows)
+                while (reader.Read())
                 {
-                    if (reader.Read())
-                    {
-                        User user = new User();
-                        user.Id = reader.GetInt32(0);
-                        user.UserName = reader.GetString(1);
-                        user.Pwd = reader.GetString(2);
-                        user.RoleType = (RoleType)reader.GetInt32(3);
+                    User user = new User();
+                    user.Id = reader.GetInt32(0);
+                    user.UserName = reader.GetString(1);
+                    user.Pwd = reader.GetString(2);
+                    user.RoleType = (RoleType)reader.GetInt32(3);
 
-                        list.Add(user);
-                    }
+                    list.Add(user);
                 }
 
                 sql = "select count(*) from account where roletype=2 or roletype = 3;";
@@ -89,7 +86,7 @@ namespace Backstage.Core
             {
                 throw;
             }
-            return null;
+            return list;
         }
 
         /// <summary>

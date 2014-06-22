@@ -1,68 +1,76 @@
-ï»¿<%@ Page Language="C#" AutoEventWireup="true" Inherits="Backstage.ManagerList" Codebehind="ManagerList.aspx.cs" %>
+<%@ Page Language="C#" AutoEventWireup="true" Inherits="Backstage.ManagerList" Codebehind="ManagerList.aspx.cs" %>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
 <html>
 <head>
-    <title>ç®¡ç†å‘˜ç®¡ç†é¡µé¢</title>
-    <link href="/Css/style.css" type="text/css" rel="stylesheet">
-    <link href="/Css/default.css" type="text/css" rel="stylesheet">
-    <link rel="stylesheet" href="/Script/jquery-pagination/lib/jquery_pagination/pagination.css" />
+    <meta http-equiv="content-type" content="text/html; charset=gb2312" />
+    <title>¹ÜÀíÔ±¹ÜÀíÒ³Ãæ</title>
+    <link rel="stylesheet" href="../../Script/jquery-pagination/lib/jquery_pagination/pagination.css" />
+    <link href="../../archon/css/theme.css" rel="stylesheet">
+	<link href="../../archon/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+	<link href="../../archon/bootstrap/css/bootstrap-responsive.min.css" rel="stylesheet">
+	<link href="../../archon/css/archon.css" rel="stylesheet">
+	<link href="../../archon/css/custom.css" rel="stylesheet">
    
-    <script src="/Script/utility.js" type="text/javascript"></script>
-    <script type="text/javascript" src="/Script/jquery-pagination/lib/jquery_pagination/jquery.pagination.js"></script>
-    <script type="text/javascript" src="/Script/template/trimpath-template.js"></script>
-    <%--<script src="/Script/View/UCenter/ManagerList.js" type="text/javascript"></script>--%>
+    <script src="../../Script/Util/jquery-latest.pack.js" type="text/javascript"></script>
+    <script src="../../Script/utility.js" type="text/javascript"></script>
+    <script type="text/javascript" src="../../Script/jquery-pagination/lib/jquery_pagination/jquery.pagination.js"></script>
+    <script type="text/javascript" src="../../Script/template/trimpath-template.js"></script>
+    <script type="text/javascript" src="../../archon/bootstrap/js/bootstrap.min.js"></script>
+    <script src="../../Script/View/UCenter/ManagerList.js" type="text/javascript"></script>
 </head>
 <body>
-	<div style="margin:0 auto;">
-	    <a href="javascript:void(0);" onclick="page.getList();" id="btnlodgin" class="btn btn-default">df</a>
+	<div style="margin:0 auto;" class="panel panel-users">
+	    <div class="panel-heading">
+	        <h3 class="panel-title">Ìí¼Ó¹ÜÀíÔ±<span class="pull-right"></span>
+                <a data-toggle="modal" href="#addmanager" class="btn btn-primary"><i class="icon-plus-sign red"></i></a>
+		    </h3>
+        </div>
         <div id="managerList"></div>
         <div id="pager" style="margin-top:10px;"></div>
     </div>
-<%--æ•°æ®æ¨¡æ¿--%>
+    <div id="addmanager"  class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h3 id="myModalLabel">¶Ô»°¿ò±êÌâ</h3>
+      </div>
+      <div class="modal-body">
+        <p>ÕâÀïÊÇÖ÷ÌåÄÚÈİ¡­</p>
+      </div>
+      <div class="modal-footer">
+        <a class="btn" data-dismiss="modal" aria-hidden="true">¹Ø±Õ</a>
+        <a class="btn btn-primary">±£´æĞŞ¸Ä</a>
+      </div>
+    </div>
+<%--Êı¾İÄ£°å--%>
 <textarea name="template_jst_list" id="template_jst_list" style="display: none" cols="0" rows="0">
-    <table width="100%" class="niceTab">
+    <table width="100%" class="table users-table table-condensed table-hover  ">
+        <thead>
         <tr>
-        <th width="30px">ID</th><th width="80px">ç”¨æˆ·å</th><th width="80px">å¯†ç </th><th width="80px">ç®¡ç†å‘˜çº§åˆ«</th>
+			<th width="80px">ĞòºÅ</th>
+            <th width="80px">ÓÃ»§Ãû</th>
+            <th width="80px">ÃÜÂë</th>
+            <th width="80px">¹ÜÀíÔ±¼¶±ğ</th>
+            <th width="80px">²Ù×÷</th>
         </tr>
+        </thead>
+        <tbody>
        {for p in list}
         <tr>
-        <td>@{p.Id}</td>
+        <td>@{page.itemIndex++}</td>
         <td>@{p.UserName}</td>
         <td>@{p.Pwd}</td>
         <td>@{p.RoleType - 1}</td>
+        <td>
+		   <button type="button" title="É¾³ı" class="btn btn-info"><i class="icon-remove-sign"></i></button>
+           <button type="button" title="±à¼­" class="btn btn-info"><i class="icon-edit"></i></button>
+        </td>
         </tr>
         {forelse}
-        <tr><td colspan="6"><div class="info">æš‚æ—¶ç®¡ç†å‘˜åˆ—è¡¨æ•°æ®</div></td></tr>
+        <tr><td colspan="6"><div class="info">ÔİÊ±ÎŞ¹ÜÀíÔ±ÁĞ±íÊı¾İ</div></td></tr>
         {/for}
+        </tbody>
     </table>
 </textarea>
-
- <script type="text/javascript">
-     var page = {
-         url: "Handler/UCenter/DefaultHandler.ashx?action=",
-         pageSize: 10,
-         pageIndex: 0,
-         itemIndex: 0,
-         dataType: "json",
-         type: "post",
-
-         getList: function () {//å¾—åˆ°åˆ—è¡¨
-             if (typeof pageIndex != 'undefined') {
-                 page.pageIndex = pageIndex;
-             }
-             page.itemIndex = 0;
-             alert(page.url + "getManagerList");
-             $.post(page.url + "getManagerList", { pageSize: page.pageSize, pageIndex: page.pageIndex + 1 }, function (data) {
-
-                 alert(3);
-                 page.showData(data);
-                 if (page.pageIndex == 0) {
-                     page.showPaper(data.count);
-                 }
-             }, "json");
-         }
-     }
-    </script>
 </body>
 </html>

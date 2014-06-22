@@ -69,8 +69,17 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="archon\bootstrap\css\bootstrap-responsive.css" />
+    <Content Include="archon\bootstrap\css\bootstrap-responsive.min.css" />
     <Content Include="archon\bootstrap\css\bootstrap.css" />
+    <Content Include="archon\bootstrap\css\bootstrap.min.css" />
     <Content Include="archon\bootstrap\fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="archon\bootstrap\img\glyphicons-halflings-white.png" />
+    <Content Include="archon\bootstrap\img\glyphicons-halflings.png" />
+    <Content Include="archon\bootstrap\js\bootstrap.js" />
+    <Content Include="archon\bootstrap\js\bootstrap.min.js" />
+    <Content Include="archon\bootstrap_2\css\bootstrap.css" />
+    <Content Include="archon\bootstrap_2\fonts\glyphicons-halflings-regular.svg" />
     <Content Include="archon\buttons.html" />
     <Content Include="archon\calendar.html" />
     <Content Include="archon\css\archon.css" />
@@ -106,6 +115,7 @@
     <Content Include="archon\css\nvd3.css" />
     <Content Include="archon\css\prettify.css" />
     <Content Include="archon\css\responsive.css" />
+    <Content Include="archon\css\theme.css" />
     <Content Include="archon\css\timeline.css" />
     <Content Include="archon\file-uploads.html" />
     <Content Include="archon\flot.html" />
@@ -460,6 +470,10 @@
     <Content Include="archon\font\fontawesome-webfontf77b.eot" />
     <Content Include="archon\font\fontawesome-webfontf77b.ttf" />
     <Content Include="archon\font\fontawesome-webfontf77b.woff" />
+    <Content Include="archon\bootstrap_2\fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="archon\bootstrap_2\fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="archon\bootstrap_2\fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="archon\bootstrap_2\fonts\glyphicons-halflings-regulard41d.eot" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -28,6 +28,7 @@ namespace Backstage.Handler
             JsonTransfer jt = new JsonTransfer();
             jt.Add("list", list);
             jt.Add("count", totalnum);
+            jt.Add("curcount", list.Count);
             Response.Write(jt.ToJson());
         }
     }

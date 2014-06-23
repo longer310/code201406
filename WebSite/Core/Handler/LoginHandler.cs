@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using Backstage.Core;
+using WebSite.Core;
 
 namespace Backstage.Handler
 {
@@ -24,6 +25,7 @@ namespace Backstage.Handler
         }
         private void Login()
         {
+            //string str = DesAlgorithm.EncryptString("1235678");
             string userName = GetString("userName");
             string pwd = GetString("pwd");
 

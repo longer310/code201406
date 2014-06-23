@@ -1,7 +1,11 @@
 ﻿//入口
 jQuery(function ($) {
     page.getList();
+    page.alertBox();
 
+    $("#clickmymodal").bind("click", function() {
+        page.alertBox();
+    });
     //$('#addmanager').click(function () {
     //    //显示在正中央
     //    //request data for centering
@@ -66,6 +70,6 @@ var page = {
 
     alertBox: function () {
         alert(1);
-        $('#addmanager').modal('show');
+        $("#myModal").modal();
     },
 }

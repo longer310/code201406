@@ -6,9 +6,9 @@
     <meta http-equiv="content-type" content="text/html; charset=gb2312" />
     <title>管理员管理页面</title>
     <link rel="stylesheet" href="../../Script/jquery-pagination/lib/jquery_pagination/pagination.css" />
-    <link href="../../archon/css/theme.css" rel="stylesheet">
-	<link href="../../archon/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-	<link href="../../archon/bootstrap/css/bootstrap-responsive.min.css" rel="stylesheet">
+
+	<link href="../../archon/bootstrap/css/bootstrap.css" rel="stylesheet">
+	<link href="../../archon/bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
 	<link href="../../archon/css/archon.css" rel="stylesheet">
 	<link href="../../archon/css/custom.css" rel="stylesheet">
    
@@ -16,22 +16,22 @@
     <script src="../../Script/utility.js" type="text/javascript"></script>
     <script type="text/javascript" src="../../Script/jquery-pagination/lib/jquery_pagination/jquery.pagination.js"></script>
     <script type="text/javascript" src="../../Script/template/trimpath-template.js"></script>
-    <script type="text/javascript" src="../../archon/bootstrap/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../../archon/bootstrap/js/bootstrap.modal.js"></script>
     <script src="../../Script/View/UCenter/ManagerList.js" type="text/javascript"></script>
 </head>
 <body>
 	<div style="margin:0 auto;" class="panel panel-users">
 	    <div class="panel-heading">
 	        <h3 class="panel-title">添加管理员<span class="pull-right"></span>
-                <a data-toggle="modal" href="#addmanager" class="btn btn-primary"><i class="icon-plus-sign red"></i></a>
+                <a title="添加" href="#myModal" id="clickmymodal" role="button" class="btn btn-primary" data-toggle="modal"><i class="icon-plus-sign red"></i></a>
 		    </h3>
         </div>
         <div id="managerList"></div>
         <div id="pager" style="margin-top:10px;"></div>
     </div>
-    <div id="addmanager"  class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div id="myModal"  class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
       <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button><%--&times;--%>
         <h3 id="myModalLabel">对话框标题</h3>
       </div>
       <div class="modal-body">
@@ -47,11 +47,11 @@
     <table width="100%" class="table users-table table-condensed table-hover  ">
         <thead>
         <tr>
-			<th width="80px">序号</th>
-            <th width="80px">用户名</th>
-            <th width="80px">密码</th>
-            <th width="80px">管理员级别</th>
-            <th width="80px">操作</th>
+			<th width="140px">序号</th>
+            <th width="140px">用户名</th>
+            <th width="140px">密码</th>
+            <th width="220px">管理员级别</th>
+            <th width="140px">操作</th>
         </tr>
         </thead>
         <tbody>

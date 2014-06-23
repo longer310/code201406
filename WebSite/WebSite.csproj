@@ -78,6 +78,7 @@
     <Content Include="archon\bootstrap\img\glyphicons-halflings.png" />
     <Content Include="archon\bootstrap\js\bootstrap.js" />
     <Content Include="archon\bootstrap\js\bootstrap.min.js" />
+    <Content Include="archon\bootstrap\js\bootstrap.modal.js" />
     <Content Include="archon\bootstrap_2\css\bootstrap.css" />
     <Content Include="archon\bootstrap_2\fonts\glyphicons-halflings-regular.svg" />
     <Content Include="archon\buttons.html" />
@@ -413,6 +414,7 @@
     <Content Include="Login.aspx" />
     <Content Include="Script\Util\jquery.js" />
     <Content Include="Script\View\UCenter\ManagerList.js" />
+    <Content Include="Test.html" />
     <Content Include="View\UCenter\ManagerList.aspx" />
     <Content Include="Web.config" />
   </ItemGroup>
@@ -421,7 +423,9 @@
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Core\CommonEntity.cs" />
+    <Compile Include="Core\DesAlgorithm.cs" />
     <Compile Include="Core\Enums.cs" />
+    <Compile Include="Core\Handler\Api\ApiHandler.cs" />
     <Compile Include="Core\Handler\BaseHandler.cs" />
     <Compile Include="Core\Handler\LoginHandler.cs" />
     <Compile Include="Core\Handler\UCenter\DefaultHandler.cs" />
@@ -474,6 +478,7 @@
     <Content Include="archon\bootstrap_2\fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="archon\bootstrap_2\fonts\glyphicons-halflings-regular.woff" />
     <Content Include="archon\bootstrap_2\fonts\glyphicons-halflings-regulard41d.eot" />
+    <Content Include="Handler\Api\ApiHandler.ashx" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

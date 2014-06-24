@@ -10,10 +10,13 @@
     <link href="View/../archon/css/custom.css" rel="stylesheet">
 
     <script src="View/../Script/Util/jquery-latest.pack.js" type="text/javascript"></script>
-    <script type="text/javascript" src="View/../archon/bootstrap/js/bootstrap.modal.js"></script>
+    <script src="View/../Script/utility.js" type="text/javascript"></script>
+    <script type="text/javascript" src="View/../archon/bootstrap/js/bootstrap.js"></script>
+    <script src="View/../Script/View/UCenter/ManagerList.js" type="text/javascript"></script>
 </head>
 <body>
-    <a title="添加" data-target="#myModal" id="clickmymodal" role="button" class="btn btn-primary" data-toggle="modal"><i class="icon-plus-sign red"></i></a>
+    <a title="添加" href="javascript:void(0);" onclick="page.alertBox();" data-target="#myModal" data-backdrop="false" id="clickmymodal" role="button" class="btn btn-primary" data-toggle="modal"><i class="icon-plus-sign red"></i></a>
+
     
     <div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-header">

@@ -1,32 +1,16 @@
 ﻿//入口
 jQuery(function ($) {
     page.getList();
-    page.alertBox();
 
-    $("#clickmymodal").bind("click", function() {
-        page.alertBox();
+    $('#clickmymodal').on('click', function () {
+        $.layer({
+            type: 1,
+            title: "添加管理员", //不显示默认标题栏
+            shade: [0], //不显示遮罩
+            area: ['600px', '360px'],
+            page: {html:'<div class="form-group"><label for="inputEmail1" class="col-lg-3 control-label">Input</label><div class="col-lg-9"><input type="email" class="form-control"id="inputEmail1"placeholder="Type something here"></div></div>'}
+        });
     });
-    //$('#addmanager').click(function () {
-    //    //显示在正中央
-    //    //request data for centering
-    //    var windowWidth = document.body.clientWidth + 276;
-    //    var windowHeight = document.body.clientHeight;
-    //    var popupHeight = $(".theme-popover").height();
-    //    var popupWidth = $(".theme-popover").width();
-    //    //centering
-    //    $(".theme-popover").css({
-    //        "position": "absolute",
-    //        "top": windowHeight / 2 - popupHeight / 2,
-    //        "left": windowWidth / 2 - popupWidth / 2
-    //    });
-
-    //    //$('.theme-popover-mask').fadeIn(100);
-    //    $('.theme-popover').slideDown(200);
-    //})
-    //$('.theme-poptit .close').click(function () {
-    //    $('.theme-popover-mask').fadeOut(100);
-    //    $('.theme-popover').slideUp(200);
-    //})
 });
 
 var page = {
@@ -69,7 +53,6 @@ var page = {
     },
 
     alertBox: function () {
-        alert(1);
-        $("#myModal").modal();
+        $('#manmanager').modal('show');
     },
 }

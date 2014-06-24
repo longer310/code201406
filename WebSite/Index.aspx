@@ -117,12 +117,12 @@
 	<script src="archon/js/jquery-1.8.3.min.js"></script>
 	<script src="archon/js/jquery-ui-1.10.3.custom.min.js"></script>
 	<script src="archon/js/jquery.ui.touch-punch.min.js"></script>
-	<script src="archon/js/bootstrap.min.js"></script>
+
 	<script src="archon/js/bootstrap-select.js"></script>
 	<script src="archon/js/bootstrap-switch.js"></script>
+	<script src="archon/js/bootstrap-typeahead.js"></script>
 	<script src="archon/js/jquery.tagsinput.js"></script>
 	<script src="archon/js/jquery.placeholder.js"></script>
-	<script src="archon/js/bootstrap-typeahead.js"></script>
 	<script src="archon/js/application.js"></script>
 	<script src="archon/js/moment.min.js"></script>
 	<script src="archon/js/jquery.dataTables.min.js"></script>
@@ -139,7 +139,7 @@
 
 
 	<!-- NVD3 graphs  =============================-->
-	<script src="archon/js/nvd3/lib/d3.v3.js"></script>
+	<%--<script src="archon/js/nvd3/lib/d3.v3.js"></script>
 	<script src="archon/js/nvd3/nv.d3.js"></script>
 	<script src="archon/js/nvd3/src/models/legend.js"></script>
 	<script src="archon/js/nvd3/src/models/pie.js"></script>
@@ -149,7 +149,7 @@
 
 	<!-- Map and icons on map
 	<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&amp;sensor=false"></script>-->
-	<script src="archon/js/map-icons.js"></script>
+	<script src="archon/js/map-icons.js"></script>--%>
 
 	<!-- Archon JS =============================-->
 	<script src="archon/js/archon.js"></script>

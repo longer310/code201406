@@ -376,6 +376,18 @@
     <Content Include="Script\jquery.pagination\demo\snippet.html" />
     <Content Include="Script\jquery.pagination\jquery.pagination.js" />
     <Content Include="Script\jquery.pagination\pagination.css" />
+    <Content Include="Script\layer\extend\layer.ext.js" />
+    <Content Include="Script\layer\layer.min.js" />
+    <Content Include="Script\layer\skin\default\icon_ext.png" />
+    <Content Include="Script\layer\skin\default\textbg.png" />
+    <Content Include="Script\layer\skin\default\xubox_ico0.png" />
+    <Content Include="Script\layer\skin\default\xubox_loading0.gif" />
+    <Content Include="Script\layer\skin\default\xubox_loading1.gif" />
+    <Content Include="Script\layer\skin\default\xubox_loading2.gif" />
+    <Content Include="Script\layer\skin\default\xubox_loading3.gif" />
+    <Content Include="Script\layer\skin\default\xubox_title0.png" />
+    <Content Include="Script\layer\skin\layer.css" />
+    <Content Include="Script\layer\skin\layer.ext.css" />
     <Content Include="Script\menu.js" />
     <Content Include="Script\My97DatePicker\4.72.txt" />
     <Content Include="Script\My97DatePicker\calendar.js" />
@@ -413,6 +425,7 @@
     <Content Include="Script\Util\jquery-latest.pack.js" />
     <Content Include="Login.aspx" />
     <Content Include="Script\Util\jquery.js" />
+    <Content Include="Script\Util\jquery.leanModal.min.js" />
     <Content Include="Script\View\UCenter\ManagerList.js" />
     <Content Include="Test.html" />
     <Content Include="View\UCenter\ManagerList.aspx" />
@@ -423,7 +436,6 @@
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Core\CommonEntity.cs" />
-    <Compile Include="Core\DesAlgorithm.cs" />
     <Compile Include="Core\Enums.cs" />
     <Compile Include="Core\Handler\Api\ApiHandler.cs" />
     <Compile Include="Core\Handler\BaseHandler.cs" />

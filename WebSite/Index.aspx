@@ -106,7 +106,7 @@
 			</div><!-- / Navbar-->
 <!-- /Main Content  @7 -->
             <div id="main-content">
-                <iframe width=1030 height=1000 frameborder=0 scrolling="no"  src="View/UCenter/ManagerList.aspx"></iframe>
+                <iframe width=1030px height=800px frameborder=0 scrolling="no"  src="View/UCenter/ManagerList.aspx"></iframe>
              </div>
 		</div><!-- / Content @5 -->
 

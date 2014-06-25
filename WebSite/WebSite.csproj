@@ -443,6 +443,7 @@
     <Compile Include="Core\Handler\UCenter\DefaultHandler.cs" />
     <Compile Include="Core\HashDict.cs" />
     <Compile Include="Core\JsonTransfer_.cs" />
+    <Compile Include="Core\Logic\UserHelper.cs" />
     <Compile Include="Core\MySQLHelper.cs" />
     <Compile Include="Core\SessionHelper.cs" />
     <Compile Include="Core\SqlMapper.cs" />

@@ -8,8 +8,8 @@
     <link rel="stylesheet" href="../../Script/jquery-pagination/lib/jquery_pagination/pagination.css" />
 
 	<link href="../../archon/bootstrap/css/bootstrap.css" rel="stylesheet">
-	<link href="../../archon/bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
 	<link href="../../archon/css/archon.css" rel="stylesheet">
+	<link href="../../archon/css/responsive.css" rel="stylesheet">
 	<link href="../../archon/css/custom.css" rel="stylesheet">
    
     <script src="../../archon/js/jquery-1.8.3.min.js"></script>
@@ -23,24 +23,40 @@
 	<div style="margin:0 auto;" class="panel panel-users">
 	    <div class="panel-heading">
 	        <h3 class="panel-title">添加管理员<span class="pull-right"></span>
-                <a title="添加" href="javascript:void(0);" onclick="page.alertBox();" data-target="#manmanager" data-backdrop="false" id="clickmymodal" role="button" class="btn btn-primary" data-toggle="modal"><i class="icon-plus-sign red"></i></a>
+                <a title="添加" href="javascript:void(0);" id="clickmymodal" class="btn btn-primary">
+                    <i class="icon-plus-sign red"></i>
+                </a>
 		    </h3>
         </div>
         <div id="managerList"></div>
         <div id="pager" style="margin-top:10px;"></div>
     </div>
-    <div id="manmanager"  class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button><%--&times;--%>
-        <h3 id="myModalLabel">对话框标题</h3>
-      </div>
-      <div class="modal-body">
-        <p>这里是主体内容…</p>
-      </div>
-      <div class="modal-footer">
-        <a class="btn" data-dismiss="modal" aria-hidden="true">关闭</a>
-        <a class="btn btn-primary">保存修改</a>
-      </div>
+    <div id="alertbody" class="hide">
+	    <form class="form-horizontal" style="width: 400px;" role="form">
+		    <div style="padding-left: 10px;" class="form-group">
+			    <label for="username" class="col-lg-3 control-label">用户名</label>
+			    <div class="col-lg-9">
+				    <input type="username" class="form-control" id="username" placeholder="输入登录名">
+			    </div>
+		    </div>
+            <div style="padding-left: 10px;" class="form-group">
+			    <label for="pwd" class="col-lg-3 control-label">密码</label>
+			    <div class="col-lg-9">
+				    <input type="pwd" class="form-control" id="pwd" placeholder="输入密码">
+			    </div>
+		    </div>
+		    <div style="padding-left: 10px;" class="form-group">
+			    <label for="roletype"  class="col-lg-3 control-label">权限</label>
+			    <div class="col-lg-9">
+				    <select class="form-control" id="roletype">
+					    <option>二级管理员</option>
+					    <option>一级管理员</option>
+				    </select>
+			    </div>
+		    </div>
+		    <a style="margin-left: 10px;margin-top: 25px;" href="javascript:void(0);" onclick="page.closealert();" class="btn btn-default">取消</a>
+            <a style="margin-top: 25px;margin-left: 20px;" href="javascript:void(0);" onclick="page.updatedata()" class="btn btn-primary">保存</a>
+	    </form>
     </div>
 <%--数据模板--%>
 <textarea name="template_jst_list" id="template_jst_list" style="display: none" cols="0" rows="0">
@@ -56,14 +72,14 @@
         </thead>
         <tbody>
        {for p in list}
-        <tr>
+        <tr class="managerow">
         <td>@{page.itemIndex++}</td>
-        <td>@{p.UserName}</td>
-        <td>@{p.Pwd}</td>
-        <td>@{p.RoleType - 1}</td>
+        <td class="username">@{p.UserName}</td>
+        <td class="pwd">@{p.Pwd}</td>
+        <td class="roletype">@{p.RoleType - 1}</td>
         <td>
-		   <button type="button" title="删除" class="btn btn-info"><i class="icon-remove-sign"></i></button>
-           <button type="button" title="编辑" class="btn btn-info"><i class="icon-edit"></i></button>
+		   <a title="删除" href="javascript:void(0);" onclick="page.deldataalert(@{p.Id});"  class="btn btn-info"><i class="icon-remove-sign"></i></a>
+           <a title="编辑" href="javascript:void(0);" onclick="page.updatedataalert(@{p.Id});"  class="btn btn-info"><i class="icon-edit"></i></a>
         </td>
         </tr>
         {forelse}

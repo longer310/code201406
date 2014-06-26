@@ -9,7 +9,7 @@ jQuery(function ($) {
         page.modifyid = 0;
         $.layer({
             type: 1,
-            title: "添加管理员", //不显示默认标题栏
+            title: "添加管理员", //显示标题栏
             shade: [0], //不显示遮罩
             offset: ['50px', ''],
             area: ['500px', '360px'],
@@ -65,15 +65,18 @@ var page = {
     },
 
     //删除数据 弹框
-    deldataalert: function (id) {
+    deldataalert: function (id,e) {
         page.modifyid = id;
 
+        var $tr = $(e.target).parents("tr");
+        var username = $tr.children(".username").html();
+        var msg = "你确定要删除管理员[" + username + "]?";
         $.layer({
             shade: [0],
             offset: ['100px', ''],
             area: ['auto', 'auto'],
             dialog: {
-                msg: '你确定要删除该管理员？',
+                msg: msg,
                 btns: 2,
                 type: 4,
                 btn: ['确定', '取消'],
@@ -98,29 +101,30 @@ var page = {
     },
 
     //更新数据 弹框
-    updatedataalert: function (id) {
+    updatedataalert: function (id, e) {
         page.modifyid = id;
-        var $tr = $(this).parentsUntil(".managerow");
-        var val = $tr.children(".username").val();
-        $(".xubox_main #username").val(val);
-        $(".xubox_main #pwd").val($tr.children(".pwd").val());
-        var roletype = $tr.children(".roletype").val();
-        if (roletype == 1) $(".xubox_main #roletype").val("一级管理员");
-        else $(".xubox_main #roletype").val("二级管理员");
+        var $tr = $(e.target).parents("tr");
+        var username = $tr.children(".username").html();
+        var pwd = $tr.children(".pwd").html();
+        var roletype = parseInt($tr.children(".roletype").html()) + 1;
+        var html = $("#alertbody").html();
         $.layer({
             type: 1,
-            title: "更新管理员", //不显示默认标题栏
+            title: "更新管理员", //显示标题栏
             shade: [0], //不显示遮罩
             offset: ['50px', ''],
             area: ['500px', '360px'],
-            page: { html: $("#alertbody").html() }
+            page: { html: html }
         });
+        $(".xubox_main #username").val(username);
+        $(".xubox_main #pwd").val(pwd);
+        $(".xubox_main #roletype").val(roletype);
     },
 
     updatedata: function () {
         var username = $(".xubox_main #username").val();
         var pwd = $(".xubox_main #pwd").val();
-        var roletype = $(".xubox_main #roletype ").get(0).selectedIndex + 2;
+        var roletype = $(".xubox_main #roletype ").val();
         $.getJSON(page.url.Format("updatedata"), { id: page.modifyid, username: username, pwd: pwd, roletype: roletype }, function (data) {
             layer.closeAll();
             if (!data.error && data.num > 0) {

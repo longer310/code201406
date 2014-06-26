@@ -49,8 +49,8 @@
 			    <label for="roletype"  class="col-lg-3 control-label">权限</label>
 			    <div class="col-lg-9">
 				    <select class="form-control" id="roletype">
-					    <option>二级管理员</option>
-					    <option>一级管理员</option>
+					    <option value="3">二级管理员</option>
+					    <option value="2">一级管理员</option>
 				    </select>
 			    </div>
 		    </div>
@@ -73,14 +73,18 @@
         <tbody>
        {for p in list}
         <tr class="managerow">
-        <td>@{page.itemIndex++}</td>
-        <td class="username">@{p.UserName}</td>
-        <td class="pwd">@{p.Pwd}</td>
-        <td class="roletype">@{p.RoleType - 1}</td>
-        <td>
-		   <a title="删除" href="javascript:void(0);" onclick="page.deldataalert(@{p.Id});"  class="btn btn-info"><i class="icon-remove-sign"></i></a>
-           <a title="编辑" href="javascript:void(0);" onclick="page.updatedataalert(@{p.Id});"  class="btn btn-info"><i class="icon-edit"></i></a>
-        </td>
+            <td>@{page.itemIndex++}</td>
+            <td class="username">@{p.UserName}</td>
+            <td class="pwd">@{p.Pwd}</td>
+            <td class="roletype">@{p.RoleType - 1}</td>
+            <td>
+		       <a title="删除" href="javascript:void(0);" onclick="page.deldataalert(@{p.Id},event);"  class="btn btn-info">
+                   <i class="icon-remove-sign"></i>
+		       </a>
+               <a title="编辑" href="javascript:void(0);" onclick="page.updatedataalert(@{p.Id},event);"  class="btn btn-info">
+                   <i class="icon-edit"></i>
+               </a>
+            </td>
         </tr>
         {forelse}
         <tr><td colspan="6"><div class="info">暂时无管理员列表数据</div></td></tr>

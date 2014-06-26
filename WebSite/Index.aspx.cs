@@ -21,6 +21,8 @@ namespace Backstage
         {
             if (CurrentUser != null)
             {
+                super_1.Visible = false;
+                super_2.Visible = false;
                 UserName = CurrentUser.UserName;
                 switch (CurrentUser.RoleType)
                 {
@@ -30,7 +32,6 @@ namespace Backstage
                         break;
                     case RoleType.Manage:
                         RoleName = "一级管理员";
-                        //now17.Visible = false;
                         break;
                     case RoleType.SecondManage:
                         RoleName = "二级管理员";
@@ -38,6 +39,8 @@ namespace Backstage
                         break;
                     case RoleType.SuperManage:
                         RoleName = "超级管理员";
+                        super_1.Visible = true;
+                        super_2.Visible = true;
                         //now17.Visible = true;
                         break;
                     default: break;

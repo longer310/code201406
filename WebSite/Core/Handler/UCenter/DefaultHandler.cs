@@ -25,12 +25,20 @@ namespace Backstage.Handler
         }
         private void GetManagerList()
         {
+            JsonTransfer jt = new JsonTransfer();
+            var user = Utility.GetCurUser();
+            if (user.RoleType != RoleType.SuperManage)
+            {
+                jt.SetError("无权限");
+                Response.Write(jt.ToJson());
+                return;
+            }
+
             int pageIndex = GetInt("pageIndex");
             int pageSize = GetInt("pageSize");
             int totalnum;
             var list = UserHelper.GetUserList(pageIndex, pageSize, out totalnum);
 
-            JsonTransfer jt = new JsonTransfer();
             jt.Add("list", list);
             jt.Add("count", totalnum);
             jt.Add("curcount", list.Count);
@@ -39,23 +47,38 @@ namespace Backstage.Handler
 
         private void UpdateData()
         {
+            JsonTransfer jt = new JsonTransfer();
+            var user = Utility.GetCurUser();
+            if (user.RoleType != RoleType.SuperManage)
+            {
+                jt.SetError("无权限");
+                Response.Write(jt.ToJson());
+                return;
+            }
+
             int id = GetInt("id");
             int roleType = GetInt("roletype");
             string userName = GetString("username");
             string pwd = GetString("pwd");
 
             int num = UserHelper.UpdateUser(id, userName, pwd, roleType);
-            JsonTransfer jt = new JsonTransfer();
             jt.Add("num", num);
             Response.Write(jt.ToJson());
         }
 
         private void DelData()
         {
+            JsonTransfer jt = new JsonTransfer();
+            var user = Utility.GetCurUser();
+            if (user.RoleType != RoleType.SuperManage)
+            {
+                jt.SetError("无权限");
+                Response.Write(jt.ToJson());
+                return;
+            }
             int id = GetInt("id");
 
             int num = UserHelper.DelUser(id);
-            JsonTransfer jt = new JsonTransfer();
             jt.Add("num", num);
             Response.Write(jt.ToJson());
         }

@@ -30,11 +30,7 @@
 					<!-- sidebar input search box -->
 
 					<!-- Sidebar header @add class nav-header for sidebar header -->
-					<li class="nav-header">管理者</li>
-					<li  class="active"><a href="javascript:void(0);" onclick="page.setiframe('View/UCenter/ManagerList.aspx')"><i class="icon-dashboard"></i>管理员管理 </a></li>
-
-					<!-- Sidebar header @add class nav-header for sidebar header -->
-					<li class="nav-header">开发者后台</li>
+					<li style="padding-top:10px;"  class="nav-header">开发者后台</li>
 					<li>
 						<a class="dropdown" href="#"><i class="icon-tint"></i> 数据管理 <span class="label">2</span></a>
 						<ul>
@@ -59,6 +55,14 @@
 					<li><a href="#"><i class="icon-truck"></i>数据管理</a></li>
 					<li><a href="#"><i class="icon-truck"></i>系统管理</a></li>
 					<li><a href="#"><i class="icon-truck"></i>位置管理</a></li>
+
+					<!-- Sidebar header @add class nav-header for sidebar header -->
+					<li runat="server" id="super_1" class="nav-header">管理者</li>
+					<li runat="server"  class="active" id="super_2" >
+					    <a href="javascript:void(0);" onclick="page.setiframe(0)">
+					        <i class="icon-dashboard"></i>管理员管理 
+					    </a>
+					</li>
 				</ul>
 
 			</div><!-- /Wrapper -->
@@ -83,22 +87,22 @@
 							<li>
 								<i class="icon-user avatar"></i>
 								<div class="message">
-									<span class="username">Profile</span> 
+									<span class="username">个人中心</span> 
 								</div>
 							</li>
 							<li>
 								<i class="icon-cogs avatar"></i>
 								<div class="message">
-									<span class="username">Settings </span> 
+									<span class="username">设置 </span> 
 								</div>
 							</li>
 							<li>
 								<i class="icon-book avatar"></i>
 								<div class="message">
-									<span class="username">Help </span> 
+									<span class="username">帮助 </span> 
 								</div>
 							</li>
-							<li><a href="javascript:void(0);" onclick="page.logout();">Logout</a></li>
+							<li><a href="javascript:void(0);" onclick="page.alertlogout();">登出</a></li>
 						</ul>
 					</li><!-- / dropdown -->				
 				</ul><!-- / Top right user menu -->
@@ -117,10 +121,12 @@
 	<script src="archon/js/jquery-1.8.3.min.js"></script>
 	<script src="archon/js/jquery-ui-1.10.3.custom.min.js"></script>
 	<script src="archon/js/jquery.ui.touch-punch.min.js"></script>
-
+    
+	<script src="archon/js/bootstrap.min.js"></script>
 	<script src="archon/js/bootstrap-select.js"></script>
 	<script src="archon/js/bootstrap-switch.js"></script>
 	<script src="archon/js/bootstrap-typeahead.js"></script>
+
 	<script src="archon/js/jquery.tagsinput.js"></script>
 	<script src="archon/js/jquery.placeholder.js"></script>
 	<script src="archon/js/application.js"></script>
@@ -157,9 +163,33 @@
 	<script src="archon/js/sparkline-custom.js"></script>
 	<script src="archon/js/dashboard-custom.js"></script>
     
+    <script type="text/javascript" src="Script/layer/layer.min.js"></script>
+    
     <script type="text/javascript">
         var page = {
             hander: "Handler/LoginHandler.ashx?action=",
+            pageurls: ["View/UCenter/ManagerList.aspx",
+                       "archon/forms.html"
+            ],
+
+            alertlogout: function () {
+                $.layer({
+                    shade: [0],
+                    offset: ['100px', ''],
+                    area: ['auto', 'auto'],
+                    dialog: {
+                        msg: "确定要退出登录吗？",
+                        btns: 2,
+                        type: 4,
+                        btn: ['确定', '取消'],
+                        yes: function () {
+                            page.logout();
+                        }, no: function () {
+                            layer.closeAll();
+                        }
+                    }
+                });
+            },
 
             logout: function () {
                 $.post(page.hander + "logout", {}, function (data) {
@@ -168,9 +198,8 @@
                     }
                 }, "json");
             },
-            setiframe: function (page) {
-                alert(page);
-                $("#main-content iframe").src = page;
+            setiframe: function (pageid) {
+                $("#main-content iframe").attr("src", page.pageurls[pageid]);
             }
         }
     </script>

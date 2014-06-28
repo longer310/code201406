@@ -6,7 +6,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Web;
 
-namespace WebSite.Core
+namespace Backstage.Core
 {
     public class CryptHelper
     {

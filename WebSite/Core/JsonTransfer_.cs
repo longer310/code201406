@@ -24,5 +24,7 @@ namespace Backstage.Core
             : base(content)
         {
         }
+
+        
     }
 }

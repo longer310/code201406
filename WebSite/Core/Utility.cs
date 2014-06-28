@@ -386,5 +386,19 @@ namespace Backstage.Core
             return true;
         }
         #endregion
+
+        #region 获取加密字符串
+
+        public static string GetWaitMd5Str(string date, string apiname, List<string> paramstrs)
+        {
+            string str = date +"+"+apiname+"+";
+            foreach (var paramstr in paramstrs)
+            {
+                str += paramstr + "+";
+            }
+            str = str.TrimEnd('+');
+            return str;
+        }
+        #endregion
     }
 }

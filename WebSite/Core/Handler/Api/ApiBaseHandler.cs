@@ -10,17 +10,51 @@ namespace Backstage.Core
     /// <summary>
     ///BaseHandler 的摘要说明
     /// </summary>
-    public class BaseHandler : IRequiresSessionState, IHttpHandler
+    public class BaseApiHandler : IRequiresSessionState, IHttpHandler
     {
         protected HttpRequest Request;
         protected HttpResponse Response;
         private string _action;
+        private string _apiName;
+        private string _token;
+        private string key = "L6J987UEW23U43K46D23USD0N23DF523R";
+
+        protected void SetApiName(string str)
+        {
+            _apiName = str;
+        }
 
         public virtual void ProcessRequest(HttpContext context)
         {
             context.Response.ContentType = "text/plain";
             Request = context.Request;
             Response = context.Response;
+
+            //验证请求是否合法
+            string waitToken = key + "+" + ApiName + "+" + Action + DateTime.Today.ToString("yyyy-MM-dd");
+            string mytoken = CryptHelper.MD5_Encrypt(waitToken);
+            if (!Token.Equals(mytoken))
+            {
+                ReturnErrorMsg("非法请求，验证失败");
+            }
+        }
+
+        public void ReturnErrorMsg(string msg)
+        {
+            JsonTransfer jt = new JsonTransfer();
+            jt.Add("status", "0");
+            jt.Add("message", msg);
+            Response.Write(jt.ToJson());
+            Response.End();
+        }
+
+        public string ApiName
+        {
+            get
+            {
+                if(string.IsNullOrEmpty(_apiName)) _apiName = "ApiHandler";
+                return _apiName;
+            }
         }
         /// <summary>
         /// 获取当前的Action值
@@ -33,6 +67,19 @@ namespace Backstage.Core
                     _action = Request.QueryString["action"];
 
                 return _action;
+            }
+        }
+        /// <summary>
+        /// 获取当前的Action值
+        /// </summary>
+        protected string Token
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(_token))
+                    _token = Request.QueryString["token"];
+
+                return _token;
             }
         }
 
@@ -177,29 +224,4 @@ namespace Backstage.Core
         }
     }
 
-    public class JsonHelpr
-    {
-        public static string ResponseData(string action, string msg, object data)
-        {
-            var output = new
-            {
-                key = action,
-                Msg = msg,
-                Data = data
-            };
-            return JsonConvert.SerializeObject(output);
-        }
-
-        public static string ResponseData(string action, string msg)
-        {
-            object data = null;
-            var output = new
-            {
-                key = action,
-                Msg = msg,
-                Data = data
-            };
-            return JsonConvert.SerializeObject(output);
-        }
-    }
 }

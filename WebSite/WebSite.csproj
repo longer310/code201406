@@ -11,7 +11,7 @@
     <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>WebSite</RootNamespace>
+    <RootNamespace>Backstage</RootNamespace>
     <AssemblyName>WebSite</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <UseIISExpress>true</UseIISExpress>
@@ -436,7 +436,9 @@
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Core\CommonEntity.cs" />
+    <Compile Include="Core\CryptHelper.cs" />
     <Compile Include="Core\Enums.cs" />
+    <Compile Include="Core\Handler\Api\ApiBaseHandler.cs" />
     <Compile Include="Core\Handler\Api\ApiHandler.cs" />
     <Compile Include="Core\Handler\BaseHandler.cs" />
     <Compile Include="Core\Handler\LoginHandler.cs" />

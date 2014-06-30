@@ -339,6 +339,15 @@
     <Content Include="Images\worldmap.jpg" />
     <Content Include="Images\X.gif" />
     <Content Include="Index.aspx" />
+    <Content Include="Script\jquery-bootstrap\bootstrap.min.js" />
+    <Content Include="Script\jquery-bootstrap\copyright.js" />
+    <Content Include="Script\jquery-bootstrap\jquery.bootstrap.min.js" />
+    <Content Include="Script\jquery-bootstrap\jquery.datagrid.js" />
+    <Content Include="Script\jquery-bootstrap\jquery.dialog.js" />
+    <Content Include="Script\jquery-bootstrap\jquery.messager.js" />
+    <Content Include="Script\jquery-bootstrap\jquery.tree.js" />
+    <Content Include="Script\jquery-bootstrap\minifier.js" />
+    <Content Include="Script\jquery-bootstrap\string.format.js" />
     <Content Include="Script\jquery-pagination\demo.htm" />
     <Content Include="Script\jquery-pagination\lib\jquery_pagination\jquery.pagination.js" />
     <Content Include="Script\jquery-pagination\lib\jquery_pagination\jquery.pagination.lt1.3.js" />
@@ -359,23 +368,6 @@
     <Content Include="Script\jquery-pagination\new\demo\snippet.html" />
     <Content Include="Script\jquery-pagination\new\jquery.pagination.js" />
     <Content Include="Script\jquery-pagination\new\pagination.css" />
-    <Content Include="Script\jquery.pagination\demo\demo.css" />
-    <Content Include="Script\jquery.pagination\demo\demo.htm" />
-    <Content Include="Script\jquery.pagination\demo\demo_ajax.htm" />
-    <Content Include="Script\jquery.pagination\demo\demo_events.htm" />
-    <Content Include="Script\jquery.pagination\demo\demo_multi.htm" />
-    <Content Include="Script\jquery.pagination\demo\demo_options.htm" />
-    <Content Include="Script\jquery.pagination\demo\images\abstract1.jpg" />
-    <Content Include="Script\jquery.pagination\demo\images\abstract2.jpg" />
-    <Content Include="Script\jquery.pagination\demo\images\abstract3.jpg" />
-    <Content Include="Script\jquery.pagination\demo\images\abstract4.jpg" />
-    <Content Include="Script\jquery.pagination\demo\images\abstract5.jpg" />
-    <Content Include="Script\jquery.pagination\demo\images\abstract6.jpg" />
-    <Content Include="Script\jquery.pagination\demo\lib\jquery.min.js" />
-    <Content Include="Script\jquery.pagination\demo\members.js" />
-    <Content Include="Script\jquery.pagination\demo\snippet.html" />
-    <Content Include="Script\jquery.pagination\jquery.pagination.js" />
-    <Content Include="Script\jquery.pagination\pagination.css" />
     <Content Include="Script\layer\extend\layer.ext.js" />
     <Content Include="Script\layer\layer.min.js" />
     <Content Include="Script\layer\skin\default\icon_ext.png" />
@@ -426,8 +418,10 @@
     <Content Include="Login.aspx" />
     <Content Include="Script\Util\jquery.js" />
     <Content Include="Script\Util\jquery.leanModal.min.js" />
+    <Content Include="Script\View\SourceMaterial\managerlist.js" />
     <Content Include="Script\View\UCenter\ManagerList.js" />
     <Content Include="Test.html" />
+    <Content Include="View\SourceMaterial\ManagerList.aspx" />
     <Content Include="View\UCenter\ManagerList.aspx" />
     <Content Include="Web.config" />
   </ItemGroup>
@@ -450,6 +444,7 @@
     <Compile Include="Core\SessionHelper.cs" />
     <Compile Include="Core\SqlMapper.cs" />
     <Compile Include="Core\Utility.cs" />
+    <Compile Include="GlobalConfig.cs" />
     <Compile Include="Index.aspx.cs">
       <DependentUpon>Index.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -464,7 +459,23 @@
     <Compile Include="Login.aspx.designer.cs">
       <DependentUpon>Login.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Model\PagResults.cs" />
+    <Compile Include="Model\SourceMaterial.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="View\Master.Master.cs">
+      <DependentUpon>Master.Master</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="View\Master.Master.designer.cs">
+      <DependentUpon>Master.Master</DependentUpon>
+    </Compile>
+    <Compile Include="View\SourceMaterial\ManagerList.aspx.cs">
+      <DependentUpon>ManagerList.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="View\SourceMaterial\ManagerList.aspx.designer.cs">
+      <DependentUpon>ManagerList.aspx</DependentUpon>
+    </Compile>
     <Compile Include="View\UCenter\ManagerList.aspx.cs">
       <DependentUpon>ManagerList.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -473,7 +484,6 @@
   <ItemGroup>
     <Content Include="Handler\LoginHandler.ashx" />
     <Content Include="Images\Thumbs.db" />
-    <Content Include="Script\jquery.pagination\README.rst" />
     <Content Include="log4net.config" />
     <Content Include="Handler\UCenter\DefaultHandler.ashx" />
     <Content Include="Script\jquery-pagination\new\README.rst" />
@@ -494,6 +504,7 @@
     <Content Include="archon\bootstrap_2\fonts\glyphicons-halflings-regular.woff" />
     <Content Include="archon\bootstrap_2\fonts\glyphicons-halflings-regulard41d.eot" />
     <Content Include="Handler\Api\ApiHandler.ashx" />
+    <Content Include="View\Master.Master" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -502,30 +513,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Script\jquery.pagination\.svn\prop-base\" />
-    <Folder Include="Script\jquery.pagination\.svn\props\" />
-    <Folder Include="Script\jquery.pagination\.svn\text-base\" />
-    <Folder Include="Script\jquery.pagination\.svn\tmp\prop-base\" />
-    <Folder Include="Script\jquery.pagination\.svn\tmp\props\" />
-    <Folder Include="Script\jquery.pagination\.svn\tmp\text-base\" />
-    <Folder Include="Script\jquery.pagination\demo\.svn\prop-base\" />
-    <Folder Include="Script\jquery.pagination\demo\.svn\props\" />
-    <Folder Include="Script\jquery.pagination\demo\.svn\text-base\" />
-    <Folder Include="Script\jquery.pagination\demo\.svn\tmp\prop-base\" />
-    <Folder Include="Script\jquery.pagination\demo\.svn\tmp\props\" />
-    <Folder Include="Script\jquery.pagination\demo\.svn\tmp\text-base\" />
-    <Folder Include="Script\jquery.pagination\demo\images\.svn\prop-base\" />
-    <Folder Include="Script\jquery.pagination\demo\images\.svn\props\" />
-    <Folder Include="Script\jquery.pagination\demo\images\.svn\text-base\" />
-    <Folder Include="Script\jquery.pagination\demo\images\.svn\tmp\prop-base\" />
-    <Folder Include="Script\jquery.pagination\demo\images\.svn\tmp\props\" />
-    <Folder Include="Script\jquery.pagination\demo\images\.svn\tmp\text-base\" />
-    <Folder Include="Script\jquery.pagination\demo\lib\.svn\prop-base\" />
-    <Folder Include="Script\jquery.pagination\demo\lib\.svn\props\" />
-    <Folder Include="Script\jquery.pagination\demo\lib\.svn\text-base\" />
-    <Folder Include="Script\jquery.pagination\demo\lib\.svn\tmp\prop-base\" />
-    <Folder Include="Script\jquery.pagination\demo\lib\.svn\tmp\props\" />
-    <Folder Include="Script\jquery.pagination\demo\lib\.svn\tmp\text-base\" />
     <Folder Include="Script\My97DatePicker\.svn\prop-base\" />
     <Folder Include="Script\My97DatePicker\.svn\props\" />
     <Folder Include="Script\My97DatePicker\.svn\text-base\" />

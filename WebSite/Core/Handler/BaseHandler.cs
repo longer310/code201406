@@ -35,14 +35,6 @@ namespace Backstage.Core
                 return _action;
             }
         }
-
-        protected string Today
-        {
-            get
-            {
-                return DateTime.Today.ToShortDateString();
-            }
-        }
         public bool IsReusable
         {
             get { return false; }

@@ -17,7 +17,7 @@ namespace Backstage.Core
         private string _action;
         private string _apiName;
         private string _token;
-        private string key = "L6J987UEW23U43K46D23USD0N23DF523R";
+        private string key = "L6J987UEW23U43K46D23USD0N23DF523R";//md5机密串
 
         protected void SetApiName(string str)
         {
@@ -80,14 +80,6 @@ namespace Backstage.Core
                     _token = Request.QueryString["token"];
 
                 return _token;
-            }
-        }
-
-        protected string Today
-        {
-            get
-            {
-                return DateTime.Today.ToShortDateString();
             }
         }
         public bool IsReusable

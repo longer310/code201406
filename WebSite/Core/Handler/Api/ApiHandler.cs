@@ -28,11 +28,10 @@ namespace Backstage.Handler
 
             if (sellerid == 0)
             {
-                jt.Add("status", 0);
-                jt.Add("message", "商户id不合法");
-                Response.Write(jt.ToJson());
+                ReturnErrorMsg("商户id不合法");
                 return;
             }
+
         }
     }
 }

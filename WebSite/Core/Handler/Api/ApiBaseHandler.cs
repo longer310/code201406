@@ -44,7 +44,7 @@ namespace Backstage.Core
             JsonTransfer jt = new JsonTransfer();
             jt.Add("status", "0");
             jt.Add("message", msg);
-            Response.Write(jt.ToJson());
+            Response.Write(CryptHelper.DES_Encrypt(jt.ToJson()));
             Response.End();
         }
 

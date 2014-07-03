@@ -9,6 +9,7 @@ using System.Security.Principal;
 using System.Text;
 using System.Web;
 using System.Web.Security;
+using Backstage.Core.Entity;
 using MySql.Data.MySqlClient;
 
 namespace Backstage.Core
@@ -24,7 +25,7 @@ namespace Backstage.Core
 
         public static string _ledou_secret = System.Configuration.ConfigurationManager.AppSettings["ledou_secret"];//跳转地址列表
 
-        public static User FindUser(string userName)
+        public static Account FindUser(string userName)
         {
             var sql = string.Format("select * from account where username='{0}' limit 1;", userName);
             try
@@ -34,7 +35,7 @@ namespace Backstage.Core
                 {
                     if (reader.Read())
                     {
-                        User user = new User();
+                        Account user = new Account();
                         user.Id = reader.GetInt32(0);
                         user.UserName = reader.GetString(1);
                         user.Pwd = reader.GetString(2);
@@ -57,12 +58,12 @@ namespace Backstage.Core
         /// </summary>
         /// <param name="str"></param>
         /// <returns></returns>
-        private static User GetEntityFromString(string str)
+        private static Account GetEntityFromString(string str)
         {
             if (string.IsNullOrEmpty(str))
                 return null;
             string[] arr = str.Split('^');
-            var entry = new User();
+            var entry = new Account();
 
             entry.Id = Int32.Parse(arr[0]);
             entry.UserName = arr[1];
@@ -81,7 +82,7 @@ namespace Backstage.Core
         /// </summary>
         /// <param name="entry"></param>
         /// <returns></returns>
-        public static string GetStringFromEntity(User entry)
+        public static string GetStringFromEntity(Account entry)
         {
             return string.Format("{0}^{1}^{2}",
                 entry.Id,
@@ -148,7 +149,7 @@ namespace Backstage.Core
         /// 获取当前登录用户
         /// </summary>
         /// <returns></returns>
-        public static User GetCurUser()
+        public static Account GetCurUser()
         {
             var context = HttpContext.Current;
             var userId = 0;
@@ -212,7 +213,7 @@ namespace Backstage.Core
         /// <returns></returns>
         public static bool HasAuthority(RoleType needRoleType)
         {
-            User curUser = GetCurUser();
+            Account curUser = GetCurUser();
             if (curUser == null) return false;
             if (curUser.RoleType == RoleType.SuperManage || needRoleType == RoleType.User) return true;
             else if (needRoleType == RoleType.SuperManage) return false;

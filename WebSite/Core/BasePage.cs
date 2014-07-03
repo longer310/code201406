@@ -4,18 +4,19 @@ using System.Data;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
+using Backstage.Core.Entity;
 
 namespace Backstage.Core
 {
     public class BasePage : Page
     {
-        private User _currentUser;
+        private Account _currentUser;
         private bool _isLogin;
 
         /// <summary>
         /// 可能为null，使用的时候要记得判断
         /// </summary>
-        public User CurrentUser
+        public Account CurrentUser
         {
             get { return _currentUser; }
         }

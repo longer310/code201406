@@ -429,8 +429,10 @@
     <Compile Include="Core\BasePage.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Core\CommonEntity.cs" />
     <Compile Include="Core\CryptHelper.cs" />
+    <Compile Include="Core\Entity\Account.cs" />
+    <Compile Include="Core\Entity\Goods.cs" />
+    <Compile Include="Core\Entity\M_Param.cs" />
     <Compile Include="Core\Enums.cs" />
     <Compile Include="Core\Handler\Api\ApiBaseHandler.cs" />
     <Compile Include="Core\Handler\Api\ApiHandler.cs" />
@@ -444,6 +446,7 @@
     <Compile Include="Core\SessionHelper.cs" />
     <Compile Include="Core\SqlMapper.cs" />
     <Compile Include="Core\Utility.cs" />
+    <Compile Include="Enum.cs" />
     <Compile Include="GlobalConfig.cs" />
     <Compile Include="Index.aspx.cs">
       <DependentUpon>Index.aspx</DependentUpon>

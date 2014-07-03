@@ -4,20 +4,22 @@ using System.Data;
 using System.Data.Common;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Reflection;
 using System.Security.Cryptography;
 using System.Security.Principal;
 using System.Text;
 using System.Web;
 using System.Web.Security;
+using Backstage.Core.Entity;
 using MySql.Data.MySqlClient;
 
 namespace Backstage.Core
 {
     public static class UserHelper
     {
-        public static List<User> GetUserList(int pageIndex, int pageSize, out int totalnum)
+        public static List<Account> GetUserList(int pageIndex, int pageSize, out int totalnum)
         {
-            List<User> list = new List<User>();
+            List<Account> list = new List<Account>();
             int skipnum = pageSize * pageIndex;
             totalnum = 0;
             var sql = String.Format("select * from account where roletype=2 or roletype = 3 LIMIT {0},{1};", skipnum,
@@ -25,9 +27,15 @@ namespace Backstage.Core
             try
             {
                 MySqlDataReader reader = MySqlHelper.ExecuteReader(Utility._gameDbConn, CommandType.Text, sql);
+                var dset = MySqlHelper.ExecuteDataset(Utility._gameDbConn, CommandType.Text, sql);
+                DataTable dt = dset.Tables[0];
+                //foreach (PropertyInfo property in stu.GetType().GetProperties())
+                //{
+                //    property.SetValue(stu, dt[property.Name], null);
+                //}
                 while (reader.Read())
                 {
-                    User user = new User();
+                    Account user = new Account();
                     user.Id = reader.GetInt32(0);
                     user.UserName = reader.GetString(1);
                     user.Pwd = reader.GetString(2);

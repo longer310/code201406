@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using Backstage.Core;
+using Backstage.Core.Entity;
 
 namespace Backstage.Handler
 {
@@ -28,7 +29,7 @@ namespace Backstage.Handler
             string userName = GetString("userName");
             string pwd = GetString("pwd");
 
-            User user = Utility.FindUser(userName);
+            Account user = Utility.FindUser(userName);
             JsonTransfer jt = new JsonTransfer();
             if (user == null)
                 jt.SetError("不存在此用户");
@@ -57,9 +58,9 @@ namespace Backstage.Handler
             string startTime = GetString("startTime");
             string endTime = GetString("endTime");
 
-            var list = new List<User>();
-            list.Add(new User() { Id = 1, UserName = "张三" });
-            list.Add(new User() { Id = 2, UserName = "李四" });
+            var list = new List<Account>();
+            list.Add(new Account() { Id = 1, UserName = "张三" });
+            list.Add(new Account() { Id = 2, UserName = "李四" });
 
             Response.Write(JsonHelpr.ResponseData("1", "0", list));
         }

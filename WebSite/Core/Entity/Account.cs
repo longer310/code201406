@@ -8,9 +8,8 @@ namespace Backstage.Core.Entity
     /// <summary>
     /// 账号表
     /// </summary>
-    public class Account
+    public class Account : KVEntity
     {
-        public int Id { get; set; }
         /// <summary>
         /// 用户名
         /// </summary>
@@ -23,9 +22,5 @@ namespace Backstage.Core.Entity
         /// 角色类型
         /// </summary>
         public RoleType RoleType { get; set; }
-        /// <summary>
-        /// 测试
-        /// </summary>
-        public List<int> ServerIds { get; set; }
     }
 }

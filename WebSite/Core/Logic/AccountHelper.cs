@@ -15,7 +15,7 @@ using MySql.Data.MySqlClient;
 
 namespace Backstage.Core
 {
-    public static class UserHelper
+    public static class AccountHelper
     {
         public static List<Account> GetUserList(int pageIndex, int pageSize, out int totalnum)
         {
@@ -29,10 +29,6 @@ namespace Backstage.Core
                 MySqlDataReader reader = MySqlHelper.ExecuteReader(Utility._gameDbConn, CommandType.Text, sql);
                 var dset = MySqlHelper.ExecuteDataset(Utility._gameDbConn, CommandType.Text, sql);
                 DataTable dt = dset.Tables[0];
-                //foreach (PropertyInfo property in stu.GetType().GetProperties())
-                //{
-                //    property.SetValue(stu, dt[property.Name], null);
-                //}
                 while (reader.Read())
                 {
                     Account user = new Account();

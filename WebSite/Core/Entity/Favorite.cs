@@ -6,13 +6,13 @@ using System.Web;
 namespace Backstage.Core.Entity
 {
     /// <summary>
-    /// 开发者后台 参数配置
+    /// 用户收藏
     /// </summary>
-    public class M_Param : KVEntity
+    public class Favorite : KVEntity
     {
         /// <summary>
-        /// 推送的广告图片id
+        /// 收藏的产品id列表
         /// </summary>
-        public int AdImgId { get; set; }
+        public string Gids { get; set; }
     }
 }

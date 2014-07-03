@@ -8,9 +8,8 @@ namespace Backstage.Core.Entity
     /// <summary>
     /// 商户产品
     /// </summary>
-    public class Goods
+    public class Goods : KVEntity
     {
-        public int Id { get; set; }
         /// <summary>
         /// 商户id
         /// </summary>
@@ -18,7 +17,7 @@ namespace Backstage.Core.Entity
         /// <summary>
         /// 封面图
         /// </summary>
-        public Int64 Logo { get; set; }
+        public int Logo { get; set; }
         /// <summary>
         /// 产品图集
         /// </summary>
@@ -47,5 +46,9 @@ namespace Backstage.Core.Entity
         /// 评级
         /// </summary>
         public int Score { get; set; }
+        /// <summary>
+        /// 创建时间或者最后修改时间
+        /// </summary>
+        public DateTime CreateTime { get; set; }
     }
 }

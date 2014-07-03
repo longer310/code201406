@@ -37,7 +37,7 @@ namespace Backstage.Handler
             int pageIndex = GetInt("pageIndex");
             int pageSize = GetInt("pageSize");
             int totalnum;
-            var list = UserHelper.GetUserList(pageIndex, pageSize, out totalnum);
+            var list = AccountHelper.GetUserList(pageIndex, pageSize, out totalnum);
 
             jt.Add("list", list);
             jt.Add("count", totalnum);
@@ -61,7 +61,7 @@ namespace Backstage.Handler
             string userName = GetString("username");
             string pwd = GetString("pwd");
 
-            int num = UserHelper.UpdateUser(id, userName, pwd, roleType);
+            int num = AccountHelper.UpdateUser(id, userName, pwd, roleType);
             jt.Add("num", num);
             Response.Write(jt.ToJson());
         }
@@ -78,7 +78,7 @@ namespace Backstage.Handler
             }
             int id = GetInt("id");
 
-            int num = UserHelper.DelUser(id);
+            int num = AccountHelper.DelUser(id);
             jt.Add("num", num);
             Response.Write(jt.ToJson());
         }

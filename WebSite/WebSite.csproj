@@ -518,6 +518,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Images\Merchant\1\" />
     <Folder Include="Script\My97DatePicker\.svn\prop-base\" />
     <Folder Include="Script\My97DatePicker\.svn\props\" />
     <Folder Include="Script\My97DatePicker\.svn\text-base\" />

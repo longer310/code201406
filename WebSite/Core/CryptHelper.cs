@@ -19,7 +19,7 @@ namespace Backstage.Core
             get
             {
                 //des 支持8位加密
-                return "Sh%d7#;w";
+                return "nd#h9*,l";
             }
         }
         #endregion

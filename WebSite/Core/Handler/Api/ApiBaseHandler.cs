@@ -17,7 +17,7 @@ namespace Backstage.Core
         private string _action;
         private string _apiName;
         private string _token;
-        private string key = "L6J987UEW23U43K46D23USD0N23DF523R";//md5机密串
+        private string key = "L6J987UEW23U43K46D23USD0N23DF523R";//md5加密串
 
         protected void SetApiName(string str)
         {

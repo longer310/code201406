@@ -35,6 +35,14 @@ namespace Backstage.Core
                 return _action;
             }
         }
+        public void ReturnErrorMsg(string msg)
+        {
+            JsonTransfer jt = new JsonTransfer();
+            jt.Add("status", "0");
+            jt.Add("message", msg);
+            Response.Write(CryptHelper.DES_Encrypt(jt.ToJson()));
+            Response.End();
+        }
         public bool IsReusable
         {
             get { return false; }

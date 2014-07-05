@@ -16,6 +16,12 @@ namespace Backstage.Core
 
         }
 
+        public void AddSuccessParam()
+        {
+            Add("status", "1");
+            Add("message", "返回消息");
+        }
+
         /// <summary>
         /// 默认追加到_contentKey里
         /// </summary>

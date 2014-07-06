@@ -5,7 +5,6 @@ using System.Web;
 
 namespace Backstage.Core
 {
-
     public enum RoleType
     {
         /// <summary>
@@ -27,5 +26,28 @@ namespace Backstage.Core
         /// 商家
         /// </summary>
         User = 10
+    }
+
+    /// <summary>
+    /// 1、图片，2、资讯，3、产品、4、优惠券
+    /// </summary>
+    public enum CommentType
+    {
+        /// <summary>
+        /// 图片
+        /// </summary>
+        Img = 1,
+        /// <summary>
+        /// 资讯
+        /// </summary>
+        Avtive = 2,
+        /// <summary>
+        /// 产品
+        /// </summary>
+        Goods = 3,
+        /// <summary>
+        /// 优惠券
+        /// </summary>
+        Coupons = 4
     }
 }

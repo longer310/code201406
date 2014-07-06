@@ -50,5 +50,21 @@ namespace Backstage.Core.Entity
         /// 创建时间或者最后修改时间
         /// </summary>
         public DateTime CreateTime { get; set; }
+        /// <summary>
+        /// 收藏次数
+        /// </summary>
+        public int FavCount { get; set; }
+        /// <summary>
+        /// 分享次数
+        /// </summary>
+        public int ShareCount { get; set; }
+        /// <summary>
+        /// 产品标签
+        /// </summary>
+        public string Tag { get; set; }
+        /// <summary>
+        /// 产品描述
+        /// </summary>
+        public string Content { get; set; }
     }
 }

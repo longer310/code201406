@@ -17,13 +17,15 @@ namespace Backstage.Core
 {
     public static class AccountHelper
     {
-        public static List<Account> GetUserList(int pageIndex, int pageSize, out int totalnum)
+        public static List<Account> GetUserList(out int totalnum, string wheresql = "", string ordersql = "", int start = 0, int limit = 0)
         {
-            List<Account> list = new List<Account>();
-            int skipnum = pageSize * pageIndex;
             totalnum = 0;
-            var sql = String.Format("select * from account where roletype=2 or roletype = 3 LIMIT {0},{1};", skipnum,
-                pageSize);
+            List<Account> list = new List<Account>();
+            var sql = "select * from account where 1=1 and ";
+            if (wheresql != "") sql += " " + wheresql;
+            if (ordersql != "") sql += " " + ordersql;
+            else sql += " order by CreateTime desc";
+            if (limit != 0) sql += String.Format(" limit {0},{1};", start, limit);
             try
             {
                 MySqlDataReader reader = MySqlHelper.ExecuteReader(Utility._gameDbConn, CommandType.Text, sql);

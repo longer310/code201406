@@ -9,11 +9,19 @@ namespace Backstage.Core.Entity
     {
         public int Id { get; set; }
 
-        public string Name { get; set; }
+        public int SellerId { get; set; }
 
-        public string Remark { get; set; }
+        public int Views { get; set; }
 
-        public string Address { get; set; }
+        public string Title { get; set; }
+
+        public string Description { get; set; }
+
+        public string Url { get; set; }
+
+        public int Commentnum { get; set; }
+
+        public DateTime CreateTime { get; set; }
 
     }
 }

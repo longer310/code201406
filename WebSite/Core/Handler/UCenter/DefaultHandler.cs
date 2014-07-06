@@ -17,9 +17,9 @@ namespace Backstage.Handler
                 case "getManagerList":
                     GetManagerList(); break;
                 case "updatedata":
-                    UpdateData();break;
+                    UpdateData(); break;
                 case "deldata":
-                    DelData();break;
+                    DelData(); break;
                 default: break;
             }
         }
@@ -37,7 +37,7 @@ namespace Backstage.Handler
             int pageIndex = GetInt("pageIndex");
             int pageSize = GetInt("pageSize");
             int totalnum;
-            var list = AccountHelper.GetUserList(pageIndex, pageSize, out totalnum);
+            var list = AccountHelper.GetUserList(out totalnum, " (RoleType = 2 or RoleType = 3) ", "", pageIndex * pageSize, pageSize);
 
             jt.Add("list", list);
             jt.Add("count", totalnum);

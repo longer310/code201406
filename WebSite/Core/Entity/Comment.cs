@@ -11,15 +11,12 @@ namespace Backstage.Core.Entity
 
         public int SellerId { get; set; }
 
-        public string Views { get; set; }
-
-        public int Commentnum { get; set; }
-
-        public string Title { get; set; }
-
-        public string Url { get; set; }
-
         public string Content { get; set; }
+        public int Type { get; set; }
+
+        public int TypeId { get; set; }
+
+        public int UserId { get; set; }
 
         public DateTime CreateTime { get; set; }
         

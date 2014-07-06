@@ -5,113 +5,179 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using WebSite;
+using Backstage.Core.Entity;
+using Backstage.Model;
 
-namespace Backstage.Core.Handler.SourceMaterial
+namespace Backstage.Core.Handler
 {
     /// <summary>
     /// SourceMaterial 的摘要说明
     /// </summary>
-    public class SourceMaterial : BaseHandler
+    public class SourceMaterialHandler : BaseHandler
     {
-
         public override void ProcessRequest(HttpContext context)
         {
             base.ProcessRequest(HttpContext.Current);
             switch (Action)
             {
-                case "getManagerList":
-                    GetManagerList(); break;
-                case "updatedata":
-                    UpdateData(); break;
-                case "deldata":
-                    DelData(); break;
+                case "getlist":
+                    GetList(); break;
+                case "getitem":
+                    GetItem(); break;
+                case "imgcomment":
+                    ImgComment(); break;
+                case "imgcommentlist":
+                    ImgCommentList(); break;
+                case "update":
+                    Update(); break;
+                case "delete":
+                    Delete(); break;
                 default: break;
             }
         }
 
-        public static PagResults<SourceMaterial> GetList(int pageIndex, int pageSize)
+        /// <summary>
+        /// 图片列表接口
+        /// </summary>
+        /// <returns></returns>
+        public PagResults<SourceMaterial> GetList()
         {
-            var results = new PagResults<SourceMaterial>();
-            int skipnum = pageSize * pageIndex;
-            int totalnum = 0;
-            var sql = string.Format("select * from material LIMIT {0},{1};", skipnum, pageSize);
-            try
-            {
-                MySqlDataReader reader = MySqlHelper.ExecuteReader(GlobalConfig.DbConn, sql);
-                while (reader.Read())
-                {
-                    SourceMaterial sm = new SourceMaterial();
-                    sm.Id = reader.GetInt32(0);
-                    sm.Name = reader.GetString(1);
-                    sm.Address = reader.GetString(2);
-                    sm.Remark = reader.GetString(3);
-                    results.Results.Add(sm);
-                }
+            int pageIndex = GetInt("start");
+            int pageSize = GetInt("limit");
+            int sellerId = GetInt("sellerid");
 
-                sql = "select count(*) from material";
-                reader = MySqlHelper.ExecuteReader(GlobalConfig.DbConn, sql);
-                if (reader.HasRows)
-                {
-                    if (reader.Read())
-                    {
-                        results.TotalCount = reader.GetInt32(0);
-                    }
-                }
-            }
-            catch (System.Exception ex)
-            {
-                throw;
-            }
-            return results;
+            return SourceMaterialHelper.GetPaging(pageIndex, pageSize, sellerId);
         }
 
-        public static void Create(SourceMaterial sm)
+        /// <summary>
+        /// 图片详情接口
+        /// </summary>
+        /// <returns></returns>
+        public object GetItem()
+        {
+            int pid = GetInt("pid");
+            SourceMaterial sm = SourceMaterialHelper.GetItem(pid);
+            return new
+            {
+                pid = sm.Id,
+                title = sm.Title,
+                img = sm.Url,
+                description = sm.Description,
+                views = sm.Views,
+                commentnum = sm.Commentnum
+            };
+        }
+
+        /// <summary>
+        /// 图片评论
+        /// </summary>
+        /// <returns></returns>
+        public StatusMessage ImgComment()
+        {
+            int userId = GetInt("uid");
+            int imgId = GetInt("pid");
+            string msg = GetString("messge");
+            SourceMaterial sm = SourceMaterialHelper.GetItem(imgId);
+            StatusMessage m = new StatusMessage();
+            Comment c = new Comment();
+            try
+            {
+                CommentHelper.Create(c);
+                sm.Commentnum += 1;
+                SourceMaterialHelper.Update(sm);
+                m.Status = 1;
+                m.Message = "suc";
+            }
+            catch
+            {
+                m.Status = 0;
+                m.Message = "fal";
+                throw;
+            }
+            return m;
+        }
+
+        /// <summary>
+        /// 图片评论列表
+        /// </summary>
+        /// <returns></returns>
+        public PagResults<Comment> ImgCommentList()
+        {
+            int pid = GetInt("pid");
+            int index = GetInt("start");
+            int size = GetInt("size");
+            SourceMaterial sm = SourceMaterialHelper.GetItem(pid);
+            return CommentHelper.GetPagings(sm.SellerId, CommentType.Img, pid, index, size);
+        }
+
+        public void Create()
         {
             string connectionString = GlobalConfig.DbConn;
+
             string commandText = @"INSERT INTO material 
 	                                ( 
-	                                Name, 
-	                                Address,
-	                                Remark,
+	                                Title, 
+	                                Url,
+	                                Content,
+	                                Views, 
+	                                Commentnum,
+	                                SellerId,
+	                                CreateTime
 	                                )
 	                                VALUES
 	                                ( 
-	                                ?Name, 
-	                                ?Address, 
-	                                ?Remark
+	                                ?Title, 
+	                                ?Url,
+	                                ?Content,
+	                                ?Views, 
+	                                ?Commentnum,
+	                                ?SellerId,
+	                                ?CreateTime
 	                                )";
 
             List<MySqlParameter> parameters = new List<MySqlParameter>();
-            parameters.Add(new MySqlParameter("?Name", sm.Name));
-            parameters.Add(new MySqlParameter("?Address", sm.Address));
-            parameters.Add(new MySqlParameter("?Remark", sm.Remark));
+            parameters.Add(new MySqlParameter("?Title", GetString("title")));
+            parameters.Add(new MySqlParameter("?Url", GetString("url")));
+            parameters.Add(new MySqlParameter("?Content", GetString("contsent")));
+            parameters.Add(new MySqlParameter("?Views", GetString("content")));
+            parameters.Add(new MySqlParameter("?Commentnum", GetString("conmentnum")));
+            parameters.Add(new MySqlParameter("?SellerId", GetInt("sellerid")));
+            parameters.Add(new MySqlParameter("?CreateTime", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")));
+
 
             MySqlHelper.ExecuteNonQuery(connectionString, CommandType.Text, commandText, parameters.ToArray());
         }
 
-        public void Update(SourceMaterial sm)
+        public void Update()
         {
             string commandText = @"UPDATE material SET
-                                        Name = ?Name,
-                                        Address = ?Address,
-                                        Remark = ?Remark
-                                    WHERE
-                                        Id = ?Id";
+                                                Title = ?Title,
+                                                Url = ?Url,
+                                                Content = ?Content,
+                                                Views = ?Views,
+                                                Commentnum = ?Commentnum,
+                                                SellerId = ?SellerId
+                                            WHERE
+                                                Id = ?Id";
 
             List<MySqlParameter> parameters = new List<MySqlParameter>();
-            parameters.Add(new MySqlParameter("?Id", sm.Id));
-            parameters.Add(new MySqlParameter("?Name", sm.Name));
-            parameters.Add(new MySqlParameter("?Address", sm.Address));
-            parameters.Add(new MySqlParameter("?Remark", sm.Remark));
+            parameters.Add(new MySqlParameter("?Id", GetString("id")));
+            parameters.Add(new MySqlParameter("?Title", GetString("title")));
+            parameters.Add(new MySqlParameter("?Url", GetString("url")));
+            parameters.Add(new MySqlParameter("?Content", GetString("content")));
+            parameters.Add(new MySqlParameter("?Views", GetString("views")));
+            parameters.Add(new MySqlParameter("?Commentnum", GetString("contentnum")));
+            parameters.Add(new MySqlParameter("?SellerId", GetInt("sellerid")));
+            parameters.Add(new MySqlParameter("?CreateTime", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")));
 
             MySqlHelper.ExecuteNonQuery(GlobalConfig.DbConn, CommandType.Text, commandText, parameters.ToArray());
         }
 
-        public void Delete(SourceMaterial sm)
+        public void Delete()
         {
             string commandText = @"Delete material WHERE Id = ?Id";
             List<MySqlParameter> parameters = new List<MySqlParameter>();
-            parameters.Add(new MySqlParameter("?Id", sm.Id));
+            parameters.Add(new MySqlParameter("?Id", GetInt("id")));
 
             MySqlHelper.ExecuteNonQuery(GlobalConfig.DbConn, CommandType.Text, commandText, parameters.ToArray());
         }

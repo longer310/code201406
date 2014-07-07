@@ -13,7 +13,7 @@ namespace Backstage.Core.Handler
     /// <summary>
     /// SourceMaterial 的摘要说明
     /// </summary>
-    public class SourceMaterialHandler : BaseHandler
+    public class SourceMaterialHandler : BaseApiHandler
     {
         public override void ProcessRequest(HttpContext context)
         {
@@ -40,24 +40,29 @@ namespace Backstage.Core.Handler
         /// 图片列表接口
         /// </summary>
         /// <returns></returns>
-        public PagResults<SourceMaterial> GetList()
+        public void GetList()
         {
             int pageIndex = GetInt("start");
             int pageSize = GetInt("limit");
             int sellerId = GetInt("sellerid");
 
-            return SourceMaterialHelper.GetPaging(pageIndex, pageSize, sellerId);
+            var data = SourceMaterialHelper.GetPaging(pageIndex, pageSize, sellerId);
+            JsonTransfer jt = new JsonTransfer();
+            jt.AddSuccessParam();
+            jt.Add("data", data);
+            Response.Write(DesEncrypt(jt).ToLower());
+            Response.End();
         }
 
         /// <summary>
         /// 图片详情接口
         /// </summary>
         /// <returns></returns>
-        public object GetItem()
+        public void GetItem()
         {
             int pid = GetInt("pid");
             SourceMaterial sm = SourceMaterialHelper.GetItem(pid);
-            return new
+            var data = new
             {
                 pid = sm.Id,
                 title = sm.Title,
@@ -66,48 +71,62 @@ namespace Backstage.Core.Handler
                 views = sm.Views,
                 commentnum = sm.Commentnum
             };
+            JsonTransfer jt = new JsonTransfer();
+            jt.AddSuccessParam();
+            jt.Add("data", data);
+            Response.Write(DesEncrypt(jt).ToLower());
+            Response.End();
         }
 
         /// <summary>
         /// 图片评论
         /// </summary>
         /// <returns></returns>
-        public StatusMessage ImgComment()
+        public void ImgComment()
         {
             int userId = GetInt("uid");
             int imgId = GetInt("pid");
             string msg = GetString("messge");
             SourceMaterial sm = SourceMaterialHelper.GetItem(imgId);
-            StatusMessage m = new StatusMessage();
             Comment c = new Comment();
+            c.SellerId = sm.SellerId;
+            c.TypeId = sm.Id;
+            c.UserId = userId;
+            c.Content = msg;
+            c.Type = CommentType.Img;
             try
             {
                 CommentHelper.Create(c);
                 sm.Commentnum += 1;
                 SourceMaterialHelper.Update(sm);
-                m.Status = 1;
-                m.Message = "suc";
             }
             catch
             {
-                m.Status = 0;
-                m.Message = "fal";
+                ReturnErrorMsg("fail");
                 throw;
             }
-            return m;
+            JsonTransfer jt = new JsonTransfer();
+            jt.AddSuccessParam();
+            Response.Write(DesEncrypt(jt).ToLower());
+            Response.End();
         }
 
         /// <summary>
         /// 图片评论列表
         /// </summary>
         /// <returns></returns>
-        public PagResults<Comment> ImgCommentList()
+        public void ImgCommentList()
         {
             int pid = GetInt("pid");
             int index = GetInt("start");
             int size = GetInt("size");
             SourceMaterial sm = SourceMaterialHelper.GetItem(pid);
-            return CommentHelper.GetPagings(sm.SellerId, CommentType.Img, pid, index, size);
+            var data = CommentHelper.GetPagings(sm.SellerId, CommentType.Img, pid, index, size);
+            JsonTransfer jt = new JsonTransfer();
+            jt.AddSuccessParam();
+            jt.Add("data", data);
+            Response.Write(DesEncrypt(jt).ToLower());
+            Response.End();
         }
 
         public void Create()

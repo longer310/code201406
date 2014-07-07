@@ -14,7 +14,7 @@ namespace Backstage.Core.Handler
     /// <summary>
     /// SourceMaterial 的摘要说明
     /// </summary>
-    public class ActiveHandler : BaseHandler
+    public class ActiveHandler : BaseApiHandler
     {
 
         public override void ProcessRequest(HttpContext context)
@@ -38,14 +38,18 @@ namespace Backstage.Core.Handler
             }
         }
 
-        private object ActiveCommentList()
+        private void ActiveCommentList()
         {
             int aid = GetInt("newid");
             int index = GetInt("start");
             int size = GetInt("size");
             var active = ActiveHelper.GetItem(aid);
-            var commentlist = CommentHelper.GetPagings(active.SellerId, CommentType.Avtive, aid, index, size);
-            return commentlist;
+            var data = CommentHelper.GetPagings(active.SellerId, CommentType.Avtive, aid, index, size);
+            JsonTransfer jt = new JsonTransfer();
+            jt.AddSuccessParam();
+            jt.Add("data", data);
+            Response.Write(DesEncrypt(jt).ToLower());
+            Response.End();
         }
 
         private StatusMessage ActiveComment()
@@ -60,24 +64,51 @@ namespace Backstage.Core.Handler
             c.UserId = uid;
             c.Content = msg;
             c.Type = CommentType.Avtive;
-            CommentHelper.Create(c);
+
+            try
+            {
+                CommentHelper.Create(c);
+                active.Commentnum += 1;
+                ActiveHelper.Update(active);
+            }
+            catch
+            {
+                ReturnErrorMsg("fail");
+                throw;
+            }
+            JsonTransfer jt = new JsonTransfer();
+            jt.AddSuccessParam();
+            Response.Write(DesEncrypt(jt).ToLower());
+            Response.End();
+
+
             return new StatusMessage() { Message = "suc", Status = 1 };
         }
 
-        private object GetItem()
+        private void GetItem()
         {
             int aid = GetInt("newid");
-            return ActiveHelper.GetItem(aid);
+            var data = ActiveHelper.GetItem(aid);
+            JsonTransfer jt = new JsonTransfer();
+            jt.AddSuccessParam();
+            jt.Add("data", data);
+            Response.Write(DesEncrypt(jt).ToLower());
+            Response.End();
         }
 
-        public PagResults<Active> GetList()
+        public void GetList()
         {
             int index = GetInt("start");
             int size = GetInt("limit");
             int aid = GetInt("newid");
             var active = ActiveHelper.GetItem(aid);
 
-            return ActiveHelper.GetPagings(active.SellerId,aid, index, size);
+            var data = ActiveHelper.GetPagings(active.SellerId, aid, index, size);
+            JsonTransfer jt = new JsonTransfer();
+            jt.AddSuccessParam();
+            jt.Add("data", data);
+            Response.Write(DesEncrypt(jt).ToLower());
+            Response.End();
         }
 
         public static void Create(Active sm)

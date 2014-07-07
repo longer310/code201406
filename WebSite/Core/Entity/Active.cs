@@ -21,6 +21,8 @@ namespace Backstage.Core.Entity
 
         public string Summary { get; set; }
 
+        public int Commentnum { get; set; }
+
         public DateTime CreateTime { get; set; }
         
     }

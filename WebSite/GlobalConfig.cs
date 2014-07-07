@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace WebSite
+namespace Backstage
 {
     public static class GlobalConfig
     {

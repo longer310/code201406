@@ -19,7 +19,7 @@ namespace Backstage.Core.Entity
         {
             get
             {
-                var List = Gids.Split(new Char[] {'.'}, StringSplitOptions.RemoveEmptyEntries).ToList();
+                var List = Gids.Split(new Char[] {','}, StringSplitOptions.RemoveEmptyEntries).ToList();
                 List<int> glist = new List<int>();
                 foreach (var gid in List)
                 {

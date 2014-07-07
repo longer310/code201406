@@ -62,6 +62,15 @@ namespace Backstage.Core
             Response.End();
         }
 
+        public string GetWhereSql(List<int> idlist)
+        {
+            string wheresql = "";
+            string str = String.Join(",", idlist.ConvertAll<string>(new Converter<int, string>(m => m.ToString())).ToArray());
+            wheresql += " where Id in(" + str + ") ";
+
+            return wheresql;
+        }
+
         public string ApiName
         {
             get

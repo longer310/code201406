@@ -17,33 +17,36 @@ namespace Backstage.Core
 {
     public static class AccountHelper
     {
-        public static List<Account> GetUserList(out int totalnum, string wheresql = "", string ordersql = "", int start = 0, int limit = 0)
+        public static List<Account> GetUserList(out int totalnum, string wheresql = "", string ordersql = ""
+            , int start = 0, int limit = 0)
         {
             totalnum = 0;
             List<Account> list = new List<Account>();
-            var sql = "select * from account where 1=1 and ";
-            if (wheresql != "") sql += " " + wheresql;
-            if (ordersql != "") sql += " " + ordersql;
-            else sql += " order by CreateTime desc";
-            if (limit != 0) sql += String.Format(" limit {0},{1};", start, limit);
+            if (ordersql == "") ordersql = " order by CreateTime desc";
+            string limitsql = limit != 0 ? " LIMIT ?start,?limit" : string.Empty;
+            var cmdText = @"select * from account " + wheresql + ordersql + limitsql;
+
+            List<MySqlParameter> parameters = new List<MySqlParameter>();
+            parameters.Add(new MySqlParameter("?start", start));
+            parameters.Add(new MySqlParameter("?limit", limit));
+
             try
             {
-                MySqlDataReader reader = MySqlHelper.ExecuteReader(Utility._gameDbConn, CommandType.Text, sql);
-                var dset = MySqlHelper.ExecuteDataset(Utility._gameDbConn, CommandType.Text, sql);
-                DataTable dt = dset.Tables[0];
+                MySqlDataReader reader = MySqlHelper.ExecuteReader(Utility._gameDbConn, CommandType.Text, cmdText,
+                    parameters.ToArray());
                 while (reader.Read())
                 {
                     Account user = new Account();
                     user.Id = reader.GetInt32(0);
-                    user.UserName = reader.GetString(1);
-                    user.Pwd = reader.GetString(2);
-                    user.RoleType = (RoleType)reader.GetInt32(3);
+                    user.UserName = reader["UserName"].ToString();
+                    user.Pwd = reader["Pwd"].ToString();
+                    user.RoleType = (RoleType)reader["RoleType"];
 
                     list.Add(user);
                 }
 
-                sql = "select count(*) from account where roletype=2 or roletype = 3;";
-                reader = MySqlHelper.ExecuteReader(Utility._gameDbConn, CommandType.Text, sql);
+                cmdText = @"select count(*) from account " + wheresql;
+                reader = MySqlHelper.ExecuteReader(Utility._gameDbConn, CommandType.Text, cmdText);
                 if (reader.HasRows)
                 {
                     if (reader.Read())
@@ -61,19 +64,43 @@ namespace Backstage.Core
 
         public static int UpdateUser(int id, string userName, string pwd, int roleType)
         {
-            var sql = string.Empty;
+            var cmdText = string.Empty;
+            List<MySqlParameter> parameters = new List<MySqlParameter>();
             if (id > 0)
-                sql = string.Format("update account set UserName='{0}',Pwd='{1}',RoleType={2} where Id={3}", userName, pwd,
-                    roleType, id);
+            {
+                cmdText = @"UPDATE account SET
+                                        UserName = ?UserName,
+                                        Pwd = ?Pwd,
+                                        RoleType = ?RoleType
+                                    WHERE
+                                        Id = ?Id";
+                parameters.Add(new MySqlParameter("?Id", id));
+                parameters.Add(new MySqlParameter("?UserName", userName));
+                parameters.Add(new MySqlParameter("?Pwd", pwd));
+                parameters.Add(new MySqlParameter("?RoleType", roleType));
+            }
             else
             {
-                sql = string.Format("insert account(UserName,Pwd,RoleType) values('{0}','{1}',{2})", userName, pwd,
-                    roleType);
+                cmdText = @"insert into account
+                                        (
+                                        UserName,
+                                        Pwd,
+                                        RoleType
+                                        ) 
+                                        values
+                                        (
+                                        ?UserName,
+                                        ?Pwd,
+                                        ?RoleType
+                                        )";
+                parameters.Add(new MySqlParameter("?UserName", userName));
+                parameters.Add(new MySqlParameter("?Pwd", pwd));
+                parameters.Add(new MySqlParameter("?RoleType", roleType));
             }
 
             try
             {
-                return MySqlHelper.ExecuteNonQuery(Utility._gameDbConn, CommandType.Text, sql);
+                return MySqlHelper.ExecuteNonQuery(Utility._gameDbConn, CommandType.Text, cmdText, parameters.ToArray());
             }
             catch (System.Exception ex)
             {
@@ -83,11 +110,11 @@ namespace Backstage.Core
 
         public static int DelUser(int id)
         {
-            var sql = string.Format("delete from account where Id={0}", id);
+            var cmdText = string.Format("delete from account where Id={0}", id);
 
             try
             {
-                return MySqlHelper.ExecuteNonQuery(Utility._gameDbConn, CommandType.Text, sql);
+                return MySqlHelper.ExecuteNonQuery(Utility._gameDbConn, CommandType.Text, cmdText);
             }
             catch (System.Exception ex)
             {

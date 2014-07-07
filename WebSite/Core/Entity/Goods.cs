@@ -66,5 +66,19 @@ namespace Backstage.Core.Entity
         /// 产品描述
         /// </summary>
         public string Content { get; set; }
+
+        public List<int> ImgIdList
+        {
+            get
+            {
+                var List = ImgIds.Split(new Char[] { ',' }, StringSplitOptions.RemoveEmptyEntries).ToList();
+                List<int> imgids = new List<int>();
+                foreach (var imgid in List)
+                {
+                    imgids.Add(Convert.ToInt32(imgid));
+                }
+                return imgids;
+            }
+        }
     }
 }

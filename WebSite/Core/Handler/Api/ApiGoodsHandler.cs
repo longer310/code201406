@@ -9,11 +9,11 @@ using Backstage.Core.Logic;
 
 namespace Backstage.Handler
 {
-    public class ApiHandler : BaseApiHandler
+    public class ApiGoodsHandler : BaseApiHandler
     {
         public override void ProcessRequest(HttpContext context)
         {
-            base.SetApiName("ApiHandler");
+            base.SetApiName("ApiGoodsHandler");
             base.ProcessRequest(HttpContext.Current);
             switch (Action)
             {
@@ -133,7 +133,8 @@ namespace Backstage.Handler
             int totalccount;
             var user = Utility.GetCurUser();
             var goodslist = GoodsHelper.GetGoodsList(sellerid, out totalcount, wheresql, ordersql, start * limit, limit);
-            var picList = new List<SourceMaterial>();//TODO:去图片表获取图片列表
+            string pwheresql = GetWhereSql(goodslist.Select(o => o.Logo).ToList());
+            var picList = SourceMaterialHelper.GetList(0, 0, pwheresql, "");
             var gclist = GoodsCategoriesHelper.GetList(sellerid, out totalccount);
             Favorite favorite = FavoriteHelper.GetFavorite(user.Id);
             GoodsListData data = new GoodsListData();
@@ -205,7 +206,8 @@ namespace Backstage.Handler
             var goods = GoodsHelper.GetGoods(gid);
             int cid = goods.Cid;
             var gcategories = GoodsCategoriesHelper.GetGoodsCategories(cid);
-            var piclist = new List<SourceMaterial>();//TODO:去图片表获取图片列表
+            string wheresql = GetWhereSql(goods.ImgIdList);
+            var piclist = SourceMaterialHelper.GetList(0, 0, wheresql, "");
             var user = Utility.GetCurUser();
             Favorite favorite = FavoriteHelper.GetFavorite(user.Id);
             var data = new GoodsDetailItem();
@@ -270,11 +272,11 @@ namespace Backstage.Handler
 
             int totalcount = 0;
             int utotalcount;
-            var commentlist = new List<Comment>();//TODO:获取评论列表
-            var uidlist = commentlist.Select(o => o.UserId).ToList();
-            string wheresql = "";
-            string str = String.Join(",", uidlist.ConvertAll<string>(new Converter<int, string>(m => m.ToString())).ToArray());
-            wheresql += " Id in(" + str + ") ";
+            var goods = GoodsHelper.GetGoods(gid);
+            int sellerId = goods.SellerId;
+            var commentResult = CommentHelper.GetPagings(sellerId, CommentType.Goods, gid, start * limit, limit);
+            var commentlist = commentResult.Results;
+            string wheresql = GetWhereSql(commentlist.Select(o => o.UserId).ToList());
             var userlist = AccountHelper.GetUserList(out utotalcount, wheresql, "", start * limit, limit);
 
             var data = new CommentResponse();
@@ -320,7 +322,8 @@ namespace Backstage.Handler
             comment.TypeId = gid;
             comment.UserId = uid;
 
-            //TODO:调用添加评论接口
+            //发表商品评论
+            CommentHelper.Create(comment);
 
             //返回
             ReturnCorrectMsg("返回消息");
@@ -343,7 +346,7 @@ namespace Backstage.Handler
             }
             if (favorite.GidList.Count == 0)
                 favorite.Gids = gid.ToString();
-            else 
+            else
                 favorite.Gids += "," + gid.ToString();
 
             //保存商品

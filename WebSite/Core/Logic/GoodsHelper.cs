@@ -10,44 +10,47 @@ namespace Backstage.Core.Logic
 {
     public static class GoodsHelper
     {
-        public static List<Goods> GetGoodsList(int sellerId, out int totalnum, string wheresql = "", string ordersql = "", int start = 0, int limit = 0)
+        public static List<Goods> GetGoodsList(int sellerId, out int totalnum, string wheresql = "",
+            string ordersql = "", int start = 0, int limit = 0)
         {
             totalnum = 0;
             List<Goods> list = new List<Goods>();
-            var sql = String.Format("select * from goods where SellerId={0} and ", sellerId);
-            if (wheresql != "") sql += " " + wheresql;
-            if (ordersql != "") sql += " " + ordersql;
-            else sql += " order by CreateTime desc";
-            if (limit != 0) sql += String.Format(" limit {0},{1};", start, limit);
+            if (ordersql == "") ordersql = " order by CreateTime desc";
+            string limitsql = limit != 0 ? " LIMIT ?start,?limit" : string.Empty;
+            var cmdText = @"select * from Goods where SellerId=?SellerId " + wheresql + ordersql + limitsql;
+
+            List<MySqlParameter> parameters = new List<MySqlParameter>();
+            parameters.Add(new MySqlParameter("?start", start));
+            parameters.Add(new MySqlParameter("?limit", limit));
+            parameters.Add(new MySqlParameter("?SellerId", sellerId));
             try
             {
-                MySqlDataReader reader = MySqlHelper.ExecuteReader(Utility._gameDbConn, CommandType.Text, sql);
-                var dset = MySqlHelper.ExecuteDataset(Utility._gameDbConn, CommandType.Text, sql);
-                DataTable dt = dset.Tables[0];
+                MySqlDataReader reader = MySqlHelper.ExecuteReader(Utility._gameDbConn, CommandType.Text, cmdText,
+                    parameters.ToArray());
                 while (reader.Read())
                 {
                     Goods goods = new Goods();
                     goods.Id = reader.GetInt32(0);
-                    goods.SellerId = reader.GetInt32(1);
-                    goods.Logo = reader.GetInt32(2);
-                    goods.ImgIds = reader.GetString(3);
-                    goods.Sales = reader.GetInt32(4);
-                    goods.Title = reader.GetString(5);
-                    goods.Cid = reader.GetInt32(6);
-                    goods.Nowprice = reader.GetInt32(7);
-                    goods.OriginalPrice = reader.GetInt32(8);
-                    goods.Score = reader.GetInt32(9);
-                    goods.CreateTime = reader.GetDateTime(10);
-                    goods.FavCount = reader.GetInt32(11);
-                    goods.ShareCount = reader.GetInt32(12);
-                    goods.Tag = reader.GetString(13);
-                    goods.Content = reader.GetString(14);
+                    goods.SellerId = (int)reader["SellerId"];
+                    goods.Logo = (int)reader["Logo"];
+                    goods.ImgIds = reader["ImgIds"].ToString();
+                    goods.Sales = (int)reader["Sales"];
+                    goods.Title = reader["Title"].ToString();
+                    goods.Cid = (int)reader["Cid"];
+                    goods.Nowprice = (int)reader["Nowprice"];
+                    goods.OriginalPrice = (int)reader["OriginalPrice"];
+                    goods.Score = (int)reader["Score"];
+                    goods.CreateTime = (DateTime)reader["CreateTime"];
+                    goods.FavCount = (int)reader["FavCount"];
+                    goods.ShareCount = (int)reader["ShareCount"];
+                    goods.Tag = reader["Tag"].ToString();
+                    goods.Content = reader["Content"].ToString();
 
                     list.Add(goods);
                 }
 
-                sql = string.Format("select count(*) from goods where SellerId={0} ", sellerId);
-                reader = MySqlHelper.ExecuteReader(Utility._gameDbConn, CommandType.Text, sql);
+                cmdText = string.Format("select count(*) from goods where SellerId={0} ", sellerId) + wheresql;
+                reader = MySqlHelper.ExecuteReader(Utility._gameDbConn, CommandType.Text, cmdText);
                 if (reader.HasRows)
                 {
                     if (reader.Read())
@@ -75,20 +78,20 @@ namespace Backstage.Core.Logic
                     {
                         Goods goods = new Goods();
                         goods.Id = reader.GetInt32(0);
-                        goods.SellerId = reader.GetInt32(1);
-                        goods.Logo = reader.GetInt32(2);
-                        goods.ImgIds = reader.GetString(3);
-                        goods.Sales = reader.GetInt32(4);
-                        goods.Title = reader.GetString(5);
-                        goods.Cid = reader.GetInt32(6);
-                        goods.Nowprice = reader.GetInt32(7);
-                        goods.OriginalPrice = reader.GetInt32(8);
-                        goods.Score = reader.GetInt32(9);
-                        goods.CreateTime = reader.GetDateTime(10);
-                        goods.FavCount = reader.GetInt32(11);
-                        goods.ShareCount = reader.GetInt32(12);
-                        goods.Tag = reader.GetString(13);
-                        goods.Content = reader.GetString(14);
+                        goods.SellerId = (int)reader["SellerId"];
+                        goods.Logo = (int)reader["Logo"];
+                        goods.ImgIds = reader["ImgIds"].ToString();
+                        goods.Sales = (int)reader["Sales"];
+                        goods.Title = reader["Title"].ToString();
+                        goods.Cid = (int)reader["Cid"];
+                        goods.Nowprice = (int)reader["Nowprice"];
+                        goods.OriginalPrice = (int)reader["OriginalPrice"];
+                        goods.Score = (int)reader["Score"];
+                        goods.CreateTime = (DateTime)reader["CreateTime"];
+                        goods.FavCount = (int)reader["FavCount"];
+                        goods.ShareCount = (int)reader["ShareCount"];
+                        goods.Tag = reader["Tag"].ToString();
+                        goods.Content = reader["Content"].ToString();
                         return goods;
                     }
                 }
@@ -108,16 +111,100 @@ namespace Backstage.Core.Logic
         /// <returns></returns>
         public static bool SaveGoods(Goods goods)
         {
-            var sql = string.Empty;
+            var cmdText = string.Empty;
+            List<MySqlParameter> parameters = new List<MySqlParameter>();
             if (goods.Id > 0)
-                string.Format("update Goods set ImgIds='{0}', Sales={1},Title='{2}',Cid={3},NowPrice={4},OriginalPrice={5},Score={6},CreateTime='{7}',FavCount={8},ShareCount={9},Tag='{10}',Content='{11}' where Id={12}",goods.ImgIds,goods.Sales,goods.Title,goods.Cid,goods.Nowprice,goods.OriginalPrice,goods.Score,goods.CreateTime,goods.FavCount,goods.ShareCount,goods.Tag,goods.Content,goods.Id);
+            {
+                cmdText = @"UPDATE Goods SET
+                                        SellerId        = ?SellerId,
+                                        ImgIds          = ?ImgIds,
+                                        Logo            = ?Logo,
+                                        Sales           = ?Sales,
+                                        Logo            = ?Logo,
+                                        Title           = ?Title,
+                                        Cid             = ?Cid,
+                                        Nowprice        = ?Nowprice,
+                                        OriginalPrice   = ?OriginalPrice,
+                                        Score           = ?Score,
+                                        CreateTime      = ?CreateTime,
+                                        FavCount        = ?FavCount,
+                                        ShareCount      = ?ShareCount,
+                                        Tag             = ?Tag,
+                                        Content         = ?Content,
+                                    WHERE
+                                        Id = ?Id";
+                parameters.Add(new MySqlParameter("?Id", goods.Id));
+                parameters.Add(new MySqlParameter("?SellerId", goods.SellerId));
+                parameters.Add(new MySqlParameter("?ImgIds", goods.ImgIds));
+                parameters.Add(new MySqlParameter("?Logo", goods.Logo));
+                parameters.Add(new MySqlParameter("?Sales", goods.Sales));
+                parameters.Add(new MySqlParameter("?Title", goods.Title));
+                parameters.Add(new MySqlParameter("?Cid", goods.Cid));
+                parameters.Add(new MySqlParameter("?Nowprice", goods.Nowprice));
+                parameters.Add(new MySqlParameter("?OriginalPrice", goods.OriginalPrice));
+                parameters.Add(new MySqlParameter("?Score", goods.Score));
+                parameters.Add(new MySqlParameter("?CreateTime", goods.CreateTime));
+                parameters.Add(new MySqlParameter("?FavCount", goods.FavCount));
+                parameters.Add(new MySqlParameter("?ShareCount", goods.ShareCount));
+                parameters.Add(new MySqlParameter("?Tag", goods.Tag));
+                parameters.Add(new MySqlParameter("?Content", goods.Content));
+            }
             else
             {
-                string.Format("insert into Goods(ImgIds,Sales,Title,Cid,Nowprice,OriginalPrice,Score,CreateTime,FavCount,ShareCount,Tag,Content) values('{0}',{1},'{2}',{3},{4},{5},{6},'{7}',{8},{9},'{10}','{11}')", goods.ImgIds, goods.Sales, goods.Title, goods.Cid, goods.Nowprice, goods.OriginalPrice, goods.Score, goods.CreateTime, goods.FavCount, goods.ShareCount, goods.Tag, goods.Content);
+                cmdText = @"insert into account
+                                        (
+                                        SellerId      ,
+                                        ImgIds        ,
+                                        Logo          ,
+                                        Sales         ,
+                                        Logo          ,
+                                        Title         ,
+                                        Cid           ,
+                                        Nowprice      ,
+                                        OriginalPrice ,
+                                        Score         ,
+                                        CreateTime    ,
+                                        FavCount      ,
+                                        ShareCount    ,
+                                        Tag           ,
+                                        Content       
+                                        ) 
+                                        values
+                                        (
+                                        ?SellerId      ,
+                                        ?ImgIds        ,
+                                        ?Logo          ,
+                                        ?Sales         ,
+                                        ?Logo          ,
+                                        ?Title         ,
+                                        ?Cid           ,
+                                        ?Nowprice      ,
+                                        ?OriginalPrice ,
+                                        ?Score         ,
+                                        ?CreateTime    ,
+                                        ?FavCount      ,
+                                        ?ShareCount    ,
+                                        ?Tag           ,
+                                        ?Content       
+                                        )";
+                parameters.Add(new MySqlParameter("?SellerId", goods.SellerId));
+                parameters.Add(new MySqlParameter("?ImgIds", goods.ImgIds));
+                parameters.Add(new MySqlParameter("?Logo", goods.Logo));
+                parameters.Add(new MySqlParameter("?Sales", goods.Sales));
+                parameters.Add(new MySqlParameter("?Title", goods.Title));
+                parameters.Add(new MySqlParameter("?Cid", goods.Cid));
+                parameters.Add(new MySqlParameter("?Nowprice", goods.Nowprice));
+                parameters.Add(new MySqlParameter("?OriginalPrice", goods.OriginalPrice));
+                parameters.Add(new MySqlParameter("?Score", goods.Score));
+                parameters.Add(new MySqlParameter("?CreateTime", goods.CreateTime));
+                parameters.Add(new MySqlParameter("?FavCount", goods.FavCount));
+                parameters.Add(new MySqlParameter("?ShareCount", goods.ShareCount));
+                parameters.Add(new MySqlParameter("?Tag", goods.Tag));
+                parameters.Add(new MySqlParameter("?Content", goods.Content));
             }
             try
             {
-                var num = MySqlHelper.ExecuteNonQuery(Utility._gameDbConn, CommandType.Text, sql);
+                var num = MySqlHelper.ExecuteNonQuery(Utility._gameDbConn, CommandType.Text, cmdText, parameters.ToArray());
                 return num > 0;
             }
             catch (System.Exception ex)

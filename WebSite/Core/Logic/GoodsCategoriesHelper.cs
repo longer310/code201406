@@ -20,33 +20,38 @@ namespace Backstage.Core.Logic
         /// <param name="start"></param>
         /// <param name="limit"></param>
         /// <returns></returns>
-        public static List<GoodsCategories> GetList(int sellerId, out int totalnum, string wheresql = "", string ordersql = "", int start = 0, int limit = 0)
+        public static List<GoodsCategories> GetList(int sellerId, out int totalnum, string wheresql = "",
+            string ordersql = "", int start = 0, int limit = 0)
         {
             totalnum = 0;
             List<GoodsCategories> list = new List<GoodsCategories>();
-            var sql = String.Format("select * from GoodsCategories where SellerId={0} and ", sellerId);
-            if (wheresql != "") sql += " " + wheresql;
-            if (ordersql != "") sql += " " + ordersql;
-            else sql += " order by Index";
-            if (limit != 0) sql += String.Format(" limit {0},{1};", start, limit);
+            if (ordersql == "") ordersql = " order by Index";
+            string limitsql = limit != 0 ? " LIMIT ?start,?limit" : string.Empty;
+            var cmdText = @"select * from GoodsCategories where SellerId=?SellerId " + wheresql + ordersql + limitsql;
+
+            List<MySqlParameter> parameters = new List<MySqlParameter>();
+            parameters.Add(new MySqlParameter("?start", start));
+            parameters.Add(new MySqlParameter("?limit", limit));
+            parameters.Add(new MySqlParameter("?SellerId", sellerId));
             try
             {
-                MySqlDataReader reader = MySqlHelper.ExecuteReader(Utility._gameDbConn, CommandType.Text, sql);
-                var dset = MySqlHelper.ExecuteDataset(Utility._gameDbConn, CommandType.Text, sql);
-                DataTable dt = dset.Tables[0];
+                MySqlDataReader reader = MySqlHelper.ExecuteReader(Utility._gameDbConn, CommandType.Text, cmdText,
+                    parameters.ToArray());
                 while (reader.Read())
                 {
                     GoodsCategories goodsCategories = new GoodsCategories();
                     goodsCategories.Id = reader.GetInt32(0);
-                    goodsCategories.Index = reader.GetInt32(1);
-                    goodsCategories.Name = reader.GetString(2);
-                    goodsCategories.SellerId = reader.GetInt32(3);
+                    goodsCategories.Index = (int)reader["Index"];
+                    goodsCategories.Name = reader["Name"].ToString();
+                    goodsCategories.SellerId = (int)reader["SellerId"];
 
                     list.Add(goodsCategories);
                 }
 
-                sql = string.Format("select count(*) from GoodsCategories where SellerId={0} ", sellerId);
-                reader = MySqlHelper.ExecuteReader(Utility._gameDbConn, CommandType.Text, sql);
+                cmdText = @"select count(*) from GoodsCategories where SellerId=?SellerId " + wheresql;
+                parameters = new List<MySqlParameter>();
+                parameters.Add(new MySqlParameter("?SellerId", sellerId));
+                reader = MySqlHelper.ExecuteReader(Utility._gameDbConn, CommandType.Text, cmdText, parameters.ToArray());
                 if (reader.HasRows)
                 {
                     if (reader.Read())
@@ -68,17 +73,17 @@ namespace Backstage.Core.Logic
         /// <returns></returns>
         public static GoodsCategories GetGoodsCategories(int id)
         {
-            var sql = string.Format("select * from Favorite where Id={0} limit 1;", id);
+            var cmdText = string.Format("select * from Favorite where Id={0} limit 1;", id);
             try
             {
-                MySqlDataReader reader = MySqlHelper.ExecuteReader(Utility._gameDbConn, CommandType.Text, sql);
+                MySqlDataReader reader = MySqlHelper.ExecuteReader(Utility._gameDbConn, CommandType.Text, cmdText);
                 if (reader.HasRows)
                 {
                     if (reader.Read())
                     {
                         GoodsCategories goodsCategories = new GoodsCategories();
                         goodsCategories.Id = reader.GetInt32(0);
-                        goodsCategories.Name = reader.GetString(1);
+                        goodsCategories.Name = reader["Name"].ToString();
                         return goodsCategories;
                     }
                 }

@@ -22,7 +22,7 @@ namespace Backstage.Core.Handler
             base.ProcessRequest(HttpContext.Current);
             switch (Action)
             {
-                case "GetList":
+                case "getlist":
                     GetList(); break;
                 case "getitem":
                     GetItem(); break;

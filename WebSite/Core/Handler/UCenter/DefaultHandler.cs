@@ -4,6 +4,7 @@ using System.EnterpriseServices;
 using System.Linq;
 using System.Web;
 using Backstage.Core;
+using Backstage.Core.Entity;
 
 namespace Backstage.Handler
 {
@@ -56,12 +57,16 @@ namespace Backstage.Handler
                 return;
             }
 
-            int id = GetInt("id");
-            int roleType = GetInt("roletype");
-            string userName = GetString("username");
-            string pwd = GetString("pwd");
+            Account account = new Account();
+            account.Id = GetInt("id");
+            account.RoleType = (RoleType)GetInt("roletype");
+            account.UserName = GetString("username");
+            account.Pwd = GetString("pwd");
+            account.Avatar = GetString("avatar");
+            account.Sex = GetInt("sex");
+            account.CreateTime = GetTime("createtime");
 
-            int num = AccountHelper.UpdateUser(id, userName, pwd, roleType);
+            int num = AccountHelper.UpdateUser(account);
             jt.Add("num", num);
             Response.Write(jt.ToJson());
         }

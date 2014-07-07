@@ -41,6 +41,9 @@ namespace Backstage.Core
                     user.UserName = reader["UserName"].ToString();
                     user.Pwd = reader["Pwd"].ToString();
                     user.RoleType = (RoleType)reader["RoleType"];
+                    user.Avatar = reader["Avatar"].ToString();
+                    user.Sex = (int)reader["Sex"];
+                    user.CreateTime = (DateTime)reader["CreateTime"];
 
                     list.Add(user);
                 }
@@ -62,40 +65,55 @@ namespace Backstage.Core
             return list;
         }
 
-        public static int UpdateUser(int id, string userName, string pwd, int roleType)
+        public static int UpdateUser(Account account)
         {
             var cmdText = string.Empty;
             List<MySqlParameter> parameters = new List<MySqlParameter>();
-            if (id > 0)
+            if (account.Id > 0)
             {
                 cmdText = @"UPDATE account SET
-                                        UserName = ?UserName,
-                                        Pwd = ?Pwd,
-                                        RoleType = ?RoleType
+                                        UserName        = ?UserName,
+                                        Pwd             = ?Pwd,
+                                        RoleType        = ?RoleType,
+                                        Avatar          = ?Avatar,
+                                        Sex             = ?Sex,
+                                        CreateTime      = ?CreateTime
                                     WHERE
                                         Id = ?Id";
-                parameters.Add(new MySqlParameter("?Id", id));
-                parameters.Add(new MySqlParameter("?UserName", userName));
-                parameters.Add(new MySqlParameter("?Pwd", pwd));
-                parameters.Add(new MySqlParameter("?RoleType", roleType));
+                parameters.Add(new MySqlParameter("?Id", account.Id));
+                parameters.Add(new MySqlParameter("?UserName", account.UserName));
+                parameters.Add(new MySqlParameter("?Pwd", account.Pwd));
+                parameters.Add(new MySqlParameter("?RoleType", account.RoleType));
+                parameters.Add(new MySqlParameter("?Avatar", account.Avatar));
+                parameters.Add(new MySqlParameter("?Sex", account.Sex));
+                parameters.Add(new MySqlParameter("?CreateTime", account.CreateTime));
             }
             else
             {
                 cmdText = @"insert into account
                                         (
-                                        UserName,
-                                        Pwd,
-                                        RoleType
+                                        UserName   ,
+                                        Pwd        ,
+                                        RoleType   ,
+                                        Avatar     ,
+                                        Sex        ,
+                                        CreateTime 
                                         ) 
                                         values
                                         (
-                                        ?UserName,
-                                        ?Pwd,
-                                        ?RoleType
+                                        ?UserName  ,
+                                        ?Pwd       ,
+                                        ?RoleType  ,
+                                        ?Avatar    ,
+                                        ?Sex       ,
+                                        ?CreateTime
                                         )";
-                parameters.Add(new MySqlParameter("?UserName", userName));
-                parameters.Add(new MySqlParameter("?Pwd", pwd));
-                parameters.Add(new MySqlParameter("?RoleType", roleType));
+                parameters.Add(new MySqlParameter("?UserName", account.UserName));
+                parameters.Add(new MySqlParameter("?Pwd", account.Pwd));
+                parameters.Add(new MySqlParameter("?RoleType", account.RoleType));
+                parameters.Add(new MySqlParameter("?Avatar", account.Avatar));
+                parameters.Add(new MySqlParameter("?Sex", account.Sex));
+                parameters.Add(new MySqlParameter("?CreateTime", account.CreateTime));
             }
 
             try

@@ -44,7 +44,25 @@ namespace Backstage.Core.Handler
             int index = GetInt("start");
             int size = GetInt("size");
             var active = ActiveHelper.GetItem(aid);
-            var data = CommentHelper.GetPagings(active.SellerId, CommentType.Avtive, aid, index, size);
+            var cms = CommentHelper.GetPagings(active.SellerId, CommentType.Avtive, aid, index, size);
+            var users = AccountHelper.GetUserList(cms.Results.Select(c => c.UserId).ToList());
+            var data = new List<object>();
+            foreach (var cm in cms.Results)
+            {
+                var user = users.FirstOrDefault(u => u.Id == cm.UserId);
+                if (user == null)
+                    throw new ArgumentNullException(string.Format("userId:{0}", cm.UserId));
+                var result = new
+                {
+                    avatar = user.Avatar,
+                    username = user.UserName,
+                    sex = user.Sex,
+                    dateline = cm.CreateTime,
+                    message = cm.Content
+                };
+                data.Add(result);
+            }
+
             JsonTransfer jt = new JsonTransfer();
             jt.AddSuccessParam();
             jt.Add("data", data);
@@ -80,7 +98,6 @@ namespace Backstage.Core.Handler
             jt.AddSuccessParam();
             Response.Write(DesEncrypt(jt).ToLower());
             Response.End();
-
 
             return new StatusMessage() { Message = "suc", Status = 1 };
         }

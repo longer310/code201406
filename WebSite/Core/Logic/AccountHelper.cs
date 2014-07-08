@@ -65,6 +65,44 @@ namespace Backstage.Core
             return list;
         }
 
+        public static IList<Account> GetUserList(IList<int> uids)
+        {
+            IList<Account> list = new List<Account>();
+            string cmdText = @"select * from account where id in ?ids";
+            string ids_string = "(";
+            foreach (var uid in uids)
+            {
+                ids_string += (uid + ",");
+            }
+            ids_string.TrimEnd(',');
+            IList<MySqlParameter> parameters = new List<MySqlParameter>();
+            parameters.Add(new MySqlParameter("?ids", ids_string));
+            try
+            {
+                MySqlDataReader reader = MySqlHelper.ExecuteReader(Utility._gameDbConn, CommandType.Text, cmdText,
+                    parameters.ToArray());
+                while (reader.Read())
+                {
+                    Account user = new Account();
+                    user.Id = reader.GetInt32(0);
+                    user.UserName = reader["UserName"].ToString();
+                    user.Pwd = reader["Pwd"].ToString();
+                    user.RoleType = (RoleType)reader["RoleType"];
+                    user.Avatar = reader["Avatar"].ToString();
+                    user.Sex = (int)reader["Sex"];
+                    user.CreateTime = (DateTime)reader["CreateTime"];
+
+                    list.Add(user);
+                }
+
+            }
+            catch (System.Exception ex)
+            {
+                throw;
+            }
+            return list;
+        }
+
         public static int UpdateUser(Account account)
         {
             var cmdText = string.Empty;

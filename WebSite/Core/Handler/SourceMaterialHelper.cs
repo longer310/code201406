@@ -44,8 +44,8 @@ namespace Backstage.Core
 
         public static PagResults<SourceMaterial> GetPaging(int pageIndex, int pageSize, int sellerId)
         {
-
             var results = new PagResults<SourceMaterial>();
+            results.Results = new List<SourceMaterial>();
             int skipnum = pageSize * pageIndex;
             int totalnum = 0;
             string commandText = @"select * from material where sellerId = ?sellerId LIMIT ?index,?size";

@@ -48,9 +48,10 @@ namespace Backstage.Core
         /// <param name="size"></param>
         /// <param name="order">排序sql</param>
         /// <returns></returns>
-        public static PagResults<Active> GetPagings(int sellerId, int typeId, int index, int size, string order = "")
+        public static PagResults<Active> GetPagings(int sellerId, int index, int size, string order = "")
         {
             var results = new PagResults<Active>();
+            results.Results = new List<Active>();
             string commandText = @"select * from active where sellerId = ?sellerId LIMIT ?index,?size " + order;
 
             List<MySqlParameter> parameters = new List<MySqlParameter>();
@@ -67,9 +68,11 @@ namespace Backstage.Core
                     a.Id = (int)reader["Id"];
                     a.SellerId = (int)reader["SellerId"];
                     a.CoverImgId = (int)reader["CoverImgId"];
+                    a.CoverImgUrl = reader["CoverImgUrl"].ToString();
                     a.Title = reader["Title"].ToString();
                     a.Summary = reader["Summary"].ToString();
                     a.CreateTime = (DateTime)reader["CreateTime"];
+                    results.Results.Add(a);
                 }
 
                 commandText = "select count(*) from active where sellerId = ?sellerId";

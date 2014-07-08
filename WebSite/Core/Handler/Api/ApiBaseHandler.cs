@@ -30,15 +30,12 @@ namespace Backstage.Core
             Request = context.Request;
             Response = context.Response;
 
-            if (Utility._md5open == "1")
+            //验证请求是否合法
+            string waitToken = key + "+" + ApiName + "+" + Action + DateTime.Today.ToString("yyyy-MM-dd");
+            string mytoken = CryptHelper.MD5_Encrypt(waitToken);
+            if (!Token.Equals(mytoken))
             {
-                //验证请求是否合法
-                string waitToken = key + "+" + ApiName + "+" + Action + DateTime.Today.ToString("yyyy-MM-dd");
-                string mytoken = CryptHelper.MD5_Encrypt(waitToken);
-                if (!Token.Equals(mytoken))
-                {
-                    ReturnErrorMsg("非法请求，验证失败");
-                }
+                ReturnErrorMsg("非法请求，验证失败");
             }
         }
 
@@ -78,7 +75,7 @@ namespace Backstage.Core
         {
             get
             {
-                if(string.IsNullOrEmpty(_apiName)) _apiName = "ApiHandler";
+                if (string.IsNullOrEmpty(_apiName)) _apiName = "ApiHandler";
                 return _apiName;
             }
         }

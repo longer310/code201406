@@ -53,7 +53,7 @@ namespace Backstage.Handler
             jt.AddSuccessParam();
             //单独获取产品的列表 以后得改 +图片墙+活动
             int totalnum;
-            var ads = GoodsHelper.GetGoodsList(sellerid, out totalnum, "", "", 0, 5, 0);
+            var ads = GoodsHelper.GetGoodsList(sellerid, out totalnum, "", "", 0, 5);
         }
         #endregion
 
@@ -79,15 +79,14 @@ namespace Backstage.Handler
                 title = "";
             }
         }
-
         private class GoodsItem
         {
             public string title { get; set; }
             public string img { get; set; }
-            public float nowprice { get; set; }
-            public float originalprice { get; set; }
+            public int nowprice { get; set; }
+            public int originalprice { get; set; }
             public int sales { get; set; }
-            public float score { get; set; }
+            public int score { get; set; }
             public int isfav { get; set; }
             public string content { get; set; }
 
@@ -137,11 +136,7 @@ namespace Backstage.Handler
             string pwheresql = GetWhereSql(goodslist.Select(o => o.Logo).ToList());
             var picList = SourceMaterialHelper.GetList(0, 0, pwheresql, "");
             var gclist = GoodsCategoriesHelper.GetList(sellerid, out totalccount);
-            Favorite favorite = null;
-            if (user != null)
-            {
-                favorite = FavoriteHelper.GetFavorite(user.Id);
-            }
+            Favorite favorite = FavoriteHelper.GetFavorite(user.Id);
             GoodsListData data = new GoodsListData();
             foreach (var goodsCategoriese in gclist)
             {
@@ -183,8 +178,8 @@ namespace Backstage.Handler
             public List<string> images { get; set; }
             public int gid { get; set; }
             public string title { get; set; }
-            public float nowprice { get; set; }
-            public float originalprice { get; set; }
+            public int nowprice { get; set; }
+            public int originalprice { get; set; }
             public int sales { get; set; }
             public int score { get; set; }
             public int isfav { get; set; }
@@ -214,9 +209,7 @@ namespace Backstage.Handler
             string wheresql = GetWhereSql(goods.ImgIdList);
             var piclist = SourceMaterialHelper.GetList(0, 0, wheresql, "");
             var user = Utility.GetCurUser();
-            Favorite favorite = null;
-            if(user != null)
-                favorite = FavoriteHelper.GetFavorite(user.Id);
+            Favorite favorite = FavoriteHelper.GetFavorite(user.Id);
             var data = new GoodsDetailItem();
 
             foreach (var sourceMaterial in piclist)

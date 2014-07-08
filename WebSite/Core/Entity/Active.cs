@@ -17,6 +17,8 @@ namespace Backstage.Core.Entity
 
         public int CoverImgId { get; set; }
 
+        public string CoverImgUrl { get; set; }
+
         public string Title { get; set; }
 
         public string Summary { get; set; }
@@ -24,6 +26,6 @@ namespace Backstage.Core.Entity
         public int Commentnum { get; set; }
 
         public DateTime CreateTime { get; set; }
-        
+
     }
 }

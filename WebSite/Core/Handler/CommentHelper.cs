@@ -29,6 +29,7 @@ namespace Backstage.Core
         public static PagResults<Comment> GetPagings(int sellerId, CommentType type, int typeId, int index, int size, string order = "")
         {
             var results = new PagResults<Comment>();
+            results.Results = new List<Comment>();
             int skipnum = index * size;
             int totalnum = 0;
             string commandText = @"select * from comment where sellerId = ?sellerId and type = ?type and typeId = ?typeId LIMIT ?index,?size " + order;
@@ -53,20 +54,18 @@ namespace Backstage.Core
                     c.Content = reader["Content"].ToString();
                     c.CreateTime = (DateTime)reader["CreateTime"];
                     c.UserId = (int)reader["UserId"];
+                    results.Results.Add(c);
                 }
 
                 commandText = "select count(*) from comment where sellerId = ?sellerId and type = ?type and typeId = ?typeId";
                 parameters.Clear();
                 parameters.Add(new MySqlParameter("?sellerId", sellerId));
                 parameters.Add(new MySqlParameter("?type", (int)type));
-                parameters.Add(new MySqlParameter("?type", typeId));
+                parameters.Add(new MySqlParameter("?typeId", typeId));
                 reader = MySqlHelper.ExecuteReader(GlobalConfig.DbConn, CommandType.Text, commandText, parameters.ToArray());
-                if (reader.HasRows)
+                while (reader.Read())
                 {
-                    if (reader.Read())
-                    {
-                        results.TotalCount = reader.GetInt32(0);
-                    }
+                    results.TotalCount = reader.GetInt32(0);
                 }
             }
             catch (System.Exception ex)
@@ -84,8 +83,8 @@ namespace Backstage.Core
             string connectionString = GlobalConfig.DbConn;
             string commandText = @"INSERT INTO comment 
             	                                ( 
-            	                                SellId,
-            	                                Type
+            	                                SellerId,
+            	                                Type,
             	                                TypeId, 
             	                                Content,
             	                                UserId,
@@ -93,8 +92,8 @@ namespace Backstage.Core
             	                                )
             	                                VALUES
             	                                (  
-            	                                ?SellId,
-            	                                ?Type
+            	                                ?SellerId,
+            	                                ?Type,
             	                                ?TypeId, 
             	                                ?Content,
             	                                ?UserId,
@@ -102,7 +101,7 @@ namespace Backstage.Core
             	                                )";
 
             List<MySqlParameter> parameters = new List<MySqlParameter>();
-            parameters.Add(new MySqlParameter("?SellId", c.SellerId));
+            parameters.Add(new MySqlParameter("?SellerId", c.SellerId));
             parameters.Add(new MySqlParameter("?Type", c.Type));
             parameters.Add(new MySqlParameter("?TypeId", c.TypeId));
             parameters.Add(new MySqlParameter("?Content", c.Content));

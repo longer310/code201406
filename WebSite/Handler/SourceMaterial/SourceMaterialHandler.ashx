@@ -1,1 +1,1 @@
-﻿<%@ WebHandler Language="C#" CodeBehind="SourceMaterialHandler.ashx.cs" Class="WebSite.Handler.SourceMaterial.SourceMaterialHandler" %>
+﻿<%@ WebHandler Language="C#" Class="Backstage.Core.Handler.SourceMaterialHandler" %>

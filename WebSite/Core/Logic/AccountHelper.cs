@@ -68,19 +68,17 @@ namespace Backstage.Core
         public static IList<Account> GetUserList(IList<int> uids)
         {
             IList<Account> list = new List<Account>();
-            string cmdText = @"select * from account where id in ?ids";
+
             string ids_string = "(";
             foreach (var uid in uids)
             {
                 ids_string += (uid + ",");
             }
-            ids_string.TrimEnd(',');
-            IList<MySqlParameter> parameters = new List<MySqlParameter>();
-            parameters.Add(new MySqlParameter("?ids", ids_string));
+            ids_string = ids_string.TrimEnd(',') + ")";
+            string cmdText = string.Format(@"select * from account where id in {0}", ids_string);
             try
             {
-                MySqlDataReader reader = MySqlHelper.ExecuteReader(Utility._gameDbConn, CommandType.Text, cmdText,
-                    parameters.ToArray());
+                MySqlDataReader reader = MySqlHelper.ExecuteReader(Utility._gameDbConn, CommandType.Text, cmdText);
                 while (reader.Read())
                 {
                     Account user = new Account();
@@ -89,7 +87,7 @@ namespace Backstage.Core
                     user.Pwd = reader["Pwd"].ToString();
                     user.RoleType = (RoleType)reader["RoleType"];
                     user.Avatar = reader["Avatar"].ToString();
-                    user.Sex = (int)reader["Sex"];
+                    user.Sex = Convert.ToInt32(reader["Sex"]);
                     user.CreateTime = (DateTime)reader["CreateTime"];
 
                     list.Add(user);

@@ -30,12 +30,15 @@ namespace Backstage.Core
             Request = context.Request;
             Response = context.Response;
 
-            //验证请求是否合法
-            string waitToken = key + "+" + ApiName + "+" + Action + DateTime.Today.ToString("yyyy-MM-dd");
-            string mytoken = CryptHelper.MD5_Encrypt(waitToken);
-            if (!Token.Equals(mytoken))
+            if (Utility._md5open == "1")
             {
-                ReturnErrorMsg("非法请求，验证失败");
+                //验证请求是否合法
+                string waitToken = key + "+" + ApiName + "+" + Action + DateTime.Today.ToString("yyyy-MM-dd");
+                string mytoken = CryptHelper.MD5_Encrypt(waitToken);
+                if (!Token.Equals(mytoken))
+                {
+                    ReturnErrorMsg("非法请求，验证失败");
+                }
             }
         }
 

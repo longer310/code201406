@@ -27,7 +27,7 @@ namespace Backstage.Core.Entity
         /// </summary>
         public string Avatar { get; set; }
         /// <summary>
-        /// 性别
+        /// 性别 0/1 男/女
         /// </summary>
         public int Sex { get; set; }
         /// <summary>

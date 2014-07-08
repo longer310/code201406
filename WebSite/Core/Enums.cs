@@ -25,7 +25,12 @@ namespace Backstage.Core
         /// <summary>
         /// 商家
         /// </summary>
-        User = 10
+        Merchant = 10,
+
+        /// <summary>
+        /// 用户
+        /// </summary>
+        User = 20,
     }
 
     /// <summary>
@@ -49,5 +54,17 @@ namespace Backstage.Core
         /// 优惠券
         /// </summary>
         Coupons = 4
+    }
+
+    public enum SexType
+    {
+        /// <summary>
+        /// 男
+        /// </summary>
+        Male = 0,
+        /// <summary>
+        /// 女
+        /// </summary>
+        Female = 1
     }
 }

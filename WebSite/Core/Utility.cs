@@ -25,6 +25,8 @@ namespace Backstage.Core
 
         public static string _ledou_secret = System.Configuration.ConfigurationManager.AppSettings["ledou_secret"];//跳转地址列表
 
+        public static string _md5open = System.Configuration.ConfigurationManager.AppSettings["md5open"];//是否验证md5加密
+
         public static Account FindUser(string userName)
         {
             var sql = string.Format("select * from account where username='{0}' limit 1;", userName);
@@ -215,7 +217,7 @@ namespace Backstage.Core
         {
             Account curUser = GetCurUser();
             if (curUser == null) return false;
-            if (curUser.RoleType == RoleType.SuperManage || needRoleType == RoleType.User) return true;
+            if (curUser.RoleType == RoleType.SuperManage || needRoleType == RoleType.Merchant) return true;
             else if (needRoleType == RoleType.SuperManage) return false;
             return true;
         }

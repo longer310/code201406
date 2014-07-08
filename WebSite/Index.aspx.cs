@@ -26,7 +26,7 @@ namespace Backstage
                 UserName = CurrentUser.UserName;
                 switch (CurrentUser.RoleType)
                 {
-                    case RoleType.User:
+                    case RoleType.Merchant:
                         RoleName = "商家";
                         //now17.Visible = false;
                         break;

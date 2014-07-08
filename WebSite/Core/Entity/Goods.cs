@@ -37,15 +37,15 @@ namespace Backstage.Core.Entity
         /// <summary>
         /// 现价
         /// </summary>
-        public int Nowprice { get; set; }
+        public float Nowprice { get; set; }
         /// <summary>
         /// 原价
         /// </summary>
-        public int OriginalPrice { get; set; }
+        public float OriginalPrice { get; set; }
         /// <summary>
         /// 评级
         /// </summary>
-        public int Score { get; set; }
+        public float Score { get; set; }
         /// <summary>
         /// 创建时间或者最后修改时间
         /// </summary>

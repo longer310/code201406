@@ -11,7 +11,7 @@ namespace Backstage.Core.Logic
     public static class GoodsHelper
     {
         public static List<Goods> GetGoodsList(int sellerId, out int totalnum, string wheresql = "",
-            string ordersql = "", int start = 0, int limit = 0)
+            string ordersql = "", int start = 0, int limit = 0,int gettotal = 1)
         {
             totalnum = 0;
             List<Goods> list = new List<Goods>();
@@ -49,13 +49,16 @@ namespace Backstage.Core.Logic
                     list.Add(goods);
                 }
 
-                cmdText = string.Format("select count(*) from goods where SellerId={0} ", sellerId) + wheresql;
-                reader = MySqlHelper.ExecuteReader(Utility._gameDbConn, CommandType.Text, cmdText);
-                if (reader.HasRows)
+                if (gettotal == 1)
                 {
-                    if (reader.Read())
+                    cmdText = string.Format("select count(*) from goods where SellerId={0} ", sellerId) + wheresql;
+                    reader = MySqlHelper.ExecuteReader(Utility._gameDbConn, CommandType.Text, cmdText);
+                    if (reader.HasRows)
                     {
-                        totalnum = reader.GetInt32(0);
+                        if (reader.Read())
+                        {
+                            totalnum = reader.GetInt32(0);
+                        }
                     }
                 }
             }

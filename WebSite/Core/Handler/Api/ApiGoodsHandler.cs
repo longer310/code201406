@@ -53,7 +53,7 @@ namespace Backstage.Handler
             jt.AddSuccessParam();
             //单独获取产品的列表 以后得改 +图片墙+活动
             int totalnum;
-            var ads = GoodsHelper.GetGoodsList(sellerid, out totalnum, "", "", 0, 5);
+            var ads = GoodsHelper.GetGoodsList(sellerid, out totalnum, "", "", 0, 5, 0);
         }
         #endregion
 

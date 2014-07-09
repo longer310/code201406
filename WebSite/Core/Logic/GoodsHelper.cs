@@ -15,9 +15,9 @@ namespace Backstage.Core.Logic
         {
             totalnum = 0;
             List<Goods> list = new List<Goods>();
-            if (ordersql == "") ordersql = " order by CreateTime desc";
+            if (ordersql == "") ordersql = " order by CreateTime desc ";
             string limitsql = limit != 0 ? " LIMIT ?start,?limit" : string.Empty;
-            var cmdText = @"select * from Goods where SellerId=?SellerId " + wheresql + ordersql + limitsql;
+            var cmdText = @"select a.*,m.Url from Goods as a left join material m on a.Logo=m.Id where a.SellerId=?SellerId " + wheresql + ordersql + limitsql;
 
             List<MySqlParameter> parameters = new List<MySqlParameter>();
             if (!string.IsNullOrEmpty(limitsql))
@@ -48,13 +48,14 @@ namespace Backstage.Core.Logic
                     goods.ShareCount = (int)reader["ShareCount"];
                     goods.Tag = reader["Tag"].ToString();
                     goods.Content = reader["Content"].ToString();
+                    goods.LogoUrl = reader["Url"].ToString();
 
                     list.Add(goods);
                 }
 
                 if (gettotal == 1)
                 {
-                    cmdText = string.Format("select count(*) from goods where SellerId={0} ", sellerId) + wheresql;
+                    cmdText = string.Format("select count(*) from goods as a left join material m on a.Logo=m.Id  where SellerId={0} ", sellerId) + wheresql;
                     reader = MySqlHelper.ExecuteReader(Utility._gameDbConn, CommandType.Text, cmdText);
                     if (reader.HasRows)
                     {
@@ -74,7 +75,7 @@ namespace Backstage.Core.Logic
 
         public static Goods GetGoods(int id)
         {
-            var sql = string.Format("select * from Goods where Id={0} limit 1;", id);
+            var sql = string.Format("select a.*,m.Url from Goods where Id={0} limit 1;", id);
             try
             {
                 MySqlDataReader reader = MySqlHelper.ExecuteReader(Utility._gameDbConn, CommandType.Text, sql);
@@ -98,6 +99,7 @@ namespace Backstage.Core.Logic
                         goods.ShareCount = (int)reader["ShareCount"];
                         goods.Tag = reader["Tag"].ToString();
                         goods.Content = reader["Content"].ToString();
+                        goods.LogoUrl = reader["Url"].ToString();
                         return goods;
                     }
                 }

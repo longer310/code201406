@@ -67,6 +67,16 @@ namespace Backstage.Core.Entity
         /// </summary>
         public string Content { get; set; }
 
+        /// <summary>
+        /// 图片地址 从图片表获取
+        /// </summary>
+        public string LogoUrl { get; set; }
+
+        /// <summary>
+        /// 是否推荐到首页
+        /// </summary>
+        public int IsHot { get; set; }
+
         public List<int> ImgIdList
         {
             get

@@ -40,9 +40,46 @@ namespace Backstage.Handler
 
         }
         #region 首页
+        public class HomeData
+        {
+            public List<SlideItem> slide { get; set; }
+
+            public AdItem ad { get; set; }
+
+            public List<HotItem> hots { get; set; }
+
+            public HomeData()
+            {
+                slide = new List<SlideItem>();
+                ad = new AdItem();
+                hots = new List<HotItem>();
+            }
+        }
+        public class SlideAdItem
+        {
+            public string img { get; set; }
+            public string title { get; set; }
+        }
+        public class SlideItem : SlideAdItem
+        {
+            public int type { get; set; }
+            public int typeid { get; set; }
+        }
+        public class AdItem : SlideAdItem
+        {
+            public string url { get; set; }
+        }
+        public class TSlideItem : SlideItem
+        {
+            public DateTime createtime { get; set; }
+        }
+        public class HotItem
+        {
+            public string img { get; set; }
+            public int gid { get; set; }
+        }
         private void GetPageInfo()
         {
-            JsonTransfer jt = new JsonTransfer();
             int sellerid = GetInt("sellerid");
 
             if (sellerid == 0)
@@ -50,11 +87,63 @@ namespace Backstage.Handler
                 ReturnErrorMsg("商户id不合法");
                 return;
             }
-            jt.AddSuccessParam();
             //单独获取产品的列表 以后得改 +图片墙+活动
+            var list = new List<TSlideItem>();
             int totalnum;
             var gads = GoodsHelper.GetGoodsList(sellerid, out totalnum, "", "", 0, 5, 0);
-            var aads = ActiveHelper.GetList(0,5,""," order by createtime desc ");
+            foreach (var gad in gads)
+            {
+                var s = new TSlideItem();
+                s.img = gad.LogoUrl;
+                s.title = gad.Title;
+                s.type = (int)CommentType.Goods;
+                s.typeid = gad.Id;
+                s.createtime = gad.CreateTime;
+            }
+            var aads = ActiveHelper.GetList(0, 5, "", " order by createtime desc ");
+            foreach (var aad in aads)
+            {
+                var s = new TSlideItem();
+                s.img = aad.CoverImgUrl;
+                s.title = aad.Title;
+                s.type = (int)CommentType.Avtive;
+                s.typeid = aad.Id;
+                s.createtime = aad.CreateTime;
+            }
+            var pads = SourceMaterialHelper.GetList(0, 5, "", " order by createtime desc ");
+            foreach (var pad in pads)
+            {
+                var s = new TSlideItem();
+                s.img = pad.Url;
+                s.title = pad.Title;
+                s.type = (int)CommentType.Img;
+                s.typeid = pad.Id;
+                s.createtime = pad.CreateTime;
+            }
+
+            list = list.OrderByDescending(o => o.createtime).Take(5).ToList();
+
+            var data = new HomeData();
+            foreach (var l in list)
+            {
+                data.slide.Add(new SlideItem() { img = l.img, title = l.title, type = l.type, typeid = l.typeid });
+            }
+
+            Mparam mpparam = MparamHelper.GetMparam(1);
+            data.ad = new AdItem() { img = mpparam.AdImgUrl, title = mpparam.Title, url = mpparam.Url };
+
+            int totalcount;
+            var glist = GoodsHelper.GetGoodsList(sellerid, out totalcount, " and IsHot = 1 ","", 0, 8, 0);
+            foreach (var gl in glist)
+            {
+                data.hots.Add(new HotItem() { img=gl.LogoUrl,gid=gl.Id });
+            }
+
+            JsonTransfer jt = new JsonTransfer();
+            jt.AddSuccessParam();
+            jt.Add("data", data);
+            Response.Write(DesEncrypt(jt));
+            Response.End();
         }
         #endregion
 
@@ -83,6 +172,7 @@ namespace Backstage.Handler
 
         private class GoodsItem
         {
+            public int gid { get; set; }
             public string title { get; set; }
             public string img { get; set; }
             public float nowprice { get; set; }
@@ -135,8 +225,8 @@ namespace Backstage.Handler
             int totalccount;
             var user = Utility.GetCurUser();
             var goodslist = GoodsHelper.GetGoodsList(sellerid, out totalcount, wheresql, ordersql, start * limit, limit);
-            string pwheresql = GetWhereSql(goodslist.Select(o => o.Logo).ToList());
-            var picList = SourceMaterialHelper.GetList(0, 0, pwheresql, "");
+            //string pwheresql = GetWhereSql(goodslist.Select(o => o.Logo).ToList());
+            //var picList = SourceMaterialHelper.GetList(0, 0, pwheresql, "");
             var gclist = GoodsCategoriesHelper.GetList(sellerid, out totalccount);
             Favorite favorite = null;
             if (user != null)
@@ -157,8 +247,9 @@ namespace Backstage.Handler
             {
                 GoodsItem gitem = new GoodsItem();
                 gitem.title = goods.Title;
-                var pic = picList.FirstOrDefault(o => o.Id == goods.Logo);
-                if (pic != null) gitem.img = pic.Url;
+                //var pic = picList.FirstOrDefault(o => o.Id == goods.Logo);
+                //if (pic != null) gitem.img = pic.Url;
+                gitem.img = goods.LogoUrl;
                 gitem.nowprice = goods.Nowprice;
                 gitem.originalprice = goods.OriginalPrice;
                 gitem.sales = goods.Sales;
@@ -166,6 +257,7 @@ namespace Backstage.Handler
                 gitem.content = goods.Content;
                 if (favorite != null && favorite.GidList.Contains(goods.Id))
                     gitem.isfav = 1;
+                gitem.gid = goods.Id;
 
                 data.goods.Add(gitem);
             }
@@ -216,7 +308,7 @@ namespace Backstage.Handler
             var piclist = SourceMaterialHelper.GetList(0, 0, wheresql, "");
             var user = Utility.GetCurUser();
             Favorite favorite = null;
-            if(user != null)
+            if (user != null)
                 favorite = FavoriteHelper.GetFavorite(user.Id);
             var data = new GoodsDetailItem();
 

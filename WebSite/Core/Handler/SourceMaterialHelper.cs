@@ -126,26 +126,23 @@ namespace Backstage.Core
             return results;
         }
 
-
         /// <summary>
         /// 
         /// </summary>
+        /// <param name="start"></param>
+        /// <param name="limit"></param>
         /// <param name="wheresql"></param>
         /// <param name="ordersql"></param>
-        /// <param name="pageIndex"></param>
-        /// <param name="pageSize"></param>
         /// <returns></returns>
-        public static IList<SourceMaterial> GetList(int pageIndex, int pageSize, string wheresql = "", string ordersql = "")
+        public static IList<SourceMaterial> GetList(int start, int limit, string wheresql = "", string ordersql = "")
         {
             var results = new List<SourceMaterial>();
-            int skipnum = pageSize * pageIndex;
-            int totalnum = 0;
-            string limitsql = pageSize == 0 ? string.Empty : " LIMIT ?index,?size ";
+            string limitsql = limit == 0 ? string.Empty : " LIMIT ?start,?limit ";
             string commandText = @"select * from material " + wheresql  + ordersql + limitsql;
 
             List<MySqlParameter> parameters = new List<MySqlParameter>();
-            parameters.Add(new MySqlParameter("?index", pageIndex));
-            parameters.Add(new MySqlParameter("?size", pageSize));
+            parameters.Add(new MySqlParameter("?start", start));
+            parameters.Add(new MySqlParameter("?limit", limit));
 
             try
             {

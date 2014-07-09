@@ -13,11 +13,12 @@ namespace Backstage.Core.Handler
     /// <summary>
     /// SourceMaterial 的摘要说明
     /// </summary>
-    public class CommentHandler : BaseHandler
+    public class CommentHandler : BaseApiHandler
     {
 
         public override void ProcessRequest(HttpContext context)
         {
+            base.SetApiName("ActiveHandler");
             base.ProcessRequest(HttpContext.Current);
             switch (Action)
             {

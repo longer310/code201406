@@ -17,6 +17,7 @@ namespace Backstage.Core.Handler
     {
         public override void ProcessRequest(HttpContext context)
         {
+            base.SetApiName("ActiveHandler");
             base.ProcessRequest(HttpContext.Current);
             switch (Action)
             {

@@ -111,9 +111,9 @@ namespace Backstage.Handler
             int start = GetInt("start");
             int limit = GetInt("limit");
 
-            string wheresql = " and ";
+            string wheresql = string.Empty;
             string ordersql = "";
-            if (cid > 0) wheresql += string.Format(" Cid={0}", cid);
+            if (cid > 0) wheresql += string.Format(" and Cid={0}", cid);
             switch (order)
             {
                 case 1:

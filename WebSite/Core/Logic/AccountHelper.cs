@@ -27,8 +27,11 @@ namespace Backstage.Core
             var cmdText = @"select * from account " + wheresql + ordersql + limitsql;
 
             List<MySqlParameter> parameters = new List<MySqlParameter>();
-            parameters.Add(new MySqlParameter("?start", start));
-            parameters.Add(new MySqlParameter("?limit", limit));
+            if (!string.IsNullOrEmpty(limitsql))
+            {
+                parameters.Add(new MySqlParameter("?start", start));
+                parameters.Add(new MySqlParameter("?limit", limit));
+            }
 
             try
             {

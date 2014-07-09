@@ -141,7 +141,7 @@ namespace Backstage.Core
             int skipnum = pageSize * pageIndex;
             int totalnum = 0;
             string limitsql = pageSize == 0 ? string.Empty : " LIMIT ?index,?size ";
-            string commandText = @"select * from material " + wheresql + limitsql + ordersql;
+            string commandText = @"select * from material " + wheresql  + ordersql + limitsql;
 
             List<MySqlParameter> parameters = new List<MySqlParameter>();
             parameters.Add(new MySqlParameter("?index", pageIndex));

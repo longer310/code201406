@@ -97,22 +97,20 @@ namespace Backstage.Core
         /// <summary>
         /// 活动列表
         /// </summary>
-        /// <param name="pageIndex"></param>
-        /// <param name="pageSize"></param>
+        /// <param name="start"></param>
+        /// <param name="limit"></param>
         /// <param name="wheresql"></param>
         /// <param name="ordersql"></param>
         /// <returns></returns>
-        public static IList<Active> GetList(int pageIndex, int pageSize, string wheresql = "", string ordersql = "")
+        public static IList<Active> GetList(int start, int limit, string wheresql = "", string ordersql = "")
         {
             var results = new List<Active>();
-            int skipnum = pageSize * pageIndex;
-            int totalnum = 0;
-            string limitsql = pageSize == 0 ? string.Empty : " LIMIT ?index,?size ";
-            string commandText = @"select * from active " + wheresql + limitsql + ordersql;
+            string limitsql = limit == 0 ? string.Empty : " LIMIT ?start,?limit ";
+            string commandText = @"select * from active " + wheresql + ordersql + limitsql;
 
             List<MySqlParameter> parameters = new List<MySqlParameter>();
-            parameters.Add(new MySqlParameter("?index", pageIndex));
-            parameters.Add(new MySqlParameter("?size", pageSize));
+            parameters.Add(new MySqlParameter("?start", start));
+            parameters.Add(new MySqlParameter("?limit", limit));
 
             try
             {

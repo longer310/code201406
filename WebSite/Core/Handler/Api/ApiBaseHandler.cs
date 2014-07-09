@@ -35,7 +35,7 @@ namespace Backstage.Core
                 //验证请求是否合法
                 string waitToken = key + ApiName + Action + DateTime.Today.ToString("yyyy-MM-dd");
                 string mytoken = CryptHelper.MD5_Encrypt(waitToken);
-                if (!Token.Equals(mytoken))
+                if (!Token.ToLower().Equals(mytoken))
                 {
                     ReturnErrorMsg("非法请求，验证失败");
                 }
@@ -78,7 +78,7 @@ namespace Backstage.Core
         {
             get
             {
-                if(string.IsNullOrEmpty(_apiName)) _apiName = "ApiHandler";
+                if(string.IsNullOrEmpty(_apiName)) _apiName = "ApiGooodsHandler";
                 return _apiName;
             }
         }
@@ -103,7 +103,7 @@ namespace Backstage.Core
             get
             {
                 if (string.IsNullOrEmpty(_token))
-                    _token = Request.QueryString["token"];
+                    _token = GetString("token");
 
                 return _token;
             }

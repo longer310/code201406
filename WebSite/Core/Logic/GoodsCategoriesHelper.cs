@@ -25,13 +25,16 @@ namespace Backstage.Core.Logic
         {
             totalnum = 0;
             List<GoodsCategories> list = new List<GoodsCategories>();
-            if (ordersql == "") ordersql = " order by Index";
+            if (ordersql == "") ordersql = " order by `Index` ";
             string limitsql = limit != 0 ? " LIMIT ?start,?limit" : string.Empty;
             var cmdText = @"select * from GoodsCategories where SellerId=?SellerId " + wheresql + ordersql + limitsql;
 
             List<MySqlParameter> parameters = new List<MySqlParameter>();
-            parameters.Add(new MySqlParameter("?start", start));
-            parameters.Add(new MySqlParameter("?limit", limit));
+            if (!string.IsNullOrEmpty(limitsql))
+            {
+                parameters.Add(new MySqlParameter("?start", start));
+                parameters.Add(new MySqlParameter("?limit", limit));
+            }
             parameters.Add(new MySqlParameter("?SellerId", sellerId));
             try
             {

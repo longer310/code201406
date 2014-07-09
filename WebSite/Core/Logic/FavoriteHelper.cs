@@ -30,7 +30,7 @@ namespace Backstage.Core.Logic
                 {
                     var favorite = new Favorite();
                     favorite.Id = id;
-                    SaveFavorite(favorite);
+                    SaveFavorite(favorite,1);
                     return favorite;
                 }
             }
@@ -65,7 +65,7 @@ namespace Backstage.Core.Logic
             }
             try
             {
-                var num = MySqlHelper.ExecuteNonQuery(Utility._gameDbConn, CommandType.Text, cmdText);
+                var num = MySqlHelper.ExecuteNonQuery(Utility._gameDbConn, CommandType.Text, cmdText, parameters.ToArray());
                 return num > 0;
             }
             catch (System.Exception ex)

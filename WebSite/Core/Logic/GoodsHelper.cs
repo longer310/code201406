@@ -20,8 +20,11 @@ namespace Backstage.Core.Logic
             var cmdText = @"select * from Goods where SellerId=?SellerId " + wheresql + ordersql + limitsql;
 
             List<MySqlParameter> parameters = new List<MySqlParameter>();
-            parameters.Add(new MySqlParameter("?start", start));
-            parameters.Add(new MySqlParameter("?limit", limit));
+            if (!string.IsNullOrEmpty(limitsql))
+            {
+                parameters.Add(new MySqlParameter("?start", start));
+                parameters.Add(new MySqlParameter("?limit", limit));
+            }
             parameters.Add(new MySqlParameter("?SellerId", sellerId));
             try
             {
@@ -37,9 +40,9 @@ namespace Backstage.Core.Logic
                     goods.Sales = (int)reader["Sales"];
                     goods.Title = reader["Title"].ToString();
                     goods.Cid = (int)reader["Cid"];
-                    goods.Nowprice = (int)reader["Nowprice"];
-                    goods.OriginalPrice = (int)reader["OriginalPrice"];
-                    goods.Score = (int)reader["Score"];
+                    goods.Nowprice = (float)reader["Nowprice"];
+                    goods.OriginalPrice = (float)reader["OriginalPrice"];
+                    goods.Score = (float)reader["Score"];
                     goods.CreateTime = (DateTime)reader["CreateTime"];
                     goods.FavCount = (int)reader["FavCount"];
                     goods.ShareCount = (int)reader["ShareCount"];
@@ -87,9 +90,9 @@ namespace Backstage.Core.Logic
                         goods.Sales = (int)reader["Sales"];
                         goods.Title = reader["Title"].ToString();
                         goods.Cid = (int)reader["Cid"];
-                        goods.Nowprice = (int)reader["Nowprice"];
-                        goods.OriginalPrice = (int)reader["OriginalPrice"];
-                        goods.Score = (int)reader["Score"];
+                        goods.Nowprice = (float)reader["Nowprice"];
+                        goods.OriginalPrice = (float)reader["OriginalPrice"];
+                        goods.Score = (float)reader["Score"];
                         goods.CreateTime = (DateTime)reader["CreateTime"];
                         goods.FavCount = (int)reader["FavCount"];
                         goods.ShareCount = (int)reader["ShareCount"];

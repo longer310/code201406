@@ -53,7 +53,8 @@ namespace Backstage.Handler
             jt.AddSuccessParam();
             //单独获取产品的列表 以后得改 +图片墙+活动
             int totalnum;
-            var ads = GoodsHelper.GetGoodsList(sellerid, out totalnum, "", "", 0, 5, 0);
+            var gads = GoodsHelper.GetGoodsList(sellerid, out totalnum, "", "", 0, 5, 0);
+            var aads = ActiveHelper.GetList(0,5,""," order by createtime desc ");
         }
         #endregion
 
@@ -110,7 +111,7 @@ namespace Backstage.Handler
             int start = GetInt("start");
             int limit = GetInt("limit");
 
-            string wheresql = "";
+            string wheresql = " and ";
             string ordersql = "";
             if (cid > 0) wheresql += string.Format(" Cid={0}", cid);
             switch (order)

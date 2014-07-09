@@ -76,7 +76,7 @@ namespace Backstage.Core.Logic
         /// <returns></returns>
         public static GoodsCategories GetGoodsCategories(int id)
         {
-            var cmdText = string.Format("select * from Favorite where Id={0} limit 1;", id);
+            var cmdText = string.Format("select * from GoodsCategories where Id={0} limit 1;", id);
             try
             {
                 MySqlDataReader reader = MySqlHelper.ExecuteReader(Utility._gameDbConn, CommandType.Text, cmdText);

@@ -136,7 +136,7 @@ namespace Backstage.Core.Logic
                                         FavCount        = ?FavCount,
                                         ShareCount      = ?ShareCount,
                                         Tag             = ?Tag,
-                                        Content         = ?Content,
+                                        Content         = ?Content
                                     WHERE
                                         Id = ?Id";
                 parameters.Add(new MySqlParameter("?Id", goods.Id));

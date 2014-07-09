@@ -70,7 +70,7 @@ namespace Backstage.Core.Handler
             Response.End();
         }
 
-        private StatusMessage ActiveComment()
+        private void ActiveComment()
         {
             int aid = GetInt("newid");
             int uid = GetInt("uid");
@@ -98,8 +98,6 @@ namespace Backstage.Core.Handler
             jt.AddSuccessParam();
             Response.Write(DesEncrypt(jt).ToLower());
             Response.End();
-
-            return new StatusMessage() { Message = "suc", Status = 1 };
         }
 
         private void GetItem()

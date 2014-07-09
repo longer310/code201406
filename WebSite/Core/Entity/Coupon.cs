@@ -11,6 +11,9 @@ namespace Backstage.Core.Entity
 
         public string Title { get; set; }
 
+        public int ImgId { get; set; }
+
+        public string ImgUrl { get; set; }
 
         /// <summary>
         /// 积分

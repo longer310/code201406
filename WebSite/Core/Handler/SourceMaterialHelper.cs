@@ -20,17 +20,21 @@ namespace Backstage.Core
             parameters.Add(new MySqlParameter("?id", id));
             try
             {
-                MySqlDataReader reader = MySqlHelper.ExecuteReader(GlobalConfig.DbConn, CommandType.Text, commandText, parameters.ToArray());
-                while (reader.Read())
+                using (MySqlConnection conn = new MySqlConnection(GlobalConfig.DbConn))
                 {
-                    sm.Id = reader.GetInt32(0);
-                    sm.Url = reader["Url"].ToString();
-                    sm.Title = reader["Title"].ToString();
-                    sm.Description = reader["Description"].ToString();
-                    sm.Views = (int)reader["Views"];
-                    sm.Commentnum = (int)reader["Commentnum"];
-                    sm.SellerId = (int)reader["SellerId"];
-                    sm.CreateTime = (DateTime)reader["CreateTime"];
+                    //MySqlDataReader reader = MySqlHelper.ExecuteReader(GlobalConfig.DbConn, CommandType.Text, commandText, parameters.ToArray());
+                    MySqlDataReader reader = MySqlHelper.ExecuteReader(GlobalConfig.DbConn, CommandType.Text, commandText, parameters.ToArray());
+                    while (reader.Read())
+                    {
+                        sm.Id = reader.GetInt32(0);
+                        sm.Url = reader["Url"].ToString();
+                        sm.Title = reader["Title"].ToString();
+                        sm.Description = reader["Description"].ToString();
+                        sm.Views = (int)reader["Views"];
+                        sm.Commentnum = (int)reader["Commentnum"];
+                        sm.SellerId = (int)reader["SellerId"];
+                        sm.CreateTime = (DateTime)reader["CreateTime"];
+                    }
                 }
 
             }
@@ -57,28 +61,31 @@ namespace Backstage.Core
 
             try
             {
-                MySqlDataReader reader = MySqlHelper.ExecuteReader(GlobalConfig.DbConn, CommandType.Text, commandText, parameters.ToArray());
-                while (reader.Read())
+                using (MySqlConnection conn = new MySqlConnection(GlobalConfig.DbConn))
                 {
-                    SourceMaterial sm = new SourceMaterial();
-                    sm.Id = reader.GetInt32(0);
-                    sm.Url = reader["Url"].ToString();
-                    sm.Title = reader["Title"].ToString();
-                    sm.Description = reader["Description"].ToString();
-                    sm.Views = (int)reader["Views"];
-                    sm.Commentnum = (int)reader["Commentnum"];
-                    sm.SellerId = (int)reader["SellerId"];
-                    sm.CreateTime = (DateTime)reader["CreateTime"];
-                    results.Results.Add(sm);
-                }
-
-                commandText = @"select count(*) from material";
-                reader = MySqlHelper.ExecuteReader(GlobalConfig.DbConn, CommandType.Text, commandText, parameters.ToArray());
-                if (reader.HasRows)
-                {
-                    if (reader.Read())
+                    MySqlDataReader reader = MySqlHelper.ExecuteReader(GlobalConfig.DbConn, CommandType.Text, commandText, parameters.ToArray());
+                    while (reader.Read())
                     {
-                        results.TotalCount = reader.GetInt32(0);
+                        SourceMaterial sm = new SourceMaterial();
+                        sm.Id = reader.GetInt32(0);
+                        sm.Url = reader["Url"].ToString();
+                        sm.Title = reader["Title"].ToString();
+                        sm.Description = reader["Description"].ToString();
+                        sm.Views = (int)reader["Views"];
+                        sm.Commentnum = (int)reader["Commentnum"];
+                        sm.SellerId = (int)reader["SellerId"];
+                        sm.CreateTime = (DateTime)reader["CreateTime"];
+                        results.Results.Add(sm);
+                    }
+
+                    commandText = @"select count(*) from material";
+                    reader = MySqlHelper.ExecuteReader(GlobalConfig.DbConn, CommandType.Text, commandText, parameters.ToArray());
+                    if (reader.HasRows)
+                    {
+                        if (reader.Read())
+                        {
+                            results.TotalCount = reader.GetInt32(0);
+                        }
                     }
                 }
             }
@@ -103,19 +110,22 @@ namespace Backstage.Core
 
             try
             {
-                MySqlDataReader reader = MySqlHelper.ExecuteReader(GlobalConfig.DbConn, CommandType.Text, commandText, parameters.ToArray());
-                while (reader.Read())
+                using (MySqlConnection conn = new MySqlConnection(GlobalConfig.DbConn))
                 {
-                    SourceMaterial sm = new SourceMaterial();
-                    sm.Id = reader.GetInt32(0);
-                    sm.Url = reader["Url"].ToString();
-                    sm.Title = reader["Title"].ToString();
-                    sm.Description = reader["Description"].ToString();
-                    sm.Views = (int)reader["Views"];
-                    sm.Commentnum = (int)reader["Commentnum"];
-                    sm.SellerId = (int)reader["SellerId"];
-                    sm.CreateTime = (DateTime)reader["CreateTime"];
-                    results.Add(sm);
+                    MySqlDataReader reader = MySqlHelper.ExecuteReader(GlobalConfig.DbConn, CommandType.Text, commandText, parameters.ToArray());
+                    while (reader.Read())
+                    {
+                        SourceMaterial sm = new SourceMaterial();
+                        sm.Id = reader.GetInt32(0);
+                        sm.Url = reader["Url"].ToString();
+                        sm.Title = reader["Title"].ToString();
+                        sm.Description = reader["Description"].ToString();
+                        sm.Views = (int)reader["Views"];
+                        sm.Commentnum = (int)reader["Commentnum"];
+                        sm.SellerId = (int)reader["SellerId"];
+                        sm.CreateTime = (DateTime)reader["CreateTime"];
+                        results.Add(sm);
+                    }
                 }
 
             }
@@ -138,7 +148,7 @@ namespace Backstage.Core
         {
             var results = new List<SourceMaterial>();
             string limitsql = limit == 0 ? string.Empty : " LIMIT ?start,?limit ";
-            string commandText = @"select * from material " + wheresql  + ordersql + limitsql;
+            string commandText = @"select * from material " + wheresql + ordersql + limitsql;
 
             List<MySqlParameter> parameters = new List<MySqlParameter>();
             parameters.Add(new MySqlParameter("?start", start));
@@ -146,21 +156,23 @@ namespace Backstage.Core
 
             try
             {
-                MySqlDataReader reader = MySqlHelper.ExecuteReader(GlobalConfig.DbConn, CommandType.Text, commandText, parameters.ToArray());
-                while (reader.Read())
+                using (MySqlConnection conn = new MySqlConnection(GlobalConfig.DbConn))
                 {
-                    SourceMaterial sm = new SourceMaterial();
-                    sm.Id = reader.GetInt32(0);
-                    sm.Url = reader["Url"].ToString();
-                    sm.Title = reader["Title"].ToString();
-                    sm.Description = reader["Description"].ToString();
-                    sm.Views = (int)reader["Views"];
-                    sm.Commentnum = (int)reader["Commentnum"];
-                    sm.SellerId = (int)reader["SellerId"];
-                    sm.CreateTime = (DateTime)reader["CreateTime"];
-                    results.Add(sm);
+                    MySqlDataReader reader = MySqlHelper.ExecuteReader(GlobalConfig.DbConn, CommandType.Text, commandText, parameters.ToArray());
+                    while (reader.Read())
+                    {
+                        SourceMaterial sm = new SourceMaterial();
+                        sm.Id = reader.GetInt32(0);
+                        sm.Url = reader["Url"].ToString();
+                        sm.Title = reader["Title"].ToString();
+                        sm.Description = reader["Description"].ToString();
+                        sm.Views = (int)reader["Views"];
+                        sm.Commentnum = (int)reader["Commentnum"];
+                        sm.SellerId = (int)reader["SellerId"];
+                        sm.CreateTime = (DateTime)reader["CreateTime"];
+                        results.Add(sm);
+                    }
                 }
-
             }
             catch (System.Exception ex)
             {
@@ -216,7 +228,9 @@ namespace Backstage.Core
             parameters.Add(new MySqlParameter("?SellerId", sm.SellerId));
             parameters.Add(new MySqlParameter("?CreateTime", sm.CreateTime));
 
+
             MySqlHelper.ExecuteNonQuery(GlobalConfig.DbConn, CommandType.Text, commandText, parameters.ToArray());
+
         }
 
         //        public static void Delete(SourceMaterial sm)

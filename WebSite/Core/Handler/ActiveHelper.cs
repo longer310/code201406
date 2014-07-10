@@ -114,19 +114,21 @@ namespace Backstage.Core
 
             try
             {
-                MySqlDataReader reader = MySqlHelper.ExecuteReader(GlobalConfig.DbConn, CommandType.Text, commandText, parameters.ToArray());
-                while (reader.Read())
+                using (MySqlConnection conn = new MySqlConnection(GlobalConfig.DbConn))
                 {
-                    Active a = new Active();
-                    a.Id = (int)reader["Id"];
-                    a.SellerId = (int)reader["SellerId"];
-                    a.CoverImgId = (int)reader["CoverImgId"];
-                    a.Title = reader["Title"].ToString();
-                    a.Summary = reader["Summary"].ToString();
-                    a.CreateTime = (DateTime)reader["CreateTime"];
-                    results.Add(a);
+                    MySqlDataReader reader = MySqlHelper.ExecuteReader(GlobalConfig.DbConn, CommandType.Text, commandText, parameters.ToArray());
+                    while (reader.Read())
+                    {
+                        Active a = new Active();
+                        a.Id = (int)reader["Id"];
+                        a.SellerId = (int)reader["SellerId"];
+                        a.CoverImgId = (int)reader["CoverImgId"];
+                        a.Title = reader["Title"].ToString();
+                        a.Summary = reader["Summary"].ToString();
+                        a.CreateTime = (DateTime)reader["CreateTime"];
+                        results.Add(a);
+                    }
                 }
-
             }
             catch (System.Exception ex)
             {

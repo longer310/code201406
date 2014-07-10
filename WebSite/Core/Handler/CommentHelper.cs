@@ -43,29 +43,32 @@ namespace Backstage.Core
 
             try
             {
-                MySqlDataReader reader = MySqlHelper.ExecuteReader(GlobalConfig.DbConn, CommandType.Text, commandText, parameters.ToArray());
-                while (reader.Read())
+                using (MySqlConnection conn = new MySqlConnection(GlobalConfig.DbConn))
                 {
-                    Comment c = new Comment();
-                    c.Id = (int)reader["Id"];
-                    c.SellerId = (int)reader["SellerId"];
-                    c.Type = type;
-                    c.TypeId = typeId;
-                    c.Content = reader["Content"].ToString();
-                    c.CreateTime = (DateTime)reader["CreateTime"];
-                    c.UserId = (int)reader["UserId"];
-                    results.Results.Add(c);
-                }
+                    MySqlDataReader reader = MySqlHelper.ExecuteReader(GlobalConfig.DbConn, CommandType.Text, commandText, parameters.ToArray());
+                    while (reader.Read())
+                    {
+                        Comment c = new Comment();
+                        c.Id = (int)reader["Id"];
+                        c.SellerId = (int)reader["SellerId"];
+                        c.Type = type;
+                        c.TypeId = typeId;
+                        c.Content = reader["Content"].ToString();
+                        c.CreateTime = (DateTime)reader["CreateTime"];
+                        c.UserId = (int)reader["UserId"];
+                        results.Results.Add(c);
+                    }
 
-                commandText = "select count(*) from comment where sellerId = ?sellerId and type = ?type and typeId = ?typeId";
-                parameters.Clear();
-                parameters.Add(new MySqlParameter("?sellerId", sellerId));
-                parameters.Add(new MySqlParameter("?type", (int)type));
-                parameters.Add(new MySqlParameter("?typeId", typeId));
-                reader = MySqlHelper.ExecuteReader(GlobalConfig.DbConn, CommandType.Text, commandText, parameters.ToArray());
-                while (reader.Read())
-                {
-                    results.TotalCount = reader.GetInt32(0);
+                    commandText = "select count(*) from comment where sellerId = ?sellerId and type = ?type and typeId = ?typeId";
+                    parameters.Clear();
+                    parameters.Add(new MySqlParameter("?sellerId", sellerId));
+                    parameters.Add(new MySqlParameter("?type", (int)type));
+                    parameters.Add(new MySqlParameter("?typeId", typeId));
+                    reader = MySqlHelper.ExecuteReader(GlobalConfig.DbConn, CommandType.Text, commandText, parameters.ToArray());
+                    while (reader.Read())
+                    {
+                        results.TotalCount = reader.GetInt32(0);
+                    }
                 }
             }
             catch (System.Exception ex)

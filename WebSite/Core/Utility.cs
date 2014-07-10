@@ -192,7 +192,7 @@ namespace Backstage.Core
         /// </summary>
         /// <param name="strConn">连接串</param>
         /// <returns></returns>
-        public static IDbConnection ObtainConn(string strConn)
+        public static MySqlConnection ObtainConn(string strConn)
         {
             using (MySqlConnection conn = new MySqlConnection(strConn))
             {

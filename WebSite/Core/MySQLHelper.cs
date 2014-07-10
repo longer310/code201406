@@ -7,7 +7,6 @@ using MySql.Data;
 using MySql.Data.MySqlClient;
 
 namespace Backstage.Core
-
 {
 
     /// <summary>
@@ -23,7 +22,6 @@ namespace Backstage.Core
     /// </remarks>
 
     public abstract class MySqlHelper
-
     {
 
         #region 数据库连接字符串
@@ -53,7 +51,6 @@ namespace Backstage.Core
         /// <param name="cmdParms">MySqlCommand参数数组，可为null</param>
 
         private static void PrepareCommand(MySqlConnection conn, MySqlTransaction trans, MySqlCommand cmd, CommandType cmdType, string cmdText, MySqlParameter[] cmdParms)
-
         {
 
             if (conn.State != ConnectionState.Open)
@@ -71,7 +68,6 @@ namespace Backstage.Core
             cmd.CommandType = cmdType;
 
             if (cmdParms != null)
-
             {
 
                 foreach (MySqlParameter parm in cmdParms)
@@ -79,7 +75,6 @@ namespace Backstage.Core
                     cmd.Parameters.Add(parm);
 
             }
-
         }
 
         #endregion
@@ -103,13 +98,11 @@ namespace Backstage.Core
         /// <returns>返回受引响的记录行数</returns>
 
         public static int ExecuteNonQuery(string connectionString, CommandType cmdType, string cmdText, params MySqlParameter[] cmdParms)
-
         {
 
             MySqlCommand cmd = new MySqlCommand();
 
             using (MySqlConnection conn = new MySqlConnection(connectionString))
-
             {
 
                 PrepareCommand(conn, null, cmd, cmdType, cmdText, cmdParms);
@@ -117,6 +110,10 @@ namespace Backstage.Core
                 int val = cmd.ExecuteNonQuery();
 
                 cmd.Parameters.Clear();
+
+                conn.Close();
+                conn.Dispose();
+                cmd.Dispose();
 
                 return val;
 
@@ -141,7 +138,6 @@ namespace Backstage.Core
         /// <returns>返回受引响的记录行数</returns>
 
         public static int ExecuteNonQuery(MySqlConnection conn, CommandType cmdType, string cmdText, params MySqlParameter[] cmdParms)
-
         {
 
             MySqlCommand cmd = new MySqlCommand();
@@ -151,6 +147,7 @@ namespace Backstage.Core
             int val = cmd.ExecuteNonQuery();
 
             cmd.Parameters.Clear();
+            cmd.Dispose();
 
             return val;
 
@@ -173,7 +170,6 @@ namespace Backstage.Core
         /// <returns>返回受引响的记录行数</returns>
 
         public static int ExecuteNonQuery(MySqlTransaction trans, CommandType cmdType, string cmdText, params MySqlParameter[] cmdParms)
-
         {
 
             MySqlCommand cmd = new MySqlCommand();
@@ -183,6 +179,7 @@ namespace Backstage.Core
             int val = cmd.ExecuteNonQuery();
 
             cmd.Parameters.Clear();
+            cmd.Dispose();
 
             return val;
 
@@ -209,13 +206,11 @@ namespace Backstage.Core
         /// <returns>返回Object对象</returns>
 
         public static object ExecuteScalar(string connectionString, CommandType cmdType, string cmdText, params MySqlParameter[] cmdParms)
-
         {
 
             MySqlCommand cmd = new MySqlCommand();
 
             using (MySqlConnection connection = new MySqlConnection(connectionString))
-
             {
 
                 PrepareCommand(connection, null, cmd, cmdType, cmdText, cmdParms);
@@ -223,6 +218,7 @@ namespace Backstage.Core
                 object val = cmd.ExecuteScalar();
 
                 cmd.Parameters.Clear();
+                cmd.Dispose();
 
                 return val;
 
@@ -247,7 +243,6 @@ namespace Backstage.Core
         /// <returns>返回Object对象</returns>
 
         public static object ExecuteScalar(MySqlConnection conn, CommandType cmdType, string cmdText, params MySqlParameter[] cmdParms)
-
         {
 
             MySqlCommand cmd = new MySqlCommand();
@@ -285,35 +280,35 @@ namespace Backstage.Core
         /// <returns></returns>
 
         public static MySqlDataReader ExecuteReader(string connectionString, CommandType cmdType, string cmdText, params MySqlParameter[] cmdParms)
-
         {
 
             MySqlCommand cmd = new MySqlCommand();
 
-            MySqlConnection conn = new MySqlConnection(connectionString);
-
-            try
-
+            using (MySqlConnection conn = new MySqlConnection(connectionString))
             {
+                try
+                {
 
-                PrepareCommand(conn, null, cmd, cmdType, cmdText, cmdParms);
+                    PrepareCommand(conn, null, cmd, cmdType, cmdText, cmdParms);
 
-                MySqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+                    MySqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
 
-                cmd.Parameters.Clear();
+                    cmd.Parameters.Clear();
 
-                return dr;
+                    cmd.Dispose();
 
-            }
+                    return dr;
 
-            catch
+                }
 
-            {
+                catch
+                {
 
-                conn.Close();
+                    conn.Close();
 
-                throw;
+                    throw;
 
+                }
             }
 
         }
@@ -339,13 +334,11 @@ namespace Backstage.Core
         /// <returns></returns>
 
         public static DataSet ExecuteDataset(string connectionString, CommandType cmdType, string cmdText, params MySqlParameter[] cmdParms)
-
         {
 
             MySqlCommand cmd = new MySqlCommand();
 
             using (MySqlConnection conn = new MySqlConnection(connectionString))
-
             {
                 try
                 {
@@ -357,9 +350,10 @@ namespace Backstage.Core
 
                     da.Fill(ds);
 
-                    conn.Close();
-
                     cmd.Parameters.Clear();
+
+                    cmd.Dispose();
+                    da.Dispose();
 
                     return ds;
                 }
@@ -376,7 +370,7 @@ namespace Backstage.Core
 
     }//end class
 
-} 
+}
 
 //namespace DBTranslater
 //{

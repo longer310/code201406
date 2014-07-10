@@ -273,6 +273,7 @@
     <Content Include="Images\close.gif" />
     <Content Include="Images\content_li_top.png" />
     <Content Include="Images\Folder_bigbtu.png" />
+    <Content Include="Images\head\user.png" />
     <Content Include="Images\ico.gif" />
     <Content Include="Images\left_tabid_cnt_top.png" />
     <Content Include="Images\left_tab_Selected.gif" />
@@ -438,7 +439,10 @@
     <Compile Include="Core\Entity\Goods.cs" />
     <Compile Include="Core\Entity\GoodsCategories.cs" />
     <Compile Include="Core\Entity\KVEntity.cs" />
-    <Compile Include="Core\Entity\M_Param.cs" />
+    <Compile Include="Core\Entity\Mparam.cs" />
+    <Compile Include="Core\Entity\Orders.cs" />
+    <Compile Include="Core\Entity\Payment.cs" />
+    <Compile Include="Core\Entity\ShoppingCart.cs" />
     <Compile Include="Core\Entity\SourceMaterial.cs" />
     <Compile Include="Core\Enums.cs" />
     <Compile Include="Core\Handler\ActiveHelper.cs" />
@@ -460,6 +464,10 @@
     <Compile Include="Core\Logic\FavoriteHelper.cs" />
     <Compile Include="Core\Logic\GoodsCategoriesHelper.cs" />
     <Compile Include="Core\Logic\GoodsHelper.cs" />
+    <Compile Include="Core\Logic\MparamHelper.cs" />
+    <Compile Include="Core\Logic\OrdersHelper.cs" />
+    <Compile Include="Core\Logic\PaymentHelper.cs" />
+    <Compile Include="Core\Logic\ShoppingCartHelper.cs" />
     <Compile Include="Core\MySQLHelper.cs" />
     <Compile Include="Core\SessionHelper.cs" />
     <Compile Include="Core\SqlMapper.cs" />

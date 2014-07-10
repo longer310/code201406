@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Reflection;
 using System.Web;
@@ -37,6 +38,18 @@ namespace Backstage.Handler
                     break;
                 case "sharegoods"://分享商品
                     ShareGoods();
+                    break;
+                case "addshoppingcart"://添加产品到购物车
+                    AddShoppingCart();
+                    break;
+                case "getshoppingcartlist"://获取购物车列表
+                    GetShoppingCartList();
+                    break;
+                case "getpaymentlist"://获取支付方式列表
+                    GetPaymentList();
+                    break;
+                case "addorders"://添加订单
+                    AddOrders();
                     break;
                 default: break;
             }
@@ -142,10 +155,10 @@ namespace Backstage.Handler
             data.ad = new AdItem() { img = mpparam.AdImgUrl, title = mpparam.Title, url = mpparam.Url };
 
             int totalcount;
-            var glist = GoodsHelper.GetGoodsList(sellerid, out totalcount, " and IsHot = 1 ","", 0, 8, 0);
+            var glist = GoodsHelper.GetGoodsList(sellerid, out totalcount, " and IsHot = 1 ", "", 0, 8, 0);
             foreach (var gl in glist)
             {
-                data.hots.Add(new HotItem() { img=gl.LogoUrl,gid=gl.Id });
+                data.hots.Add(new HotItem() { img = gl.LogoUrl, gid = gl.Id });
             }
 
             JsonTransfer jt = new JsonTransfer();
@@ -211,29 +224,29 @@ namespace Backstage.Handler
             int limit = GetInt("limit");
 
             string wheresql = string.Empty;
-            string ordersql = "";
+            string shoppingcartql = "";
             if (cid > 0) wheresql += string.Format(" and Cid={0}", cid);
             switch (order)
             {
                 case 1:
-                    ordersql += " order by Sales asc "; break;
+                    shoppingcartql += " order by Sales asc "; break;
                 case -1:
-                    ordersql += " order by Sales desc "; break;
+                    shoppingcartql += " order by Sales desc "; break;
                 case 2:
-                    ordersql += " order by CreateTime asc "; break;
+                    shoppingcartql += " order by CreateTime asc "; break;
                 case -2:
-                    ordersql += " order by CreateTime desc "; break;
+                    shoppingcartql += " order by CreateTime desc "; break;
                 case 3:
-                    ordersql += " order by Nowprice asc "; break;
+                    shoppingcartql += " order by Nowprice asc "; break;
                 case -3:
-                    ordersql += " order by Nowprice desc "; break;
+                    shoppingcartql += " order by Nowprice desc "; break;
             }
 
             //组装下发数据
             int totalcount;
             int totalccount;
             var user = Utility.GetCurUser();
-            var goodslist = GoodsHelper.GetGoodsList(sellerid, out totalcount, wheresql, ordersql, start * limit, limit);
+            var goodslist = GoodsHelper.GetGoodsList(sellerid, out totalcount, wheresql, shoppingcartql, start * limit, limit);
             //string pwheresql = GetWhereSql(goodslist.Select(o => o.Logo).ToList());
             //var picList = SourceMaterialHelper.GetList(0, 0, pwheresql, "");
             var gclist = GoodsCategoriesHelper.GetList(sellerid, out totalccount);
@@ -313,7 +326,7 @@ namespace Backstage.Handler
             var goods = GoodsHelper.GetGoods(gid);
             int cid = goods.Cid;
             var gcategories = GoodsCategoriesHelper.GetGoodsCategories(cid);
-            string wheresql = GetWhereSql(goods.ImgIdList);
+            string wheresql = Utility.GetWhereSql(goods.ImgIdList);
             var piclist = SourceMaterialHelper.GetList(0, 0, wheresql, "");
             var user = Utility.GetCurUser();
             Favorite favorite = null;
@@ -385,7 +398,7 @@ namespace Backstage.Handler
             int sellerId = goods.SellerId;
             var commentResult = CommentHelper.GetPagings(sellerId, CommentType.Goods, gid, start * limit, limit);
             var commentlist = commentResult.Results;
-            string wheresql = GetWhereSql(commentlist.Select(o => o.UserId).ToList());
+            string wheresql = Utility.GetWhereSql(commentlist.Select(o => o.UserId).ToList());
             var userlist = AccountHelper.GetUserList(out utotalcount, wheresql, "", start * limit, limit);
 
             var data = new CommentResponse();
@@ -480,6 +493,136 @@ namespace Backstage.Handler
             GoodsHelper.SaveGoods(goods);
             //返回
             ReturnCorrectMsg("返回消息");
+        }
+        #endregion
+
+        #region 添加产品到购物车
+        public void AddShoppingCart()
+        {
+            var uid = GetInt("uid");
+            var gid = GetInt("gid");
+            var num = GetInt("num");
+
+            var goods = GoodsHelper.GetGoods(gid);
+            if (goods == null)
+            {
+                ReturnErrorMsg("商品不存在");
+                return;
+            }
+            var shoppingcart = new ShoppingCart();
+            shoppingcart.UserId = uid;
+            shoppingcart.Gid = gid;
+            shoppingcart.Img = goods.LogoUrl;
+            shoppingcart.Num = num;
+            shoppingcart.Price = goods.Nowprice;
+            shoppingcart.CreateTime = DateTime.Now;
+
+            //保存订单
+            ShoppingCartHelper.SaveShoppingCart(shoppingcart);
+
+            //返回
+            ReturnCorrectMsg("返回消息");
+        }
+        #endregion
+
+        #region 获取购物车列表
+        public class ShoppingCartData
+        {
+            public float totalprice { get; set; }
+            public List<ShoppingCartItem> shoppingcartlist { get; set; }
+            public ShoppingCartData()
+            {
+                shoppingcartlist = new List<ShoppingCartItem>();
+            }
+        }
+        public class ShoppingCartItem
+        {
+            public int gid { get; set; }
+            public string img { get; set; }
+            public int num { get; set; }
+            public float price { get; set; }
+            public float totalprice { get; set; }
+        }
+        public void GetShoppingCartList()
+        {
+            int uid = GetInt("uid");
+
+            var wheresql = string.Format(" where UserId = {0}", uid);
+            int totalcount;
+            var list = ShoppingCartHelper.GetShoppingCartList(out totalcount, wheresql, "", 0);
+
+            var data = new ShoppingCartData();
+            foreach (var shoppingCart in list)
+            {
+                var item = new ShoppingCartItem();
+                item.gid = shoppingCart.Gid;
+                item.price = shoppingCart.Price;
+                item.img = shoppingCart.Img;
+                item.num = shoppingCart.Num;
+                item.totalprice = shoppingCart.Price * shoppingCart.Num;
+
+                data.shoppingcartlist.Add(item);
+                data.totalprice += item.totalprice;
+            }
+
+            JsonTransfer jt = new JsonTransfer();
+            jt.AddSuccessParam();
+            jt.Add("data", data);
+            Response.Write(DesEncrypt(jt));
+            Response.End();
+        }
+        #endregion
+
+        #region 获取支付方式列表
+        public class PaymentData
+        {
+            public List<PaymentItem> paymentlist { get; set; }
+
+            public PaymentData()
+            {
+                paymentlist = new List<PaymentItem>();
+            }
+        }
+        public class PaymentItem
+        {
+            public int pid { get; set; }
+            public string name { get; set; }
+            public string description { get; set; }
+        }
+        public void GetPaymentList()
+        {
+            var sellerId = GetInt("sellerid");
+
+            var data = new PaymentData();
+            var list = PaymentHelper.GetList(sellerId);
+            foreach (var payment in list)
+            {
+                var item = new PaymentItem();
+                item.pid = payment.Id;
+                item.name = payment.Name;
+                item.description = payment.Description;
+
+                data.paymentlist.Add(item);
+            }
+
+            JsonTransfer jt = new JsonTransfer();
+            jt.AddSuccessParam();
+            jt.Add("data", data);
+            Response.Write(DesEncrypt(jt));
+            Response.End();
+        }
+        #endregion
+
+        #region 添加订单
+        public void AddOrders()
+        {
+            var uid = GetInt("uid");
+            var sellerId = GetInt("sellerid");
+            var gids = GetString("gids");
+            var nums = GetString("nums");
+
+
+
         }
         #endregion
     }

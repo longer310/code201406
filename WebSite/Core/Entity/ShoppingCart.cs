@@ -5,10 +5,7 @@ using System.Web;
 
 namespace Backstage.Core.Entity
 {
-    /// <summary>
-    /// 产品订单
-    /// </summary>
-    public class Orders : KVEntity
+    public class ShoppingCart : KVEntity
     {
         /// <summary>
         /// 用户id

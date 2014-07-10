@@ -395,13 +395,24 @@ namespace Backstage.Core
 
         public static string GetWaitMd5Str(string date, string apiname, List<string> paramstrs)
         {
-            string str = date +"+"+apiname+"+";
+            string str = date + "+" + apiname + "+";
             foreach (var paramstr in paramstrs)
             {
                 str += paramstr + "+";
             }
             str = str.TrimEnd('+');
             return str;
+        }
+        #endregion
+
+        #region 字符串与数组的转换
+        public static string GetWhereSql(List<int> idlist, string columnname = "Id")
+        {
+            string wheresql = "";
+            string str = String.Join(",", idlist.ConvertAll<string>(new Converter<int, string>(m => m.ToString())).ToArray());
+            wheresql += string.Format(" where {0} in(", columnname) + str + ") ";
+
+            return wheresql;
         }
         #endregion
     }

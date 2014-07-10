@@ -128,7 +128,6 @@ namespace Backstage.Core.Logic
                                         ImgIds          = ?ImgIds,
                                         Logo            = ?Logo,
                                         Sales           = ?Sales,
-                                        Logo            = ?Logo,
                                         Title           = ?Title,
                                         Cid             = ?Cid,
                                         Nowprice        = ?Nowprice,
@@ -138,7 +137,8 @@ namespace Backstage.Core.Logic
                                         FavCount        = ?FavCount,
                                         ShareCount      = ?ShareCount,
                                         Tag             = ?Tag,
-                                        Content         = ?Content
+                                        Content         = ?Content,
+                                        IsHot           = ?IsHot
                                     WHERE
                                         Id = ?Id";
                 parameters.Add(new MySqlParameter("?Id", goods.Id));
@@ -156,16 +156,16 @@ namespace Backstage.Core.Logic
                 parameters.Add(new MySqlParameter("?ShareCount", goods.ShareCount));
                 parameters.Add(new MySqlParameter("?Tag", goods.Tag));
                 parameters.Add(new MySqlParameter("?Content", goods.Content));
+                parameters.Add(new MySqlParameter("?IsHot", goods.IsHot));
             }
             else
             {
-                cmdText = @"insert into account
+                cmdText = @"insert into Goods
                                         (
                                         SellerId      ,
                                         ImgIds        ,
                                         Logo          ,
                                         Sales         ,
-                                        Logo          ,
                                         Title         ,
                                         Cid           ,
                                         Nowprice      ,
@@ -175,7 +175,8 @@ namespace Backstage.Core.Logic
                                         FavCount      ,
                                         ShareCount    ,
                                         Tag           ,
-                                        Content       
+                                        Content       ,
+                                        IsHot         
                                         ) 
                                         values
                                         (
@@ -183,7 +184,6 @@ namespace Backstage.Core.Logic
                                         ?ImgIds        ,
                                         ?Logo          ,
                                         ?Sales         ,
-                                        ?Logo          ,
                                         ?Title         ,
                                         ?Cid           ,
                                         ?Nowprice      ,
@@ -193,7 +193,8 @@ namespace Backstage.Core.Logic
                                         ?FavCount      ,
                                         ?ShareCount    ,
                                         ?Tag           ,
-                                        ?Content       
+                                        ?Content       ,
+                                        ?IsHot         
                                         )";
                 parameters.Add(new MySqlParameter("?SellerId", goods.SellerId));
                 parameters.Add(new MySqlParameter("?ImgIds", goods.ImgIds));
@@ -209,6 +210,7 @@ namespace Backstage.Core.Logic
                 parameters.Add(new MySqlParameter("?ShareCount", goods.ShareCount));
                 parameters.Add(new MySqlParameter("?Tag", goods.Tag));
                 parameters.Add(new MySqlParameter("?Content", goods.Content));
+                parameters.Add(new MySqlParameter("?IsHot", goods.IsHot));
             }
             try
             {

@@ -26,6 +26,7 @@ namespace Backstage.Core
         public static string _ledou_secret = System.Configuration.ConfigurationManager.AppSettings["ledou_secret"];//跳转地址列表
 
         public static string _md5open = System.Configuration.ConfigurationManager.AppSettings["md5open"];//是否验证md5加密
+        public static string _desopen = System.Configuration.ConfigurationManager.AppSettings["desopen"];//是否des加密返回
 
         public static Account FindUser(string userName)
         {

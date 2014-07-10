@@ -29,6 +29,9 @@ namespace Backstage.Handler
                 case "getgoodscomments"://获取产品评论
                     GetGoodsComments();
                     break;
+                case "addgoodscomment"://发表产品评论
+                    AddGoodsComment();
+                    break;
                 case "favgoods"://收藏商品
                     FavGoods();
                     break;
@@ -99,6 +102,8 @@ namespace Backstage.Handler
                 s.type = (int)CommentType.Goods;
                 s.typeid = gad.Id;
                 s.createtime = gad.CreateTime;
+
+                list.Add(s);
             }
             var aads = ActiveHelper.GetList(0, 5, "", " order by createtime desc ");
             foreach (var aad in aads)
@@ -109,6 +114,8 @@ namespace Backstage.Handler
                 s.type = (int)CommentType.Avtive;
                 s.typeid = aad.Id;
                 s.createtime = aad.CreateTime;
+
+                list.Add(s);
             }
             var pads = SourceMaterialHelper.GetList(0, 5, "", " order by createtime desc ");
             foreach (var pad in pads)
@@ -119,6 +126,8 @@ namespace Backstage.Handler
                 s.type = (int)CommentType.Img;
                 s.typeid = pad.Id;
                 s.createtime = pad.CreateTime;
+
+                list.Add(s);
             }
 
             list = list.OrderByDescending(o => o.createtime).Take(5).ToList();

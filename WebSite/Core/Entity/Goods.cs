@@ -68,7 +68,7 @@ namespace Backstage.Core.Entity
         public string Content { get; set; }
 
         /// <summary>
-        /// 图片地址 从图片表获取
+        /// 图片地址 (注：从图片表获取)
         /// </summary>
         public string LogoUrl { get; set; }
 

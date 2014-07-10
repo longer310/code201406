@@ -14,9 +14,15 @@ namespace Backstage.Core.Entity
         /// 产品图片地址
         /// </summary>
         public string Img { get; set; }
+        public int Gid { get; set; }
+        /// <summary>
+        /// 
+        /// </summary>
+        public float TotalPrice { get; set; }
         /// <summary>
         /// 单价
         /// </summary>
         public float Price { get; set; }
+
     }
 }

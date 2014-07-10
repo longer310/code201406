@@ -55,7 +55,7 @@ namespace Backstage.Core.Logic
 
                 if (gettotal == 1)
                 {
-                    cmdText = string.Format("select count(*) from goods as a left join material m on a.Logo=m.Id  where SellerId={0} ", sellerId) + wheresql;
+                    cmdText = string.Format("select count(*) from goods where SellerId={0} ", sellerId) + wheresql;
                     reader = MySqlHelper.ExecuteReader(Utility._gameDbConn, CommandType.Text, cmdText);
                     if (reader.HasRows)
                     {
@@ -75,7 +75,7 @@ namespace Backstage.Core.Logic
 
         public static Goods GetGoods(int id)
         {
-            var sql = string.Format("select a.*,m.Url from Goods where Id={0} limit 1;", id);
+            var sql = string.Format("select a.*,m.Url from Goods as a left join material m on a.Logo=m.Id where a.Id={0} limit 1;", id);
             try
             {
                 MySqlDataReader reader = MySqlHelper.ExecuteReader(Utility._gameDbConn, CommandType.Text, sql);

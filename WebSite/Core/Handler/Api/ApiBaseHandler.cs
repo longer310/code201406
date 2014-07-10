@@ -44,7 +44,10 @@ namespace Backstage.Core
 
         public string DesEncrypt(JsonTransfer jt)
         {
-            return CryptHelper.DES_Encrypt(jt.ToJson());
+            if (Utility._desopen == "1")
+                return CryptHelper.DES_Encrypt(jt.ToJson());
+            else
+                return jt.ToJson();
         }
 
         public void ReturnErrorMsg(string msg)

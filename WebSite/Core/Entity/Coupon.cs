@@ -30,5 +30,20 @@ namespace Backstage.Core.Entity
         /// </summary>
         public string Description { get; set; }
 
+        /// <summary>
+        /// 满多少的金额优惠
+        /// </summary>
+        public int FullMoney { get; set; }
+
+        /// <summary>
+        /// 优惠的具体金额
+        /// </summary>
+        public int DiscountMoney { get; set; }
+
+        /// <summary>
+        /// 限定使用商品（制定的Id不能使用优惠券）
+        /// </summary>
+        public IList<int> GoodsIds { get; set; }
+
     }
 }

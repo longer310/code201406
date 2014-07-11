@@ -279,35 +279,35 @@ namespace Backstage.Core
 
         /// <returns></returns>
 
-        public static MySqlDataReader ExecuteReader(string connectionString, CommandType cmdType, string cmdText, params MySqlParameter[] cmdParms)
-        {
+        //public static MySqlDataReader ExecuteReader(string connectionString, CommandType cmdType, string cmdText, params MySqlParameter[] cmdParms)
+        //{
 
-            MySqlCommand cmd = new MySqlCommand();
+        //    MySqlCommand cmd = new MySqlCommand();
 
-            using (MySqlConnection conn = new MySqlConnection(connectionString))
-            {
+        //    using (MySqlConnection conn = new MySqlConnection(connectionString))
+        //    {
 
-                try
-                {
+        //        try
+        //        {
 
-                    PrepareCommand(conn, null, cmd, cmdType, cmdText, cmdParms);
+        //            PrepareCommand(conn, null, cmd, cmdType, cmdText, cmdParms);
 
-                    MySqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+        //            MySqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
 
-                    cmd.Parameters.Clear();
+        //            cmd.Parameters.Clear();
 
 
-                    return dr;
+        //            return dr;
 
-                }
+        //        }
 
-                catch
-                {
-                    throw;
-                }
-            }
+        //        catch
+        //        {
+        //            throw;
+        //        }
+        //    }
 
-        }
+        //}
         public static MySqlDataReader ExecuteReader(MySqlConnection conn, CommandType cmdType, string cmdText, params MySqlParameter[] cmdParms)
         {
 

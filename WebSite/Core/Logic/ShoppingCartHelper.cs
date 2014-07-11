@@ -37,8 +37,11 @@ namespace Backstage.Core.Logic
                         shoppingcart.Id = reader.GetInt32(0);
                         shoppingcart.UserId = (int) reader["UserId"];
                         shoppingcart.Img = reader["Img"].ToString();
-                        shoppingcart.Gid = (int) reader["Gid"];
-                        shoppingcart.Price = (float) reader["Price"];
+                        shoppingcart.Gid = (int)reader["Gid"];
+                        shoppingcart.Nowprice = (float)reader["Nowprice"];
+                        shoppingcart.OriginalPrice = (float)reader["OriginalPrice"];
+                        shoppingcart.Title = reader["Title"].ToString();
+                        shoppingcart.Description = reader["Description"].ToString();
                         shoppingcart.Num = (int) reader["Num"];
                         shoppingcart.CreateTime = (DateTime) reader["CreateTime"];
 
@@ -88,7 +91,10 @@ namespace Backstage.Core.Logic
                             shoppingcart.UserId = (int) reader["UserId"];
                             shoppingcart.Img = reader["Img"].ToString();
                             shoppingcart.Gid = (int) reader["Gid"];
-                            shoppingcart.Price = (float) reader["Price"];
+                            shoppingcart.Nowprice = (float)reader["Nowprice"];
+                            shoppingcart.OriginalPrice = (float)reader["OriginalPrice"];
+                            shoppingcart.Title = reader["Title"].ToString();
+                            shoppingcart.Description = reader["Description"].ToString();
                             shoppingcart.Num = (int) reader["Num"];
                             shoppingcart.CreateTime = (DateTime) reader["CreateTime"];
                             return shoppingcart;
@@ -120,7 +126,10 @@ namespace Backstage.Core.Logic
                                         Gid          = ?Gid,
                                         Img            = ?Img,
                                         Num           = ?Num,
-                                        Price            = ?Price,
+                                        Nowprice            = ?Nowprice,
+                                        OriginalPrice            = ?OriginalPrice,
+                                        Title            = ?Title,
+                                        Description            = ?Description,
                                         CreateTime           = ?CreateTime
                                     WHERE
                                         Id = ?Id";
@@ -129,7 +138,10 @@ namespace Backstage.Core.Logic
                 parameters.Add(new MySqlParameter("?Gid", shoppingcart.Gid));
                 parameters.Add(new MySqlParameter("?Img", shoppingcart.Img));
                 parameters.Add(new MySqlParameter("?Num", shoppingcart.Num));
-                parameters.Add(new MySqlParameter("?Price", shoppingcart.Price));
+                parameters.Add(new MySqlParameter("?Nowprice", shoppingcart.Nowprice));
+                parameters.Add(new MySqlParameter("?Title", shoppingcart.Title));
+                parameters.Add(new MySqlParameter("?Nowprice", shoppingcart.Nowprice));
+                parameters.Add(new MySqlParameter("?Description", shoppingcart.Description));
                 parameters.Add(new MySqlParameter("?CreateTime", shoppingcart.CreateTime));
             }
             else
@@ -140,7 +152,10 @@ namespace Backstage.Core.Logic
                                         Gid        ,
                                         Img          ,
                                         Num         ,
-                                        Price         ,
+                                        NowPrice         ,
+                                        OriginalPrice         ,
+                                        Title         ,
+                                        Description         ,
                                         CreateTime        
                                         ) 
                                         values
@@ -149,14 +164,20 @@ namespace Backstage.Core.Logic
                                         ?Gid        ,
                                         ?Img          ,
                                         ?Num         ,
-                                        ?Price          ,
+                                        ?NowPrice         ,
+                                        ?OriginalPrice         ,
+                                        ?Title         ,
+                                        ?Description         ,
                                         ?CreateTime           
                                         )";
                 parameters.Add(new MySqlParameter("?UserId", shoppingcart.UserId));
                 parameters.Add(new MySqlParameter("?Gid", shoppingcart.Gid));
                 parameters.Add(new MySqlParameter("?Img", shoppingcart.Img));
                 parameters.Add(new MySqlParameter("?Num", shoppingcart.Num));
-                parameters.Add(new MySqlParameter("?Price", shoppingcart.Price));
+                parameters.Add(new MySqlParameter("?Nowprice", shoppingcart.Nowprice));
+                parameters.Add(new MySqlParameter("?Title", shoppingcart.Title));
+                parameters.Add(new MySqlParameter("?Nowprice", shoppingcart.Nowprice));
+                parameters.Add(new MySqlParameter("?Description", shoppingcart.Description));
                 parameters.Add(new MySqlParameter("?CreateTime", shoppingcart.CreateTime));
             }
             try

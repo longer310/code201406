@@ -17,22 +17,89 @@ namespace Backstage.Core.Entity
         /// <summary>
         /// 产品id
         /// </summary>
-        public int Gid { get; set; }
+        public string Gids { get; set; }
+        /// <summary>
+        /// 数量列表
+        /// </summary>
+        public string Nums { get; set; }
         /// <summary>
         /// 产品图片地址
         /// </summary>
-        public string Img { get; set; }
+        public string Imgs { get; set; }
         /// <summary>
-        /// 数量
+        /// 产品标题列表
         /// </summary>
-        public int Num { get; set; }
+        public string Titles { get; set; }
         /// <summary>
-        /// 单价
+        /// 产品现价列表
         /// </summary>
-        public float Price { get; set; }
+        public string NowPrices { get; set; }
         /// <summary>
-        /// 时间
+        /// 产品原价列表
+        /// </summary>
+        public string OriginalPrices { get; set; }
+        /// <summary>
+        /// 最后总价
+        /// </summary>
+        public float TotalPrice { get; set; }
+        /// <summary>
+        /// 商品总价
+        /// </summary>
+        public float StotalPrice { get; set; }
+        /// <summary>
+        /// 支付方式id
+        /// </summary>
+        public int Pid { get; set; }
+        /// <summary>
+        /// 用餐时间
+        /// </summary>
+        public DateTime OrderTime { get; set; }
+        /// <summary>
+        /// 就餐类型（到店用餐、送餐）
+        /// </summary>
+        public OrderType OrderType { get; set; }
+        /// <summary>
+        /// 就餐人数
+        /// </summary>
+        public int OrderPeople { get; set; }
+        /// <summary>
+        /// 电子券id
+        /// </summary>
+        public int CouponId { get; set; }
+        /// <summary>
+        /// 电子券优惠价格
+        /// </summary>
+        public float CtotalPrice { get; set; }
+        /// <summary>
+        /// 送货地址
+        /// </summary>
+        public string Address { get; set; }
+        /// <summary>
+        /// 联系人
+        /// </summary>
+        public string LinkMan { get; set; }
+        /// <summary>
+        /// 联系方式
+        /// </summary>
+        public string Mobile { get; set; }
+        /// <summary>
+        /// 订单创建时间
         /// </summary>
         public DateTime CreateTime { get; set; }
+        /// <summary>
+        /// 备注
+        /// </summary>
+        public string Remark { get; set; }
+        /// <summary>
+        /// 订单状态
+        /// </summary>
+        public OrderStatus Status { get; set; }
+
+        public Orders()
+        {
+            Gids = Nums = Imgs = NowPrices = OriginalPrices = Address = LinkMan = Mobile = "";
+            CreateTime = DateTime.Now;
+            OrderTime = DateTime.Now;
+        }
     }
 }

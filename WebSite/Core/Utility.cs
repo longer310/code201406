@@ -33,18 +33,21 @@ namespace Backstage.Core
             var sql = string.Format("select * from account where username='{0}' limit 1;", userName);
             try
             {
-                MySqlDataReader reader = MySqlHelper.ExecuteReader(_gameDbConn, CommandType.Text, sql);
-                if (reader.HasRows)
+                using (var conn = Utility.ObtainConn(Utility._gameDbConn))
                 {
-                    if (reader.Read())
+                    MySqlDataReader reader = MySqlHelper.ExecuteReader(conn, CommandType.Text, sql);
+                    if (reader.HasRows)
                     {
-                        Account user = new Account();
-                        user.Id = reader.GetInt32(0);
-                        user.UserName = reader.GetString(1);
-                        user.Pwd = reader.GetString(2);
-                        user.RoleType = (RoleType)reader.GetInt32(3);
-                        //user.Servers = reader["ServerList"].ToString().Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries).Select(p => Convert.ToInt32(p)).ToList();
-                        return user;
+                        if (reader.Read())
+                        {
+                            Account user = new Account();
+                            user.Id = reader.GetInt32(0);
+                            user.UserName = reader.GetString(1);
+                            user.Pwd = reader.GetString(2);
+                            user.RoleType = (RoleType) reader.GetInt32(3);
+                            //user.Servers = reader["ServerList"].ToString().Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries).Select(p => Convert.ToInt32(p)).ToList();
+                            return user;
+                        }
                     }
                 }
             }
@@ -406,6 +409,29 @@ namespace Backstage.Core
         #endregion
 
         #region 字符串与数组的转换
+
+        public static int GetValueByList(List<int> li, List<int> mi, int value)
+        {
+            if (li.Count != mi.Count) return 0;
+            for(int i = 0 ;i<li.Count;i++)
+            {
+                if (li[i] == value)
+                    return mi[i];
+            }
+            return 0;
+        }
+        public static List<int> GetListint(string str)
+        {
+            return str.Split(new char[] {','}, StringSplitOptions.RemoveEmptyEntries).Select(p => Convert.ToInt32(p)).ToList();
+        }
+        public static List<float> GetListfloat(string str)
+        {
+            return str.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries).Select(p => float.Parse(p)).ToList();
+        }
+        public static List<string> GetListstring(string str)
+        {
+            return str.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries).ToList();
+        }
         public static string GetWhereSql(List<int> idlist, string columnname = "Id")
         {
             string wheresql = "";

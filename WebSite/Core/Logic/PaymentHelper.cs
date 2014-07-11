@@ -56,17 +56,20 @@ namespace Backstage.Core.Logic
             var cmdText = string.Format("select * from Payment where Id={0} limit 1;", id);
             try
             {
-                MySqlDataReader reader = MySqlHelper.ExecuteReader(Utility._gameDbConn, CommandType.Text, cmdText);
-                if (reader.HasRows)
+                using (var conn = Utility.ObtainConn(Utility._gameDbConn))
                 {
-                    if (reader.Read())
+                    MySqlDataReader reader = MySqlHelper.ExecuteReader(conn, CommandType.Text, cmdText);
+                    if (reader.HasRows)
                     {
-                        Payment payment = new Payment();
-                        payment.Id = reader.GetInt32(0);
-                        payment.Description = reader["Description"].ToString();
-                        payment.Name = reader["Name"].ToString();
-                        payment.SellerId = (int)reader["SellerId"];
-                        return payment;
+                        if (reader.Read())
+                        {
+                            Payment payment = new Payment();
+                            payment.Id = reader.GetInt32(0);
+                            payment.Description = reader["Description"].ToString();
+                            payment.Name = reader["Name"].ToString();
+                            payment.SellerId = (int) reader["SellerId"];
+                            return payment;
+                        }
                     }
                 }
             }

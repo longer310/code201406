@@ -24,9 +24,21 @@ namespace Backstage.Core.Entity
         /// </summary>
         public int Num { get; set; }
         /// <summary>
-        /// 单价
+        /// 现价
         /// </summary>
-        public float Price { get; set; }
+        public float Nowprice { get; set; }
+        /// <summary>
+        /// 原价
+        /// </summary>
+        public float OriginalPrice { get; set; }
+        /// <summary>
+        /// 标题
+        /// </summary>
+        public string Title { get; set; }
+        /// <summary>
+        /// 产品描述
+        /// </summary>
+        public string Description { get; set; }
         /// <summary>
         /// 时间
         /// </summary>

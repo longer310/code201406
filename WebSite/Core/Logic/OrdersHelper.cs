@@ -35,12 +35,27 @@ namespace Backstage.Core.Logic
                     {
                         Orders orders = new Orders();
                         orders.Id = reader.GetInt32(0);
-                        orders.UserId = (int) reader["UserId"];
-                        orders.Img = reader["Img"].ToString();
-                        orders.Gid = (int) reader["Gid"];
-                        orders.Price = (float) reader["Price"];
-                        orders.Num = (int) reader["Num"];
-                        orders.CreateTime = (DateTime) reader["CreateTime"];
+                        orders.UserId = (int)reader["UserId"];
+                        orders.Gids = reader["Gids"].ToString();
+                        orders.Nums = reader["Nums"].ToString();
+                        orders.Imgs = reader["Imgs"].ToString();
+                        orders.Titles = reader["Titles"].ToString();
+                        orders.NowPrices = reader["NowPrices"].ToString();
+                        orders.OriginalPrices = reader["OriginalPrices"].ToString();
+                        orders.TotalPrice = (float)reader["TotalPrice"];
+                        orders.StotalPrice = (float)reader["StotalPrice"];
+                        orders.Pid = (int)reader["Pid"];
+                        orders.OrderTime = (DateTime)reader["OrderTime"];
+                        orders.OrderType = (OrderType)reader["OrderType"];
+                        orders.OrderPeople = (int)reader["OrderPeople"];
+                        orders.CouponId = (int)reader["CouponId"];
+                        orders.CtotalPrice = (float)reader["CtotalPrice"];
+                        orders.Address = reader["Address"].ToString();
+                        orders.LinkMan = reader["LinkMan"].ToString();
+                        orders.Mobile = reader["Mobile"].ToString();
+                        orders.Remark = reader["Remark"].ToString();
+                        orders.CreateTime = (DateTime)reader["CreateTime"];
+                        orders.Status = (OrderStatus)reader["Status"];
 
                         list.Add(orders);
                     }
@@ -71,27 +86,47 @@ namespace Backstage.Core.Logic
             return list;
         }
 
-        public static Orders GetOrders(int id)
+        public static Orders GetOrders(int id, int uid = 0)
         {
-            var sql = string.Format("select * from Orders where Id={0} limit 1;", id);
+            var sql = string.Format("select * from Orders where Id={0} {1} limit 1;", id,
+                uid == 0 ? string.Empty : string.Format(" and UserId={0} ", uid));
             try
             {
-                MySqlDataReader reader = MySqlHelper.ExecuteReader(Utility._gameDbConn, CommandType.Text, sql);
-                if (reader.HasRows)
+                using (var conn = Utility.ObtainConn(Utility._gameDbConn))
                 {
-                    if (reader.Read())
+                    MySqlDataReader reader = MySqlHelper.ExecuteReader(conn, CommandType.Text, sql);
+                    if (reader.HasRows)
                     {
-                        Orders orders = new Orders();
-                        orders.Id = reader.GetInt32(0);
-                        orders.UserId = (int)reader["UserId"];
-                        orders.Img = reader["Img"].ToString();
-                        orders.Gid = (int)reader["Gid"];
-                        orders.Price = (float)reader["Price"];
-                        orders.Num = (int)reader["Num"];
-                        orders.CreateTime = (DateTime)reader["CreateTime"];
-                        return orders;
+                        if (reader.Read())
+                        {
+                            Orders orders = new Orders();
+                            orders.Id = reader.GetInt32(0);
+                            orders.UserId = (int)reader["UserId"];
+                            orders.Gids = reader["Gids"].ToString();
+                            orders.Nums = reader["Nums"].ToString();
+                            orders.Imgs = reader["Imgs"].ToString();
+                            orders.Titles = reader["Titles"].ToString();
+                            orders.NowPrices = reader["NowPrices"].ToString();
+                            orders.OriginalPrices = reader["OriginalPrices"].ToString();
+                            orders.TotalPrice = (float)reader["TotalPrice"];
+                            orders.StotalPrice = (float)reader["StotalPrice"];
+                            orders.Pid = (int)reader["Pid"];
+                            orders.OrderTime = (DateTime)reader["OrderTime"];
+                            orders.OrderType = (OrderType)reader["OrderType"];
+                            orders.OrderPeople = (int)reader["OrderPeople"];
+                            orders.CouponId = (int)reader["CouponId"];
+                            orders.CtotalPrice = (float)reader["CtotalPrice"];
+                            orders.Address = reader["Address"].ToString();
+                            orders.LinkMan = reader["LinkMan"].ToString();
+                            orders.Mobile = reader["Mobile"].ToString();
+                            orders.CreateTime = (DateTime)reader["CreateTime"];
+                            orders.Remark = reader["Remark"].ToString();
+                            orders.Status = (OrderStatus)reader["Status"];
+                            return orders;
+                        }
                     }
                 }
+                
             }
             catch (System.Exception ex)
             {
@@ -105,67 +140,159 @@ namespace Backstage.Core.Logic
         /// 保存商品 如果id为0 则添加新纪录
         /// </summary>
         /// <param name="orders"></param>
-        /// <returns></returns>
-        public static bool SaveOrders(Orders orders)
+        /// <returns>返回新插入的id，或者是否插入成功</returns>
+        public static int SaveOrders(Orders orders)
         {
             var cmdText = string.Empty;
             List<MySqlParameter> parameters = new List<MySqlParameter>();
             if (orders.Id > 0)
             {
                 cmdText = @"UPDATE Orders SET
-                                        UserId        = ?UserId,
-                                        Gid          = ?Gid,
-                                        Img            = ?Img,
-                                        Num           = ?Num,
-                                        Price            = ?Price,
-                                        CreateTime           = ?CreateTime
+                                        UserId                      = ?UserId        ,
+                                        Gids                        = ?Gids          ,
+                                        Imgs                        = ?Imgs          ,
+                                        Nums                        = ?Nums          ,
+                                        Titles                      = ?Titles        ,
+                                        NowPrices                   = ?NowPrices     ,
+                                        OriginalPrices              = ?OriginalPrices,
+                                        TotalPrice                  = ?TotalPrice    ,
+                                        StotalPrice                 = ?StotalPrice   ,
+                                        Pid                         = ?Pid           ,
+                                        OrderTime                   = ?OrderTime     ,
+                                        OrderType                   = ?OrderType     ,
+                                        OrderPeople                 = ?OrderPeople   ,
+                                        CouponId                    = ?CouponId      ,
+                                        CtotalPrice                 = ?CtotalPrice   ,
+                                        Address                     = ?Address       ,
+                                        LinkMan                     = ?LinkMan       ,
+                                        Mobile                      = ?Mobile        ,
+                                        Remark                      = ?Remark        ,
+                                        Status                      = ?Status        ,
+                                        CreateTime                  = ?CreateTime    
                                     WHERE
                                         Id = ?Id";
-                parameters.Add(new MySqlParameter("?Id",            orders.Id));
-                parameters.Add(new MySqlParameter("?UserId",        orders.UserId));
-                parameters.Add(new MySqlParameter("?Gid",           orders.Gid));
-                parameters.Add(new MySqlParameter("?Img",           orders.Img));
-                parameters.Add(new MySqlParameter("?Num",           orders.Num));
-                parameters.Add(new MySqlParameter("?Price",         orders.Price));
-                parameters.Add(new MySqlParameter("?CreateTime",    orders.CreateTime));
+                parameters.Add(new MySqlParameter("?Id", orders.Id));
+                parameters.Add(new MySqlParameter("?UserId", orders.UserId));
+                parameters.Add(new MySqlParameter("?Gids", orders.Gids));
+                parameters.Add(new MySqlParameter("?Imgs", orders.Imgs));
+                parameters.Add(new MySqlParameter("?Nums", orders.Nums));
+                parameters.Add(new MySqlParameter("?Titles", orders.Titles));
+                parameters.Add(new MySqlParameter("?NowPrices", orders.NowPrices));
+                parameters.Add(new MySqlParameter("?OriginalPrices", orders.OriginalPrices));
+                parameters.Add(new MySqlParameter("?TotalPrice", orders.TotalPrice));
+                parameters.Add(new MySqlParameter("?StotalPrice", orders.StotalPrice));
+                parameters.Add(new MySqlParameter("?Pid", orders.Pid));
+                parameters.Add(new MySqlParameter("?OrderTime", orders.OrderTime));
+                parameters.Add(new MySqlParameter("?OrderType", orders.OrderType));
+                parameters.Add(new MySqlParameter("?OrderPeople", orders.OrderPeople));
+                parameters.Add(new MySqlParameter("?CouponId", orders.CouponId));
+                parameters.Add(new MySqlParameter("?CtotalPrice", orders.CtotalPrice));
+                parameters.Add(new MySqlParameter("?Address", orders.Address));
+                parameters.Add(new MySqlParameter("?LinkMan", orders.LinkMan));
+                parameters.Add(new MySqlParameter("?Mobile", orders.Mobile));
+                parameters.Add(new MySqlParameter("?Remark", orders.Remark));
+                parameters.Add(new MySqlParameter("?Status", orders.Status));
+                parameters.Add(new MySqlParameter("?CreateTime", orders.CreateTime));
             }
             else
             {
                 cmdText = @"insert into Orders
                                         (
-                                        UserId      ,
-                                        Gid        ,
-                                        Img          ,
-                                        Num         ,
-                                        Price         ,
-                                        CreateTime        
+                                        UserId        ,
+                                        Gids          ,
+                                        Imgs          ,
+                                        Nums          ,
+                                        Titles        ,
+                                        NowPrices     ,
+                                        OriginalPrices,
+                                        TotalPrice    ,
+                                        StotalPrice   ,
+                                        Pid           ,
+                                        OrderTime     ,
+                                        OrderType     ,
+                                        OrderPeople   ,
+                                        CouponId      ,
+                                        CtotalPrice   ,
+                                        Address       ,
+                                        LinkMan       ,
+                                        Mobile        ,
+                                        Remark        ,
+                                        Status         ,
+                                        CreateTime    
                                         ) 
                                         values
                                         (
-                                        ?UserId      ,
-                                        ?Gid        ,
-                                        ?Img          ,
-                                        ?Num         ,
-                                        ?Price          ,
-                                        ?CreateTime           
+                                        ?UserId        ,
+                                        ?Gids          ,
+                                        ?Imgs          ,
+                                        ?Nums          ,
+                                        ?Titles        ,
+                                        ?NowPrices     ,
+                                        ?OriginalPrices,
+                                        ?TotalPrice    ,
+                                        ?StotalPrice   ,
+                                        ?Pid           ,
+                                        ?OrderTime     ,
+                                        ?OrderType     ,
+                                        ?OrderPeople   ,
+                                        ?CouponId      ,
+                                        ?CtotalPrice   ,
+                                        ?Address       ,
+                                        ?LinkMan       ,
+                                        ?Mobile        ,
+                                        ?Remark        ,
+                                        ?Status        ,
+                                        ?CreateTime 
                                         )";
                 parameters.Add(new MySqlParameter("?UserId", orders.UserId));
-                parameters.Add(new MySqlParameter("?Gid", orders.Gid));
-                parameters.Add(new MySqlParameter("?Img", orders.Img));
-                parameters.Add(new MySqlParameter("?Num", orders.Num));
-                parameters.Add(new MySqlParameter("?Price", orders.Price));
+                parameters.Add(new MySqlParameter("?Gids", orders.Gids));
+                parameters.Add(new MySqlParameter("?Imgs", orders.Imgs));
+                parameters.Add(new MySqlParameter("?Nums", orders.Nums));
+                parameters.Add(new MySqlParameter("?Titles", orders.Titles));
+                parameters.Add(new MySqlParameter("?NowPrices", orders.NowPrices));
+                parameters.Add(new MySqlParameter("?OriginalPrices", orders.OriginalPrices));
+                parameters.Add(new MySqlParameter("?TotalPrice", orders.TotalPrice));
+                parameters.Add(new MySqlParameter("?StotalPrice", orders.StotalPrice));
+                parameters.Add(new MySqlParameter("?Pid", orders.Pid));
+                parameters.Add(new MySqlParameter("?OrderTime", orders.OrderTime));
+                parameters.Add(new MySqlParameter("?OrderType", orders.OrderType));
+                parameters.Add(new MySqlParameter("?OrderPeople", orders.OrderPeople));
+                parameters.Add(new MySqlParameter("?CouponId", orders.CouponId));
+                parameters.Add(new MySqlParameter("?CtotalPrice", orders.CtotalPrice));
+                parameters.Add(new MySqlParameter("?Address", orders.Address));
+                parameters.Add(new MySqlParameter("?LinkMan", orders.LinkMan));
+                parameters.Add(new MySqlParameter("?Mobile", orders.Mobile));
+                parameters.Add(new MySqlParameter("?Remark", orders.Remark));
+                parameters.Add(new MySqlParameter("?Status", orders.Status));
                 parameters.Add(new MySqlParameter("?CreateTime", orders.CreateTime));
             }
             try
             {
                 var num = MySqlHelper.ExecuteNonQuery(Utility._gameDbConn, CommandType.Text, cmdText, parameters.ToArray());
-                return num > 0;
+
+                if (orders.Id == 0)
+                {//插入 获得新id
+
+                    using (var conn = Utility.ObtainConn(Utility._gameDbConn))
+                    {
+                        cmdText = @"select @@identity";
+                        var reader = MySqlHelper.ExecuteReader(conn, CommandType.Text, cmdText);
+                        if (reader.HasRows)
+                        {
+                            if (reader.Read())
+                            {
+                                num = reader.GetInt32(0);
+                            }
+                        }
+                    }
+
+                }
+                return num;
             }
             catch (System.Exception ex)
             {
                 throw;
             }
-            return false;
         }
     }
 }

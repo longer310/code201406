@@ -51,6 +51,15 @@ namespace Backstage.Handler
                 case "addorders"://添加订单
                     AddOrders();
                     break;
+                case "getordersdetail"://获取订单详情
+                    GetOrdersDetail();
+                    break;
+                case "updateorders"://更新订单
+                    UpdateOrders();
+                    break;
+                case "updateordersstatus"://更新订单状态
+                    UpdateOrdersStatus();
+                    break;
                 default: break;
             }
 
@@ -106,7 +115,7 @@ namespace Backstage.Handler
             //单独获取产品的列表 以后得改 +图片墙+活动
             var list = new List<TSlideItem>();
             int totalnum;
-            var gads = GoodsHelper.GetGoodsList(sellerid, out totalnum, "", "", 0, 5, 0);
+            var gads = GoodsHelper.GetGoodsList(sellerid, out totalnum, "", "", 0, 0, 5);
             foreach (var gad in gads)
             {
                 var s = new TSlideItem();
@@ -155,7 +164,7 @@ namespace Backstage.Handler
             data.ad = new AdItem() { img = mpparam.AdImgUrl, title = mpparam.Title, url = mpparam.Url };
 
             int totalcount;
-            var glist = GoodsHelper.GetGoodsList(sellerid, out totalcount, " and IsHot = 1 ", "", 0, 8, 0);
+            var glist = GoodsHelper.GetGoodsList(sellerid, out totalcount, " and IsHot = 1 ", "", 0, 0, 8);
             foreach (var gl in glist)
             {
                 data.hots.Add(new HotItem() { img = gl.LogoUrl, gid = gl.Id });
@@ -246,7 +255,7 @@ namespace Backstage.Handler
             int totalcount;
             int totalccount;
             var user = Utility.GetCurUser();
-            var goodslist = GoodsHelper.GetGoodsList(sellerid, out totalcount, wheresql, shoppingcartql, start * limit, limit);
+            var goodslist = GoodsHelper.GetGoodsList(sellerid, out totalcount, wheresql, shoppingcartql, 0, start * limit, limit);
             //string pwheresql = GetWhereSql(goodslist.Select(o => o.Logo).ToList());
             //var picList = SourceMaterialHelper.GetList(0, 0, pwheresql, "");
             var gclist = GoodsCategoriesHelper.GetList(sellerid, out totalccount);
@@ -448,7 +457,7 @@ namespace Backstage.Handler
             CommentHelper.Create(comment);
 
             //返回
-            ReturnCorrectMsg("返回消息");
+            ReturnCorrectMsg("发表成功");
         }
         #endregion
 
@@ -476,7 +485,7 @@ namespace Backstage.Handler
             //保存收藏
             FavoriteHelper.SaveFavorite(favorite);
             //返回
-            ReturnCorrectMsg("返回消息");
+            ReturnCorrectMsg("收藏成功");
         }
         #endregion
 
@@ -492,7 +501,7 @@ namespace Backstage.Handler
             //保存商品
             GoodsHelper.SaveGoods(goods);
             //返回
-            ReturnCorrectMsg("返回消息");
+            ReturnCorrectMsg("分享成功");
         }
         #endregion
 
@@ -514,14 +523,17 @@ namespace Backstage.Handler
             shoppingcart.Gid = gid;
             shoppingcart.Img = goods.LogoUrl;
             shoppingcart.Num = num;
-            shoppingcart.Price = goods.Nowprice;
+            shoppingcart.Nowprice = goods.Nowprice;
+            shoppingcart.OriginalPrice = goods.OriginalPrice;
+            shoppingcart.Title = goods.Title;
+            shoppingcart.Description = goods.Content;
             shoppingcart.CreateTime = DateTime.Now;
 
             //保存订单
             ShoppingCartHelper.SaveShoppingCart(shoppingcart);
 
             //返回
-            ReturnCorrectMsg("返回消息");
+            ReturnCorrectMsg("添加成功");
         }
         #endregion
 
@@ -540,7 +552,10 @@ namespace Backstage.Handler
             public int gid { get; set; }
             public string img { get; set; }
             public int num { get; set; }
-            public float price { get; set; }
+            public string title { get; set; }
+            public string description { get; set; }
+            public float nowprice { get; set; }
+            public float originalprice { get; set; }
             public float totalprice { get; set; }
         }
         public void GetShoppingCartList()
@@ -556,10 +571,13 @@ namespace Backstage.Handler
             {
                 var item = new ShoppingCartItem();
                 item.gid = shoppingCart.Gid;
-                item.price = shoppingCart.Price;
+                item.nowprice = shoppingCart.Nowprice;
+                item.originalprice = shoppingCart.OriginalPrice;
+                item.title = shoppingCart.Title;
+                item.description = shoppingCart.Description;
                 item.img = shoppingCart.Img;
                 item.num = shoppingCart.Num;
-                item.totalprice = shoppingCart.Price * shoppingCart.Num;
+                item.totalprice = shoppingCart.Nowprice * shoppingCart.Num;
 
                 data.shoppingcartlist.Add(item);
                 data.totalprice += item.totalprice;
@@ -614,6 +632,10 @@ namespace Backstage.Handler
         #endregion
 
         #region 添加订单
+        public class AddOrdersData
+        {
+            public int orderid { get; set; }
+        }
         public void AddOrders()
         {
             var uid = GetInt("uid");
@@ -621,8 +643,213 @@ namespace Backstage.Handler
             var gids = GetString("gids");
             var nums = GetString("nums");
 
+            var gidlist = Utility.GetListint(gids);
+            var numlist = Utility.GetListint(nums);
+            if (gidlist.Count != numlist.Count)
+            {
+                ReturnErrorMsg("参数错误");
+                return;
+            }
+            int totalcount;
+            var goodslist = GoodsHelper.GetGoodsList(sellerId, out totalcount, string.Format(" and a.Id in({0}) ", gids),
+                "", 0);
+            var orders = new Orders();
+            orders.UserId = uid;
+            foreach (var goods in goodslist)
+            {
+                orders.Gids += goods.Id + ",";
+                orders.Imgs += goods.LogoUrl + ",";
+                orders.Titles += goods.Title + ",";
+                orders.NowPrices += goods.Nowprice + ",";
+                orders.OriginalPrices += goods.OriginalPrice + ",";
+                var num = Utility.GetValueByList(gidlist, numlist, goods.Id);
+                orders.Nums += num + ",";
 
+                orders.StotalPrice += goods.Nowprice * num;
+            }
+            orders.Imgs = orders.Imgs.TrimEnd(',');
+            orders.Titles = orders.Titles.TrimEnd(',');
+            orders.NowPrices = orders.NowPrices.TrimEnd(',');
+            orders.OriginalPrices = orders.OriginalPrices.TrimEnd(',');
+            orders.Gids = orders.Gids.TrimEnd(',');
+            orders.Nums = orders.Nums.TrimEnd(',');
+            orders.TotalPrice = orders.StotalPrice;
 
+            var orderid = OrdersHelper.SaveOrders(orders);
+            if (orderid == 0)
+            {
+                ReturnErrorMsg("生成订单失败");
+                return;
+            }
+            //删除购物车列表
+            ShoppingCartHelper.DeleteShoppingCartByGid(gids);
+
+            var data = new AddOrdersData();
+            data.orderid = orderid;
+
+            JsonTransfer jt = new JsonTransfer();
+            jt.AddSuccessParam();
+            jt.Add("data", data);
+            Response.Write(DesEncrypt(jt));
+            Response.End();
+        }
+        #endregion
+
+        #region 获取订单详情
+        public class OrderDetailData
+        {
+            public int orderid { get; set; }
+            public float totalprice { get; set; }
+            public float stotalprice { get; set; }
+            public int pid { get; set; }
+            public DateTime ordertime { get; set; }
+            public int ordertype { get; set; }
+            public int orderpeople { get; set; }
+            public int couponid { get; set; }
+            public float ctotalprice { get; set; }
+            public DateTime createtime { get; set; }
+            public string address { get; set; }
+            public string mobile { get; set; }
+            public string linkman { get; set; }
+            public int status { get; set; }
+
+            public List<OrderGoddsItem> goodslist { get; set; }
+
+            public OrderDetailData()
+            {
+                goodslist = new List<OrderGoddsItem>();
+            }
+        }
+        public class OrderGoddsItem
+        {
+            public int gid { get; set; }
+            public int num { get; set; }
+            public string title { get; set; }
+            public string img { get; set; }
+            public float nowprice { get; set; }
+            public float originalprice { get; set; }
+            public float totalprice { get; set; }
+        }
+        public void GetOrdersDetail()
+        {
+            var uid = GetInt("uid");
+            var orderId = GetInt("orderid");
+
+            var orders = OrdersHelper.GetOrders(orderId, uid);
+
+            if (orders == null)
+            {
+                ReturnErrorMsg("参数出错");
+                return;
+            }
+
+            var gidlist = Utility.GetListint(orders.Gids);
+            var numlist = Utility.GetListint(orders.Nums);
+            var titlelist = Utility.GetListstring(orders.Titles);
+            var imglist = Utility.GetListstring(orders.Imgs);
+            var originalpricelist = Utility.GetListfloat(orders.OriginalPrices);
+            var nowpricelist = Utility.GetListfloat(orders.NowPrices);
+
+            var data = new OrderDetailData();
+            for (int i = 0; i < gidlist.Count; i++)
+            {
+                var item = new OrderGoddsItem();
+                item.gid = gidlist[i];
+                item.num = numlist[i];
+                item.title = titlelist[i];
+                item.img = imglist[i];
+                item.nowprice = nowpricelist[i];
+                item.originalprice = originalpricelist[i];
+                item.totalprice = item.nowprice * item.num;
+
+                data.goodslist.Add(item);
+            }
+
+            data.orderid = orders.Id;
+            data.totalprice = orders.TotalPrice;
+            data.stotalprice = orders.StotalPrice;
+            data.pid = orders.Pid;
+            data.ordertime = orders.OrderTime;
+            data.orderpeople = orders.OrderPeople;
+            data.ordertype = (int)orders.OrderType;
+            data.couponid = orders.CouponId;
+            data.ctotalprice = orders.CtotalPrice;
+            data.address = orders.Address;
+            data.linkman = orders.LinkMan;
+            data.mobile = orders.Mobile;
+            data.createtime = orders.CreateTime;
+            data.status = (int)orders.Status;
+
+            JsonTransfer jt = new JsonTransfer();
+            jt.AddSuccessParam();
+            jt.Add("data", data);
+            Response.Write(DesEncrypt(jt));
+            Response.End();
+        }
+        #endregion
+
+        #region 更新订单
+        public void UpdateOrders()
+        {
+            var ordertime = GetTime("ordertime");
+            var orderpeople = GetInt("orderpeople");
+            var ordertype = GetInt("ordertype");
+            var couponid = GetInt("couponid");
+            var address = GetString("address");
+            var linkman = GetString("linkman");
+            var mobile = GetString("mobile");
+            var pid = GetInt("pid");
+            var remark = GetString("remark");
+            var uid = GetInt("uid");
+            var orderId = GetInt("orderid");
+
+            var orders = OrdersHelper.GetOrders(orderId, uid);
+
+            if (orders == null)
+            {
+                ReturnErrorMsg("参数出错");
+                return;
+            }
+            orders.OrderTime = ordertime;
+            orders.OrderType = (OrderType)ordertype;
+            orders.OrderPeople = orderpeople;
+            orders.Address = address;
+            orders.LinkMan = linkman;
+            orders.Mobile = mobile;
+            orders.CouponId = couponid;
+            //获取优惠券优惠的价格
+            Coupon coupon = new Coupon();//TODO:获取优惠券
+            orders.TotalPrice -= (float)(coupon.Extcredit * 1.0) / 100;
+            if (orders.TotalPrice < 0) orders.TotalPrice = 0;
+            orders.Pid = pid;
+            orders.Remark = remark;
+            orders.Status ++;
+
+            OrdersHelper.SaveOrders(orders);
+
+            ReturnCorrectMsg("更新成功");
+        }
+        #endregion
+
+        #region 更新订单状态
+        public void UpdateOrdersStatus()
+        {
+            var uid = GetInt("uid");
+            var orderId = GetInt("orderid");
+            var status = GetInt("status");
+
+            var orders = OrdersHelper.GetOrders(orderId, uid);
+
+            if (orders == null || status <= 1 || ((int)orders.Status + 1) != status)
+            {
+                ReturnErrorMsg("参数出错");
+                return;
+            }
+            orders.Status = (OrderStatus)status;
+
+            OrdersHelper.SaveOrders(orders);
+
+            ReturnCorrectMsg("更新订单状态成功");
         }
         #endregion
     }

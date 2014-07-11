@@ -67,4 +67,37 @@ namespace Backstage.Core
         /// </summary>
         Female = 1
     }
+
+    public enum OrderType
+    {
+        /// <summary>
+        /// 到店用餐
+        /// </summary>
+        Shop = 0,
+
+        /// <summary>
+        /// 送餐
+        /// </summary>
+        Delivery = 1,
+    }
+
+    public enum OrderStatus
+    {
+        /// <summary>
+        /// 新建
+        /// </summary>
+        New = 0 ,
+        /// <summary>
+        /// 填写了基本信息，未付款
+        /// </summary>
+        Update = 1,
+        /// <summary>
+        /// 已付款
+        /// </summary>
+        Pay = 2,
+        /// <summary>
+        /// 已完结（到店吃或者已送餐）
+        /// </summary>
+        End = 3,
+    }
 }

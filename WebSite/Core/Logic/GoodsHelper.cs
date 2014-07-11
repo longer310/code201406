@@ -12,7 +12,7 @@ namespace Backstage.Core.Logic
     public static class GoodsHelper
     {
         public static List<Goods> GetGoodsList(int sellerId, out int totalnum, string wheresql = "",
-            string ordersql = "", int start = 0, int limit = 0,int gettotal = 1)
+            string ordersql = "", int gettotal = 1, int start = 0, int limit = 0)
         {
             totalnum = 0;
             List<Goods> list = new List<Goods>();

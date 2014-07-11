@@ -9,6 +9,8 @@ namespace Backstage.Core.Entity
     {
         public int Id { get; set; }
 
+        public int SellerId { get; set; }
+
         public string Title { get; set; }
 
         public int ImgId { get; set; }
@@ -23,7 +25,7 @@ namespace Backstage.Core.Entity
         /// <summary>
         /// 有效期
         /// </summary>
-        public DateTime Dxpiry { get; set; }
+        public DateTime Expiry { get; set; }
 
         /// <summary>
         /// 描述
@@ -44,6 +46,11 @@ namespace Backstage.Core.Entity
         /// 限定使用商品（制定的Id不能使用优惠券）
         /// </summary>
         public IList<int> GoodsIds { get; set; }
+
+        /// <summary>
+        /// 评论数
+        /// </summary>
+        public int Commentnum { get; set; }
 
     }
 }

@@ -29,12 +29,13 @@ namespace Backstage.Core.Handler
                         c.ImgId = (int)reader["ImgId"];
                         c.ImgUrl = reader["ImgUrl"].ToString();
                         c.Title = reader["Title"].ToString();
-                        c.Description = reader["Summary"].ToString();
-                        c.Dxpiry = (DateTime)reader["Dxpiry"];
+                        c.Description = reader["Description"].ToString();
+                        c.Expiry = (DateTime)reader["Expiry"];
                         c.Extcredit = (int)reader["Extcredit"];
                         c.FullMoney = (int)reader["FullMoney"];
                         c.DiscountMoney = (int)reader["DiscountMoney"];
                         c.GoodsIds = GetGoodsIds(reader["GoodsIds"].ToString());
+                        c.Commentnum = (int)reader["Commentnum"];
                     }
                 }
             }
@@ -43,17 +44,6 @@ namespace Backstage.Core.Handler
                 throw;
             }
             return c;
-        }
-
-        static IList<int> GetGoodsIds(string goodsIds)
-        {
-            string[] ids = goodsIds.Split(',');
-            var results = new List<int>();
-            foreach (var id in ids)
-            {
-                results.Add(Convert.ToInt32(id));
-            }
-            return results;
         }
 
         /// <summary>
@@ -88,12 +78,13 @@ namespace Backstage.Core.Handler
                         c.ImgId = (int)reader["ImgId"];
                         c.ImgUrl = reader["ImgUrl"].ToString();
                         c.Title = reader["Title"].ToString();
-                        c.Description = reader["Summary"].ToString();
-                        c.Dxpiry = (DateTime)reader["Dxpiry"];
+                        c.Description = reader["Description"].ToString();
+                        c.Expiry = (DateTime)reader["Expiry"];
                         c.Extcredit = (int)reader["Extcredit"];
                         c.FullMoney = (int)reader["FullMoney"];
                         c.DiscountMoney = (int)reader["DiscountMoney"];
                         c.GoodsIds = GetGoodsIds(reader["GoodsIds"].ToString());
+                        c.Commentnum = (int)reader["Commentnum"];
                         results.Results.Add(c);
                     }
 
@@ -147,12 +138,13 @@ namespace Backstage.Core.Handler
                         c.ImgId = (int)reader["ImgId"];
                         c.ImgUrl = reader["ImgUrl"].ToString();
                         c.Title = reader["Title"].ToString();
-                        c.Description = reader["Summary"].ToString();
-                        c.Dxpiry = (DateTime)reader["Dxpiry"];
+                        c.Description = reader["Description"].ToString();
+                        c.Expiry = (DateTime)reader["Expiry"];
                         c.Extcredit = (int)reader["Extcredit"];
                         c.FullMoney = (int)reader["FullMoney"];
                         c.DiscountMoney = (int)reader["DiscountMoney"];
                         c.GoodsIds = GetGoodsIds(reader["GoodsIds"].ToString());
+                        c.Commentnum = (int)reader["Commentnum"];
                         results.Add(c);
                     }
                 }
@@ -166,9 +158,116 @@ namespace Backstage.Core.Handler
 
 
 
-        internal static void Update(Active active)
+        internal static void Update(Coupon coupon)
         {
+            string commandText = @"UPDATE coupon SET
+                                        ImgId = ?ImgId,
+                                        ImgUrl = ?ImgUrl,
+                                        Title = ?Title,
+                                        Description = ?Description,
+                                        Expiry = ?Expiry,
+                                        Extcredit = ?Extcredit,
+                                        FullMoney = ?FullMoney,
+                                        DiscountMoney = ?DiscountMoney,
+                                        GoodsIds = ?GoodsIds,
+                                        Commentnum = ?Commentnum
+                                    WHERE
+                                        Id = ?Id";
+
+            List<MySqlParameter> parameters = new List<MySqlParameter>();
+            parameters.Add(new MySqlParameter("?Id", coupon.Id));
+            parameters.Add(new MySqlParameter("?Title", coupon.Title));
+            parameters.Add(new MySqlParameter("?ImgId", coupon.ImgId));
+            parameters.Add(new MySqlParameter("?ImgUrl", coupon.ImgUrl));
+            parameters.Add(new MySqlParameter("?Description", coupon.Description));
+            parameters.Add(new MySqlParameter("?Expiry", coupon.Expiry));
+            parameters.Add(new MySqlParameter("?Extcredit", coupon.Extcredit));
+            parameters.Add(new MySqlParameter("?FullMoney", coupon.FullMoney));
+            parameters.Add(new MySqlParameter("?DiscountMoney", coupon.FullMoney));
+            parameters.Add(new MySqlParameter("?GoodsIds", GetGoodsIdsString(coupon.GoodsIds)));
+
+            MySqlHelper.ExecuteNonQuery(GlobalConfig.DbConn, CommandType.Text, commandText, parameters.ToArray());
+
             //throw new NotImplementedException();
         }
+
+        static IList<int> GetGoodsIds(string goodsIds)
+        {
+            string[] ids = goodsIds.Split(',');
+            var results = new List<int>();
+            foreach (var id in ids)
+            {
+                results.Add(Convert.ToInt32(id));
+            }
+            return results;
+        }
+
+        static string GetGoodsIdsString(IList<int> goodsIds)
+        {
+            string ids = "";
+            foreach (var id in goodsIds)
+            {
+                ids += id;
+                ids += ",";
+            }
+            if (goodsIds != null && goodsIds.Count > 0)
+            {
+                ids.Substring(0, ids.Length - 1);
+            }
+            return ids;
+        }
+
+        internal static void CreateUserCoupon(UserCoupon userCoupon)
+        {
+            string connectionString = GlobalConfig.DbConn;
+            string commandText = @"INSERT INTO usercoupon 
+            	                                ( 
+            	                                UserId, 
+            	                                CouponId,
+            	                                CreateTime,
+            	                                )
+            	                                VALUES
+            	                                ( 
+            	                                ?UserId, 
+            	                                ?CouponId, 
+            	                                ?CreateTime
+            	                                )";
+
+            List<MySqlParameter> parameters = new List<MySqlParameter>();
+            parameters.Add(new MySqlParameter("?UserId", userCoupon.UserId));
+            parameters.Add(new MySqlParameter("?CouponId", userCoupon.CouponId));
+            parameters.Add(new MySqlParameter("?CreateTime", DateTime.Now));
+
+            MySqlHelper.ExecuteNonQuery(connectionString, CommandType.Text, commandText, parameters.ToArray());
+        }
+
+        internal static UserCoupon GetUserCoupon(int userId, int couponId)
+        {
+            var item = new UserCoupon();
+            string commandText = @"select * from usercoupon where userId = ?userId and couponId = ?couponId";
+            List<MySqlParameter> parameters = new List<MySqlParameter>();
+            parameters.Add(new MySqlParameter("?userId", userId));
+            parameters.Add(new MySqlParameter("?couponId", couponId));
+            try
+            {
+                using (var conn = new MySqlConnection(GlobalConfig.DbConn))
+                {
+                    MySqlDataReader reader = MySqlHelper.ExecuteReader(conn, CommandType.Text, commandText, parameters.ToArray());
+                    while (reader.Read())
+                    {
+                        item.Id = reader.GetInt32(0);
+                        item.UserId = (int)reader["UserId"];
+                        item.CouponId = (int)reader["CouponId"];
+                        item.CreateTime = (DateTime)reader["CreateTime"];
+                    }
+                }
+            }
+            catch (System.Exception ex)
+            {
+                throw;
+            }
+            return item;
+        }
+       
     }
 }

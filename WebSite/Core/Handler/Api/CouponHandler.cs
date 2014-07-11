@@ -23,21 +23,58 @@ namespace Backstage.Core.Handler.Api
                     CouponComment(); break;
                 case "couponcommentlist":
                     Couponcommentlist(); break;
-                //case "updatedata":
-                //    UpdateData(); break;
+                case "usercoupon":
+                    UserCoupon(); break;
                 //case "deldata":
                 //    DelData(); break;
                 default: break;
             }
         }
 
-        private void Couponcommentlist()
+        private void UserCoupon()
         {
-            int aid = GetInt("newid");
+            int cid = GetInt("couponid");
+            int userId = GetInt("uid");
             int index = GetInt("start");
             int size = GetInt("limit");
-            var active = ActiveHelper.GetItem(aid);
-            var cms = CommentHelper.GetPagings(active.SellerId, CommentType.Avtive, aid, index, size);
+            try
+            {
+                var userCoupon = new UserCoupon()
+                {
+                    CouponId = cid,
+                    UserId = userId
+                    //CreateTime = DateTime.Now
+                };
+                //var old = CouponHelper.GetUserCoupon(userId, cid);
+                //if (old != null && old.Id != 0)
+                //{
+                //    JsonTransfer jt = new JsonTransfer();
+                //    jt.Add("status", 0);
+                //    jt.Add("message", "用户已经使用过该优惠券");
+                //    Response.Write(DesEncrypt(jt).ToLower());
+                //    Response.End();
+                //    return;
+                //}
+                CouponHelper.CreateUserCoupon(userCoupon);
+            }
+            catch
+            {
+                throw;
+            }
+
+            JsonTransfer jt = new JsonTransfer();
+            jt.AddSuccessParam();
+            Response.Write(DesEncrypt(jt).ToLower());
+            Response.End();
+        }
+
+        private void Couponcommentlist()
+        {
+            int cid = GetInt("couponid");
+            int index = GetInt("start");
+            int size = GetInt("limit");
+            var coupon = CouponHelper.GetItem(cid);
+            var cms = CommentHelper.GetPagings(coupon.SellerId, CommentType.Coupons, cid, index, size);
             var users = AccountHelper.GetUserList(cms.Results.Select(c => c.UserId).ToList());
             var data = new CommentsForApis();
             foreach (var cm in cms.Results)
@@ -65,13 +102,13 @@ namespace Backstage.Core.Handler.Api
 
         private void CouponComment()
         {
-            int aid = GetInt("newid");
+            int cid = GetInt("couponid");
             int uid = GetInt("uid");
             string msg = GetString("message");
-            var active = ActiveHelper.GetItem(aid);
+            var coupon = CouponHelper.GetItem(cid);
             Comment c = new Comment();
-            c.SellerId = active.SellerId;
-            c.TypeId = active.Id;
+            c.SellerId = coupon.SellerId;
+            c.TypeId = coupon.Id;
             c.UserId = uid;
             c.Content = msg;
             c.Type = CommentType.Avtive;
@@ -79,8 +116,8 @@ namespace Backstage.Core.Handler.Api
             try
             {
                 CommentHelper.Create(c);
-                active.Commentnum += 1;
-                ActiveHelper.Update(active);
+                coupon.Commentnum += 1;
+                CouponHelper.Update(coupon);
             }
             catch
             {
@@ -95,14 +132,16 @@ namespace Backstage.Core.Handler.Api
 
         private void GetItem()
         {
-            int aid = GetInt("newid");
-            var item = ActiveHelper.GetItem(aid);
+            int cid = GetInt("couponid");
+            var item = CouponHelper.GetItem(cid);
             var data = new
             {
-                newid = item.Id,
+                couponid = item.Id,
                 title = item.Title,
-                img = item.CoverImgUrl,
-                summary = item.Summary
+                img = item.ImgUrl,
+                extcredit = item.Extcredit,
+                expiry = item.Expiry,
+                description = item.Description
 
             };
             JsonTransfer jt = new JsonTransfer();
@@ -124,10 +163,12 @@ namespace Backstage.Core.Handler.Api
             {
                 var d = new
                 {
-                    //newid = r.Id,
-                    //title = r.Title,
-                    //img = r.CoverImgUrl,
-                    //summary = r.Summary
+                    couponid = r.Id,
+                    title = r.Title,
+                    img = r.ImgUrl,
+                    extcredit = r.Extcredit,
+                    expiry = r.Expiry,
+                    description = r.Description
                 };
                 data.Add(d);
             }

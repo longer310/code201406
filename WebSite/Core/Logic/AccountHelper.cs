@@ -35,29 +35,32 @@ namespace Backstage.Core
 
             try
             {
-                MySqlDataReader reader = MySqlHelper.ExecuteReader(Utility._gameDbConn, CommandType.Text, cmdText,
-                    parameters.ToArray());
-                while (reader.Read())
+                using (var conn = Utility.ObtainConn(Utility._gameDbConn))
                 {
-                    Account user = new Account();
-                    user.Id = reader.GetInt32(0);
-                    user.UserName = reader["UserName"].ToString();
-                    user.Pwd = reader["Pwd"].ToString();
-                    user.RoleType = (RoleType)reader["RoleType"];
-                    user.Avatar = reader["Avatar"].ToString();
-                    user.Sex = (int)reader["Sex"];
-                    user.CreateTime = (DateTime)reader["CreateTime"];
-
-                    list.Add(user);
-                }
-
-                cmdText = @"select count(*) from account " + wheresql;
-                reader = MySqlHelper.ExecuteReader(Utility._gameDbConn, CommandType.Text, cmdText);
-                if (reader.HasRows)
-                {
-                    if (reader.Read())
+                    MySqlDataReader reader = MySqlHelper.ExecuteReader(conn, CommandType.Text, cmdText,
+                        parameters.ToArray());
+                    while (reader.Read())
                     {
-                        totalnum = reader.GetInt32(0);
+                        Account user = new Account();
+                        user.Id = reader.GetInt32(0);
+                        user.UserName = reader["UserName"].ToString();
+                        user.Pwd = reader["Pwd"].ToString();
+                        user.RoleType = (RoleType) reader["RoleType"];
+                        user.Avatar = reader["Avatar"].ToString();
+                        user.Sex = (int) reader["Sex"];
+                        user.CreateTime = (DateTime) reader["CreateTime"];
+
+                        list.Add(user);
+                    }
+
+                    cmdText = @"select count(*) from account " + wheresql;
+                    reader = MySqlHelper.ExecuteReader(conn, CommandType.Text, cmdText);
+                    if (reader.HasRows)
+                    {
+                        if (reader.Read())
+                        {
+                            totalnum = reader.GetInt32(0);
+                        }
                     }
                 }
             }
@@ -81,21 +84,23 @@ namespace Backstage.Core
             string cmdText = string.Format(@"select * from account where id in {0}", ids_string);
             try
             {
-                MySqlDataReader reader = MySqlHelper.ExecuteReader(Utility._gameDbConn, CommandType.Text, cmdText);
-                while (reader.Read())
+                using (var conn = Utility.ObtainConn(Utility._gameDbConn))
                 {
-                    Account user = new Account();
-                    user.Id = reader.GetInt32(0);
-                    user.UserName = reader["UserName"].ToString();
-                    user.Pwd = reader["Pwd"].ToString();
-                    user.RoleType = (RoleType)reader["RoleType"];
-                    user.Avatar = reader["Avatar"].ToString();
-                    user.Sex = Convert.ToInt32(reader["Sex"]);
-                    user.CreateTime = (DateTime)reader["CreateTime"];
+                    MySqlDataReader reader = MySqlHelper.ExecuteReader(conn, CommandType.Text, cmdText);
+                    while (reader.Read())
+                    {
+                        Account user = new Account();
+                        user.Id = reader.GetInt32(0);
+                        user.UserName = reader["UserName"].ToString();
+                        user.Pwd = reader["Pwd"].ToString();
+                        user.RoleType = (RoleType) reader["RoleType"];
+                        user.Avatar = reader["Avatar"].ToString();
+                        user.Sex = Convert.ToInt32(reader["Sex"]);
+                        user.CreateTime = (DateTime) reader["CreateTime"];
 
-                    list.Add(user);
+                        list.Add(user);
+                    }
                 }
-
             }
             catch (System.Exception ex)
             {

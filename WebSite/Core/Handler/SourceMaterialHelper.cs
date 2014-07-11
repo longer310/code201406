@@ -20,10 +20,10 @@ namespace Backstage.Core
             parameters.Add(new MySqlParameter("?id", id));
             try
             {
-                using (MySqlConnection conn = new MySqlConnection(GlobalConfig.DbConn))
+                using (var conn = Utility.ObtainConn(Utility._gameDbConn))
                 {
                     //MySqlDataReader reader = MySqlHelper.ExecuteReader(GlobalConfig.DbConn, CommandType.Text, commandText, parameters.ToArray());
-                    MySqlDataReader reader = MySqlHelper.ExecuteReader(GlobalConfig.DbConn, CommandType.Text, commandText, parameters.ToArray());
+                    MySqlDataReader reader = MySqlHelper.ExecuteReader(conn, CommandType.Text, commandText, parameters.ToArray());
                     while (reader.Read())
                     {
                         sm.Id = reader.GetInt32(0);
@@ -61,9 +61,9 @@ namespace Backstage.Core
 
             try
             {
-                using (MySqlConnection conn = new MySqlConnection(GlobalConfig.DbConn))
+                using (var conn = Utility.ObtainConn(Utility._gameDbConn))
                 {
-                    MySqlDataReader reader = MySqlHelper.ExecuteReader(GlobalConfig.DbConn, CommandType.Text, commandText, parameters.ToArray());
+                    MySqlDataReader reader = MySqlHelper.ExecuteReader(conn, CommandType.Text, commandText, parameters.ToArray());
                     while (reader.Read())
                     {
                         SourceMaterial sm = new SourceMaterial();
@@ -79,7 +79,7 @@ namespace Backstage.Core
                     }
 
                     commandText = @"select count(*) from material";
-                    reader = MySqlHelper.ExecuteReader(GlobalConfig.DbConn, CommandType.Text, commandText, parameters.ToArray());
+                    reader = MySqlHelper.ExecuteReader(conn, CommandType.Text, commandText, parameters.ToArray());
                     if (reader.HasRows)
                     {
                         if (reader.Read())
@@ -110,9 +110,9 @@ namespace Backstage.Core
 
             try
             {
-                using (MySqlConnection conn = new MySqlConnection(GlobalConfig.DbConn))
+                using (var conn = Utility.ObtainConn(Utility._gameDbConn))
                 {
-                    MySqlDataReader reader = MySqlHelper.ExecuteReader(GlobalConfig.DbConn, CommandType.Text, commandText, parameters.ToArray());
+                    MySqlDataReader reader = MySqlHelper.ExecuteReader(conn, CommandType.Text, commandText, parameters.ToArray());
                     while (reader.Read())
                     {
                         SourceMaterial sm = new SourceMaterial();
@@ -156,9 +156,9 @@ namespace Backstage.Core
 
             try
             {
-                using (MySqlConnection conn = new MySqlConnection(GlobalConfig.DbConn))
+                using (var conn = Utility.ObtainConn(Utility._gameDbConn))
                 {
-                    MySqlDataReader reader = MySqlHelper.ExecuteReader(GlobalConfig.DbConn, CommandType.Text, commandText, parameters.ToArray());
+                    MySqlDataReader reader = MySqlHelper.ExecuteReader(conn, CommandType.Text, commandText, parameters.ToArray());
                     while (reader.Read())
                     {
                         SourceMaterial sm = new SourceMaterial();

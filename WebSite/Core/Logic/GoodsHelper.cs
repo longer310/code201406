@@ -29,60 +29,11 @@ namespace Backstage.Core.Logic
             parameters.Add(new MySqlParameter("?SellerId", sellerId));
             try
             {
-                MySqlDataReader reader = MySqlHelper.ExecuteReader(Utility._gameDbConn, CommandType.Text, cmdText,
+                using (var conn = Utility.ObtainConn(Utility._gameDbConn))
+                {
+                    MySqlDataReader reader = MySqlHelper.ExecuteReader(conn, CommandType.Text, cmdText,
                     parameters.ToArray());
-                while (reader.Read())
-                {
-                    Goods goods = new Goods();
-                    goods.Id = reader.GetInt32(0);
-                    goods.SellerId = (int)reader["SellerId"];
-                    goods.Logo = (int)reader["Logo"];
-                    goods.ImgIds = reader["ImgIds"].ToString();
-                    goods.Sales = (int)reader["Sales"];
-                    goods.Title = reader["Title"].ToString();
-                    goods.Cid = (int)reader["Cid"];
-                    goods.Nowprice = (float)reader["Nowprice"];
-                    goods.OriginalPrice = (float)reader["OriginalPrice"];
-                    goods.Score = (float)reader["Score"];
-                    goods.CreateTime = (DateTime)reader["CreateTime"];
-                    goods.FavCount = (int)reader["FavCount"];
-                    goods.ShareCount = (int)reader["ShareCount"];
-                    goods.Tag = reader["Tag"].ToString();
-                    goods.Content = reader["Content"].ToString();
-                    goods.LogoUrl = reader["Url"].ToString();
-
-                    list.Add(goods);
-                }
-
-                if (gettotal == 1)
-                {
-                    cmdText = string.Format("select count(*) from goods where SellerId={0} ", sellerId) + wheresql;
-                    reader = MySqlHelper.ExecuteReader(Utility._gameDbConn, CommandType.Text, cmdText);
-                    if (reader.HasRows)
-                    {
-                        if (reader.Read())
-                        {
-                            totalnum = reader.GetInt32(0);
-                        }
-                    }
-                }
-            }
-            catch (System.Exception ex)
-            {
-                throw;
-            }
-            return list;
-        }
-
-        public static Goods GetGoods(int id)
-        {
-            var sql = string.Format("select a.*,m.Url from Goods as a left join material m on a.Logo=m.Id where a.Id={0} limit 1;", id);
-            try
-            {
-                MySqlDataReader reader = MySqlHelper.ExecuteReader(Utility._gameDbConn, CommandType.Text, sql);
-                if (reader.HasRows)
-                {
-                    if (reader.Read())
+                    while (reader.Read())
                     {
                         Goods goods = new Goods();
                         goods.Id = reader.GetInt32(0);
@@ -101,7 +52,63 @@ namespace Backstage.Core.Logic
                         goods.Tag = reader["Tag"].ToString();
                         goods.Content = reader["Content"].ToString();
                         goods.LogoUrl = reader["Url"].ToString();
-                        return goods;
+
+                        list.Add(goods);
+                    }
+
+                    if (gettotal == 1)
+                    {
+                        cmdText = string.Format("select count(*) from goods where SellerId={0} ", sellerId) + wheresql;
+                        reader = MySqlHelper.ExecuteReader(conn, CommandType.Text, cmdText);
+                        if (reader.HasRows)
+                        {
+                            if (reader.Read())
+                            {
+                                totalnum = reader.GetInt32(0);
+                            }
+                        }
+                    }
+                }
+                
+            }
+            catch (System.Exception ex)
+            {
+                throw;
+            }
+            return list;
+        }
+
+        public static Goods GetGoods(int id)
+        {
+            var sql = string.Format("select a.*,m.Url from Goods as a left join material m on a.Logo=m.Id where a.Id={0} limit 1;", id);
+            try
+            {
+                using (var conn = Utility.ObtainConn(Utility._gameDbConn))
+                {
+                    MySqlDataReader reader = MySqlHelper.ExecuteReader(conn, CommandType.Text, sql);
+                    if (reader.HasRows)
+                    {
+                        if (reader.Read())
+                        {
+                            Goods goods = new Goods();
+                            goods.Id = reader.GetInt32(0);
+                            goods.SellerId = (int) reader["SellerId"];
+                            goods.Logo = (int) reader["Logo"];
+                            goods.ImgIds = reader["ImgIds"].ToString();
+                            goods.Sales = (int) reader["Sales"];
+                            goods.Title = reader["Title"].ToString();
+                            goods.Cid = (int) reader["Cid"];
+                            goods.Nowprice = (float) reader["Nowprice"];
+                            goods.OriginalPrice = (float) reader["OriginalPrice"];
+                            goods.Score = (float) reader["Score"];
+                            goods.CreateTime = (DateTime) reader["CreateTime"];
+                            goods.FavCount = (int) reader["FavCount"];
+                            goods.ShareCount = (int) reader["ShareCount"];
+                            goods.Tag = reader["Tag"].ToString();
+                            goods.Content = reader["Content"].ToString();
+                            goods.LogoUrl = reader["Url"].ToString();
+                            return goods;
+                        }
                     }
                 }
             }

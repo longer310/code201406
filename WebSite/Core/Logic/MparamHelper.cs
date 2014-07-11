@@ -15,18 +15,21 @@ namespace Backstage.Core.Logic
             var cmdText = string.Format("select * from Mparam where Id={0} limit 1;", id);
             try
             {
-                MySqlDataReader reader = MySqlHelper.ExecuteReader(Utility._gameDbConn, CommandType.Text, cmdText);
-                if (reader.HasRows)
+                using (var conn = Utility.ObtainConn(Utility._gameDbConn))
                 {
-                    if (reader.Read())
+                    MySqlDataReader reader = MySqlHelper.ExecuteReader(conn, CommandType.Text, cmdText);
+                    if (reader.HasRows)
                     {
-                        Mparam mparam = new Mparam();
-                        mparam.Id = reader.GetInt32(0);
-                        mparam.AdImgId = (int)reader["AdImgId"];
-                        mparam.AdImgUrl = reader["AdImgUrl"].ToString();
-                        mparam.Title = reader["Title"].ToString();
-                        mparam.Url = reader["Url"].ToString();
-                        return mparam;
+                        if (reader.Read())
+                        {
+                            Mparam mparam = new Mparam();
+                            mparam.Id = reader.GetInt32(0);
+                            mparam.AdImgId = (int) reader["AdImgId"];
+                            mparam.AdImgUrl = reader["AdImgUrl"].ToString();
+                            mparam.Title = reader["Title"].ToString();
+                            mparam.Url = reader["Url"].ToString();
+                            return mparam;
+                        }
                     }
                 }
             }

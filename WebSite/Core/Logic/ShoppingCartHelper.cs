@@ -27,31 +27,34 @@ namespace Backstage.Core.Logic
             }
             try
             {
-                MySqlDataReader reader = MySqlHelper.ExecuteReader(Utility._gameDbConn, CommandType.Text, cmdText,
-                    parameters.ToArray());
-                while (reader.Read())
+                using (var conn = Utility.ObtainConn(Utility._gameDbConn))
                 {
-                    ShoppingCart shoppingcart = new ShoppingCart();
-                    shoppingcart.Id = reader.GetInt32(0);
-                    shoppingcart.UserId = (int)reader["UserId"];
-                    shoppingcart.Img = reader["Img"].ToString();
-                    shoppingcart.Gid = (int)reader["Gid"];
-                    shoppingcart.Price = (float)reader["Price"];
-                    shoppingcart.Num = (int)reader["Num"];
-                    shoppingcart.CreateTime = (DateTime)reader["CreateTime"];
-
-                    list.Add(shoppingcart);
-                }
-
-                if (gettotal == 1)
-                {
-                    cmdText = String.Format("select count(*) from ShoppingCart ") + wheresql;
-                    reader = MySqlHelper.ExecuteReader(Utility._gameDbConn, CommandType.Text, cmdText);
-                    if (reader.HasRows)
+                    MySqlDataReader reader = MySqlHelper.ExecuteReader(conn, CommandType.Text, cmdText,
+                        parameters.ToArray());
+                    while (reader.Read())
                     {
-                        if (reader.Read())
+                        ShoppingCart shoppingcart = new ShoppingCart();
+                        shoppingcart.Id = reader.GetInt32(0);
+                        shoppingcart.UserId = (int) reader["UserId"];
+                        shoppingcart.Img = reader["Img"].ToString();
+                        shoppingcart.Gid = (int) reader["Gid"];
+                        shoppingcart.Price = (float) reader["Price"];
+                        shoppingcart.Num = (int) reader["Num"];
+                        shoppingcart.CreateTime = (DateTime) reader["CreateTime"];
+
+                        list.Add(shoppingcart);
+                    }
+
+                    if (gettotal == 1)
+                    {
+                        cmdText = String.Format("select count(*) from ShoppingCart ") + wheresql;
+                        reader = MySqlHelper.ExecuteReader(conn, CommandType.Text, cmdText);
+                        if (reader.HasRows)
                         {
-                            totalnum = reader.GetInt32(0);
+                            if (reader.Read())
+                            {
+                                totalnum = reader.GetInt32(0);
+                            }
                         }
                     }
                 }
@@ -68,20 +71,23 @@ namespace Backstage.Core.Logic
             var sql = String.Format("select * from ShoppingCart where Id={0} limit 1;", id);
             try
             {
-                MySqlDataReader reader = MySqlHelper.ExecuteReader(Utility._gameDbConn, CommandType.Text, sql);
-                if (reader.HasRows)
+                using (var conn = Utility.ObtainConn(Utility._gameDbConn))
                 {
-                    if (reader.Read())
+                    MySqlDataReader reader = MySqlHelper.ExecuteReader(conn, CommandType.Text, sql);
+                    if (reader.HasRows)
                     {
-                        ShoppingCart shoppingcart = new ShoppingCart();
-                        shoppingcart.Id = reader.GetInt32(0);
-                        shoppingcart.UserId = (int)reader["UserId"];
-                        shoppingcart.Img = reader["Img"].ToString();
-                        shoppingcart.Gid = (int)reader["Gid"];
-                        shoppingcart.Price = (float)reader["Price"];
-                        shoppingcart.Num = (int)reader["Num"];
-                        shoppingcart.CreateTime = (DateTime)reader["CreateTime"];
-                        return shoppingcart;
+                        if (reader.Read())
+                        {
+                            ShoppingCart shoppingcart = new ShoppingCart();
+                            shoppingcart.Id = reader.GetInt32(0);
+                            shoppingcart.UserId = (int) reader["UserId"];
+                            shoppingcart.Img = reader["Img"].ToString();
+                            shoppingcart.Gid = (int) reader["Gid"];
+                            shoppingcart.Price = (float) reader["Price"];
+                            shoppingcart.Num = (int) reader["Num"];
+                            shoppingcart.CreateTime = (DateTime) reader["CreateTime"];
+                            return shoppingcart;
+                        }
                     }
                 }
             }

@@ -27,31 +27,34 @@ namespace Backstage.Core.Logic
             }
             try
             {
-                MySqlDataReader reader = MySqlHelper.ExecuteReader(Utility._gameDbConn, CommandType.Text, cmdText,
-                    parameters.ToArray());
-                while (reader.Read())
+                using (var conn = Utility.ObtainConn(Utility._gameDbConn))
                 {
-                    Orders orders = new Orders();
-                    orders.Id = reader.GetInt32(0);
-                    orders.UserId = (int)reader["UserId"];
-                    orders.Img = reader["Img"].ToString();
-                    orders.Gid = (int)reader["Gid"];
-                    orders.Price = (float)reader["Price"];
-                    orders.Num = (int)reader["Num"];
-                    orders.CreateTime = (DateTime)reader["CreateTime"];
-
-                    list.Add(orders);
-                }
-
-                if (gettotal == 1)
-                {
-                    cmdText = string.Format("select count(*) from Orders ") + wheresql;
-                    reader = MySqlHelper.ExecuteReader(Utility._gameDbConn, CommandType.Text, cmdText);
-                    if (reader.HasRows)
+                    MySqlDataReader reader = MySqlHelper.ExecuteReader(conn, CommandType.Text, cmdText,
+                        parameters.ToArray());
+                    while (reader.Read())
                     {
-                        if (reader.Read())
+                        Orders orders = new Orders();
+                        orders.Id = reader.GetInt32(0);
+                        orders.UserId = (int) reader["UserId"];
+                        orders.Img = reader["Img"].ToString();
+                        orders.Gid = (int) reader["Gid"];
+                        orders.Price = (float) reader["Price"];
+                        orders.Num = (int) reader["Num"];
+                        orders.CreateTime = (DateTime) reader["CreateTime"];
+
+                        list.Add(orders);
+                    }
+
+                    if (gettotal == 1)
+                    {
+                        cmdText = string.Format("select count(*) from Orders ") + wheresql;
+                        reader = MySqlHelper.ExecuteReader(conn, CommandType.Text, cmdText);
+                        if (reader.HasRows)
                         {
-                            totalnum = reader.GetInt32(0);
+                            if (reader.Read())
+                            {
+                                totalnum = reader.GetInt32(0);
+                            }
                         }
                     }
                 }

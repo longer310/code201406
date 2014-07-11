@@ -15,23 +15,26 @@ namespace Backstage.Core.Logic
             var cmdText = string.Format("select * from Favorite where Id={0} limit 1;", id);
             try
             {
-                MySqlDataReader reader = MySqlHelper.ExecuteReader(Utility._gameDbConn, CommandType.Text, cmdText);
-                if (reader.HasRows)
+                using (var conn = Utility.ObtainConn(Utility._gameDbConn))
                 {
-                    if (reader.Read())
+                    MySqlDataReader reader = MySqlHelper.ExecuteReader(conn, CommandType.Text, cmdText);
+                    if (reader.HasRows)
                     {
-                        Favorite favorite = new Favorite();
-                        favorite.Id = reader.GetInt32(0);
-                        favorite.Gids = reader["Gids"].ToString();
+                        if (reader.Read())
+                        {
+                            Favorite favorite = new Favorite();
+                            favorite.Id = reader.GetInt32(0);
+                            favorite.Gids = reader["Gids"].ToString();
+                            return favorite;
+                        }
+                    }
+                    else
+                    {
+                        var favorite = new Favorite();
+                        favorite.Id = id;
+                        SaveFavorite(favorite, 1);
                         return favorite;
                     }
-                }
-                else
-                {
-                    var favorite = new Favorite();
-                    favorite.Id = id;
-                    SaveFavorite(favorite,1);
-                    return favorite;
                 }
             }
             catch (System.Exception ex)

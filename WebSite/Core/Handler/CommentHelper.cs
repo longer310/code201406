@@ -43,9 +43,9 @@ namespace Backstage.Core
 
             try
             {
-                using (MySqlConnection conn = new MySqlConnection(GlobalConfig.DbConn))
+                using (var conn = Utility.ObtainConn(Utility._gameDbConn))
                 {
-                    MySqlDataReader reader = MySqlHelper.ExecuteReader(GlobalConfig.DbConn, CommandType.Text, commandText, parameters.ToArray());
+                    MySqlDataReader reader = MySqlHelper.ExecuteReader(conn, CommandType.Text, commandText, parameters.ToArray());
                     while (reader.Read())
                     {
                         Comment c = new Comment();
@@ -64,7 +64,7 @@ namespace Backstage.Core
                     parameters.Add(new MySqlParameter("?sellerId", sellerId));
                     parameters.Add(new MySqlParameter("?type", (int)type));
                     parameters.Add(new MySqlParameter("?typeId", typeId));
-                    reader = MySqlHelper.ExecuteReader(GlobalConfig.DbConn, CommandType.Text, commandText, parameters.ToArray());
+                    reader = MySqlHelper.ExecuteReader(conn, CommandType.Text, commandText, parameters.ToArray());
                     while (reader.Read())
                     {
                         results.TotalCount = reader.GetInt32(0);

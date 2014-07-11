@@ -24,17 +24,20 @@ namespace Backstage.Core.Logic
             parameters.Add(new MySqlParameter("?SellerId", sellerId));
             try
             {
-                MySqlDataReader reader = MySqlHelper.ExecuteReader(Utility._gameDbConn, CommandType.Text, cmdText,
-                    parameters.ToArray());
-                while (reader.Read())
+                using (var conn = Utility.ObtainConn(Utility._gameDbConn))
                 {
-                    Payment payment = new Payment();
-                    payment.Id = reader.GetInt32(0);
-                    payment.Description = reader["Description"].ToString();
-                    payment.Name = reader["Name"].ToString();
-                    payment.SellerId = (int)reader["SellerId"];
+                    MySqlDataReader reader = MySqlHelper.ExecuteReader(conn, CommandType.Text, cmdText,
+                        parameters.ToArray());
+                    while (reader.Read())
+                    {
+                        Payment payment = new Payment();
+                        payment.Id = reader.GetInt32(0);
+                        payment.Description = reader["Description"].ToString();
+                        payment.Name = reader["Name"].ToString();
+                        payment.SellerId = (int) reader["SellerId"];
 
-                    list.Add(payment);
+                        list.Add(payment);
+                    }
                 }
             }
             catch (System.Exception ex)

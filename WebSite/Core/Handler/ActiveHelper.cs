@@ -20,17 +20,20 @@ namespace Backstage.Core
             parameters.Add(new MySqlParameter("?id", id));
             try
             {
-                MySqlDataReader reader = MySqlHelper.ExecuteReader(GlobalConfig.DbConn, CommandType.Text, commandText, parameters.ToArray());
-                while (reader.Read())
+                using (var conn = Utility.ObtainConn(Utility._gameDbConn))
                 {
-                    a.Id = reader.GetInt32(0);
-                    a.SellerId = (int)reader["SellerId"];
-                    a.CoverImgId = (int)reader["CoverImgId"];
-                    a.Title = reader["Title"].ToString();
-                    a.Summary = reader["Summary"].ToString();
-                    a.CreateTime = (DateTime)reader["CreateTime"];
+                    MySqlDataReader reader = MySqlHelper.ExecuteReader(conn, CommandType.Text,
+                        commandText, parameters.ToArray());
+                    while (reader.Read())
+                    {
+                        a.Id = reader.GetInt32(0);
+                        a.SellerId = (int) reader["SellerId"];
+                        a.CoverImgId = (int) reader["CoverImgId"];
+                        a.Title = reader["Title"].ToString();
+                        a.Summary = reader["Summary"].ToString();
+                        a.CreateTime = (DateTime) reader["CreateTime"];
+                    }
                 }
-
             }
             catch (System.Exception ex)
             {
@@ -61,29 +64,34 @@ namespace Backstage.Core
 
             try
             {
-                MySqlDataReader reader = MySqlHelper.ExecuteReader(GlobalConfig.DbConn, CommandType.Text, commandText, parameters.ToArray());
-                while (reader.Read())
+                using (var conn = Utility.ObtainConn(Utility._gameDbConn))
                 {
-                    Active a = new Active();
-                    a.Id = (int)reader["Id"];
-                    a.SellerId = (int)reader["SellerId"];
-                    a.CoverImgId = (int)reader["CoverImgId"];
-                    a.CoverImgUrl = reader["CoverImgUrl"].ToString();
-                    a.Title = reader["Title"].ToString();
-                    a.Summary = reader["Summary"].ToString();
-                    a.CreateTime = (DateTime)reader["CreateTime"];
-                    results.Results.Add(a);
-                }
-
-                commandText = "select count(*) from active where sellerId = ?sellerId";
-                parameters.Clear();
-                parameters.Add(new MySqlParameter("?sellerId", sellerId));
-                reader = MySqlHelper.ExecuteReader(GlobalConfig.DbConn, CommandType.Text, commandText, parameters.ToArray());
-                if (reader.HasRows)
-                {
-                    if (reader.Read())
+                    MySqlDataReader reader = MySqlHelper.ExecuteReader(conn, CommandType.Text,
+                        commandText, parameters.ToArray());
+                    while (reader.Read())
                     {
-                        results.TotalCount = reader.GetInt32(0);
+                        Active a = new Active();
+                        a.Id = (int) reader["Id"];
+                        a.SellerId = (int) reader["SellerId"];
+                        a.CoverImgId = (int) reader["CoverImgId"];
+                        a.CoverImgUrl = reader["CoverImgUrl"].ToString();
+                        a.Title = reader["Title"].ToString();
+                        a.Summary = reader["Summary"].ToString();
+                        a.CreateTime = (DateTime) reader["CreateTime"];
+                        results.Results.Add(a);
+                    }
+
+                    commandText = "select count(*) from active where sellerId = ?sellerId";
+                    parameters.Clear();
+                    parameters.Add(new MySqlParameter("?sellerId", sellerId));
+                    reader = MySqlHelper.ExecuteReader(conn, CommandType.Text, commandText,
+                        parameters.ToArray());
+                    if (reader.HasRows)
+                    {
+                        if (reader.Read())
+                        {
+                            results.TotalCount = reader.GetInt32(0);
+                        }
                     }
                 }
             }
@@ -114,9 +122,9 @@ namespace Backstage.Core
 
             try
             {
-                using (MySqlConnection conn = new MySqlConnection(GlobalConfig.DbConn))
+                using (var conn = Utility.ObtainConn(Utility._gameDbConn))
                 {
-                    MySqlDataReader reader = MySqlHelper.ExecuteReader(GlobalConfig.DbConn, CommandType.Text, commandText, parameters.ToArray());
+                    MySqlDataReader reader = MySqlHelper.ExecuteReader(conn, CommandType.Text, commandText, parameters.ToArray());
                     while (reader.Read())
                     {
                         Active a = new Active();

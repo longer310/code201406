@@ -286,6 +286,7 @@ namespace Backstage.Core
 
             using (MySqlConnection conn = new MySqlConnection(connectionString))
             {
+
                 try
                 {
 
@@ -295,7 +296,6 @@ namespace Backstage.Core
 
                     cmd.Parameters.Clear();
 
-                    cmd.Dispose();
 
                     return dr;
 
@@ -303,14 +303,32 @@ namespace Backstage.Core
 
                 catch
                 {
-
-                    conn.Close();
-
                     throw;
-
                 }
             }
 
+        }
+        public static MySqlDataReader ExecuteReader(MySqlConnection conn, CommandType cmdType, string cmdText, params MySqlParameter[] cmdParms)
+        {
+
+            MySqlCommand cmd = new MySqlCommand();
+
+            try
+            {
+                PrepareCommand(conn, null, cmd, cmdType, cmdText, cmdParms);
+
+                MySqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+
+                cmd.Parameters.Clear();
+
+
+                return dr;
+            }
+
+            catch
+            {
+                throw;
+            }
         }
 
         #endregion

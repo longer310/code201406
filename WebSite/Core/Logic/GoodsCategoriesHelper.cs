@@ -38,28 +38,32 @@ namespace Backstage.Core.Logic
             parameters.Add(new MySqlParameter("?SellerId", sellerId));
             try
             {
-                MySqlDataReader reader = MySqlHelper.ExecuteReader(Utility._gameDbConn, CommandType.Text, cmdText,
-                    parameters.ToArray());
-                while (reader.Read())
+                using (var conn = Utility.ObtainConn(Utility._gameDbConn))
                 {
-                    GoodsCategories goodsCategories = new GoodsCategories();
-                    goodsCategories.Id = reader.GetInt32(0);
-                    goodsCategories.Index = (int)reader["Index"];
-                    goodsCategories.Name = reader["Name"].ToString();
-                    goodsCategories.SellerId = (int)reader["SellerId"];
-
-                    list.Add(goodsCategories);
-                }
-
-                cmdText = @"select count(*) from GoodsCategories where SellerId=?SellerId " + wheresql;
-                parameters = new List<MySqlParameter>();
-                parameters.Add(new MySqlParameter("?SellerId", sellerId));
-                reader = MySqlHelper.ExecuteReader(Utility._gameDbConn, CommandType.Text, cmdText, parameters.ToArray());
-                if (reader.HasRows)
-                {
-                    if (reader.Read())
+                    MySqlDataReader reader = MySqlHelper.ExecuteReader(conn, CommandType.Text, cmdText,
+                        parameters.ToArray());
+                    while (reader.Read())
                     {
-                        totalnum = reader.GetInt32(0);
+                        GoodsCategories goodsCategories = new GoodsCategories();
+                        goodsCategories.Id = reader.GetInt32(0);
+                        goodsCategories.Index = (int) reader["Index"];
+                        goodsCategories.Name = reader["Name"].ToString();
+                        goodsCategories.SellerId = (int) reader["SellerId"];
+
+                        list.Add(goodsCategories);
+                    }
+
+                    cmdText = @"select count(*) from GoodsCategories where SellerId=?SellerId " + wheresql;
+                    parameters = new List<MySqlParameter>();
+                    parameters.Add(new MySqlParameter("?SellerId", sellerId));
+                    reader = MySqlHelper.ExecuteReader(conn, CommandType.Text, cmdText,
+                        parameters.ToArray());
+                    if (reader.HasRows)
+                    {
+                        if (reader.Read())
+                        {
+                            totalnum = reader.GetInt32(0);
+                        }
                     }
                 }
             }
@@ -79,15 +83,18 @@ namespace Backstage.Core.Logic
             var cmdText = string.Format("select * from GoodsCategories where Id={0} limit 1;", id);
             try
             {
-                MySqlDataReader reader = MySqlHelper.ExecuteReader(Utility._gameDbConn, CommandType.Text, cmdText);
-                if (reader.HasRows)
+                using (var conn = Utility.ObtainConn(Utility._gameDbConn))
                 {
-                    if (reader.Read())
+                    MySqlDataReader reader = MySqlHelper.ExecuteReader(conn, CommandType.Text, cmdText);
+                    if (reader.HasRows)
                     {
-                        GoodsCategories goodsCategories = new GoodsCategories();
-                        goodsCategories.Id = reader.GetInt32(0);
-                        goodsCategories.Name = reader["Name"].ToString();
-                        return goodsCategories;
+                        if (reader.Read())
+                        {
+                            GoodsCategories goodsCategories = new GoodsCategories();
+                            goodsCategories.Id = reader.GetInt32(0);
+                            goodsCategories.Name = reader["Name"].ToString();
+                            return goodsCategories;
+                        }
                     }
                 }
             }

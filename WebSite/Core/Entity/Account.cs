@@ -34,5 +34,13 @@ namespace Backstage.Core.Entity
         /// 创建时间或者修改时间
         /// </summary>
         public DateTime CreateTime { get; set; }
+        /// <summary>
+        /// 地址
+        /// </summary>
+        public string Address { get; set; }
+        /// <summary>
+        /// 联系方式
+        /// </summary>
+        public string Phone { get; set; }
     }
 }

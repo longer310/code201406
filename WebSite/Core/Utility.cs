@@ -323,6 +323,16 @@ namespace Backstage.Core
                 return random.Next(1, 101);
             }
         }
+
+        public static string GetVerificationCode(int num)
+        {
+            var str = string.Empty;
+            for (int i = 0; i < num; i++)
+            {
+                str += GetRandom(1, 10);
+            }
+            return str;
+        }
         #endregion
 
         #region  MD5加密
@@ -441,5 +451,6 @@ namespace Backstage.Core
             return wheresql;
         }
         #endregion
+
     }
 }

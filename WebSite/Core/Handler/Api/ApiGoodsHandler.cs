@@ -6,6 +6,7 @@ using System.Reflection;
 using System.Web;
 using Backstage.Core;
 using Backstage.Core.Entity;
+using Backstage.Core.Handler;
 using Backstage.Core.Logic;
 
 namespace Backstage.Handler
@@ -62,7 +63,6 @@ namespace Backstage.Handler
                     break;
                 default: break;
             }
-
         }
         #region 首页
         public class HomeData
@@ -818,12 +818,28 @@ namespace Backstage.Handler
             orders.Mobile = mobile;
             orders.CouponId = couponid;
             //获取优惠券优惠的价格
-            Coupon coupon = new Coupon();//TODO:获取优惠券
-            orders.TotalPrice -= (float)(coupon.Extcredit * 1.0) / 100;
+            var coupon = CouponHelper.GetItem(orders.CouponId);//TODO:获取优惠券
+            bool ifdiscount = coupon == null ? false : true;
+            if (coupon != null)
+            {//判断是否是优惠产品
+                var gidlist = Utility.GetListint(orders.Gids);
+                foreach (var i in gidlist)
+                {
+                    if (coupon.GoodsIds.Contains(i))
+                        ifdiscount = false;
+                }
+            }
+            float discount = 0;
+            if (ifdiscount)
+            {
+                discount = (float) (coupon.Extcredit*1.0)/100;
+            }
+            orders.TotalPrice -= discount;
+            orders.CtotalPrice = discount;
             if (orders.TotalPrice < 0) orders.TotalPrice = 0;
             orders.Pid = pid;
             orders.Remark = remark;
-            orders.Status ++;
+            orders.Status++;
 
             OrdersHelper.SaveOrders(orders);
 

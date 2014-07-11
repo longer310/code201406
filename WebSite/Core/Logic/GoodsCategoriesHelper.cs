@@ -53,6 +53,11 @@ namespace Backstage.Core.Logic
                         list.Add(goodsCategories);
                     }
 
+                    //一个函数有两次连接数据库 先把连接断开 然后重连
+                    conn.Close();
+                    conn.Dispose();
+                    conn.Open();
+
                     cmdText = @"select count(*) from GoodsCategories where SellerId=?SellerId " + wheresql;
                     parameters = new List<MySqlParameter>();
                     parameters.Add(new MySqlParameter("?SellerId", sellerId));

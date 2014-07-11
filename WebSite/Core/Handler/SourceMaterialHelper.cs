@@ -78,6 +78,11 @@ namespace Backstage.Core
                         results.Results.Add(sm);
                     }
 
+                    //一个函数有两次连接数据库 先把连接断开 然后重连
+                    conn.Close();
+                    conn.Dispose();
+                    conn.Open();
+
                     commandText = @"select count(*) from material";
                     reader = MySqlHelper.ExecuteReader(conn, CommandType.Text, commandText, parameters.ToArray());
                     if (reader.HasRows)

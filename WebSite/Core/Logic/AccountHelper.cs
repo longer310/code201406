@@ -53,6 +53,11 @@ namespace Backstage.Core
                         list.Add(user);
                     }
 
+                    //一个函数有两次连接数据库 先把连接断开 然后重连
+                    conn.Close();
+                    conn.Dispose();
+                    conn.Open();
+
                     cmdText = @"select count(*) from account " + wheresql;
                     reader = MySqlHelper.ExecuteReader(conn, CommandType.Text, cmdText);
                     if (reader.HasRows)

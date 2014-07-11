@@ -45,6 +45,11 @@ namespace Backstage.Core.Logic
                         list.Add(orders);
                     }
 
+                    //一个函数有两次连接数据库 先把连接断开 然后重连
+                    conn.Close();
+                    conn.Dispose();
+                    conn.Open();
+
                     if (gettotal == 1)
                     {
                         cmdText = string.Format("select count(*) from Orders ") + wheresql;

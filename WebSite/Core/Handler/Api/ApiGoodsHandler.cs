@@ -486,7 +486,7 @@ namespace Backstage.Handler
             int uid = GetInt("uid");
             int gid = GetInt("gid");
 
-            var goods = new Goods(); //GoodsHelper.GetGoods(gid);
+            var goods = GoodsHelper.GetGoods(gid);
             goods.ShareCount++;
 
             //保存商品

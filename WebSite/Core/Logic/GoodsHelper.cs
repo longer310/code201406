@@ -55,10 +55,15 @@ namespace Backstage.Core.Logic
 
                         list.Add(goods);
                     }
+                    //一个函数有两次连接数据库 先把连接断开 然后重连
+                    conn.Close();
+                    conn.Dispose();
+                    conn.Open();
 
                     if (gettotal == 1)
                     {
-                        cmdText = string.Format("select count(*) from goods where SellerId={0} ", sellerId) + wheresql;
+                        cmdText = string.Format("select count(*) from goods where SellerId={0} ", sellerId) +
+                                  wheresql;
                         reader = MySqlHelper.ExecuteReader(conn, CommandType.Text, cmdText);
                         if (reader.HasRows)
                         {

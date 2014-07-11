@@ -59,6 +59,11 @@ namespace Backstage.Core
                         results.Results.Add(c);
                     }
 
+                    //一个函数有两次连接数据库 先把连接断开 然后重连
+                    conn.Close();
+                    conn.Dispose();
+                    conn.Open();
+
                     commandText = "select count(*) from comment where sellerId = ?sellerId and type = ?type and typeId = ?typeId";
                     parameters.Clear();
                     parameters.Add(new MySqlParameter("?sellerId", sellerId));

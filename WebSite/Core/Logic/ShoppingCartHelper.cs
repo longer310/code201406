@@ -139,8 +139,8 @@ namespace Backstage.Core.Logic
                 parameters.Add(new MySqlParameter("?Img", shoppingcart.Img));
                 parameters.Add(new MySqlParameter("?Num", shoppingcart.Num));
                 parameters.Add(new MySqlParameter("?Nowprice", shoppingcart.Nowprice));
+                parameters.Add(new MySqlParameter("?OriginalPrice", shoppingcart.OriginalPrice));
                 parameters.Add(new MySqlParameter("?Title", shoppingcart.Title));
-                parameters.Add(new MySqlParameter("?Nowprice", shoppingcart.Nowprice));
                 parameters.Add(new MySqlParameter("?Description", shoppingcart.Description));
                 parameters.Add(new MySqlParameter("?CreateTime", shoppingcart.CreateTime));
             }
@@ -176,7 +176,7 @@ namespace Backstage.Core.Logic
                 parameters.Add(new MySqlParameter("?Num", shoppingcart.Num));
                 parameters.Add(new MySqlParameter("?Nowprice", shoppingcart.Nowprice));
                 parameters.Add(new MySqlParameter("?Title", shoppingcart.Title));
-                parameters.Add(new MySqlParameter("?Nowprice", shoppingcart.Nowprice));
+                parameters.Add(new MySqlParameter("?OriginalPrice", shoppingcart.OriginalPrice));
                 parameters.Add(new MySqlParameter("?Description", shoppingcart.Description));
                 parameters.Add(new MySqlParameter("?CreateTime", shoppingcart.CreateTime));
             }

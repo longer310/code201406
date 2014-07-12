@@ -86,7 +86,7 @@ namespace Backstage.Core.Handler.Api
                 {
                     Avatar = user.Avatar,
                     UserName = user.UserName,
-                    Sex = user.Sex,
+                    Sex = (int)user.Sex,
                     Dateline = cm.CreateTime,
                     Message = cm.Content
                 };

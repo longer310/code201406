@@ -139,6 +139,7 @@ namespace Backstage.Core
                         a.Title = reader["Title"].ToString();
                         a.Summary = reader["Summary"].ToString();
                         a.CreateTime = (DateTime)reader["CreateTime"];
+                        a.CoverImgUrl = reader["CoverImgUrl"].ToString();
                         results.Add(a);
                     }
                 }

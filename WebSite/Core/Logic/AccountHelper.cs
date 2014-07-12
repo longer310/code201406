@@ -23,11 +23,11 @@ namespace Backstage.Core
             totalnum = 0;
             List<Account> list = new List<Account>();
             if (ordersql == "") ordersql = " order by CreateTime desc";
-            string limitsql = limit != 0 ? " LIMIT ?start,?limit" : string.Empty;
+            string limitsql = limit != 0 ? " LIMIT ?start,?limit" : String.Empty;
             var cmdText = @"select * from account " + wheresql + ordersql + limitsql;
 
             List<MySqlParameter> parameters = new List<MySqlParameter>();
-            if (!string.IsNullOrEmpty(limitsql))
+            if (!String.IsNullOrEmpty(limitsql))
             {
                 parameters.Add(new MySqlParameter("?start", start));
                 parameters.Add(new MySqlParameter("?limit", limit));
@@ -45,10 +45,14 @@ namespace Backstage.Core
                         user.Id = reader.GetInt32(0);
                         user.UserName = reader["UserName"].ToString();
                         user.Pwd = reader["Pwd"].ToString();
-                        user.RoleType = (RoleType) reader["RoleType"];
+                        user.RoleType = (RoleType)reader["RoleType"];
                         user.Avatar = reader["Avatar"].ToString();
-                        user.Sex = (int) reader["Sex"];
-                        user.CreateTime = (DateTime) reader["CreateTime"];
+                        user.Sex = (SexType)reader["Sex"];
+                        user.Phone = reader["Phone"].ToString();
+                        user.Address = reader["Address"].ToString();
+                        user.Money = (int)reader["Money"];
+                        user.SellerId = (int)reader["SellerId"];
+                        user.CreateTime = (DateTime)reader["CreateTime"];
 
                         list.Add(user);
                     }
@@ -69,7 +73,7 @@ namespace Backstage.Core
                     }
                 }
             }
-            catch (System.Exception ex)
+            catch (Exception ex)
             {
                 throw;
             }
@@ -86,7 +90,7 @@ namespace Backstage.Core
                 ids_string += (uid + ",");
             }
             ids_string = ids_string.TrimEnd(',') + ")";
-            string cmdText = string.Format(@"select * from account where id in {0}", ids_string);
+            string cmdText = String.Format(@"select * from account where id in {0}", ids_string);
             try
             {
                 using (var conn = Utility.ObtainConn(Utility._gameDbConn))
@@ -98,16 +102,20 @@ namespace Backstage.Core
                         user.Id = reader.GetInt32(0);
                         user.UserName = reader["UserName"].ToString();
                         user.Pwd = reader["Pwd"].ToString();
-                        user.RoleType = (RoleType) reader["RoleType"];
+                        user.RoleType = (RoleType)reader["RoleType"];
                         user.Avatar = reader["Avatar"].ToString();
-                        user.Sex = Convert.ToInt32(reader["Sex"]);
-                        user.CreateTime = (DateTime) reader["CreateTime"];
+                        user.Sex = (SexType)reader["Sex"];
+                        user.Phone = reader["Phone"].ToString();
+                        user.Address = reader["Address"].ToString();
+                        user.Money = (int)reader["Money"];
+                        user.SellerId = (int)reader["SellerId"]; 
+                        user.CreateTime = (DateTime)reader["CreateTime"];
 
                         list.Add(user);
                     }
                 }
             }
-            catch (System.Exception ex)
+            catch (Exception ex)
             {
                 throw;
             }
@@ -116,7 +124,7 @@ namespace Backstage.Core
 
         public static int UpdateUser(Account account)
         {
-            var cmdText = string.Empty;
+            var cmdText = String.Empty;
             List<MySqlParameter> parameters = new List<MySqlParameter>();
             if (account.Id > 0)
             {
@@ -126,6 +134,10 @@ namespace Backstage.Core
                                         RoleType        = ?RoleType,
                                         Avatar          = ?Avatar,
                                         Sex             = ?Sex,
+                                        Phone             = ?Phone,
+                                        Address        = ?Address,
+                                        SellerId          = ?SellerId,
+                                        Money             = ?Money,
                                         CreateTime      = ?CreateTime
                                     WHERE
                                         Id = ?Id";
@@ -136,6 +148,10 @@ namespace Backstage.Core
                 parameters.Add(new MySqlParameter("?Avatar", account.Avatar));
                 parameters.Add(new MySqlParameter("?Sex", account.Sex));
                 parameters.Add(new MySqlParameter("?CreateTime", account.CreateTime));
+                parameters.Add(new MySqlParameter("?Phone", account.Phone));
+                parameters.Add(new MySqlParameter("?Address", account.Address));
+                parameters.Add(new MySqlParameter("?Money", account.Money));
+                parameters.Add(new MySqlParameter("?SellerId", account.SellerId));
             }
             else
             {
@@ -146,6 +162,10 @@ namespace Backstage.Core
                                         RoleType   ,
                                         Avatar     ,
                                         Sex        ,
+                                        Phone        ,
+                                        Address   ,
+                                        SellerId     ,
+                                        Money        ,
                                         CreateTime 
                                         ) 
                                         values
@@ -155,6 +175,10 @@ namespace Backstage.Core
                                         ?RoleType  ,
                                         ?Avatar    ,
                                         ?Sex       ,
+                                        ?Phone       ,
+                                        ?Address  ,
+                                        ?SellerId    ,
+                                        ?Money       ,
                                         ?CreateTime
                                         )";
                 parameters.Add(new MySqlParameter("?UserName", account.UserName));
@@ -163,13 +187,17 @@ namespace Backstage.Core
                 parameters.Add(new MySqlParameter("?Avatar", account.Avatar));
                 parameters.Add(new MySqlParameter("?Sex", account.Sex));
                 parameters.Add(new MySqlParameter("?CreateTime", account.CreateTime));
+                parameters.Add(new MySqlParameter("?Phone", account.Phone));
+                parameters.Add(new MySqlParameter("?Address", account.Address));
+                parameters.Add(new MySqlParameter("?Money", account.Money));
+                parameters.Add(new MySqlParameter("?SellerId", account.SellerId));
             }
 
             try
             {
                 return MySqlHelper.ExecuteNonQuery(Utility._gameDbConn, CommandType.Text, cmdText, parameters.ToArray());
             }
-            catch (System.Exception ex)
+            catch (Exception ex)
             {
                 return 0;
             }
@@ -177,16 +205,256 @@ namespace Backstage.Core
 
         public static int DelUser(int id)
         {
-            var cmdText = string.Format("delete from account where Id={0}", id);
+            var cmdText = String.Format("delete from account where Id={0}", id);
 
             try
             {
                 return MySqlHelper.ExecuteNonQuery(Utility._gameDbConn, CommandType.Text, cmdText);
             }
-            catch (System.Exception ex)
+            catch (Exception ex)
             {
                 return 0;
             }
+        }
+
+        public static Account FindUserByPhone(string phone)
+        {
+            var sql = String.Format("select * from account where Phone='{0}' limit 1;", phone);
+            try
+            {
+                using (var conn = Utility.ObtainConn(Utility._gameDbConn))
+                {
+                    MySqlDataReader reader = MySqlHelper.ExecuteReader(conn, CommandType.Text, sql);
+                    if (reader.HasRows)
+                    {
+                        if (reader.Read())
+                        {
+                            Account user = new Account();
+                            user.Id = reader.GetInt32(0);
+                            user.UserName = reader["UserName"].ToString();
+                            user.Pwd = reader["Pwd"].ToString();
+                            user.RoleType = (RoleType)reader["RoleType"];
+                            user.Avatar = reader["Avatar"].ToString();
+                            user.Sex = (SexType)reader["Sex"];
+                            user.Phone = reader["Phone"].ToString();
+                            user.Address = reader["Address"].ToString();
+                            user.Money = (int)reader["Money"];
+                            user.SellerId = (int)reader["SellerId"];
+                            user.CreateTime = (DateTime)reader["CreateTime"];
+                            return user;
+                        }
+                    }
+                }
+            }
+            catch (System.Exception ex)
+            {
+                throw;
+            }
+            return null;
+        }
+
+        public static Account FindUser(string userName)
+        {
+            var sql = String.Format("select * from account where username='{0}' limit 1;", userName);
+            try
+            {
+                using (var conn = Utility.ObtainConn(Utility._gameDbConn))
+                {
+                    MySqlDataReader reader = MySqlHelper.ExecuteReader(conn, CommandType.Text, sql);
+                    if (reader.HasRows)
+                    {
+                        if (reader.Read())
+                        {
+                            Account user = new Account();
+                            user.Id = reader.GetInt32(0);
+                            user.UserName = reader["UserName"].ToString();
+                            user.Pwd = reader["Pwd"].ToString();
+                            user.RoleType = (RoleType)reader["RoleType"]; 
+                            user.Avatar = reader["Avatar"].ToString(); 
+                            user.Sex = (SexType)reader["Sex"]; 
+                            user.Phone = reader["Phone"].ToString(); 
+                            user.Address = reader["Address"].ToString(); 
+                            user.Money = (int)reader["Money"];
+                            user.SellerId = (int)reader["SellerId"]; ;
+                            user.CreateTime = (DateTime)reader["CreateTime"];
+                            return user;
+                        }
+                    }
+                }
+            }
+            catch (System.Exception ex)
+            {
+                throw;
+            }
+            return null;
+        }
+
+        public static bool JudgeUser(string phone, string username)
+        {
+            var sql = @"select * from account where username=?username or phone=?phone limit 1;";
+            List<MySqlParameter> parameters = new List<MySqlParameter>();
+            parameters.Add(new MySqlParameter("?username", username));
+            parameters.Add(new MySqlParameter("?phone", phone));
+            try
+            {
+                using (var conn = Utility.ObtainConn(Utility._gameDbConn))
+                {
+                    MySqlDataReader reader = MySqlHelper.ExecuteReader(conn, CommandType.Text, sql,parameters.ToArray());
+                    return reader.HasRows;
+                }
+            }
+            catch (System.Exception ex)
+            {
+                throw;
+            }
+            return false;
+        }
+
+        public static bool JudgeUserLogin(string phone, string password,int sellerId)
+        {
+            var sql = @"select * from account where pwd=?password and phone=?phone and sellerId=?sellerId limit 1;";
+            List<MySqlParameter> parameters = new List<MySqlParameter>();
+            parameters.Add(new MySqlParameter("?password", password));
+            parameters.Add(new MySqlParameter("?phone", phone));
+            parameters.Add(new MySqlParameter("?sellerId", sellerId));
+            try
+            {
+                using (var conn = Utility.ObtainConn(Utility._gameDbConn))
+                {
+                    MySqlDataReader reader = MySqlHelper.ExecuteReader(conn, CommandType.Text, sql, parameters.ToArray());
+                    return reader.HasRows;
+                }
+            }
+            catch (System.Exception ex)
+            {
+                throw;
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// 根据基本信息构成实体
+        /// </summary>
+        /// <param name="str"></param>
+        /// <returns></returns>
+        private static Account GetEntityFromString(string str)
+        {
+            if (String.IsNullOrEmpty(str))
+                return null;
+            string[] arr = str.Split('^');
+            var entry = new Account();
+
+            entry.Id = Int32.Parse(arr[0]);
+            entry.UserName = arr[1];
+            entry.RoleType = (RoleType)Int32.Parse(arr[2]);
+            //if (arr.Length == 4)
+            //{
+            //    entry.Servers =
+            //        arr[3].Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries).Select(
+            //            p => Convert.ToInt32(p)).ToList();
+            //}
+            return entry;
+        }
+
+        /// <summary>
+        /// 根据实体获取存储cookie内的基本信息
+        /// </summary>
+        /// <param name="entry"></param>
+        /// <returns></returns>
+        public static string GetStringFromEntity(Account entry)
+        {
+            return String.Format("{0}^{1}^{2}",
+                entry.Id,
+                entry.UserName,
+                (int)entry.RoleType
+                );
+        }
+
+        /// <summary>
+        /// 设置登录
+        /// </summary>
+        /// <param name="userId">存储在票证中的用户标识。</param>
+        /// <param name="isPersistent">如果票证将存储在持久性 Cookie（跨浏览器会话保存），则为 true；否则为 false。如果该票证存储在 URL 中，将忽略此值。</param>
+        /// <param name="userData">存储在票证中的用户特定的数据。</param>
+        /// <param name="expiration">票证过期时的本地日期和时间。</param>
+        public static void SetLogOn(long userId, bool isPersistent, string userData, DateTime expiration)
+        {
+            if (HttpContext.Current == null)
+                return;
+
+            var response = HttpContext.Current.Response;
+            var request = HttpContext.Current.Request;
+            var ticket = new FormsAuthenticationTicket(
+                1
+                , userId.ToString()
+                , DateTime.Now
+                , expiration
+                , true
+                , userData
+                , FormsAuthentication.FormsCookiePath
+                );
+            var encryptedTicket = FormsAuthentication.Encrypt(ticket);
+            var authCookie = new HttpCookie(FormsAuthentication.FormsCookieName, encryptedTicket);
+            authCookie.HttpOnly = true;
+            authCookie.Expires = expiration;
+            if (!String.IsNullOrEmpty(FormsAuthentication.CookieDomain))
+                authCookie.Domain = FormsAuthentication.CookieDomain;
+
+            var identity = new FormsIdentity(ticket);
+            var user = new GenericPrincipal(identity, new[] { userData });
+            HttpContext.Current.User = user;
+
+            response.Cookies.Add(authCookie);
+            response.AppendHeader("P3P", "CP=CAO PSA OUR");
+        }
+
+        /// <summary>
+        /// 退出登录
+        /// </summary>
+        public static void SetLogOut()
+        {
+            if (HttpContext.Current == null)
+                return;
+            FormsAuthentication.SignOut();
+            var authCookie = new HttpCookie(FormsAuthentication.FormsCookieName);
+            if (!String.IsNullOrEmpty(FormsAuthentication.CookieDomain))
+                authCookie.Domain = FormsAuthentication.CookieDomain;
+            authCookie.HttpOnly = true;
+            authCookie.Expires = DateTime.Now.AddDays(-1d);
+            HttpContext.Current.Response.Cookies.Add(authCookie);
+        }
+
+        /// <summary>
+        /// 获取当前登录用户
+        /// </summary>
+        /// <returns></returns>
+        public static Account GetCurUser()
+        {
+            var context = HttpContext.Current;
+            var userId = 0;
+            var userData = String.Empty;
+            if (context == null)
+                return null;
+
+            var cookie = context.Request.Cookies[FormsAuthentication.FormsCookieName];
+            if (cookie == null || String.IsNullOrEmpty(cookie.Value))
+                return null;
+
+            try
+            {
+                var ticket = FormsAuthentication.Decrypt(cookie.Value);
+                userId = Convert.ToInt32(ticket.Name);
+                userData = ticket.UserData;
+            }
+            catch (Exception ex)
+            {
+                userId = 0;
+                userData = String.Empty;
+            }
+
+            if (userId == 0)
+                return null;
+            return GetEntityFromString(userData);
         }
     }
 }

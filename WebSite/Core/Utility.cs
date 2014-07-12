@@ -3,8 +3,13 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
 using System.Data.SqlClient;
+using System.Drawing;
+using System.IO;
 using System.Linq;
+using System.Net;
+using System.Net.Security;
 using System.Security.Cryptography;
+using System.Security.Cryptography.X509Certificates;
 using System.Security.Principal;
 using System.Text;
 using System.Web;
@@ -16,6 +21,7 @@ namespace Backstage.Core
 {
     public static class Utility
     {
+        #region 配置参数
         public static string _gameDbConn = System.Configuration.ConfigurationManager.AppSettings["gamedbconn"];//帐号db
         public static string _gameConn = System.Configuration.ConfigurationManager.AppSettings["gameconn"];//游戏db
         public static string _loginUrl = System.Configuration.ConfigurationManager.AppSettings["loginurl"];//游戏后台登录地址
@@ -27,169 +33,32 @@ namespace Backstage.Core
 
         public static string _md5open = System.Configuration.ConfigurationManager.AppSettings["md5open"];//是否验证md5加密
         public static string _desopen = System.Configuration.ConfigurationManager.AppSettings["desopen"];//是否des加密返回
+        public static string _message = System.Configuration.ConfigurationManager.AppSettings["message"];//短信格式
+        public static string _msg_url = System.Configuration.ConfigurationManager.AppSettings["msg_url"];//短信请求地址
+        public static string _msg_zh = System.Configuration.ConfigurationManager.AppSettings["msg_zh"];//账号名
+        public static string _msg_mm = System.Configuration.ConfigurationManager.AppSettings["msg_mm"];//密码
+        public static string _msg_sms_type = System.Configuration.ConfigurationManager.AppSettings["msg_sms_type"];//通道ID
+        public static string _msg_opensend = System.Configuration.ConfigurationManager.AppSettings["msg_opensend"];//是否开启短信发送验证码
+        public static string _userdefaulthead = System.Configuration.ConfigurationManager.AppSettings["userdefaulthead"];//用户默认头像
+        #endregion
 
-        public static Account FindUser(string userName)
-        {
-            var sql = string.Format("select * from account where username='{0}' limit 1;", userName);
-            try
-            {
-                using (var conn = Utility.ObtainConn(Utility._gameDbConn))
-                {
-                    MySqlDataReader reader = MySqlHelper.ExecuteReader(conn, CommandType.Text, sql);
-                    if (reader.HasRows)
-                    {
-                        if (reader.Read())
-                        {
-                            Account user = new Account();
-                            user.Id = reader.GetInt32(0);
-                            user.UserName = reader.GetString(1);
-                            user.Pwd = reader.GetString(2);
-                            user.RoleType = (RoleType) reader.GetInt32(3);
-                            //user.Servers = reader["ServerList"].ToString().Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries).Select(p => Convert.ToInt32(p)).ToList();
-                            return user;
-                        }
-                    }
-                }
-            }
-            catch (System.Exception ex)
-            {
-                throw;
-            }
-            return null;
-        }
-
-
+        #region 判断是否具有权限
         /// <summary>
-        /// 根据基本信息构成实体
+        /// 查看用户是否有权限
         /// </summary>
-        /// <param name="str"></param>
+        /// <param name="needRoleType"></param>
         /// <returns></returns>
-        private static Account GetEntityFromString(string str)
+        public static bool HasAuthority(RoleType needRoleType)
         {
-            if (string.IsNullOrEmpty(str))
-                return null;
-            string[] arr = str.Split('^');
-            var entry = new Account();
-
-            entry.Id = Int32.Parse(arr[0]);
-            entry.UserName = arr[1];
-            entry.RoleType = (RoleType)Int32.Parse(arr[2]);
-            //if (arr.Length == 4)
-            //{
-            //    entry.Servers =
-            //        arr[3].Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries).Select(
-            //            p => Convert.ToInt32(p)).ToList();
-            //}
-            return entry;
+            Account curUser = AccountHelper.GetCurUser();
+            if (curUser == null) return false;
+            if (curUser.RoleType == RoleType.SuperManage || needRoleType == RoleType.Merchant) return true;
+            else if (needRoleType == RoleType.SuperManage) return false;
+            return true;
         }
+        #endregion
 
-        /// <summary>
-        /// 根据实体获取存储cookie内的基本信息
-        /// </summary>
-        /// <param name="entry"></param>
-        /// <returns></returns>
-        public static string GetStringFromEntity(Account entry)
-        {
-            return string.Format("{0}^{1}^{2}",
-                entry.Id,
-                entry.UserName,
-                (int)entry.RoleType
-                );
-        }
-
-        /// <summary>
-        /// 设置登录
-        /// </summary>
-        /// <param name="userId">存储在票证中的用户标识。</param>
-        /// <param name="isPersistent">如果票证将存储在持久性 Cookie（跨浏览器会话保存），则为 true；否则为 false。如果该票证存储在 URL 中，将忽略此值。</param>
-        /// <param name="userData">存储在票证中的用户特定的数据。</param>
-        /// <param name="expiration">票证过期时的本地日期和时间。</param>
-        public static void SetLogOn(long userId, bool isPersistent, string userData, DateTime expiration)
-        {
-            if (HttpContext.Current == null)
-                return;
-
-            var response = HttpContext.Current.Response;
-            var request = HttpContext.Current.Request;
-            var ticket = new FormsAuthenticationTicket(
-                1
-               , userId.ToString()
-               , DateTime.Now
-               , expiration
-               , true
-               , userData
-               , FormsAuthentication.FormsCookiePath
-               );
-            var encryptedTicket = FormsAuthentication.Encrypt(ticket);
-            var authCookie = new HttpCookie(FormsAuthentication.FormsCookieName, encryptedTicket);
-            authCookie.HttpOnly = true;
-            authCookie.Expires = expiration;
-            if (!string.IsNullOrEmpty(FormsAuthentication.CookieDomain))
-                authCookie.Domain = FormsAuthentication.CookieDomain;
-
-            var identity = new FormsIdentity(ticket);
-            var user = new GenericPrincipal(identity, new[] { userData });
-            HttpContext.Current.User = user;
-
-            response.Cookies.Add(authCookie);
-            response.AppendHeader("P3P", "CP=CAO PSA OUR");
-        }
-
-        /// <summary>
-        /// 退出登录
-        /// </summary>
-        public static void SetLogOut()
-        {
-            if (HttpContext.Current == null)
-                return;
-            FormsAuthentication.SignOut();
-            var authCookie = new HttpCookie(FormsAuthentication.FormsCookieName);
-            if (!string.IsNullOrEmpty(FormsAuthentication.CookieDomain))
-                authCookie.Domain = FormsAuthentication.CookieDomain;
-            authCookie.HttpOnly = true;
-            authCookie.Expires = DateTime.Now.AddDays(-1d);
-            HttpContext.Current.Response.Cookies.Add(authCookie);
-        }
-
-        /// <summary>
-        /// 获取当前登录用户
-        /// </summary>
-        /// <returns></returns>
-        public static Account GetCurUser()
-        {
-            var context = HttpContext.Current;
-            var userId = 0;
-            var userData = string.Empty;
-            if (context == null)
-                return null;
-
-            var cookie = context.Request.Cookies[FormsAuthentication.FormsCookieName];
-            if (cookie == null || string.IsNullOrEmpty(cookie.Value))
-                return null;
-
-            try
-            {
-                var ticket = FormsAuthentication.Decrypt(cookie.Value);
-                userId = Convert.ToInt32(ticket.Name);
-                userData = ticket.UserData;
-            }
-            catch (Exception ex)
-            {
-                userId = 0;
-                userData = string.Empty;
-            }
-
-            if (userId == 0)
-                return null;
-            return GetEntityFromString(userData);
-        }
-
-        public static DataTable GetGameServerList()
-        {
-            var sql = "select * from c_serverlist";
-            return MySqlHelper.ExecuteDataset(_gameDbConn, CommandType.Text, sql).Tables[0];
-        }
-
+        #region 返回一个开启的连接
         /// <summary>
         /// 获取一个已连接的连接串
         /// </summary>
@@ -211,39 +80,7 @@ namespace Backstage.Core
                 return conn;
             }
         }
-
-        /// <summary>
-        /// 查看用户是否有权限
-        /// </summary>
-        /// <param name="needRoleType"></param>
-        /// <returns></returns>
-        public static bool HasAuthority(RoleType needRoleType)
-        {
-            Account curUser = GetCurUser();
-            if (curUser == null) return false;
-            if (curUser.RoleType == RoleType.SuperManage || needRoleType == RoleType.Merchant) return true;
-            else if (needRoleType == RoleType.SuperManage) return false;
-            return true;
-        }
-
-
-        public static DataTable servers;
-
-        public static DataTable Servers
-        {
-            get
-            {
-                if (servers == null) servers = GetGameServerList();
-                return servers;
-            }
-        }
-
-        public static string ServerConn(int serverId)
-        {
-            if (Servers.Select(string.Format("serverid={0}", serverId)).Count() == 0) return null;
-            return Servers.Select(string.Format("serverid={0}", serverId))[0]["GameConn"].ToString();
-        }
-
+        #endregion
 
         #region unix时间
         private const long UnixEpoch = 621355968000000000L;
@@ -263,6 +100,16 @@ namespace Backstage.Core
         {
             var epoch = (dateTime.ToUniversalTime().Ticks - UnixEpoch) / TimeSpan.TicksPerSecond;
             return epoch;
+        }
+        /// <summary>
+        /// DateTime转化成Unix时间
+        /// </summary>
+        /// <param name="dateTime">本地时间</param>
+        /// <returns>unix时间</returns>
+        public static int GetUnixTime(this DateTime dateTime)
+        {
+            var epoch = (dateTime.ToUniversalTime().Ticks - UnixEpoch) / TimeSpan.TicksPerSecond;
+            return (int)epoch;
         }
 
         /// <summary>
@@ -423,7 +270,7 @@ namespace Backstage.Core
         public static int GetValueByList(List<int> li, List<int> mi, int value)
         {
             if (li.Count != mi.Count) return 0;
-            for(int i = 0 ;i<li.Count;i++)
+            for (int i = 0; i < li.Count; i++)
             {
                 if (li[i] == value)
                     return mi[i];
@@ -432,7 +279,7 @@ namespace Backstage.Core
         }
         public static List<int> GetListint(string str)
         {
-            return str.Split(new char[] {','}, StringSplitOptions.RemoveEmptyEntries).Select(p => Convert.ToInt32(p)).ToList();
+            return str.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries).Select(p => Convert.ToInt32(p)).ToList();
         }
         public static List<float> GetListfloat(string str)
         {
@@ -452,5 +299,152 @@ namespace Backstage.Core
         }
         #endregion
 
+        #region 图片字符串转换
+        /// <summary>
+        /// /图片 转为    base64编码的文本  
+        /// </summary>
+        /// <param name="Imagefilename"></param>
+        private static string ImgToBase64String(string Imagefilename)
+        {
+            try
+            {
+                Bitmap bmp = new Bitmap(Imagefilename);
+                FileStream fs = new FileStream(Imagefilename + ".txt", FileMode.Create);
+                StreamWriter sw = new StreamWriter(fs);
+
+                MemoryStream ms = new MemoryStream();
+                bmp.Save(ms, System.Drawing.Imaging.ImageFormat.Jpeg);
+                byte[] arr = new byte[ms.Length];
+                ms.Position = 0;
+                ms.Read(arr, 0, (int)ms.Length);
+                ms.Close();
+                String strbaser64 = Convert.ToBase64String(arr);
+                return strbaser64;
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
+        //base64编码的文本 转为    图片  
+        private static void Base64StringToImage(string base64Str, string name)
+        {
+            try
+            {
+                byte[] arr = Convert.FromBase64String(base64Str);
+                MemoryStream ms = new MemoryStream(arr);
+                Bitmap bmp = new Bitmap(ms);
+
+                bmp.Save(name + ".jpg", System.Drawing.Imaging.ImageFormat.Jpeg);
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
+        #endregion
+
+        #region 发送短信
+        /// <summary>
+        /// 发送短信
+        /// </summary>
+        /// <param name="code"></param>
+        /// <param name="phone"></param>
+        public static void SendMsg(string code, string phone)
+        {
+            string msg = string.Format(_message, code);
+            Encoding encoding = Encoding.GetEncoding("gb2312");
+            IDictionary<string, string> parameters = new Dictionary<string, string>();
+            parameters.Add("zh", _msg_zh);
+            parameters.Add("mm", _msg_mm);
+            parameters.Add("hm", phone);
+            parameters.Add("nr", msg);
+            parameters.Add("sms_type", _msg_sms_type);
+            CreatePostHttpResponse(_msg_url, parameters, null, null, encoding, null);
+        }
+        private static readonly string DefaultUserAgent = "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.2; SV1; .NET CLR 1.1.4322; .NET CLR 2.0.50727)";
+        private static bool CheckValidationResult(object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors errors)
+        {
+            return true; //总是接受  
+        }
+        /// <summary>  
+        /// 创建POST方式的HTTP请求  
+        /// </summary>  
+        /// <param name="url">请求的URL</param>  
+        /// <param name="parameters">随同请求POST的参数名称及参数值字典</param>  
+        /// <param name="timeout">请求的超时时间</param>  
+        /// <param name="userAgent">请求的客户端浏览器信息，可以为空</param>  
+        /// <param name="requestEncoding">发送HTTP请求时所用的编码</param>  
+        /// <param name="cookies">随同HTTP请求发送的Cookie信息，如果不需要身份验证可以为空</param>  
+        /// <returns></returns>  
+        public static HttpWebResponse CreatePostHttpResponse(string url, IDictionary<string, string> parameters, int? timeout, string userAgent, Encoding requestEncoding, CookieCollection cookies)
+        {
+            if (string.IsNullOrEmpty(url))
+            {
+                throw new ArgumentNullException("url");
+            }
+            if (requestEncoding == null)
+            {
+                throw new ArgumentNullException("requestEncoding");
+            }
+            HttpWebRequest request = null;
+            //如果是发送HTTPS请求  
+            if (url.StartsWith("https", StringComparison.OrdinalIgnoreCase))
+            {
+                ServicePointManager.ServerCertificateValidationCallback = new RemoteCertificateValidationCallback(CheckValidationResult);
+                request = WebRequest.Create(url) as HttpWebRequest;
+                request.ProtocolVersion = HttpVersion.Version10;
+            }
+            else
+            {
+                request = WebRequest.Create(url) as HttpWebRequest;
+            }
+            request.Method = "POST";
+            request.ContentType = "application/x-www-form-urlencoded";
+
+            if (!string.IsNullOrEmpty(userAgent))
+            {
+                request.UserAgent = userAgent;
+            }
+            else
+            {
+                request.UserAgent = DefaultUserAgent;
+            }
+
+            if (timeout.HasValue)
+            {
+                request.Timeout = timeout.Value;
+            }
+            if (cookies != null)
+            {
+                request.CookieContainer = new CookieContainer();
+                request.CookieContainer.Add(cookies);
+            }
+            //如果需要POST数据  
+            if (!(parameters == null || parameters.Count == 0))
+            {
+                StringBuilder buffer = new StringBuilder();
+                int i = 0;
+                foreach (string key in parameters.Keys)
+                {
+                    if (i > 0)
+                    {
+                        buffer.AppendFormat("&{0}={1}", key, parameters[key]);
+                    }
+                    else
+                    {
+                        buffer.AppendFormat("{0}={1}", key, parameters[key]);
+                    }
+                    i++;
+                }
+                byte[] data = requestEncoding.GetBytes(buffer.ToString());
+                using (Stream stream = request.GetRequestStream())
+                {
+                    stream.Write(data, 0, data.Length);
+                }
+            }
+            return request.GetResponse() as HttpWebResponse;
+        }
+        #endregion
     }
 }

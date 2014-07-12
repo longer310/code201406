@@ -96,7 +96,12 @@ namespace Backstage.Handler
         }
         public class TSlideItem : SlideItem
         {
-            public DateTime createtime { get; set; }
+            public int createtime { get; set; }
+
+            public TSlideItem()
+            {
+                img = title = "";
+            }
         }
         public class HotItem
         {
@@ -123,7 +128,7 @@ namespace Backstage.Handler
                 s.title = gad.Title;
                 s.type = (int)CommentType.Goods;
                 s.typeid = gad.Id;
-                s.createtime = gad.CreateTime;
+                s.createtime = gad.CreateTime.GetUnixTime();
 
                 list.Add(s);
             }
@@ -135,7 +140,7 @@ namespace Backstage.Handler
                 s.title = aad.Title;
                 s.type = (int)CommentType.Avtive;
                 s.typeid = aad.Id;
-                s.createtime = aad.CreateTime;
+                s.createtime = aad.CreateTime.GetUnixTime();
 
                 list.Add(s);
             }
@@ -147,7 +152,7 @@ namespace Backstage.Handler
                 s.title = pad.Title;
                 s.type = (int)CommentType.Img;
                 s.typeid = pad.Id;
-                s.createtime = pad.CreateTime;
+                s.createtime = pad.CreateTime.GetUnixTime();
 
                 list.Add(s);
             }
@@ -254,7 +259,7 @@ namespace Backstage.Handler
             //组装下发数据
             int totalcount;
             int totalccount;
-            var user = Utility.GetCurUser();
+            var user = AccountHelper.GetCurUser();
             var goodslist = GoodsHelper.GetGoodsList(sellerid, out totalcount, wheresql, shoppingcartql, 0, start * limit, limit);
             //string pwheresql = GetWhereSql(goodslist.Select(o => o.Logo).ToList());
             //var picList = SourceMaterialHelper.GetList(0, 0, pwheresql, "");
@@ -337,7 +342,7 @@ namespace Backstage.Handler
             var gcategories = GoodsCategoriesHelper.GetGoodsCategories(cid);
             string wheresql = Utility.GetWhereSql(goods.ImgIdList);
             var piclist = SourceMaterialHelper.GetList(0, 0, wheresql, "");
-            var user = Utility.GetCurUser();
+            var user = AccountHelper.GetCurUser();
             Favorite favorite = null;
             if (user != null)
                 favorite = FavoriteHelper.GetFavorite(user.Id);
@@ -386,13 +391,13 @@ namespace Backstage.Handler
             public string avatar { get; set; }
             public string username { get; set; }
             public int sex { get; set; }
-            public DateTime dateline { get; set; }
+            public int dateline { get; set; }
             public string message { get; set; }
 
             public CommentItem()
             {
                 avatar = username = message = "";
-                dateline = DateTime.MinValue;
+                dateline = DateTime.MinValue.GetUnixTime();
             }
         }
         public void GetGoodsComments()
@@ -404,6 +409,11 @@ namespace Backstage.Handler
             int totalcount = 0;
             int utotalcount;
             var goods = GoodsHelper.GetGoods(gid);
+            if (goods == null)
+            {
+                ReturnErrorMsg("参数有误");
+                return;
+            }
             int sellerId = goods.SellerId;
             var commentResult = CommentHelper.GetPagings(sellerId, CommentType.Goods, gid, start * limit, limit);
             var commentlist = commentResult.Results;
@@ -415,7 +425,7 @@ namespace Backstage.Handler
             foreach (var comment in commentlist)
             {
                 var item = new CommentItem();
-                item.dateline = comment.CreateTime;
+                item.dateline = comment.CreateTime.GetUnixTime();
                 item.message = comment.Content;
 
                 var user = userlist.FirstOrDefault(o => o.Id == comment.UserId);
@@ -423,7 +433,7 @@ namespace Backstage.Handler
                 {
                     item.avatar = user.Avatar;
                     item.username = user.UserName;
-                    item.sex = user.Sex;
+                    item.sex = (int)user.Sex;
                 }
 
                 data.comments.Add(item);
@@ -702,12 +712,12 @@ namespace Backstage.Handler
             public float totalprice { get; set; }
             public float stotalprice { get; set; }
             public int pid { get; set; }
-            public DateTime ordertime { get; set; }
+            public int ordertime { get; set; }
             public int ordertype { get; set; }
             public int orderpeople { get; set; }
             public int couponid { get; set; }
             public float ctotalprice { get; set; }
-            public DateTime createtime { get; set; }
+            public int createtime { get; set; }
             public string address { get; set; }
             public string mobile { get; set; }
             public string linkman { get; set; }
@@ -769,7 +779,7 @@ namespace Backstage.Handler
             data.totalprice = orders.TotalPrice;
             data.stotalprice = orders.StotalPrice;
             data.pid = orders.Pid;
-            data.ordertime = orders.OrderTime;
+            data.ordertime = orders.OrderTime.GetUnixTime();
             data.orderpeople = orders.OrderPeople;
             data.ordertype = (int)orders.OrderType;
             data.couponid = orders.CouponId;
@@ -777,7 +787,7 @@ namespace Backstage.Handler
             data.address = orders.Address;
             data.linkman = orders.LinkMan;
             data.mobile = orders.Mobile;
-            data.createtime = orders.CreateTime;
+            data.createtime = orders.CreateTime.GetUnixTime();
             data.status = (int)orders.Status;
 
             JsonTransfer jt = new JsonTransfer();

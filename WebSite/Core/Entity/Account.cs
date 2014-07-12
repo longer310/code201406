@@ -29,7 +29,7 @@ namespace Backstage.Core.Entity
         /// <summary>
         /// 性别 0/1 男/女
         /// </summary>
-        public int Sex { get; set; }
+        public SexType Sex { get; set; }
         /// <summary>
         /// 创建时间或者修改时间
         /// </summary>
@@ -42,5 +42,19 @@ namespace Backstage.Core.Entity
         /// 联系方式
         /// </summary>
         public string Phone { get; set; }
+        /// <summary>
+        /// 商户id
+        /// </summary>
+        public int SellerId { get; set; }
+        /// <summary>
+        /// 余额
+        /// </summary>
+        public int Money { get; set; }
+
+        public Account()
+        {
+            Avatar = Utility._userdefaulthead;
+            Address = "";
+        }
     }
 }

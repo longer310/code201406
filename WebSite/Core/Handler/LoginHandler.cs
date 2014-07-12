@@ -29,7 +29,7 @@ namespace Backstage.Handler
             string userName = GetString("userName");
             string pwd = GetString("pwd");
 
-            Account user = Utility.FindUser(userName);
+            Account user = AccountHelper.FindUser(userName);
             JsonTransfer jt = new JsonTransfer();
             if (user == null)
                 jt.SetError("不存在此用户");
@@ -38,7 +38,7 @@ namespace Backstage.Handler
             else
             {
                 //设置已登录
-                Utility.SetLogOn(user.Id, true, Utility.GetStringFromEntity(user), DateTime.Now.AddDays(1));
+                AccountHelper.SetLogOn(user.Id, true, AccountHelper.GetStringFromEntity(user), DateTime.Now.AddDays(1));
                 jt.Add("success","登录成功");
             }
             Response.Write(jt.ToJson());
@@ -46,7 +46,7 @@ namespace Backstage.Handler
 
         private void Logout()
         {
-            Utility.SetLogOut();
+            AccountHelper.SetLogOut();
             //Response.Redirect("../login.aspx");
             JsonTransfer jt = new JsonTransfer();
             jt.Add("success", "退出成功");

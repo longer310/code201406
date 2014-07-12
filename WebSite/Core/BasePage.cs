@@ -44,7 +44,7 @@ namespace Backstage.Core
         {
             base.OnInit(e);
 
-            _currentUser = Utility.GetCurUser();
+            _currentUser = AccountHelper.GetCurUser();
             _isLogin = _currentUser != null;
 
             if (!_isLogin)
@@ -84,40 +84,6 @@ namespace Backstage.Core
                 return context.Request.Url.ToString();
         }
 
-        private DataTable servers;
-
-        protected DataTable Servers
-        {
-            get
-            {
-                if (servers == null) servers = Utility.GetGameServerList();
-                return servers;
-            }
-        }
-
-        protected string ServerConn(int serverId)
-        {
-            return Servers.Select(string.Format("serverid={0}", serverId))[0]["GameConn"].ToString();
-        }
-
-        protected string LogConn(int serverId)
-        {
-            return Servers.Select(string.Format("serverid={0}", serverId))[0]["GameConn"].ToString();
-            //return Servers.Select(string.Format("serverid={0}", serverId))[0]["LogConn"].ToString();
-        }
-        protected int GetDefaultServerId()
-        {
-            return Convert.ToInt32(Servers.Rows[0]["serverid"]);
-        }
-        protected object[] GetServerForBind()
-        {
-            List<object> list = new List<object>();
-            foreach (DataRow row in Servers.Rows)
-            {
-                list.Add(new object[] { row["serverid"].ToString(), row["servername"].ToString() });
-            }
-            return list.ToArray();
-        }
         protected static bool IsNum(string str)
         {
             if (string.IsNullOrEmpty(str)) return false;

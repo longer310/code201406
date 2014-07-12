@@ -27,7 +27,7 @@ namespace Backstage.Handler
         private void GetManagerList()
         {
             JsonTransfer jt = new JsonTransfer();
-            var user = Utility.GetCurUser();
+            var user = AccountHelper.GetCurUser();
             if (user.RoleType != RoleType.SuperManage)
             {
                 jt.SetError("无权限");
@@ -49,7 +49,7 @@ namespace Backstage.Handler
         private void UpdateData()
         {
             JsonTransfer jt = new JsonTransfer();
-            var user = Utility.GetCurUser();
+            var user = AccountHelper.GetCurUser();
             if (user.RoleType != RoleType.SuperManage)
             {
                 jt.SetError("无权限");
@@ -63,7 +63,7 @@ namespace Backstage.Handler
             account.UserName = GetString("username");
             account.Pwd = GetString("pwd");
             account.Avatar = GetString("avatar");
-            account.Sex = GetInt("sex");
+            account.Sex = (SexType)GetInt("sex");
             account.CreateTime = GetTime("createtime");
 
             int num = AccountHelper.UpdateUser(account);
@@ -74,7 +74,7 @@ namespace Backstage.Handler
         private void DelData()
         {
             JsonTransfer jt = new JsonTransfer();
-            var user = Utility.GetCurUser();
+            var user = AccountHelper.GetCurUser();
             if (user.RoleType != RoleType.SuperManage)
             {
                 jt.SetError("无权限");

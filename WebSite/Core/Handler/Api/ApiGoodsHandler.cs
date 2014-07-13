@@ -19,6 +19,7 @@ namespace Backstage.Handler
             base.ProcessRequest(HttpContext.Current);
             switch (Action)
             {
+                #region 商品
                 case "getpageinfo"://首页
                     GetPageInfo();
                     break;
@@ -40,6 +41,9 @@ namespace Backstage.Handler
                 case "sharegoods"://分享商品
                     ShareGoods();
                     break;
+                #endregion
+
+                #region 订单
                 case "addshoppingcart"://添加产品到购物车
                     AddShoppingCart();
                     break;
@@ -61,6 +65,8 @@ namespace Backstage.Handler
                 case "updateordersstatus"://更新订单状态
                     UpdateOrdersStatus();
                     break;
+                #endregion
+
                 default: break;
             }
         }
@@ -684,6 +690,7 @@ namespace Backstage.Handler
             orders.Gids = orders.Gids.TrimEnd(',');
             orders.Nums = orders.Nums.TrimEnd(',');
             orders.TotalPrice = orders.StotalPrice;
+            orders.SellerId = sellerId;
 
             var orderid = OrdersHelper.SaveOrders(orders);
             if (orderid == 0)
@@ -820,6 +827,20 @@ namespace Backstage.Handler
                 ReturnErrorMsg("参数出错");
                 return;
             }
+
+            var clist = PaymentHelper.GetList(orders.SellerId);
+            if (clist == null)
+            {
+                ReturnErrorMsg("商户还没有充值类型列表");
+                return;
+            }
+            var payMent = clist.FirstOrDefault(o => o.Id == pid);
+            if (payMent == null)
+            {
+                ReturnErrorMsg("不存在该充值类型");
+                return;
+            }
+
             orders.OrderTime = ordertime;
             orders.OrderType = (OrderType)ordertype;
             orders.OrderPeople = orderpeople;
@@ -828,7 +849,7 @@ namespace Backstage.Handler
             orders.Mobile = mobile;
             orders.CouponId = couponid;
             //获取优惠券优惠的价格
-            var coupon = CouponHelper.GetItem(orders.CouponId);//TODO:获取优惠券
+            var coupon = CouponHelper.GetItem(orders.CouponId);
             bool ifdiscount = coupon == null ? false : true;
             if (coupon != null)
             {//判断是否是优惠产品
@@ -842,7 +863,7 @@ namespace Backstage.Handler
             float discount = 0;
             if (ifdiscount)
             {
-                discount = (float) (coupon.Extcredit*1.0)/100;
+                discount = (float)(coupon.Extcredit * 1.0) / 100;
             }
             orders.TotalPrice -= discount;
             orders.CtotalPrice = discount;
@@ -872,6 +893,38 @@ namespace Backstage.Handler
                 return;
             }
             orders.Status = (OrderStatus)status;
+            var user = AccountHelper.GetUser(uid);
+            if (user == null)
+            {
+                ReturnErrorMsg(string.Format("不存在Id={0}的用户", uid));
+                return;
+            }
+
+            if (orders.Status == OrderStatus.Pay && orders.Pid == 0)
+            {//余额付款
+                if (user.Money < orders.TotalPrice)
+                {
+                    ReturnErrorMsg("余额不足");
+                    return;
+                }
+                user.Money -= orders.TotalPrice;
+                //保存用户信息
+                AccountHelper.UpdateUser(user);
+
+                var payMent = new Payment();
+                if (orders.Pid > 0)
+                    PaymentHelper.GetPayment(orders.Pid);
+
+                var chargeLog = new ChargeLog();
+                chargeLog.UserId = uid;
+                chargeLog.Money = -orders.TotalPrice;
+                chargeLog.Pid = orders.Pid;
+                chargeLog.SellerId = orders.SellerId;
+                chargeLog.OrderId = orders.Id.ToString();
+                chargeLog.PayName = payMent.Id == 0 ? "账户余额" : payMent.Name;
+                //记录充值记录
+                ChargeLogHelper.AddChargeLog(chargeLog);
+            }
 
             OrdersHelper.SaveOrders(orders);
 

@@ -31,6 +31,11 @@ namespace Backstage.Core
         /// 用户
         /// </summary>
         User = 20,
+
+        /// <summary>
+        /// 第三方用户
+        /// </summary>
+        ThirdUser = 30,
     }
 
     /// <summary>
@@ -99,5 +104,55 @@ namespace Backstage.Core
         /// 已完结（到店吃或者已送餐）
         /// </summary>
         End = 3,
+    }
+
+    /// <summary>
+    /// 第三方账号类型
+    /// </summary>
+    public enum AccountType
+    {
+        /// <summary>
+        /// 微信
+        /// </summary>
+        WeiXin = 1,
+        /// <summary>
+        /// 新浪
+        /// </summary>
+        Sina = 2,
+        /// <summary>
+        /// 腾讯
+        /// </summary>
+        Tencent = 3,
+        /// <summary>
+        /// 支付宝
+        /// </summary>
+        Paypal = 4,
+    }
+
+    /// <summary>
+    /// 积分来源/去向类型
+    /// </summary>
+    public enum ExtcreditSourceType
+    {
+        /// <summary>
+        /// 购买优惠券
+        /// </summary>
+        BuyCoupon = 1,
+        /// <summary>
+        /// 分享
+        /// </summary>
+        Share = 2,
+        /// <summary>
+        /// 签到
+        /// </summary>
+        Register = 3,
+        /// <summary>
+        /// 消费 订单
+        /// </summary>
+        Consume = 4,
+        /// <summary>
+        /// 评论
+        /// </summary>
+        Comment = 5,
     }
 }

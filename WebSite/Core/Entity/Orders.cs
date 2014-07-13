@@ -94,6 +94,10 @@ namespace Backstage.Core.Entity
         /// 订单状态
         /// </summary>
         public OrderStatus Status { get; set; }
+        /// <summary>
+        /// 商户id
+        /// </summary>
+        public int SellerId { get; set; }
 
         public Orders()
         {

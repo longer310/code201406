@@ -53,6 +53,7 @@ namespace Backstage.Core
                         user.Money = (int)reader["Money"];
                         user.SellerId = (int)reader["SellerId"];
                         user.CreateTime = (DateTime)reader["CreateTime"];
+                        user.Extcredit = (int)reader["Extcredit"];
 
                         list.Add(user);
                     }
@@ -110,6 +111,7 @@ namespace Backstage.Core
                         user.Money = (int)reader["Money"];
                         user.SellerId = (int)reader["SellerId"]; 
                         user.CreateTime = (DateTime)reader["CreateTime"];
+                        user.Extcredit = (int)reader["Extcredit"];
 
                         list.Add(user);
                     }
@@ -122,6 +124,11 @@ namespace Backstage.Core
             return list;
         }
 
+        /// <summary>
+        /// 插入或更新用户
+        /// </summary>
+        /// <param name="account"></param>
+        /// <returns></returns>
         public static int UpdateUser(Account account)
         {
             var cmdText = String.Empty;
@@ -138,6 +145,7 @@ namespace Backstage.Core
                                         Address        = ?Address,
                                         SellerId          = ?SellerId,
                                         Money             = ?Money,
+                                        Extcredit             = ?Extcredit,
                                         CreateTime      = ?CreateTime
                                     WHERE
                                         Id = ?Id";
@@ -151,6 +159,7 @@ namespace Backstage.Core
                 parameters.Add(new MySqlParameter("?Phone", account.Phone));
                 parameters.Add(new MySqlParameter("?Address", account.Address));
                 parameters.Add(new MySqlParameter("?Money", account.Money));
+                parameters.Add(new MySqlParameter("?Extcredit", account.Extcredit));
                 parameters.Add(new MySqlParameter("?SellerId", account.SellerId));
             }
             else
@@ -166,6 +175,7 @@ namespace Backstage.Core
                                         Address   ,
                                         SellerId     ,
                                         Money        ,
+                                        Extcredit        ,
                                         CreateTime 
                                         ) 
                                         values
@@ -179,6 +189,7 @@ namespace Backstage.Core
                                         ?Address  ,
                                         ?SellerId    ,
                                         ?Money       ,
+                                        ?Extcredit       ,
                                         ?CreateTime
                                         )";
                 parameters.Add(new MySqlParameter("?UserName", account.UserName));
@@ -191,11 +202,28 @@ namespace Backstage.Core
                 parameters.Add(new MySqlParameter("?Address", account.Address));
                 parameters.Add(new MySqlParameter("?Money", account.Money));
                 parameters.Add(new MySqlParameter("?SellerId", account.SellerId));
+                parameters.Add(new MySqlParameter("?Extcredit", account.Extcredit));
             }
 
             try
             {
-                return MySqlHelper.ExecuteNonQuery(Utility._gameDbConn, CommandType.Text, cmdText, parameters.ToArray());
+                var num = MySqlHelper.ExecuteNonQuery(Utility._gameDbConn, CommandType.Text, cmdText, parameters.ToArray());
+                if (account.Id == 0)
+                {
+                    using (var conn = Utility.ObtainConn(Utility._gameDbConn))
+                    {
+                        cmdText = @"select @@identity";
+                        var reader = MySqlHelper.ExecuteReader(conn, CommandType.Text, cmdText);
+                        if (reader.HasRows)
+                        {
+                            if (reader.Read())
+                            {
+                                num = reader.GetInt32(0);
+                            }
+                        }
+                    }
+                }
+                return num;
             }
             catch (Exception ex)
             {
@@ -241,6 +269,44 @@ namespace Backstage.Core
                             user.Money = (int)reader["Money"];
                             user.SellerId = (int)reader["SellerId"];
                             user.CreateTime = (DateTime)reader["CreateTime"];
+                            user.Extcredit = (int)reader["Extcredit"];
+                            return user;
+                        }
+                    }
+                }
+            }
+            catch (System.Exception ex)
+            {
+                throw;
+            }
+            return null;
+        }
+
+        public static Account GetUser(int id)
+        {
+            var sql = String.Format("select * from account where Id={0} limit 1;", id);
+            try
+            {
+                using (var conn = Utility.ObtainConn(Utility._gameDbConn))
+                {
+                    MySqlDataReader reader = MySqlHelper.ExecuteReader(conn, CommandType.Text, sql);
+                    if (reader.HasRows)
+                    {
+                        if (reader.Read())
+                        {
+                            Account user = new Account();
+                            user.Id = reader.GetInt32(0);
+                            user.UserName = reader["UserName"].ToString();
+                            user.Pwd = reader["Pwd"].ToString();
+                            user.RoleType = (RoleType)reader["RoleType"];
+                            user.Avatar = reader["Avatar"].ToString();
+                            user.Sex = (SexType)reader["Sex"];
+                            user.Phone = reader["Phone"].ToString();
+                            user.Address = reader["Address"].ToString();
+                            user.Money = (int)reader["Money"];
+                            user.SellerId = (int)reader["SellerId"]; ;
+                            user.CreateTime = (DateTime)reader["CreateTime"];
+                            user.Extcredit = (int)reader["Extcredit"];
                             return user;
                         }
                     }
@@ -255,7 +321,10 @@ namespace Backstage.Core
 
         public static Account FindUser(string userName)
         {
-            var sql = String.Format("select * from account where username='{0}' limit 1;", userName);
+            var sql = @"select * from account where username=?username and roletype <>?roletype limit 1;";
+            List<MySqlParameter> parameters = new List<MySqlParameter>();
+            parameters.Add(new MySqlParameter("?username", userName));
+            parameters.Add(new MySqlParameter("?roletype", (int)RoleType.ThirdUser));//第三方账号可能用户名会重复！
             try
             {
                 using (var conn = Utility.ObtainConn(Utility._gameDbConn))
@@ -277,6 +346,7 @@ namespace Backstage.Core
                             user.Money = (int)reader["Money"];
                             user.SellerId = (int)reader["SellerId"]; ;
                             user.CreateTime = (DateTime)reader["CreateTime"];
+                            user.Extcredit = (int)reader["Extcredit"];
                             return user;
                         }
                     }

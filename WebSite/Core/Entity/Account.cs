@@ -49,12 +49,17 @@ namespace Backstage.Core.Entity
         /// <summary>
         /// 余额
         /// </summary>
-        public int Money { get; set; }
+        public float Money { get; set; }
+        /// <summary>
+        /// 积分
+        /// </summary>
+        public int Extcredit { get; set; }
 
         public Account()
         {
             Avatar = Utility._userdefaulthead;
-            Address = "";
+            Phone = Address = "";
+            CreateTime = DateTime.Now;
         }
     }
 }

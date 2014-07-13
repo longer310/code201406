@@ -5,6 +5,9 @@ using System.Web;
 
 namespace Backstage.Core.Entity
 {
+    /// <summary>
+    /// 支付方式表
+    /// </summary>
     public class Payment:KVEntity
     {
         /// <summary>

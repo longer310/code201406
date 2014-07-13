@@ -55,16 +55,18 @@ namespace Backstage.Core.Handler
         /// <param name="size"></param>
         /// <param name="order">排序sql</param>
         /// <returns></returns>
-        public static PagResults<Coupon> GetPagings(int sellerId, int index, int size, string order = "")
+        public static PagResults<Coupon> GetPagings(int sellerId, int start, int limit, string order = "")
         {
             var results = new PagResults<Coupon>();
             results.Results = new List<Coupon>();
-            string commandText = @"select * from coupon where sellerId = ?sellerId LIMIT ?index,?size " + order;
+            string limitsql = start != 0 ? " LIMIT ?start,?limit" : string.Empty;
+            if (order == "") order = " order by Expiry desc ";
+            string commandText = @"select * from coupon where sellerId = ?sellerId " + order + limitsql;
 
             List<MySqlParameter> parameters = new List<MySqlParameter>();
             parameters.Add(new MySqlParameter("?sellerId", sellerId));
-            parameters.Add(new MySqlParameter("?index", index));
-            parameters.Add(new MySqlParameter("?size", size));
+            parameters.Add(new MySqlParameter("?start", start));
+            parameters.Add(new MySqlParameter("?limit", limit));
 
             try
             {
@@ -87,6 +89,11 @@ namespace Backstage.Core.Handler
                         c.Commentnum = (int)reader["Commentnum"];
                         results.Results.Add(c);
                     }
+
+                    //一个函数有两次连接数据库 先把连接断开 然后重连
+                    conn.Close();
+                    conn.Dispose();
+                    conn.Open();
 
                     commandText = "select count(*) from coupon where sellerId = ?sellerId";
                     parameters.Clear();
@@ -268,6 +275,78 @@ namespace Backstage.Core.Handler
             }
             return item;
         }
-       
+
+        /// <summary>
+        /// 获取用户优惠券列表
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="sellerId"></param>
+        /// <param name="start"></param>
+        /// <param name="limit"></param>
+        /// <param name="ifgetcount"></param>
+        /// <returns></returns>
+        public static PagResults<Coupon> GetUserCouponList(int userId, int sellerId, int start, int limit, int ifgetcount = 0)
+        {
+            var results = new PagResults<Coupon>();
+            results.Results = new List<Coupon>();
+            string limitsql = start != 0 ? " LIMIT ?start,?limit" : string.Empty;
+            string commandText = @"select a.* from coupon a left join usercoupon b on a.id=b.CouponId where b.userId = ?userId and a.SellerId=?sellerId order by Expiry desc " + limitsql;
+
+            List<MySqlParameter> parameters = new List<MySqlParameter>();
+            parameters.Add(new MySqlParameter("?userId", userId));
+            parameters.Add(new MySqlParameter("?sellerId", sellerId));
+            parameters.Add(new MySqlParameter("?start", start));
+            parameters.Add(new MySqlParameter("?limit", limit));
+
+            try
+            {
+                using (var conn = new MySqlConnection(GlobalConfig.DbConn))
+                {
+                    MySqlDataReader reader = MySqlHelper.ExecuteReader(conn, CommandType.Text, commandText, parameters.ToArray());
+                    while (reader.Read())
+                    {
+                        Coupon c = new Coupon();
+                        c.Id = reader.GetInt32(0);
+                        c.ImgId = (int)reader["ImgId"];
+                        c.ImgUrl = reader["ImgUrl"].ToString();
+                        c.Title = reader["Title"].ToString();
+                        c.Description = reader["Description"].ToString();
+                        c.Expiry = (DateTime)reader["Expiry"];
+                        c.Extcredit = (int)reader["Extcredit"];
+                        c.FullMoney = (int)reader["FullMoney"];
+                        c.DiscountMoney = (int)reader["DiscountMoney"];
+                        c.GoodsIds = GetGoodsIds(reader["GoodsIds"].ToString());
+                        c.Commentnum = (int)reader["Commentnum"];
+                        results.Results.Add(c);
+                    }
+
+                    if (ifgetcount > 0)
+                    {
+                        //一个函数有两次连接数据库 先把连接断开 然后重连
+                        conn.Close();
+                        conn.Dispose();
+                        conn.Open();
+
+                        commandText = "select count(*) from coupon where sellerId = ?sellerId";
+                        parameters.Clear();
+                        parameters.Add(new MySqlParameter("?sellerId", sellerId));
+                        reader = MySqlHelper.ExecuteReader(conn, CommandType.Text, commandText, parameters.ToArray());
+                        if (reader.HasRows)
+                        {
+                            if (reader.Read())
+                            {
+                                results.TotalCount = reader.GetInt32(0);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (System.Exception ex)
+            {
+                throw;
+            }
+            return results;
+        }
+
     }
 }

@@ -55,13 +55,14 @@ namespace Backstage.Core.Logic
 
                         list.Add(goods);
                     }
-                    //一个函数有两次连接数据库 先把连接断开 然后重连
-                    conn.Close();
-                    conn.Dispose();
-                    conn.Open();
 
                     if (gettotal == 1)
                     {
+                        //一个函数有两次连接数据库 先把连接断开 然后重连
+                        conn.Close();
+                        conn.Dispose();
+                        conn.Open();
+
                         cmdText = string.Format("select count(*) from goods where SellerId={0} ", sellerId) +
                                   wheresql;
                         reader = MySqlHelper.ExecuteReader(conn, CommandType.Text, cmdText);
@@ -74,7 +75,7 @@ namespace Backstage.Core.Logic
                         }
                     }
                 }
-                
+
             }
             catch (System.Exception ex)
             {
@@ -97,18 +98,18 @@ namespace Backstage.Core.Logic
                         {
                             Goods goods = new Goods();
                             goods.Id = reader.GetInt32(0);
-                            goods.SellerId = (int) reader["SellerId"];
-                            goods.Logo = (int) reader["Logo"];
+                            goods.SellerId = (int)reader["SellerId"];
+                            goods.Logo = (int)reader["Logo"];
                             goods.ImgIds = reader["ImgIds"].ToString();
-                            goods.Sales = (int) reader["Sales"];
+                            goods.Sales = (int)reader["Sales"];
                             goods.Title = reader["Title"].ToString();
-                            goods.Cid = (int) reader["Cid"];
-                            goods.Nowprice = (float) reader["Nowprice"];
-                            goods.OriginalPrice = (float) reader["OriginalPrice"];
-                            goods.Score = (float) reader["Score"];
-                            goods.CreateTime = (DateTime) reader["CreateTime"];
-                            goods.FavCount = (int) reader["FavCount"];
-                            goods.ShareCount = (int) reader["ShareCount"];
+                            goods.Cid = (int)reader["Cid"];
+                            goods.Nowprice = (float)reader["Nowprice"];
+                            goods.OriginalPrice = (float)reader["OriginalPrice"];
+                            goods.Score = (float)reader["Score"];
+                            goods.CreateTime = (DateTime)reader["CreateTime"];
+                            goods.FavCount = (int)reader["FavCount"];
+                            goods.ShareCount = (int)reader["ShareCount"];
                             goods.Tag = reader["Tag"].ToString();
                             goods.Content = reader["Content"].ToString();
                             goods.LogoUrl = reader["Url"].ToString();

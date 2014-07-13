@@ -353,7 +353,7 @@ namespace Backstage.Core
         public static void SendMsg(string code, string phone)
         {
             string msg = string.Format(_message, code);
-            Encoding encoding = Encoding.GetEncoding("gb2312");
+            Encoding encoding = Encoding.GetEncoding("UTF-8");
             IDictionary<string, string> parameters = new Dictionary<string, string>();
             parameters.Add("zh", _msg_zh);
             parameters.Add("mm", _msg_mm);

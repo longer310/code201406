@@ -5,6 +5,9 @@ using System.Web;
 
 namespace Backstage.Core.Entity
 {
+    /// <summary>
+    /// 购物车
+    /// </summary>
     public class ShoppingCart : KVEntity
     {
         /// <summary>

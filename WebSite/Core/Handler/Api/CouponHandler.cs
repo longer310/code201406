@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace Backstage.Core.Handler.Api
+namespace Backstage.Core.Handler
 {
     public class CouponHandler : BaseApiHandler
     {

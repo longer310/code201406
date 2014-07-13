@@ -134,6 +134,7 @@ namespace Backstage.Core.Handler
                     newid = r.Id,
                     title = r.Title,
                     img = r.CoverImgUrl,
+                    dateline = r.CreateTime,
                     summary = r.Summary
                 };
                 data.Add(d);

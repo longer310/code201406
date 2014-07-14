@@ -50,7 +50,7 @@ namespace Backstage.Core
                         user.Sex = (SexType)reader["Sex"];
                         user.Phone = reader["Phone"].ToString();
                         user.Address = reader["Address"].ToString();
-                        user.Money = (int)reader["Money"];
+                        user.Money = (float)reader["Money"];
                         user.SellerId = (int)reader["SellerId"];
                         user.CreateTime = (DateTime)reader["CreateTime"];
                         user.Extcredit = (int)reader["Extcredit"];
@@ -109,7 +109,7 @@ namespace Backstage.Core
                         user.Sex = (SexType)reader["Sex"];
                         user.Phone = reader["Phone"].ToString();
                         user.Address = reader["Address"].ToString();
-                        user.Money = (int)reader["Money"];
+                        user.Money = (float)reader["Money"];
                         user.SellerId = (int)reader["SellerId"]; 
                         user.CreateTime = (DateTime)reader["CreateTime"];
                         user.Extcredit = (int)reader["Extcredit"];
@@ -272,7 +272,7 @@ namespace Backstage.Core
                             user.Sex = (SexType)reader["Sex"];
                             user.Phone = reader["Phone"].ToString();
                             user.Address = reader["Address"].ToString();
-                            user.Money = (int)reader["Money"];
+                            user.Money = (float)reader["Money"];
                             user.SellerId = (int)reader["SellerId"];
                             user.CreateTime = (DateTime)reader["CreateTime"];
                             user.Extcredit = (int)reader["Extcredit"];
@@ -310,7 +310,7 @@ namespace Backstage.Core
                             user.Sex = (SexType)reader["Sex"];
                             user.Phone = reader["Phone"].ToString();
                             user.Address = reader["Address"].ToString();
-                            user.Money = (int)reader["Money"];
+                            user.Money = (float)reader["Money"];
                             user.SellerId = (int)reader["SellerId"]; ;
                             user.CreateTime = (DateTime)reader["CreateTime"];
                             user.Extcredit = (int)reader["Extcredit"];
@@ -350,8 +350,8 @@ namespace Backstage.Core
                             user.Avatar = reader["Avatar"].ToString(); 
                             user.Sex = (SexType)reader["Sex"]; 
                             user.Phone = reader["Phone"].ToString(); 
-                            user.Address = reader["Address"].ToString(); 
-                            user.Money = (int)reader["Money"];
+                            user.Address = reader["Address"].ToString();
+                            user.Money = (float)reader["Money"];
                             user.SellerId = (int)reader["SellerId"]; ;
                             user.CreateTime = (DateTime)reader["CreateTime"];
                             user.Extcredit = (int)reader["Extcredit"];

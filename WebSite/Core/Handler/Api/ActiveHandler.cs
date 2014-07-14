@@ -12,7 +12,7 @@ using Backstage.Model;
 namespace Backstage.Core.Handler
 {
     /// <summary>
-    /// SourceMaterial 的摘要说明
+    /// Active 的摘要说明
     /// </summary>
     public class ActiveHandler : BaseApiHandler
     {

@@ -96,7 +96,7 @@ namespace Backstage.Core.Handler
                 Expiry = DateTime.Now.AddDays(1)
             };
             var item = GeneralHelper.GetUserWifiItem(userId, sellerId);
-            if (item.Id != 0)
+            if (item.Id == 0)
                 GeneralHelper.GenerateWifi(user_wifi);
             else
             {

@@ -64,7 +64,7 @@ namespace Backstage.Core.Handler
         public static UserWifi GetUserWifiItem(int userId, int sellerId)
         {
             var uw = new UserWifi();
-            string commandText = @"select * from material where userId = ?userId and sellerId = ?sellerId";
+            string commandText = @"select * from userwifi where userId = ?userId and sellerId = ?sellerId";
             List<MySqlParameter> parameters = new List<MySqlParameter>();
             parameters.Add(new MySqlParameter("?userId", userId));
             parameters.Add(new MySqlParameter("?sellerId", sellerId));

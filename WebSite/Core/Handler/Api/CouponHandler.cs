@@ -87,7 +87,7 @@ namespace Backstage.Core.Handler
                     Avatar = user.Avatar,
                     UserName = user.UserName,
                     Sex = (int)user.Sex,
-                    Dateline = cm.CreateTime,
+                    Dateline = cm.CreateTime.GetUnixTime(),
                     Message = cm.Content
                 };
                 data.Comments.Add(result);

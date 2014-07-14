@@ -146,7 +146,7 @@ namespace Backstage.Core.Handler
                     Avatar = user.Avatar,
                     UserName = user.UserName,
                     Sex = (int)user.Sex,
-                    Dateline = cm.CreateTime,
+                    Dateline = cm.CreateTime.GetUnixTime(),
                     Message = cm.Content
                 };
                 data.Comments.Add(result);
@@ -192,7 +192,7 @@ namespace Backstage.Core.Handler
             parameters.Add(new MySqlParameter("?Views", GetString("content")));
             parameters.Add(new MySqlParameter("?Commentnum", GetString("conmentnum")));
             parameters.Add(new MySqlParameter("?SellerId", GetInt("sellerid")));
-            parameters.Add(new MySqlParameter("?CreateTime", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")));
+            parameters.Add(new MySqlParameter("?CreateTime", DateTime.Now));
 
 
             MySqlHelper.ExecuteNonQuery(connectionString, CommandType.Text, commandText, parameters.ToArray());
@@ -218,7 +218,7 @@ namespace Backstage.Core.Handler
             parameters.Add(new MySqlParameter("?Views", GetString("views")));
             parameters.Add(new MySqlParameter("?Commentnum", GetString("contentnum")));
             parameters.Add(new MySqlParameter("?SellerId", GetInt("sellerid")));
-            parameters.Add(new MySqlParameter("?CreateTime", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")));
+            parameters.Add(new MySqlParameter("?CreateTime", DateTime.Now));
 
             MySqlHelper.ExecuteNonQuery(GlobalConfig.DbConn, CommandType.Text, commandText, parameters.ToArray());
         }
@@ -409,5 +409,5 @@ namespace Backstage.Core.Handler
             }
         }
     }
-    
+
 }

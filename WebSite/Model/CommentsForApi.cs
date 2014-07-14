@@ -24,7 +24,7 @@ namespace Backstage.Model
 
         public int Sex { get; set; }
 
-        public DateTime Dateline { get; set; }
+        public int Dateline { get; set; }
 
         public string Message { get; set; }
     }

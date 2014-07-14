@@ -54,6 +54,7 @@ namespace Backstage.Core
                         user.SellerId = (int)reader["SellerId"];
                         user.CreateTime = (DateTime)reader["CreateTime"];
                         user.Extcredit = (int)reader["Extcredit"];
+                        user.LinkMan = reader["LinkMan"].ToString();
 
                         list.Add(user);
                     }
@@ -112,6 +113,7 @@ namespace Backstage.Core
                         user.SellerId = (int)reader["SellerId"]; 
                         user.CreateTime = (DateTime)reader["CreateTime"];
                         user.Extcredit = (int)reader["Extcredit"];
+                        user.LinkMan = reader["LinkMan"].ToString();
 
                         list.Add(user);
                     }
@@ -146,6 +148,7 @@ namespace Backstage.Core
                                         SellerId          = ?SellerId,
                                         Money             = ?Money,
                                         Extcredit             = ?Extcredit,
+                                        LinkMan             = ?LinkMan,
                                         CreateTime      = ?CreateTime
                                     WHERE
                                         Id = ?Id";
@@ -160,6 +163,7 @@ namespace Backstage.Core
                 parameters.Add(new MySqlParameter("?Address", account.Address));
                 parameters.Add(new MySqlParameter("?Money", account.Money));
                 parameters.Add(new MySqlParameter("?Extcredit", account.Extcredit));
+                parameters.Add(new MySqlParameter("?LinkMan", account.LinkMan));
                 parameters.Add(new MySqlParameter("?SellerId", account.SellerId));
             }
             else
@@ -176,6 +180,7 @@ namespace Backstage.Core
                                         SellerId     ,
                                         Money        ,
                                         Extcredit        ,
+                                        LinkMan        ,
                                         CreateTime 
                                         ) 
                                         values
@@ -190,6 +195,7 @@ namespace Backstage.Core
                                         ?SellerId    ,
                                         ?Money       ,
                                         ?Extcredit       ,
+                                        ?LinkMan       ,
                                         ?CreateTime
                                         )";
                 parameters.Add(new MySqlParameter("?UserName", account.UserName));
@@ -270,6 +276,7 @@ namespace Backstage.Core
                             user.SellerId = (int)reader["SellerId"];
                             user.CreateTime = (DateTime)reader["CreateTime"];
                             user.Extcredit = (int)reader["Extcredit"];
+                            user.LinkMan = reader["LinkMan"].ToString();
                             return user;
                         }
                     }
@@ -307,6 +314,7 @@ namespace Backstage.Core
                             user.SellerId = (int)reader["SellerId"]; ;
                             user.CreateTime = (DateTime)reader["CreateTime"];
                             user.Extcredit = (int)reader["Extcredit"];
+                            user.LinkMan = reader["LinkMan"].ToString();
                             return user;
                         }
                     }
@@ -347,6 +355,7 @@ namespace Backstage.Core
                             user.SellerId = (int)reader["SellerId"]; ;
                             user.CreateTime = (DateTime)reader["CreateTime"];
                             user.Extcredit = (int)reader["Extcredit"];
+                            user.LinkMan = reader["LinkMan"].ToString();
                             return user;
                         }
                     }

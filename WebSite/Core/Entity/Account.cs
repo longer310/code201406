@@ -35,6 +35,10 @@ namespace Backstage.Core.Entity
         /// </summary>
         public DateTime CreateTime { get; set; }
         /// <summary>
+        /// 联系人
+        /// </summary>
+        public string LinkMan { get; set; }
+        /// <summary>
         /// 地址
         /// </summary>
         public string Address { get; set; }

@@ -21,35 +21,41 @@ namespace Backstage.Handler
             base.ProcessRequest(HttpContext.Current);
             switch (Action)
             {
-                case "getregistercode"://首页
+                case "getregistercode"://首页 7.1
                     GetRegisterCode();
                     break;
-                case "register"://注册
+                case "register"://注册 7.2
                     Register();
                     break;
-                case "login"://登录接口
+                case "login"://登录接口 7.3 
                     Login();
                     break;
-                case "thirdlogin"://登录接口
+                case "thirdlogin"://登录接口 7.4
                     ThirdLogin();
                     break;
-                case "usercharge"://登录接口
+                case "usercharge"://登录接口 7.5
                     UserCharge();
                     break;
-                case "getmymoney"://获取可用余额
+                case "getmymoney"://获取可用余额 7.6 
                     GetMyMoney();
                     break;
-                case "getmoneylog"://资金使用明细
+                case "getmoneylog"://资金使用明细 7.7
                     GetMoneyLog();
                     break;
-                case "getmerchant"://商家信息
+                case "getmerchant"://商家信息 7.8
                     GetMerchant();
                     break;
-                case "getusercouponlist"://获取可兑换的电子券
+                case "getusercouponlist"://获取可兑换的电子券 7.9
                     GetUserCouponList();
                     break;
-                case "getextcreditlog"://积分使用明细
+                case "getextcreditlog"://积分使用明细 7.10
                     GetExtcreditLog();
+                    break;
+                case "updateuserinfo"://编辑收货信息 7.11
+                    UpdateUserInfo();
+                    break;
+                case "getuserinfo"://获取收货信息 7.12
+                    GetUserInfo();
                     break;
                 default: break;
             }
@@ -600,6 +606,70 @@ namespace Backstage.Handler
         {
             var uid = GetInt("uid");
             var sellerid = GetInt("sellerid");
+            var linkman = GetString("linkman");
+            var phone = GetString("phone");
+            var address = GetString("address");
+
+            var user = AccountHelper.GetUser(uid);
+            if (user == null)
+            {
+                ReturnErrorMsg(string.Format("不存在Id={0}的用户", uid));
+                return;
+            }
+            if (user.SellerId != sellerid)
+            {
+                ReturnErrorMsg("商户无此用户");
+                return;
+            }
+            user.LinkMan    = linkman;
+            user.Phone      = phone;
+            user.Address    = address;
+
+            //保存收获信息
+            AccountHelper.UpdateUser(user);
+
+            ReturnCorrectMsg("编辑成功");
+        }
+        #endregion
+
+        #region 获取收货信息
+        public class UserInfoData
+        {
+            public string linkMan { get; set; }
+            public string phone { get; set; }
+            public string address { get; set; }
+            public int sellerid { get; set; } 
+        }
+        public void GetUserInfo()
+        {
+            var uid = GetInt("uid");
+            var sellerid = GetInt("sellerid");
+            var linkman = GetString("linkman");
+            var phone = GetString("phone");
+            var address = GetString("address");
+
+            var user = AccountHelper.GetUser(uid);
+            if (user == null)
+            {
+                ReturnErrorMsg(string.Format("不存在Id={0}的用户", uid));
+                return;
+            }
+            if (user.SellerId != sellerid)
+            {
+                ReturnErrorMsg("商户无此用户");
+                return;
+            }
+            var data = new UserInfoData();
+            data.linkMan = linkman;
+            data.phone = phone;
+            data.address = address;
+            data.sellerid = sellerid;
+
+            JsonTransfer jt = new JsonTransfer();
+            jt.AddSuccessParam();
+            jt.Add("data", data);
+            Response.Write(DesEncrypt(jt));
+            Response.End();
         }
         #endregion
     }

@@ -424,13 +424,23 @@
     <Content Include="Test.html" />
     <Content Include="View\SourceMaterial\ManagerList.aspx" />
     <Content Include="View\UCenter\ManagerList.aspx" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Core\BasePage.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Core\CryptHelper.cs" />
+    <Compile Include="Core\Entity\ChargeLog.cs" />
+    <Compile Include="Core\Entity\AccountBinding.cs" />
+    <Compile Include="Core\Entity\ExtcreditLog.cs" />
+    <Compile Include="Core\Entity\Merchant.cs" />
+    <Compile Include="Core\Entity\Position.cs" />
+    <Compile Include="Core\Entity\UserPosition.cs" />
+    <Compile Include="Core\Entity\UserWifi.cs" />
+    <Compile Include="Core\Entity\VerificationCode.cs" />
     <Compile Include="Core\Entity\Account.cs" />
     <Compile Include="Core\Entity\Active.cs" />
     <Compile Include="Core\Entity\Comment.cs" />
@@ -445,23 +455,34 @@
     <Compile Include="Core\Entity\ShoppingCart.cs" />
     <Compile Include="Core\Entity\SourceMaterial.cs" />
     <Compile Include="Core\Entity\UserCoupon.cs" />
+    <Compile Include="Core\Entity\WeixinToken.cs" />
     <Compile Include="Core\Enums.cs" />
     <Compile Include="Core\Handler\ActiveHelper.cs" />
     <Compile Include="Core\Handler\Api\ActiveHandler.cs" />
     <Compile Include="Core\Handler\Api\ApiBaseHandler.cs" />
+    <Compile Include="Core\Handler\Api\ApiUserHandler.cs" />
     <Compile Include="Core\Handler\Api\ApiGoodsHandler.cs" />
     <Compile Include="Core\Handler\Api\CommentHandler.cs" />
     <Compile Include="Core\Handler\Api\CouponHandler.cs" />
+    <Compile Include="Core\Handler\Api\GeneralHandler.cs" />
+    <Compile Include="Core\Handler\Api\PositionHandler.cs" />
     <Compile Include="Core\Handler\Api\SourceMaterialHandler.cs" />
     <Compile Include="Core\Handler\BaseHandler.cs" />
     <Compile Include="Core\Handler\CommentHelper.cs" />
     <Compile Include="Core\Handler\CouponHelper.cs" />
+    <Compile Include="Core\Handler\GeneralHelper.cs" />
     <Compile Include="Core\Handler\LoginHandler.cs" />
+    <Compile Include="Core\Handler\PositionHelper.cs" />
     <Compile Include="Core\Handler\SourceMaterialHelper.cs" />
     <Compile Include="Core\Handler\UCenter\DefaultHandler.cs" />
     <Compile Include="Core\HashDict.cs" />
     <Compile Include="Core\JsonTransfer_.cs" />
+    <Compile Include="Core\Logic\ExtcreditLogHelper.cs" />
+    <Compile Include="Core\Logic\ChargeLogHelper.cs" />
     <Compile Include="Core\Logic\AccountHelper.cs" />
+    <Compile Include="Core\Logic\AccountBindingHelper.cs" />
+    <Compile Include="Core\Logic\MerchantHelper.cs" />
+    <Compile Include="Core\Logic\VerificationCodeHelper.cs" />
     <Compile Include="Core\Logic\FavoriteHelper.cs" />
     <Compile Include="Core\Logic\GoodsCategoriesHelper.cs" />
     <Compile Include="Core\Logic\GoodsHelper.cs" />
@@ -535,6 +556,13 @@
     <Content Include="Handler\Api\ApiHandler.ashx" />
     <Content Include="View\Master.Master" />
     <Content Include="Handler\Api\ApiGoodsHandler.ashx" />
+    <Content Include="Handler\Api\ApiUserHandler.ashx" />
+    <Content Include="Handler\Api\ActiveHandler.ashx" />
+    <Content Include="Handler\Api\CommentHandler.ashx" />
+    <Content Include="Handler\Api\CouponHandler.ashx" />
+    <Content Include="Handler\Api\SourceMaterialHandler.ashx" />
+    <Content Include="Handler\Api\GeneralHandler.ashx" />
+    <Content Include="Handler\Api\PositionHandler.ashx" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

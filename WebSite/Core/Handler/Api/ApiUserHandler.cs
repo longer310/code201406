@@ -594,5 +594,13 @@ namespace Backstage.Handler
             Response.End();
         }
         #endregion
+
+        #region 编辑收货信息
+        public void UpdateUserInfo()
+        {
+            var uid = GetInt("uid");
+            var sellerid = GetInt("sellerid");
+        }
+        #endregion
     }
 }

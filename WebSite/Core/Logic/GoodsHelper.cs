@@ -17,7 +17,7 @@ namespace Backstage.Core.Logic
             totalnum = 0;
             List<Goods> list = new List<Goods>();
             if (ordersql == "") ordersql = " order by CreateTime desc ";
-            string limitsql = limit != 0 ? " LIMIT ?start,?limit" : string.Empty;
+            string limitsql = start != 0 ? " LIMIT ?start,?limit" : string.Empty;
             var cmdText = @"select a.*,m.Url from Goods as a left join material m on a.Logo=m.Id where a.SellerId=?SellerId " + wheresql + ordersql + limitsql;
 
             List<MySqlParameter> parameters = new List<MySqlParameter>();

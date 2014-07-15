@@ -21,7 +21,7 @@ namespace Backstage.Core.Entity
         /// <summary>
         /// 产品图片地址
         /// </summary>
-        public string Img { get; set; }
+        //public string Img { get; set; }
         /// <summary>
         /// 数量
         /// </summary>
@@ -29,19 +29,19 @@ namespace Backstage.Core.Entity
         /// <summary>
         /// 现价
         /// </summary>
-        public float Nowprice { get; set; }
+        //public float Nowprice { get; set; }
         /// <summary>
         /// 原价
         /// </summary>
-        public float OriginalPrice { get; set; }
+        //public float OriginalPrice { get; set; }
         /// <summary>
         /// 标题
         /// </summary>
-        public string Title { get; set; }
+        //public string Title { get; set; }
         /// <summary>
         /// 产品描述
         /// </summary>
-        public string Description { get; set; }
+        //public string Description { get; set; }
         /// <summary>
         /// 时间
         /// </summary>

@@ -291,6 +291,7 @@ namespace Backstage.Core
         }
         public static string GetWhereSql(List<int> idlist, string columnname = "Id")
         {
+            if (idlist == null || idlist.Count == 0) return string.Empty;
             string wheresql = "";
             string str = String.Join(",", idlist.ConvertAll<string>(new Converter<int, string>(m => m.ToString())).ToArray());
             wheresql += string.Format(" where {0} in(", columnname) + str + ") ";

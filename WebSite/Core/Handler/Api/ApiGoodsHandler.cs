@@ -534,15 +534,17 @@ namespace Backstage.Handler
                 ReturnErrorMsg("商品不存在");
                 return;
             }
-            var shoppingcart = new ShoppingCart();
+
+            var shoppingcart = ShoppingCartHelper.GetShoppingCartByGid(uid, gid);
+            if (shoppingcart == null) shoppingcart = new ShoppingCart();
             shoppingcart.UserId = uid;
             shoppingcart.Gid = gid;
-            shoppingcart.Img = goods.LogoUrl;
-            shoppingcart.Num = num;
-            shoppingcart.Nowprice = goods.Nowprice;
-            shoppingcart.OriginalPrice = goods.OriginalPrice;
-            shoppingcart.Title = goods.Title;
-            shoppingcart.Description = goods.Content;
+            shoppingcart.Num += num;
+            //shoppingcart.Img = goods.LogoUrl;
+            //shoppingcart.Nowprice = goods.Nowprice;
+            //shoppingcart.OriginalPrice = goods.OriginalPrice;
+            //shoppingcart.Title = goods.Title;
+            //shoppingcart.Description = goods.Content;
             shoppingcart.CreateTime = DateTime.Now;
 
             //保存订单
@@ -566,37 +568,57 @@ namespace Backstage.Handler
         public class ShoppingCartItem
         {
             public int gid { get; set; }
-            public string img { get; set; }
             public int num { get; set; }
+            public float totalprice { get; set; }
+            public string img { get; set; }
             public string title { get; set; }
             public string description { get; set; }
             public float nowprice { get; set; }
             public float originalprice { get; set; }
-            public float totalprice { get; set; }
         }
         public void GetShoppingCartList()
         {
             int uid = GetInt("uid");
 
+            var user = AccountHelper.GetUser(uid);
+            if (user == null)
+            {
+                ReturnErrorMsg(string.Format("不存在Id={0}的用户", uid));
+                return;
+            }
+            if (user.SellerId == 0)
+            {
+                ReturnErrorMsg("此用户不属于任何商户");
+                return;
+            }
+
             var wheresql = string.Format(" where UserId = {0}", uid);
             int totalcount;
             var list = ShoppingCartHelper.GetShoppingCartList(out totalcount, wheresql, "", 0);
+            wheresql = Utility.GetWhereSql(list.Select(o => o.Id).ToList());
+            var glist = GoodsHelper.GetGoodsList(user.SellerId, out totalcount, wheresql, "", 0);
 
             var data = new ShoppingCartData();
             foreach (var shoppingCart in list)
             {
                 var item = new ShoppingCartItem();
                 item.gid = shoppingCart.Gid;
-                item.nowprice = shoppingCart.Nowprice;
-                item.originalprice = shoppingCart.OriginalPrice;
-                item.title = shoppingCart.Title;
-                item.description = shoppingCart.Description;
-                item.img = shoppingCart.Img;
                 item.num = shoppingCart.Num;
-                item.totalprice = shoppingCart.Nowprice * shoppingCart.Num;
 
-                data.shoppingcartlist.Add(item);
-                data.totalprice += item.totalprice;
+                var goods = glist.FirstOrDefault(o => o.Id == shoppingCart.Gid);
+                if (goods != null)
+                {
+                    item.nowprice           = goods.Nowprice;
+                    item.originalprice      = goods.OriginalPrice;
+                    item.title              = goods.Title;
+                    item.description        = goods.Content;
+                    item.img                = goods.LogoUrl;
+
+                    item.totalprice = goods.Nowprice * shoppingCart.Num;
+
+                    data.shoppingcartlist.Add(item);
+                    data.totalprice += item.totalprice;
+                }
             }
 
             JsonTransfer jt = new JsonTransfer();

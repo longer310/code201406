@@ -57,11 +57,17 @@ namespace Backstage.Handler
                 case "getuserinfo"://获取收货信息 7.12
                     GetUserInfo();
                     break;
+                case "getmycomment"://获取收货信息 7.13
+                    GetMyComment();
+                    break;
+                case "delfavorite"://删除收藏 7.14
+                    DelFavorite();
+                    break;
                 default: break;
             }
         }
 
-        #region 获取注册验证码
+        #region 获取注册验证码 7.1
         public void GetRegisterCode()
         {
             var phone = GetString("phone");
@@ -103,7 +109,7 @@ namespace Backstage.Handler
         }
         #endregion
 
-        #region 注册
+        #region 注册 7.2
         private void Register()
         {
             var phone = GetString("phone");
@@ -145,7 +151,7 @@ namespace Backstage.Handler
         }
         #endregion
 
-        #region 登录接口
+        #region 登录接口 7.3
         public class LoginData
         {
             public int uid { get; set; }
@@ -190,7 +196,7 @@ namespace Backstage.Handler
         }
         #endregion
 
-        #region 第三方登录
+        #region 第三方登录 7.4
         public void ThirdLogin()
         {
             var username = GetString("username");
@@ -251,7 +257,7 @@ namespace Backstage.Handler
         }
         #endregion
 
-        #region 充值金额
+        #region 充值金额 7.5
         public void UserCharge()
         {
             var uid = GetInt("uid");
@@ -299,7 +305,7 @@ namespace Backstage.Handler
         }
         #endregion
 
-        #region 获取可用余额
+        #region 获取可用余额 7.6
         public class MyMoneyData
         {
             public float money { get; set; }
@@ -332,7 +338,7 @@ namespace Backstage.Handler
         }
         #endregion
 
-        #region 资金使用明细
+        #region 资金使用明细 7.7
         public class MoneyLogData
         {
             public List<MoneyLogItem> moneylogs { get; set; }
@@ -389,7 +395,7 @@ namespace Backstage.Handler
         }
         #endregion
 
-        #region 商家信息
+        #region 商家信息7.8
         public class MerchantData
         {
             /// <summary>
@@ -481,7 +487,7 @@ namespace Backstage.Handler
         }
         #endregion
 
-        #region 获取用户优惠券列表
+        #region 获取用户优惠券列表 7.9
         public class UserCouponData
         {
             public int extcredit { get; set; }
@@ -542,7 +548,7 @@ namespace Backstage.Handler
         }
         #endregion
 
-        #region 资金使用明细
+        #region 资金使用明细 7.10
         public class ExtcreditLogData
         {
             public List<ExtcreditLogItem> extcreditlogs { get; set; }
@@ -601,7 +607,7 @@ namespace Backstage.Handler
         }
         #endregion
 
-        #region 编辑收货信息
+        #region 编辑收货信息 7.11
         public void UpdateUserInfo()
         {
             var uid = GetInt("uid");
@@ -621,9 +627,9 @@ namespace Backstage.Handler
                 ReturnErrorMsg("商户无此用户");
                 return;
             }
-            user.LinkMan    = linkman;
-            user.Phone      = phone;
-            user.Address    = address;
+            user.LinkMan = linkman;
+            user.Phone = phone;
+            user.Address = address;
 
             //保存收获信息
             AccountHelper.UpdateUser(user);
@@ -632,21 +638,18 @@ namespace Backstage.Handler
         }
         #endregion
 
-        #region 获取收货信息
+        #region 获取收货信息 7.12
         public class UserInfoData
         {
             public string linkMan { get; set; }
             public string phone { get; set; }
             public string address { get; set; }
-            public int sellerid { get; set; } 
+            public int sellerid { get; set; }
         }
         public void GetUserInfo()
         {
             var uid = GetInt("uid");
             var sellerid = GetInt("sellerid");
-            var linkman = GetString("linkman");
-            var phone = GetString("phone");
-            var address = GetString("address");
 
             var user = AccountHelper.GetUser(uid);
             if (user == null)
@@ -660,9 +663,9 @@ namespace Backstage.Handler
                 return;
             }
             var data = new UserInfoData();
-            data.linkMan = linkman;
-            data.phone = phone;
-            data.address = address;
+            data.linkMan = user.LinkMan;
+            data.phone = user.Phone;
+            data.address = user.Address;
             data.sellerid = sellerid;
 
             JsonTransfer jt = new JsonTransfer();
@@ -670,6 +673,60 @@ namespace Backstage.Handler
             jt.Add("data", data);
             Response.Write(DesEncrypt(jt));
             Response.End();
+        }
+        #endregion
+
+        #region 我的评论 7.13
+        public class MyCommentData
+        {
+            public List<MyCommentItem> commmentlist { get; set; }
+
+            public MyCommentData()
+            {
+                commmentlist= new List<MyCommentItem>();
+            }
+        }
+        public class MyCommentItem
+        {
+            public string createtime { get; set; }
+            public string type { get; set; }
+            public string content { get; set; } 
+            public string img { get; set; }
+            public string title { get; set; }
+        }
+        public void GetMyComment()
+        {
+            var uid = GetInt("uid");
+            var sellerid = GetInt("sellerid");
+            var start = GetInt("start");
+            var limit = GetInt("limit");
+            var type = (CommentType)GetInt("type");
+
+            var user = AccountHelper.GetUser(uid);
+            if (user == null)
+            {
+                ReturnErrorMsg(string.Format("不存在Id={0}的用户", uid));
+                return;
+            }
+            if (user.SellerId != sellerid)
+            {
+                ReturnErrorMsg("商户无此用户");
+                return;
+            }
+
+            var ucommentlist = CommentHelper.GetList(uid, sellerid, type, start * limit, limit);
+            var glist = ucommentlist.Results.Where(o => o.Type == CommentType.Goods).ToList();
+            var plist = ucommentlist.Results.Where(o => o.Type == CommentType.Img).ToList();
+            var alist = ucommentlist.Results.Where(o => o.Type == CommentType.Avtive).ToList();
+            var clist = ucommentlist.Results.Where(o => o.Type == CommentType.Coupons).ToList();
+
+        }
+        #endregion
+
+        #region 删除收藏 7.14
+        public void DelFavorite()
+        {
+            
         }
         #endregion
     }

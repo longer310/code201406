@@ -42,6 +42,22 @@ namespace Backstage.Core
             }
         }
 
+        public bool CheckUserByIdAndSellerId(int uid, int sellerId)
+        {
+            var user = AccountHelper.GetUser(uid);
+            if (user == null)
+            {
+                ReturnErrorMsg(string.Format("不存在Id={0}的用户", uid));
+                return false;
+            }
+            if (user.SellerId != sellerId)
+            {
+                ReturnErrorMsg("商户无此用户");
+                return false;
+            }
+            return true;
+        }
+
         public string DesEncrypt(JsonTransfer jt)
         {
             if (Utility._desopen == "1")

@@ -44,6 +44,10 @@ namespace Backstage.Core
     public enum CommentType
     {
         /// <summary>
+        /// 所有
+        /// </summary>
+        All = 0,
+        /// <summary>
         /// 图片
         /// </summary>
         Img = 1,

@@ -110,7 +110,7 @@ namespace Backstage.Core
                         user.Phone = reader["Phone"].ToString();
                         user.Address = reader["Address"].ToString();
                         user.Money = (float)reader["Money"];
-                        user.SellerId = (int)reader["SellerId"]; 
+                        user.SellerId = (int)reader["SellerId"];
                         user.CreateTime = (DateTime)reader["CreateTime"];
                         user.Extcredit = (int)reader["Extcredit"];
                         user.LinkMan = reader["LinkMan"].ToString();
@@ -140,15 +140,15 @@ namespace Backstage.Core
                 cmdText = @"UPDATE account SET
                                         UserName        = ?UserName,
                                         Pwd             = ?Pwd,
+                                        SellerId          = ?SellerId,
                                         RoleType        = ?RoleType,
                                         Avatar          = ?Avatar,
                                         Sex             = ?Sex,
+                                        LinkMan             = ?LinkMan,
                                         Phone             = ?Phone,
                                         Address        = ?Address,
-                                        SellerId          = ?SellerId,
                                         Money             = ?Money,
                                         Extcredit             = ?Extcredit,
-                                        LinkMan             = ?LinkMan,
                                         CreateTime      = ?CreateTime
                                     WHERE
                                         Id = ?Id";
@@ -209,6 +209,7 @@ namespace Backstage.Core
                 parameters.Add(new MySqlParameter("?Money", account.Money));
                 parameters.Add(new MySqlParameter("?SellerId", account.SellerId));
                 parameters.Add(new MySqlParameter("?Extcredit", account.Extcredit));
+                parameters.Add(new MySqlParameter("?LinkMan", account.LinkMan));
             }
 
             try
@@ -337,7 +338,7 @@ namespace Backstage.Core
             {
                 using (var conn = Utility.ObtainConn(Utility._gameDbConn))
                 {
-                    MySqlDataReader reader = MySqlHelper.ExecuteReader(conn, CommandType.Text, sql);
+                    MySqlDataReader reader = MySqlHelper.ExecuteReader(conn, CommandType.Text, sql, parameters.ToArray());
                     if (reader.HasRows)
                     {
                         if (reader.Read())
@@ -346,10 +347,10 @@ namespace Backstage.Core
                             user.Id = reader.GetInt32(0);
                             user.UserName = reader["UserName"].ToString();
                             user.Pwd = reader["Pwd"].ToString();
-                            user.RoleType = (RoleType)reader["RoleType"]; 
-                            user.Avatar = reader["Avatar"].ToString(); 
-                            user.Sex = (SexType)reader["Sex"]; 
-                            user.Phone = reader["Phone"].ToString(); 
+                            user.RoleType = (RoleType)reader["RoleType"];
+                            user.Avatar = reader["Avatar"].ToString();
+                            user.Sex = (SexType)reader["Sex"];
+                            user.Phone = reader["Phone"].ToString();
                             user.Address = reader["Address"].ToString();
                             user.Money = (float)reader["Money"];
                             user.SellerId = (int)reader["SellerId"]; ;
@@ -378,7 +379,7 @@ namespace Backstage.Core
             {
                 using (var conn = Utility.ObtainConn(Utility._gameDbConn))
                 {
-                    MySqlDataReader reader = MySqlHelper.ExecuteReader(conn, CommandType.Text, sql,parameters.ToArray());
+                    MySqlDataReader reader = MySqlHelper.ExecuteReader(conn, CommandType.Text, sql, parameters.ToArray());
                     return reader.HasRows;
                 }
             }
@@ -389,7 +390,7 @@ namespace Backstage.Core
             return false;
         }
 
-        public static bool JudgeUserLogin(string phone, string password,int sellerId)
+        public static bool JudgeUserLogin(string phone, string password, int sellerId)
         {
             var sql = @"select * from account where pwd=?password and phone=?phone and sellerId=?sellerId limit 1;";
             List<MySqlParameter> parameters = new List<MySqlParameter>();

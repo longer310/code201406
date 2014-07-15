@@ -61,8 +61,10 @@ namespace Backstage.Core.Entity
 
         public Account()
         {
-            Avatar = Utility._userdefaulthead;
-            Phone = Address = "";
+            if(string.IsNullOrEmpty(Avatar)) Avatar = Utility._userdefaulthead;
+            if (string.IsNullOrEmpty(Phone)) Phone = "";
+            if (string.IsNullOrEmpty(Address)) Address = "";
+            if (string.IsNullOrEmpty(LinkMan)) LinkMan = "";
             CreateTime = DateTime.Now;
         }
     }

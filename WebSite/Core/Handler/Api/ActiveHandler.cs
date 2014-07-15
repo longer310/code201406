@@ -109,8 +109,8 @@ namespace Backstage.Core.Handler
                 newid = item.Id,
                 title = item.Title,
                 img = item.CoverImgUrl,
-                summary = item.Summary
-
+                summary = item.Summary,
+                dateline = item.CreateTime.GetUnixTime()
             };
             JsonTransfer jt = new JsonTransfer();
             jt.AddSuccessParam();

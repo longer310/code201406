@@ -58,6 +58,7 @@ namespace Backstage.Core.Logic
                         orders.CreateTime = (DateTime)reader["CreateTime"];
                         orders.Status = (OrderStatus)reader["Status"];
                         orders.SellerId = (int)reader["SellerId"];
+                        orders.Ccontent = reader["Ccontent"].ToString();
 
                         list.Add(orders);
                     }
@@ -126,6 +127,7 @@ namespace Backstage.Core.Logic
                             orders.Remark = reader["Remark"].ToString();
                             orders.Status = (OrderStatus)reader["Status"];
                             orders.SellerId = (int)reader["SellerId"];
+                            orders.Ccontent = reader["Ccontent"].ToString();
                             return orders;
                         }
                     }
@@ -173,6 +175,7 @@ namespace Backstage.Core.Logic
                                         Remark                      = ?Remark        ,
                                         Status                      = ?Status        ,
                                         SellerId                      = ?SellerId        ,
+                                        Ccontent                      = ?Ccontent        ,
                                         CreateTime                  = ?CreateTime    
                                     WHERE
                                         Id = ?Id";
@@ -199,6 +202,8 @@ namespace Backstage.Core.Logic
                 parameters.Add(new MySqlParameter("?Remark", orders.Remark));
                 parameters.Add(new MySqlParameter("?Status", orders.Status));
                 parameters.Add(new MySqlParameter("?CreateTime", orders.CreateTime));
+                parameters.Add(new MySqlParameter("?SellerId", orders.SellerId));
+                parameters.Add(new MySqlParameter("?Ccontent", orders.Ccontent));
             }
             else
             {
@@ -225,7 +230,8 @@ namespace Backstage.Core.Logic
                                         Mobile        ,
                                         Remark        ,
                                         Status         ,
-                                        SellerId,
+                                        SellerId       ,
+                                        Ccontent       ,
                                         CreateTime    
                                         ) 
                                         values
@@ -251,7 +257,8 @@ namespace Backstage.Core.Logic
                                         ?Mobile        ,
                                         ?Remark        ,
                                         ?Status        ,
-                                        ?SellerId,
+                                        ?SellerId      ,
+                                        ?Ccontent      ,
                                         ?CreateTime 
                                         )";
                 parameters.Add(new MySqlParameter("?UserId", orders.UserId));
@@ -277,6 +284,7 @@ namespace Backstage.Core.Logic
                 parameters.Add(new MySqlParameter("?Status", orders.Status));
                 parameters.Add(new MySqlParameter("?CreateTime", orders.CreateTime));
                 parameters.Add(new MySqlParameter("?SellerId", orders.SellerId));
+                parameters.Add(new MySqlParameter("?Ccontent", orders.Ccontent));
             }
             try
             {

@@ -320,6 +320,7 @@ namespace Backstage.Core
             if (idlist == null || idlist.Count == 0) return string.Empty;
             string wheresql = "";
             string str = String.Join(",", idlist.ConvertAll<string>(new Converter<int, string>(m => m.ToString())).ToArray());
+            str = str.TrimEnd(',');
             wheresql += string.Format(" where {0} in(", columnname) + str + ") ";
 
             return wheresql;

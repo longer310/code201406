@@ -38,5 +38,10 @@ namespace Backstage.Core.Entity
         /// 创建时间
         /// </summary>
         public DateTime CreateTime { get; set; }
+
+        public ChargeLog()
+        {
+            CreateTime = DateTime.Now;
+        }
     }
 }

@@ -8,24 +8,19 @@ namespace Backstage.Core.Entity
     /// <summary>
     /// 开发者后台 参数配置
     /// </summary>
-    public class Mparam : KVEntity
+    public class Param : KVEntity
     {
         /// <summary>
-        /// 推送的广告图片id
+        /// 用于查找的键值
         /// </summary>
-        public int AdImgId { get; set; }
+        public string Key { get; set; }
         /// <summary>
-        /// URL
+        /// json串 或 单独整型
         /// </summary>
-        public string AdImgUrl { get; set; }
+        public string Kvalue { get; set; }
         /// <summary>
-        /// 标题
+        /// 说明
         /// </summary>
-        public string Title { get; set; }
-
-        /// <summary>
-        /// 跳转到的URL
-        /// </summary>
-        public string Url { get; set; }
+        public string Description { get; set; }
     }
 }

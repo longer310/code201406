@@ -107,7 +107,7 @@ namespace Backstage.Core.Logic
             parameters.Add(new MySqlParameter("?Pid", chargeLog.Pid));
             parameters.Add(new MySqlParameter("?OrderId", chargeLog.OrderId));
             parameters.Add(new MySqlParameter("?SellerId", chargeLog.SellerId));
-            parameters.Add(new MySqlParameter("?TypeName", chargeLog.PayName));
+            parameters.Add(new MySqlParameter("?PayName", chargeLog.PayName));
             try
             {
                 var num = MySqlHelper.ExecuteNonQuery(Utility._gameDbConn, CommandType.Text, cmdText, parameters.ToArray());

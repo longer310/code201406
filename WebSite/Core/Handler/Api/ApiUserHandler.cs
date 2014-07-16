@@ -293,14 +293,7 @@ namespace Backstage.Handler
                 ReturnErrorMsg(string.Format("不存在Id={0}的用户", uid));
                 return;
             }
-
-            var clist = PaymentHelper.GetList(sellerid);
-            if (clist == null)
-            {
-                ReturnErrorMsg("商户还没有充值类型列表");
-                return;
-            }
-            var payMent = clist.FirstOrDefault(o => o.Id == pid);
+            var payMent = PaymentHelper.GetPayment(pid);
             if (payMent == null)
             {
                 ReturnErrorMsg("不存在该充值类型");

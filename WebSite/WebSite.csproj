@@ -449,7 +449,7 @@
     <Compile Include="Core\Entity\Goods.cs" />
     <Compile Include="Core\Entity\GoodsCategories.cs" />
     <Compile Include="Core\Entity\KVEntity.cs" />
-    <Compile Include="Core\Entity\Mparam.cs" />
+    <Compile Include="Core\Entity\Param.cs" />
     <Compile Include="Core\Entity\Orders.cs" />
     <Compile Include="Core\Entity\Payment.cs" />
     <Compile Include="Core\Entity\ShoppingCart.cs" />
@@ -457,6 +457,7 @@
     <Compile Include="Core\Entity\UserCoupon.cs" />
     <Compile Include="Core\Entity\WeixinToken.cs" />
     <Compile Include="Core\Enums.cs" />
+    <Compile Include="Core\MyCache.cs" />
     <Compile Include="Core\Handler\ActiveHelper.cs" />
     <Compile Include="Core\Handler\Api\ActiveHandler.cs" />
     <Compile Include="Core\Handler\Api\ApiBaseHandler.cs" />
@@ -486,7 +487,7 @@
     <Compile Include="Core\Logic\FavoriteHelper.cs" />
     <Compile Include="Core\Logic\GoodsCategoriesHelper.cs" />
     <Compile Include="Core\Logic\GoodsHelper.cs" />
-    <Compile Include="Core\Logic\MparamHelper.cs" />
+    <Compile Include="Core\Logic\ParamHelper.cs" />
     <Compile Include="Core\Logic\OrdersHelper.cs" />
     <Compile Include="Core\Logic\PaymentHelper.cs" />
     <Compile Include="Core\Logic\ShoppingCartHelper.cs" />

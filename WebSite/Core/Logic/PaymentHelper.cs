@@ -13,28 +13,25 @@ namespace Backstage.Core.Logic
         /// <summary>
         /// 获取支付列表
         /// </summary>
-        /// <param name="sellerId"></param>
         /// <returns></returns>
-        public static List<Payment> GetList(int sellerId)
+        public static List<Payment> GetList()
         {
             List<Payment> list = new List<Payment>();
-            var cmdText = @"select * from Payment where SellerId=?SellerId ;";
+            var cmdText = @"select * from Payment;";
 
-            List<MySqlParameter> parameters = new List<MySqlParameter>();
-            parameters.Add(new MySqlParameter("?SellerId", sellerId));
+            //List<MySqlParameter> parameters = new List<MySqlParameter>();
+            //parameters.Add(new MySqlParameter("?SellerId", sellerId));
             try
             {
                 using (var conn = Utility.ObtainConn(Utility._gameDbConn))
                 {
-                    MySqlDataReader reader = MySqlHelper.ExecuteReader(conn, CommandType.Text, cmdText,
-                        parameters.ToArray());
+                    MySqlDataReader reader = MySqlHelper.ExecuteReader(conn, CommandType.Text, cmdText);
                     while (reader.Read())
                     {
                         Payment payment = new Payment();
                         payment.Id = reader.GetInt32(0);
                         payment.Description = reader["Description"].ToString();
                         payment.Name = reader["Name"].ToString();
-                        payment.SellerId = (int) reader["SellerId"];
 
                         list.Add(payment);
                     }
@@ -67,7 +64,6 @@ namespace Backstage.Core.Logic
                             payment.Id = reader.GetInt32(0);
                             payment.Description = reader["Description"].ToString();
                             payment.Name = reader["Name"].ToString();
-                            payment.SellerId = (int) reader["SellerId"];
                             return payment;
                         }
                     }

@@ -20,25 +20,25 @@ namespace Backstage.Handler
             switch (Action)
             {
                 #region 商品
-                case "getpageinfo"://首页
+                case "getpageinfo"://首页 1
                     GetPageInfo();
                     break;
-                case "getgoodslist"://获取产品列表
+                case "getgoodslist"://获取产品列表 2.1
                     GetGoodsList();
                     break;
-                case "getgoodsdetail"://获取产品详情
+                case "getgoodsdetail"://获取产品详情 2.2
                     GetGoodsDetail();
                     break;
-                case "getgoodscomments"://获取产品评论
+                case "getgoodscomments"://获取产品评论 2.3
                     GetGoodsComments();
                     break;
-                case "addgoodscomment"://发表产品评论
+                case "addgoodscomment"://发表产品评论 2.4
                     AddGoodsComment();
                     break;
-                case "favgoods"://收藏商品
+                case "favgoods"://收藏商品 2.5
                     FavGoods();
                     break;
-                case "sharegoods"://分享商品
+                case "sharegoods"://分享商品 2.6
                     ShareGoods();
                     break;
                 #endregion
@@ -70,7 +70,7 @@ namespace Backstage.Handler
                 default: break;
             }
         }
-        #region 首页
+        #region 首页 1
         public class HomeData
         {
             public List<SlideItem> slide { get; set; }
@@ -171,7 +171,7 @@ namespace Backstage.Handler
                 data.slide.Add(new SlideItem() { img = l.img, title = l.title, type = l.type, typeid = l.typeid });
             }
 
-            Mparam mpparam = MparamHelper.GetMparam(1);
+            ParamHelper.PageAd mpparam = ParamHelper.PageAdData;
             data.ad = new AdItem() { img = mpparam.AdImgUrl, title = mpparam.Title, url = mpparam.Url };
 
             int totalcount;
@@ -189,7 +189,7 @@ namespace Backstage.Handler
         }
         #endregion
 
-        #region 获取商品列表
+        #region 获取商品列表 2.1
         private class GoodsListData
         {
             public List<CategoriesItem> categories { get; set; }
@@ -312,7 +312,7 @@ namespace Backstage.Handler
         }
         #endregion
 
-        #region 商品详情
+        #region 商品详情 2.2
         public class GoodsDetailItem
         {
             public List<string> images { get; set; }
@@ -381,7 +381,7 @@ namespace Backstage.Handler
         }
         #endregion
 
-        #region 获取商品评论列表
+        #region 获取商品评论列表 2.3
         public class CommentResponse
         {
             public int commentnum { get; set; }
@@ -453,7 +453,7 @@ namespace Backstage.Handler
         }
         #endregion
 
-        #region 发表商品评论
+        #region 发表商品评论 2.4
         public void AddGoodsComment()
         {
             int uid = GetInt("uid");
@@ -477,7 +477,7 @@ namespace Backstage.Handler
         }
         #endregion
 
-        #region 商品收藏
+        #region 商品收藏 2.5
         public void FavGoods()
         {
             int uid = GetInt("uid");
@@ -505,7 +505,7 @@ namespace Backstage.Handler
         }
         #endregion
 
-        #region 商品分享
+        #region 商品分享 2.6
         public void ShareGoods()
         {
             int uid = GetInt("uid");
@@ -521,7 +521,7 @@ namespace Backstage.Handler
         }
         #endregion
 
-        #region 添加产品到购物车
+        #region 添加产品到购物车 6.1
         public void AddShoppingCart()
         {
             var uid = GetInt("uid");
@@ -555,7 +555,7 @@ namespace Backstage.Handler
         }
         #endregion
 
-        #region 获取购物车列表
+        #region 获取购物车列表 6.2
         public class ShoppingCartData
         {
             public float totalprice { get; set; }
@@ -592,10 +592,10 @@ namespace Backstage.Handler
                 return;
             }
 
-            var wheresql = string.Format(" where UserId = {0}", uid);
+            var wheresql = string.Format(" where UserId = {0} ", uid);
             int totalcount;
             var list = ShoppingCartHelper.GetShoppingCartList(out totalcount, wheresql, "", 0);
-            wheresql = Utility.GetWhereSql(list.Select(o => o.Id).ToList());
+            wheresql = string.Format(" and a.Id in({0}) ", Utility.GetString(list.Select(o => o.Gid).Distinct().ToList()));
             var glist = GoodsHelper.GetGoodsList(user.SellerId, out totalcount, wheresql, "", 0);
 
             var data = new ShoppingCartData();
@@ -629,47 +629,7 @@ namespace Backstage.Handler
         }
         #endregion
 
-        #region 获取支付方式列表
-        public class PaymentData
-        {
-            public List<PaymentItem> paymentlist { get; set; }
-
-            public PaymentData()
-            {
-                paymentlist = new List<PaymentItem>();
-            }
-        }
-        public class PaymentItem
-        {
-            public int pid { get; set; }
-            public string name { get; set; }
-            public string description { get; set; }
-        }
-        public void GetPaymentList()
-        {
-            var sellerId = GetInt("sellerid");
-
-            var data = new PaymentData();
-            var list = PaymentHelper.GetList(sellerId);
-            foreach (var payment in list)
-            {
-                var item = new PaymentItem();
-                item.pid = payment.Id;
-                item.name = payment.Name;
-                item.description = payment.Description;
-
-                data.paymentlist.Add(item);
-            }
-
-            JsonTransfer jt = new JsonTransfer();
-            jt.AddSuccessParam();
-            jt.Add("data", data);
-            Response.Write(DesEncrypt(jt));
-            Response.End();
-        }
-        #endregion
-
-        #region 添加订单
+        #region 添加订单 6.3
         public class AddOrdersData
         {
             public int orderid { get; set; }
@@ -698,7 +658,7 @@ namespace Backstage.Handler
                 orders.Gids += goods.Id + ",";
                 orders.Imgs += goods.LogoUrl + ",";
                 orders.Titles += goods.Title + ",";
-                orders.Contents += goods.Content.Substring(0, 30) + ",";
+                orders.Contents += goods.Content.Length > 30 ? goods.Content.Substring(0, 30) : goods.Content + ",";
                 orders.NowPrices += goods.Nowprice + ",";
                 orders.OriginalPrices += goods.OriginalPrice + ",";
                 var num = Utility.GetValueByList(gidlist, numlist, goods.Id);
@@ -708,7 +668,7 @@ namespace Backstage.Handler
             }
             orders.Imgs = orders.Imgs.TrimEnd(',');
             orders.Titles = orders.Titles.TrimEnd(',');
-            orders.Contents = orders.Titles.TrimEnd(',');
+            orders.Contents = orders.Contents.TrimEnd(',');
             orders.NowPrices = orders.NowPrices.TrimEnd(',');
             orders.OriginalPrices = orders.OriginalPrices.TrimEnd(',');
             orders.Gids = orders.Gids.TrimEnd(',');
@@ -736,7 +696,7 @@ namespace Backstage.Handler
         }
         #endregion
 
-        #region 获取订单详情
+        #region 获取订单详情 6.4
         public class OrderDetailData
         {
             public int orderid { get; set; }
@@ -767,6 +727,7 @@ namespace Backstage.Handler
 
             public OrderDetailData(Orders orders)
             {
+                goodslist = new List<OrderGoddsItem>();
                 var gidlist = Utility.GetListint(orders.Gids);
                 var numlist = Utility.GetListint(orders.Nums);
                 var titlelist = Utility.GetListstring(orders.Titles);
@@ -775,8 +736,6 @@ namespace Backstage.Handler
                 var nowpricelist = Utility.GetListfloat(orders.NowPrices);
                 var contentlist = Utility.GetListstring(orders.Contents);
 
-                var data = new OrderDetailData();
-                int totalnum = 0;
                 for (int i = 0; i < gidlist.Count; i++)
                 {
                     var item = new OrderGoddsItem();
@@ -789,27 +748,26 @@ namespace Backstage.Handler
                     item.num = numlist[i];
                     item.totalprice = item.nowprice * item.num;
                     totalnum += item.num;
-                    data.goodslist.Add(item);
+                    goodslist.Add(item);
                 }
 
-                data.orderid = orders.Id;
-                data.ordertime = orders.OrderTime.GetUnixTime();
-                data.orderpeople = orders.OrderPeople;
-                data.ordertype = (int)orders.OrderType;
-                data.status = (int)orders.Status;
-                data.totalnum = totalnum;
-                data.sendprice = 5;//TODO:看看是否配置还是每个订单不一样
-                data.totalprice = orders.TotalPrice;
-                data.extcredit = (int)orders.TotalPrice;//TODO:换算比例
-                data.couponid = orders.CouponId;
-                data.ccontent = orders.Ccontent;
-                data.stotalprice = orders.StotalPrice;
-                data.remark = orders.Remark;
-                data.createtime = orders.CreateTime.GetUnixTime();
-                data.address = orders.Address;
-                data.mobile = orders.Mobile;
-                data.linkman = orders.LinkMan;
-                data.pid = orders.Pid;
+                orderid = orders.Id;
+                ordertime = orders.OrderTime.GetUnixTime();
+                orderpeople = orders.OrderPeople;
+                ordertype = (int)orders.OrderType;
+                status = (int)orders.Status;
+                sendprice = 5;//TODO:看看是否配置还是每个订单不一样
+                totalprice = orders.TotalPrice;
+                extcredit = (int)orders.TotalPrice;//TODO:换算比例
+                couponid = orders.CouponId;
+                ccontent = orders.Ccontent;
+                stotalprice = orders.StotalPrice;
+                remark = orders.Remark;
+                createtime = orders.CreateTime.GetUnixTime();
+                address = orders.Address;
+                mobile = orders.Mobile;
+                linkman = orders.LinkMan;
+                pid = orders.Pid;
             }
         }
         public class OrderGoddsItem
@@ -846,7 +804,47 @@ namespace Backstage.Handler
         }
         #endregion
 
-        #region 更新订单
+        #region 获取支付方式列表 6.5
+        public class PaymentData
+        {
+            public List<PaymentItem> paymentlist { get; set; }
+
+            public PaymentData()
+            {
+                paymentlist = new List<PaymentItem>();
+            }
+        }
+        public class PaymentItem
+        {
+            public int pid { get; set; }
+            public string name { get; set; }
+            public string description { get; set; }
+        }
+        public void GetPaymentList()
+        {
+            var sellerId = GetInt("sellerid");
+
+            var data = new PaymentData();
+            var list = PaymentHelper.GetList();
+            foreach (var payment in list)
+            {
+                var item = new PaymentItem();
+                item.pid = payment.Id;
+                item.name = payment.Name;
+                item.description = payment.Description;
+
+                data.paymentlist.Add(item);
+            }
+
+            JsonTransfer jt = new JsonTransfer();
+            jt.AddSuccessParam();
+            jt.Add("data", data);
+            Response.Write(DesEncrypt(jt));
+            Response.End();
+        }
+        #endregion
+
+        #region 更新订单 6.6
         public void UpdateOrders()
         {
             var ordertime = GetTime("ordertime");
@@ -868,14 +866,7 @@ namespace Backstage.Handler
                 ReturnErrorMsg("参数出错");
                 return;
             }
-
-            var clist = PaymentHelper.GetList(orders.SellerId);
-            if (clist == null)
-            {
-                ReturnErrorMsg("商户还没有充值类型列表");
-                return;
-            }
-            var payMent = clist.FirstOrDefault(o => o.Id == pid);
+            var payMent = PaymentHelper.GetPayment(pid);
             if (payMent == null)
             {
                 ReturnErrorMsg("不存在该充值类型");

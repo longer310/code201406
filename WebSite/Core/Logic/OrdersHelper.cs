@@ -40,6 +40,7 @@ namespace Backstage.Core.Logic
                         orders.Nums = reader["Nums"].ToString();
                         orders.Imgs = reader["Imgs"].ToString();
                         orders.Titles = reader["Titles"].ToString();
+                        orders.Contents = reader["Contents"].ToString();
                         orders.NowPrices = reader["NowPrices"].ToString();
                         orders.OriginalPrices = reader["OriginalPrices"].ToString();
                         orders.TotalPrice = (float)reader["TotalPrice"];
@@ -107,6 +108,7 @@ namespace Backstage.Core.Logic
                             orders.Nums = reader["Nums"].ToString();
                             orders.Imgs = reader["Imgs"].ToString();
                             orders.Titles = reader["Titles"].ToString();
+                            orders.Contents = reader["Contents"].ToString();
                             orders.NowPrices = reader["NowPrices"].ToString();
                             orders.OriginalPrices = reader["OriginalPrices"].ToString();
                             orders.TotalPrice = (float)reader["TotalPrice"];
@@ -137,7 +139,6 @@ namespace Backstage.Core.Logic
             return null;
         }
 
-
         /// <summary>
         /// 保存商品 如果id为0 则添加新纪录
         /// </summary>
@@ -155,6 +156,7 @@ namespace Backstage.Core.Logic
                                         Imgs                        = ?Imgs          ,
                                         Nums                        = ?Nums          ,
                                         Titles                      = ?Titles        ,
+                                        Contents                      = ?Contents        ,
                                         NowPrices                   = ?NowPrices     ,
                                         OriginalPrices              = ?OriginalPrices,
                                         TotalPrice                  = ?TotalPrice    ,
@@ -180,6 +182,7 @@ namespace Backstage.Core.Logic
                 parameters.Add(new MySqlParameter("?Imgs", orders.Imgs));
                 parameters.Add(new MySqlParameter("?Nums", orders.Nums));
                 parameters.Add(new MySqlParameter("?Titles", orders.Titles));
+                parameters.Add(new MySqlParameter("?Contents", orders.Contents));
                 parameters.Add(new MySqlParameter("?NowPrices", orders.NowPrices));
                 parameters.Add(new MySqlParameter("?OriginalPrices", orders.OriginalPrices));
                 parameters.Add(new MySqlParameter("?TotalPrice", orders.TotalPrice));
@@ -206,6 +209,7 @@ namespace Backstage.Core.Logic
                                         Imgs          ,
                                         Nums          ,
                                         Titles        ,
+                                        Contents        ,
                                         NowPrices     ,
                                         OriginalPrices,
                                         TotalPrice    ,
@@ -231,6 +235,7 @@ namespace Backstage.Core.Logic
                                         ?Imgs          ,
                                         ?Nums          ,
                                         ?Titles        ,
+                                        ?Contents        ,
                                         ?NowPrices     ,
                                         ?OriginalPrices,
                                         ?TotalPrice    ,
@@ -254,6 +259,7 @@ namespace Backstage.Core.Logic
                 parameters.Add(new MySqlParameter("?Imgs", orders.Imgs));
                 parameters.Add(new MySqlParameter("?Nums", orders.Nums));
                 parameters.Add(new MySqlParameter("?Titles", orders.Titles));
+                parameters.Add(new MySqlParameter("?Contents", orders.Contents));
                 parameters.Add(new MySqlParameter("?NowPrices", orders.NowPrices));
                 parameters.Add(new MySqlParameter("?OriginalPrices", orders.OriginalPrices));
                 parameters.Add(new MySqlParameter("?TotalPrice", orders.TotalPrice));

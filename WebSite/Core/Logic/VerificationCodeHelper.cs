@@ -66,6 +66,40 @@ namespace Backstage.Core.Logic
             return false;
         }
 
+        public static VerificationCode GetVerificationCodeByUid(int sellerId, int userId)
+        {
+            var cmdText = @"select * from VerificationCode where SellerId=?SellerId and UserId =?UserId and ExpiredTime>?ExpiredTime limit 1;";
+            List<MySqlParameter> parameters = new List<MySqlParameter>();
+            parameters.Add(new MySqlParameter("?SellerId", sellerId));
+            parameters.Add(new MySqlParameter("?UserId", userId));
+            parameters.Add(new MySqlParameter("?ExpiredTime", DateTime.Now));
+            try
+            {
+                using (var conn = Utility.ObtainConn(Utility._gameDbConn))
+                {
+                    MySqlDataReader reader = MySqlHelper.ExecuteReader(conn, CommandType.Text, cmdText, parameters.ToArray());
+                    if (reader.HasRows)
+                    {
+                        if (reader.Read())
+                        {
+                            VerificationCode verificationCode = new VerificationCode();
+                            verificationCode.Id = reader.GetInt32(0);
+                            verificationCode.SellerId = (int)reader["SellerId"];
+                            verificationCode.Phone = reader["Phone"].ToString();
+                            verificationCode.Code = reader["Code"].ToString();
+                            verificationCode.ExpiredTime = (DateTime)reader["ExpiredTime"];
+                            return verificationCode;
+                        }
+                    }
+                }
+            }
+            catch (System.Exception ex)
+            {
+                throw;
+            }
+            return null;
+        }
+
         /// <summary>
         /// 保存验证码
         /// </summary>

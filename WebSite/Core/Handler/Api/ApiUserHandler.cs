@@ -54,14 +54,35 @@ namespace Backstage.Handler
                 case "updateuserinfo"://编辑收货信息 7.11
                     UpdateUserInfo();
                     break;
-                case "getuserinfo"://获取收货信息 7.12
-                    GetUserInfo();
+                case "getreceiptinfo"://获取收货信息 7.12
+                    GetReceiptInfo();
                     break;
                 case "getmycomment"://获取收货信息 7.13
                     GetMyComment();
                     break;
                 case "delfavorite"://删除收藏 7.14
                     DelFavorite();
+                    break;
+                case "getorderslist"://获取未完成/历史订单 7.15
+                    GetOrdersList();
+                    break;
+                case "modifypwd"://修改密码 7.16
+                    ModifyPwd();
+                    break;
+                case "modifyphone"://更改绑定号码 7.17
+                    ModifyPhone();
+                    break;
+                case "getmodifyphoneCode"://更改绑定号码_发送短信验证码 7.18
+                    GetModifyPhoneCode();
+                    break;
+                case "modifyuserinfo"://会员资料提交 7.19
+                    ModifyUserInfo();
+                    break;
+                case "getuserinfo"://获取会员信息 7.20
+                    GetUserInfo();
+                    break;
+                case "userregist"://签到接口 7.21
+                    UserRegist();
                     break;
                 default: break;
             }
@@ -157,7 +178,7 @@ namespace Backstage.Handler
             public int uid { get; set; }
             public int sellerid { get; set; }
             public string phone { get; set; }
-            public string username { get; set; }
+            public string nickname { get; set; }
             public int sex { get; set; }
             public string avatar { get; set; }
         }
@@ -186,7 +207,7 @@ namespace Backstage.Handler
             data.avatar = user.Avatar;
             data.phone = user.Phone;
             data.sex = (int)user.Sex;
-            data.username = user.UserName;
+            data.nickname = user.NickName;
 
             JsonTransfer jt = new JsonTransfer();
             jt.AddSuccessParam();
@@ -247,7 +268,7 @@ namespace Backstage.Handler
             data.avatar = user.Avatar;
             data.phone = user.Phone;
             data.sex = (int)user.Sex;
-            data.username = user.UserName;
+            data.nickname = user.NickName;
 
             JsonTransfer jt = new JsonTransfer();
             jt.AddSuccessParam();
@@ -526,7 +547,7 @@ namespace Backstage.Handler
                 return;
             }
             var data = new UserCouponData();
-            data.extcredit = user.Extcredit;
+            data.extcredit = user.Integral;
 
             var result = CouponHelper.GetUserCouponList(uid, sellerid, start * limit, limit);
             foreach (var coupon in result.Results)
@@ -639,14 +660,14 @@ namespace Backstage.Handler
         #endregion
 
         #region 获取收货信息 7.12
-        public class UserInfoData
+        public class ReceiptInfoData
         {
             public string linkMan { get; set; }
             public string phone { get; set; }
             public string address { get; set; }
             public int sellerid { get; set; }
         }
-        public void GetUserInfo()
+        public void GetReceiptInfo()
         {
             var uid = GetInt("uid");
             var sellerid = GetInt("sellerid");
@@ -662,7 +683,7 @@ namespace Backstage.Handler
                 ReturnErrorMsg("商户无此用户");
                 return;
             }
-            var data = new UserInfoData();
+            var data = new ReceiptInfoData();
             data.linkMan = user.LinkMan;
             data.phone = user.Phone;
             data.address = user.Address;
@@ -683,14 +704,14 @@ namespace Backstage.Handler
 
             public MyCommentData()
             {
-                commmentlist= new List<MyCommentItem>();
+                commmentlist = new List<MyCommentItem>();
             }
         }
         public class MyCommentItem
         {
             public string createtime { get; set; }
             public string type { get; set; }
-            public string content { get; set; } 
+            public string content { get; set; }
             public string img { get; set; }
             public string title { get; set; }
         }
@@ -726,7 +747,304 @@ namespace Backstage.Handler
         #region 删除收藏 7.14
         public void DelFavorite()
         {
-            
+            var uid = GetInt("uid");
+            var sellerId = GetInt("sellerid");
+            var gids = GetString("gids");
+
+            if (!CheckUserByIdAndSellerId(uid, sellerId)) return;
+
+            var gidlist = Utility.GetListint(gids);
+            if (gidlist.Count == 0)
+            {
+                ReturnErrorMsg("物品id列表传参错误");
+                return;
+            }
+            var favorite = FavoriteHelper.GetFavorite(uid);
+            foreach (var i in gidlist)
+            {
+                if (gidlist.Contains(i))
+                    favorite.GidList.Remove(i);
+                else
+                {
+                    ReturnErrorMsg(string.Format("传参出错，{0}该物品id不存在", i));
+                    return;
+                }
+            }
+
+            favorite.Gids = Utility.GetString(favorite.GidList);
+            FavoriteHelper.SaveFavorite(favorite);
+
+            ReturnCorrectMsg("删除收藏成功");
+        }
+        #endregion
+
+        #region 未完成订单/历史订单 7.15
+        public class OrdersListData
+        {
+            public List<ApiGoodsHandler.OrderDetailData> orderslist { get; set; }
+
+            public OrdersListData()
+            {
+                orderslist = new List<ApiGoodsHandler.OrderDetailData>();
+            }
+        }
+        public void GetOrdersList()
+        {
+            var uid = GetInt("uid");
+            var sellerid = GetInt("sellerid");
+            var start = GetInt("start");
+            var limit = GetInt("limit");
+
+            if (!CheckUserByIdAndSellerId(uid, sellerid)) return;
+
+            int totalnum;
+            string wheresql = string.Format(" where UserId={0} and SellerId={1} ", uid, sellerid);
+            var orderslist = OrdersHelper.GetOrdersList(out totalnum, wheresql, "", start * limit, limit, 0);
+            var data = new OrdersListData();
+            foreach (var orderse in orderslist)
+            {
+                data.orderslist.Add(new ApiGoodsHandler.OrderDetailData(orderse));
+            }
+
+            JsonTransfer jt = new JsonTransfer();
+            jt.AddSuccessParam();
+            jt.Add("data", data);
+            Response.Write(DesEncrypt(jt));
+            Response.End();
+        }
+        #endregion
+
+        #region 修改密码 7.16
+        public void ModifyPwd()
+        {
+            var uid = GetInt("uid");
+            var sellerid = GetInt("sellerid");
+            var oldpwd = GetString("oldpwd");
+            var newpwd = GetString("newpwd");
+
+            var user = AccountHelper.GetUser(uid);
+            if (user == null)
+            {
+                ReturnErrorMsg(string.Format("不存在Id={0}的用户", uid));
+                return;
+            }
+            if (user.SellerId != sellerid)
+            {
+                ReturnErrorMsg("商户无此用户");
+                return;
+            }
+
+            if (!user.Pwd.Equals(oldpwd))
+            {
+                ReturnErrorMsg("原密码错误");
+                return;
+            }
+            if (newpwd.Length == 0 || newpwd.Length > 20)
+            {
+                ReturnErrorMsg("新密码格式错误");
+                return;
+            }
+
+            user.Pwd = newpwd;
+            AccountHelper.UpdateUser(user);
+
+            ReturnCorrectMsg("修改密码成功");
+        }
+        #endregion
+
+        #region 更改绑定号码 7.17
+        private void ModifyPhone()
+        {
+            var uid = GetInt("uid");
+            var code = GetString("code");
+            var sellerid = GetInt("sellerid");
+
+            if (string.IsNullOrEmpty(code) || sellerid == 0)
+            {
+                ReturnErrorMsg("参数有误");
+                return;
+            }
+
+            var user = AccountHelper.GetUser(uid);
+            if (user == null)
+            {
+                ReturnErrorMsg(string.Format("不存在Id={0}的用户", uid));
+                return;
+            }
+            var verificationCode = VerificationCodeHelper.GetVerificationCodeByUid(sellerid, uid);
+
+            if (verificationCode == null || verificationCode.ExpiredTime > DateTime.Now)
+            {
+                ReturnErrorMsg("验证码错误或已过期");
+                return;
+            }
+
+            user.Phone = verificationCode.Phone;
+                //保存用户
+            AccountHelper.UpdateUser(user);
+
+            ReturnCorrectMsg("更改绑定号码成功");
+        }
+        #endregion
+
+        #region 更改绑定号码_发送短信验证码 7.18
+        public void GetModifyPhoneCode()
+        {
+            var phone = GetString("phone");
+            var sellerId = GetInt("sellerid");
+            var uid = GetInt("uid");
+
+            var user = AccountHelper.GetUser(uid);
+            if (user == null)
+            {
+                ReturnErrorMsg(string.Format("不存在Id={0}的用户", uid));
+                return;
+            }
+
+            var euser = AccountHelper.FindUserByPhone(phone);
+            if (string.IsNullOrEmpty(phone) || euser != null)
+            {
+                ReturnErrorMsg("此电话已注册");
+                return;
+            }
+            var verificationCode = VerificationCodeHelper.GetVerificationCode(sellerId, phone);
+            bool needgen = false;
+            if (verificationCode == null)
+            {
+                verificationCode = new VerificationCode();
+                verificationCode.Phone = phone;
+                verificationCode.SellerId = sellerId;
+                needgen = true;
+            }
+            else
+            {
+                if (verificationCode.ExpiredTime < DateTime.Now)
+                    needgen = true;
+            }
+            if (needgen)
+            {//重新生成验证码 和 过期时间
+                verificationCode.Code = Utility.GetVerificationCode(6);
+                verificationCode.ExpiredTime = DateTime.Now.AddMinutes(30);
+            }
+            //发送短信
+            if (Utility._msg_opensend == "1")
+                Utility.SendMsg(verificationCode.Code, verificationCode.Phone);
+            //保存验证信息
+            VerificationCodeHelper.SaveVerificationCode(verificationCode);
+
+            //返回
+            ReturnCorrectMsg("注册码已发送");
+        }
+        #endregion
+
+        #region 会员资料提交 7.19
+        public void ModifyUserInfo()
+        {
+            var avatar = GetString("avatar");
+            var nickname = GetString("nickname");
+            var uid = GetInt("uid");
+            var sex = GetInt("sex");
+            var sellerid = GetInt("sellerid");
+
+            var user = AccountHelper.GetUser(uid);
+            if (user == null)
+            {
+                ReturnErrorMsg(string.Format("不存在Id={0}的用户", uid));
+                return;
+            }
+            if (user.SellerId != sellerid)
+            {
+                ReturnErrorMsg("商户无此用户");
+                return;
+            }
+
+            if (!string.IsNullOrEmpty(avatar))
+            {//保存头像
+                Utility.Base64StringToImage(avatar, string.Format("avatar{0}", uid));
+            }
+
+            user.Sex = (SexType)sex;
+            user.NickName = nickname;
+            AccountHelper.UpdateUser(user);
+
+            //返回
+            ReturnCorrectMsg("更新会员资料成功");
+        }
+        #endregion
+
+        #region 获取会员信息 7.20
+        public class UserInfoData
+        {
+            public string nickname { get; set; }
+            public string phone { get; set; }
+            public string avatar { get; set; }
+            public int sex { get; set; }
+            public float money { get; set; }
+            public int integral { get; set; }
+            public int sellerid { get; set; }
+        }
+        public void GetUserInfo()
+        {
+            var uid = GetInt("uid");
+            var sellerid = GetInt("sellerid");
+
+            var user = AccountHelper.GetUser(uid);
+            if (user == null)
+            {
+                ReturnErrorMsg(string.Format("不存在Id={0}的用户", uid));
+                return;
+            }
+            if (user.SellerId != sellerid)
+            {
+                ReturnErrorMsg("商户无此用户");
+                return;
+            }
+            var data = new UserInfoData();
+            data.nickname = user.NickName;
+            data.phone = user.Phone;
+            data.avatar = user.Avatar;
+            data.sex = (int)user.Sex;
+            data.money = user.Money;
+            data.integral = user.Integral;
+            data.sellerid = user.SellerId;
+
+            JsonTransfer jt = new JsonTransfer();
+            jt.AddSuccessParam();
+            jt.Add("data", data);
+            Response.Write(DesEncrypt(jt));
+            Response.End();
+        }
+        #endregion
+
+        #region 签到接口 7.21
+        public void UserRegist()
+        {
+            var uid = GetInt("uid");
+            var sellerid = GetInt("sellerid");
+
+            var user = AccountHelper.GetUser(uid);
+            if (user == null)
+            {
+                ReturnErrorMsg(string.Format("不存在Id={0}的用户", uid));
+                return;
+            }
+            if (user.SellerId != sellerid)
+            {
+                ReturnErrorMsg("商户无此用户");
+                return;
+            }
+
+            ExtcreditLog log = new ExtcreditLog();
+            log.UserId = uid;
+            log.SellerId = sellerid;
+            log.SourceId = DateTime.Now.GetUnixTime();
+            log.Extcredit = 10;//TODO:待定
+            log.Type = ExtcreditSourceType.Register;
+            log.CreateTime = DateTime.Now;
+
+            ExtcreditLogHelper.AddExtcreditLog(log);
+
+            ReturnCorrectMsg("签到成功");
         }
         #endregion
     }

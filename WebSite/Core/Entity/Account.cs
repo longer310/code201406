@@ -57,7 +57,11 @@ namespace Backstage.Core.Entity
         /// <summary>
         /// 积分
         /// </summary>
-        public int Extcredit { get; set; }
+        public int Integral { get; set; }
+        /// <summary>
+        /// 昵称
+        /// </summary>
+        public string NickName { get; set; }
 
         public Account()
         {
@@ -65,6 +69,7 @@ namespace Backstage.Core.Entity
             if (string.IsNullOrEmpty(Phone)) Phone = "";
             if (string.IsNullOrEmpty(Address)) Address = "";
             if (string.IsNullOrEmpty(LinkMan)) LinkMan = "";
+            if (string.IsNullOrEmpty(NickName)) NickName = "";
             CreateTime = DateTime.Now;
         }
     }

@@ -608,11 +608,11 @@ namespace Backstage.Handler
                 var goods = glist.FirstOrDefault(o => o.Id == shoppingCart.Gid);
                 if (goods != null)
                 {
-                    item.nowprice           = goods.Nowprice;
-                    item.originalprice      = goods.OriginalPrice;
-                    item.title              = goods.Title;
-                    item.description        = goods.Content;
-                    item.img                = goods.LogoUrl;
+                    item.nowprice = goods.Nowprice;
+                    item.originalprice = goods.OriginalPrice;
+                    item.title = goods.Title;
+                    item.description = goods.Content;
+                    item.img = goods.LogoUrl;
 
                     item.totalprice = goods.Nowprice * shoppingCart.Num;
 
@@ -698,6 +698,7 @@ namespace Backstage.Handler
                 orders.Gids += goods.Id + ",";
                 orders.Imgs += goods.LogoUrl + ",";
                 orders.Titles += goods.Title + ",";
+                orders.Contents += goods.Content.Substring(0, 30) + ",";
                 orders.NowPrices += goods.Nowprice + ",";
                 orders.OriginalPrices += goods.OriginalPrice + ",";
                 var num = Utility.GetValueByList(gidlist, numlist, goods.Id);
@@ -707,6 +708,7 @@ namespace Backstage.Handler
             }
             orders.Imgs = orders.Imgs.TrimEnd(',');
             orders.Titles = orders.Titles.TrimEnd(',');
+            orders.Contents = orders.Titles.TrimEnd(',');
             orders.NowPrices = orders.NowPrices.TrimEnd(',');
             orders.OriginalPrices = orders.OriginalPrices.TrimEnd(',');
             orders.Gids = orders.Gids.TrimEnd(',');
@@ -738,25 +740,76 @@ namespace Backstage.Handler
         public class OrderDetailData
         {
             public int orderid { get; set; }
-            public float totalprice { get; set; }
-            public float stotalprice { get; set; }
-            public int pid { get; set; }
             public int ordertime { get; set; }
             public int ordertype { get; set; }
             public int orderpeople { get; set; }
-            public int couponid { get; set; }
-            public float ctotalprice { get; set; }
+            public int status { get; set; }
+            public int totalnum { get; set; }
+            public float sendprice { get; set; }//送餐费
+            public float totalprice { get; set; }//实际应付
+            public int extcredit { get; set; }//可获积分
+            public int couponid { get; set; }//优惠券id
+            public string ccontent { get; set; }//优惠券说明
+            public float stotalprice { get; set; }//合计（商品总计）
+            public string remark { get; set; }//订单备注
             public int createtime { get; set; }
             public string address { get; set; }
             public string mobile { get; set; }
             public string linkman { get; set; }
-            public int status { get; set; }
+            public int pid { get; set; }
 
             public List<OrderGoddsItem> goodslist { get; set; }
 
             public OrderDetailData()
             {
                 goodslist = new List<OrderGoddsItem>();
+            }
+
+            public OrderDetailData(Orders orders)
+            {
+                var gidlist = Utility.GetListint(orders.Gids);
+                var numlist = Utility.GetListint(orders.Nums);
+                var titlelist = Utility.GetListstring(orders.Titles);
+                var imglist = Utility.GetListstring(orders.Imgs);
+                var originalpricelist = Utility.GetListfloat(orders.OriginalPrices);
+                var nowpricelist = Utility.GetListfloat(orders.NowPrices);
+                var contentlist = Utility.GetListstring(orders.Contents);
+
+                var data = new OrderDetailData();
+                int totalnum = 0;
+                for (int i = 0; i < gidlist.Count; i++)
+                {
+                    var item = new OrderGoddsItem();
+                    item.img = imglist[i];
+                    item.gid = gidlist[i];
+                    item.title = titlelist[i];
+                    item.content = contentlist[i];
+                    item.nowprice = nowpricelist[i];
+                    item.originalprice = originalpricelist[i];
+                    item.num = numlist[i];
+                    item.totalprice = item.nowprice * item.num;
+                    totalnum += item.num;
+                    data.goodslist.Add(item);
+                }
+
+                data.orderid = orders.Id;
+                data.ordertime = orders.OrderTime.GetUnixTime();
+                data.orderpeople = orders.OrderPeople;
+                data.ordertype = (int)orders.OrderType;
+                data.status = (int)orders.Status;
+                data.totalnum = totalnum;
+                data.sendprice = 5;//TODO:看看是否配置还是每个订单不一样
+                data.totalprice = orders.TotalPrice;
+                data.extcredit = (int)orders.TotalPrice;//TODO:换算比例
+                data.couponid = orders.CouponId;
+                data.ccontent = orders.Ccontent;
+                data.stotalprice = orders.StotalPrice;
+                data.remark = orders.Remark;
+                data.createtime = orders.CreateTime.GetUnixTime();
+                data.address = orders.Address;
+                data.mobile = orders.Mobile;
+                data.linkman = orders.LinkMan;
+                data.pid = orders.Pid;
             }
         }
         public class OrderGoddsItem
@@ -768,6 +821,7 @@ namespace Backstage.Handler
             public float nowprice { get; set; }
             public float originalprice { get; set; }
             public float totalprice { get; set; }
+            public string content { get; set; }
         }
         public void GetOrdersDetail()
         {
@@ -782,42 +836,7 @@ namespace Backstage.Handler
                 return;
             }
 
-            var gidlist = Utility.GetListint(orders.Gids);
-            var numlist = Utility.GetListint(orders.Nums);
-            var titlelist = Utility.GetListstring(orders.Titles);
-            var imglist = Utility.GetListstring(orders.Imgs);
-            var originalpricelist = Utility.GetListfloat(orders.OriginalPrices);
-            var nowpricelist = Utility.GetListfloat(orders.NowPrices);
-
-            var data = new OrderDetailData();
-            for (int i = 0; i < gidlist.Count; i++)
-            {
-                var item = new OrderGoddsItem();
-                item.gid = gidlist[i];
-                item.num = numlist[i];
-                item.title = titlelist[i];
-                item.img = imglist[i];
-                item.nowprice = nowpricelist[i];
-                item.originalprice = originalpricelist[i];
-                item.totalprice = item.nowprice * item.num;
-
-                data.goodslist.Add(item);
-            }
-
-            data.orderid = orders.Id;
-            data.totalprice = orders.TotalPrice;
-            data.stotalprice = orders.StotalPrice;
-            data.pid = orders.Pid;
-            data.ordertime = orders.OrderTime.GetUnixTime();
-            data.orderpeople = orders.OrderPeople;
-            data.ordertype = (int)orders.OrderType;
-            data.couponid = orders.CouponId;
-            data.ctotalprice = orders.CtotalPrice;
-            data.address = orders.Address;
-            data.linkman = orders.LinkMan;
-            data.mobile = orders.Mobile;
-            data.createtime = orders.CreateTime.GetUnixTime();
-            data.status = (int)orders.Status;
+            var data = new OrderDetailData(orders);
 
             JsonTransfer jt = new JsonTransfer();
             jt.AddSuccessParam();

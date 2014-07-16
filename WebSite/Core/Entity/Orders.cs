@@ -31,6 +31,10 @@ namespace Backstage.Core.Entity
         /// </summary>
         public string Titles { get; set; }
         /// <summary>
+        /// 产品说明列表
+        /// </summary>
+        public string Contents { get; set; }
+        /// <summary>
         /// 产品现价列表
         /// </summary>
         public string NowPrices { get; set; }
@@ -71,6 +75,10 @@ namespace Backstage.Core.Entity
         /// </summary>
         public float CtotalPrice { get; set; }
         /// <summary>
+        /// 电子券描述
+        /// </summary>
+        public string Ccontent { get; set; }
+        /// <summary>
         /// 送货地址
         /// </summary>
         public string Address { get; set; }
@@ -98,6 +106,14 @@ namespace Backstage.Core.Entity
         /// 商户id
         /// </summary>
         public int SellerId { get; set; }
+        ///// <summary>
+        ///// 订单完成可以得到的积分
+        ///// </summary>
+        //public int Extcredit { get; set; }
+        ///// <summary>
+        ///// 商品总价
+        ///// </summary>
+        //public float SendPrice { get; set; }
 
         public Orders()
         {

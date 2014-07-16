@@ -44,6 +44,7 @@ namespace Backstage.Core
                         Account user = new Account();
                         user.Id = reader.GetInt32(0);
                         user.UserName = reader["UserName"].ToString();
+                        user.NickName = reader["NickName"].ToString();
                         user.Pwd = reader["Pwd"].ToString();
                         user.RoleType = (RoleType)reader["RoleType"];
                         user.Avatar = reader["Avatar"].ToString();
@@ -53,7 +54,7 @@ namespace Backstage.Core
                         user.Money = (float)reader["Money"];
                         user.SellerId = (int)reader["SellerId"];
                         user.CreateTime = (DateTime)reader["CreateTime"];
-                        user.Extcredit = (int)reader["Extcredit"];
+                        user.Integral = (int)reader["Extcredit"];
                         user.LinkMan = reader["LinkMan"].ToString();
 
                         list.Add(user);
@@ -103,6 +104,7 @@ namespace Backstage.Core
                         Account user = new Account();
                         user.Id = reader.GetInt32(0);
                         user.UserName = reader["UserName"].ToString();
+                        user.NickName = reader["NickName"].ToString();
                         user.Pwd = reader["Pwd"].ToString();
                         user.RoleType = (RoleType)reader["RoleType"];
                         user.Avatar = reader["Avatar"].ToString();
@@ -112,7 +114,7 @@ namespace Backstage.Core
                         user.Money = (float)reader["Money"];
                         user.SellerId = (int)reader["SellerId"];
                         user.CreateTime = (DateTime)reader["CreateTime"];
-                        user.Extcredit = (int)reader["Extcredit"];
+                        user.Integral = (int)reader["Extcredit"];
                         user.LinkMan = reader["LinkMan"].ToString();
 
                         list.Add(user);
@@ -139,6 +141,7 @@ namespace Backstage.Core
             {
                 cmdText = @"UPDATE account SET
                                         UserName        = ?UserName,
+                                        NickName        = ?NickName,
                                         Pwd             = ?Pwd,
                                         SellerId          = ?SellerId,
                                         RoleType        = ?RoleType,
@@ -154,6 +157,7 @@ namespace Backstage.Core
                                         Id = ?Id";
                 parameters.Add(new MySqlParameter("?Id", account.Id));
                 parameters.Add(new MySqlParameter("?UserName", account.UserName));
+                parameters.Add(new MySqlParameter("?NickName", account.NickName));
                 parameters.Add(new MySqlParameter("?Pwd", account.Pwd));
                 parameters.Add(new MySqlParameter("?RoleType", account.RoleType));
                 parameters.Add(new MySqlParameter("?Avatar", account.Avatar));
@@ -162,7 +166,7 @@ namespace Backstage.Core
                 parameters.Add(new MySqlParameter("?Phone", account.Phone));
                 parameters.Add(new MySqlParameter("?Address", account.Address));
                 parameters.Add(new MySqlParameter("?Money", account.Money));
-                parameters.Add(new MySqlParameter("?Extcredit", account.Extcredit));
+                parameters.Add(new MySqlParameter("?Extcredit", account.Integral));
                 parameters.Add(new MySqlParameter("?LinkMan", account.LinkMan));
                 parameters.Add(new MySqlParameter("?SellerId", account.SellerId));
             }
@@ -171,6 +175,7 @@ namespace Backstage.Core
                 cmdText = @"insert into account
                                         (
                                         UserName   ,
+                                        NickName   ,
                                         Pwd        ,
                                         RoleType   ,
                                         Avatar     ,
@@ -186,6 +191,7 @@ namespace Backstage.Core
                                         values
                                         (
                                         ?UserName  ,
+                                        ?NickName  ,
                                         ?Pwd       ,
                                         ?RoleType  ,
                                         ?Avatar    ,
@@ -199,6 +205,7 @@ namespace Backstage.Core
                                         ?CreateTime
                                         )";
                 parameters.Add(new MySqlParameter("?UserName", account.UserName));
+                parameters.Add(new MySqlParameter("?NickName", account.NickName));
                 parameters.Add(new MySqlParameter("?Pwd", account.Pwd));
                 parameters.Add(new MySqlParameter("?RoleType", account.RoleType));
                 parameters.Add(new MySqlParameter("?Avatar", account.Avatar));
@@ -208,7 +215,7 @@ namespace Backstage.Core
                 parameters.Add(new MySqlParameter("?Address", account.Address));
                 parameters.Add(new MySqlParameter("?Money", account.Money));
                 parameters.Add(new MySqlParameter("?SellerId", account.SellerId));
-                parameters.Add(new MySqlParameter("?Extcredit", account.Extcredit));
+                parameters.Add(new MySqlParameter("?Extcredit", account.Integral));
                 parameters.Add(new MySqlParameter("?LinkMan", account.LinkMan));
             }
 
@@ -267,6 +274,7 @@ namespace Backstage.Core
                             Account user = new Account();
                             user.Id = reader.GetInt32(0);
                             user.UserName = reader["UserName"].ToString();
+                            user.NickName = reader["NickName"].ToString();
                             user.Pwd = reader["Pwd"].ToString();
                             user.RoleType = (RoleType)reader["RoleType"];
                             user.Avatar = reader["Avatar"].ToString();
@@ -276,7 +284,7 @@ namespace Backstage.Core
                             user.Money = (float)reader["Money"];
                             user.SellerId = (int)reader["SellerId"];
                             user.CreateTime = (DateTime)reader["CreateTime"];
-                            user.Extcredit = (int)reader["Extcredit"];
+                            user.Integral = (int)reader["Extcredit"];
                             user.LinkMan = reader["LinkMan"].ToString();
                             return user;
                         }
@@ -305,6 +313,7 @@ namespace Backstage.Core
                             Account user = new Account();
                             user.Id = reader.GetInt32(0);
                             user.UserName = reader["UserName"].ToString();
+                            user.NickName = reader["NickName"].ToString();
                             user.Pwd = reader["Pwd"].ToString();
                             user.RoleType = (RoleType)reader["RoleType"];
                             user.Avatar = reader["Avatar"].ToString();
@@ -314,7 +323,7 @@ namespace Backstage.Core
                             user.Money = (float)reader["Money"];
                             user.SellerId = (int)reader["SellerId"]; ;
                             user.CreateTime = (DateTime)reader["CreateTime"];
-                            user.Extcredit = (int)reader["Extcredit"];
+                            user.Integral = (int)reader["Extcredit"];
                             user.LinkMan = reader["LinkMan"].ToString();
                             return user;
                         }
@@ -346,6 +355,7 @@ namespace Backstage.Core
                             Account user = new Account();
                             user.Id = reader.GetInt32(0);
                             user.UserName = reader["UserName"].ToString();
+                            user.NickName = reader["NickName"].ToString();
                             user.Pwd = reader["Pwd"].ToString();
                             user.RoleType = (RoleType)reader["RoleType"];
                             user.Avatar = reader["Avatar"].ToString();
@@ -355,7 +365,7 @@ namespace Backstage.Core
                             user.Money = (float)reader["Money"];
                             user.SellerId = (int)reader["SellerId"]; ;
                             user.CreateTime = (DateTime)reader["CreateTime"];
-                            user.Extcredit = (int)reader["Extcredit"];
+                            user.Integral = (int)reader["Extcredit"];
                             user.LinkMan = reader["LinkMan"].ToString();
                             return user;
                         }

@@ -279,15 +279,41 @@ namespace Backstage.Core
         }
         public static List<int> GetListint(string str)
         {
-            return str.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries).Select(p => Convert.ToInt32(p)).ToList();
+            try
+            {
+                return str.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries).Select(p => Convert.ToInt32(p)).ToList();
+            }
+            catch (Exception)
+            {
+                return new List<int>();
+            }
         }
         public static List<float> GetListfloat(string str)
         {
-            return str.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries).Select(p => float.Parse(p)).ToList();
+            try
+            {
+                return str.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries).Select(p => float.Parse(p)).ToList();
+            }
+            catch (Exception)
+            {
+                return new List<float>();
+            }
         }
         public static List<string> GetListstring(string str)
         {
-            return str.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries).ToList();
+            try
+            {
+                return str.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries).ToList();
+            }
+            catch (Exception)
+            {
+                return new List<string>();
+            }
+        }
+
+        public static string GetString(List<int> list)
+        {
+            return String.Join(",", list.ConvertAll<string>(new Converter<int, string>(m => m.ToString())).ToArray());
         }
         public static string GetWhereSql(List<int> idlist, string columnname = "Id")
         {
@@ -328,7 +354,7 @@ namespace Backstage.Core
             }
         }
         //base64编码的文本 转为    图片  
-        private static void Base64StringToImage(string base64Str, string name)
+        public static void Base64StringToImage(string base64Str, string name)
         {
             try
             {
@@ -336,7 +362,7 @@ namespace Backstage.Core
                 MemoryStream ms = new MemoryStream(arr);
                 Bitmap bmp = new Bitmap(ms);
 
-                bmp.Save(name + ".jpg", System.Drawing.Imaging.ImageFormat.Jpeg);
+                bmp.Save("./userhead/" + name + ".jpg", System.Drawing.Imaging.ImageFormat.Jpeg);
             }
             catch (Exception ex)
             {

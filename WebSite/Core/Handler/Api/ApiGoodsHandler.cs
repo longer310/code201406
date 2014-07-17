@@ -347,8 +347,14 @@ namespace Backstage.Handler
         public void GetGoodsDetail()
         {
             int gid = GetInt("gid");
+            int sellerid = GetInt("sellerid");
 
             var goods = GoodsHelper.GetGoods(gid);
+            if (goods.SellerId != sellerid)
+            {
+                ReturnErrorMsg("商户id与产品不对应");
+                return;
+            }
             int cid = goods.Cid;
             var gcategories = GoodsCategoriesHelper.GetGoodsCategories(cid);
             string wheresql = Utility.GetWhereSql(goods.ImgIdList);
@@ -358,7 +364,7 @@ namespace Backstage.Handler
             if (user != null)
                 favorite = FavoriteHelper.GetFavorite(user.Id);
             var data = new GoodsDetailItem();
-
+            
             foreach (var sourceMaterial in piclist)
             {
                 data.images.Add(sourceMaterial.Url);
@@ -944,7 +950,7 @@ namespace Backstage.Handler
             var couponid = GetInt("couponid");
             var address = GetString("address");
             var linkman = GetString("linkman");
-            var mobile = GetString("mobile");
+            var phone = GetString("phone");
             var pid = GetInt("pid");
             var remark = GetString("remark");
             var uid = GetInt("uid");
@@ -969,7 +975,7 @@ namespace Backstage.Handler
             orders.OrderPeople = orderpeople;
             orders.Address = address;
             orders.LinkMan = linkman;
-            orders.Mobile = mobile;
+            orders.Mobile = phone;
             orders.CouponId = couponid;
             //获取优惠券优惠的价格
             var coupon = CouponHelper.GetItem(orders.CouponId);

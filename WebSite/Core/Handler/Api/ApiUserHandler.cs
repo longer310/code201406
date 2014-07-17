@@ -106,8 +106,13 @@ namespace Backstage.Handler
             var phone = GetString("phone");
             var sellerId = GetInt("sellerid");
 
+            if (string.IsNullOrEmpty(phone))
+            {
+                ReturnErrorMsg("phone参数没传");
+                return;
+            }
             var user = AccountHelper.FindUserByPhone(phone);
-            if (string.IsNullOrEmpty(phone) || user != null)
+            if (user != null)
             {
                 ReturnErrorMsg("此电话已注册");
                 return;

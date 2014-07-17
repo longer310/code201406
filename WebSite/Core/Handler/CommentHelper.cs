@@ -56,6 +56,8 @@ namespace Backstage.Core
                         c.Content = reader["Content"].ToString();
                         c.CreateTime = (DateTime)reader["CreateTime"];
                         c.UserId = (int)reader["UserId"];
+                        c.Img = reader["Img"].ToString();
+                        c.Title = reader["Title"].ToString();
                         results.Results.Add(c);
                     }
 
@@ -95,6 +97,8 @@ namespace Backstage.Core
             	                                Type,
             	                                TypeId, 
             	                                Content,
+            	                                Img,
+            	                                Title,
             	                                UserId,
             	                                CreateTime
             	                                )
@@ -104,6 +108,8 @@ namespace Backstage.Core
             	                                ?Type,
             	                                ?TypeId, 
             	                                ?Content,
+            	                                ?Img,
+            	                                ?Title,
             	                                ?UserId,
             	                                ?CreateTime
             	                                )";
@@ -113,6 +119,8 @@ namespace Backstage.Core
             parameters.Add(new MySqlParameter("?Type", c.Type));
             parameters.Add(new MySqlParameter("?TypeId", c.TypeId));
             parameters.Add(new MySqlParameter("?Content", c.Content));
+            parameters.Add(new MySqlParameter("?Img", c.Img));
+            parameters.Add(new MySqlParameter("?Title", c.Title));
             parameters.Add(new MySqlParameter("?UserId", c.UserId));
             parameters.Add(new MySqlParameter("?CreateTime", DateTime.Now));
 
@@ -133,7 +141,7 @@ namespace Backstage.Core
         {
             var results = new PagResults<Comment>();
             results.Results = new List<Comment>();
-            var wheresql = type != CommentType.All ? string.Empty : "and Type = ?Type ";
+            var wheresql = type == CommentType.All ? string.Empty : "and Type = ?Type ";
             var ordersql = " order by CreateTime desc ";
             var limitsql = start != 0 ? " LIMIT ?Start,?Limit" : string.Empty;
             string commandText = @"select * from comment where UserId = ?UserId and SellerId = ?SellerId  " + wheresql + ordersql + limitsql;
@@ -158,6 +166,8 @@ namespace Backstage.Core
                         c.Type = (CommentType)reader["Type"];
                         c.TypeId = (int)reader["TypeId"];
                         c.Content = reader["Content"].ToString();
+                        c.Img = reader["Img"].ToString();
+                        c.Title = reader["Title"].ToString();
                         c.CreateTime = (DateTime)reader["CreateTime"];
                         c.UserId = (int)reader["UserId"];
                         results.Results.Add(c);

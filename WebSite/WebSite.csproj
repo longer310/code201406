@@ -456,7 +456,9 @@
     <Compile Include="Core\Entity\SourceMaterial.cs" />
     <Compile Include="Core\Entity\UserCoupon.cs" />
     <Compile Include="Core\Entity\WeixinToken.cs" />
+    <Compile Include="Core\Entity\ShareLog.cs" />
     <Compile Include="Core\Enums.cs" />
+    <Compile Include="Core\Logic\ShareLogHelper.cs" />
     <Compile Include="Core\MyCache.cs" />
     <Compile Include="Core\Handler\ActiveHelper.cs" />
     <Compile Include="Core\Handler\Api\ActiveHandler.cs" />

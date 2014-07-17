@@ -143,20 +143,93 @@ namespace Backstage.Core
         /// </summary>
         BuyCoupon = 1,
         /// <summary>
-        /// 分享
+        /// 充值
         /// </summary>
-        Share = 2,
+        Charge = 2,
         /// <summary>
-        /// 签到
+        /// 签到——限制每天一次
         /// </summary>
         Register = 3,
         /// <summary>
         /// 消费 订单
         /// </summary>
         Consume = 4,
+
+        /// <summary>
+        /// 分享商品——限制每个平台每个商品能获得积分只有第一次分享
+        /// </summary>
+        ShareGoods = 11,
+        /// <summary>
+        /// 分享活动——同上
+        /// </summary>
+        ShareActive = 12,
+        /// <summary>
+        /// 分享图片墙——同上
+        /// </summary>
+        ShareImg = 13,
+
+        /// <summary>
+        /// 评论商品——限制每个商品能获得积分只有第一次评论
+        /// </summary>
+        CommentGoods = 21,
+        /// <summary>
+        /// 评论活动——同上
+        /// </summary>
+        CommentActive = 22,
+        /// <summary>
+        /// 评论图片墙——同上
+        /// </summary>
+        CommentImg = 23,
+    }
+
+    /// <summary>
+    /// 1、图片，2、资讯，3、产品
+    /// </summary>
+    public enum ShareType
+    {
+        /// <summary>
+        /// 所有
+        /// </summary>
+        All = 0,
+        /// <summary>
+        /// 图片
+        /// </summary>
+        Img = 1,
+        /// <summary>
+        /// 资讯
+        /// </summary>
+        Avtive = 2,
+        /// <summary>
+        /// 产品
+        /// </summary>
+        Goods = 3,
         /// <summary>
         /// 评论
         /// </summary>
-        Comment = 5,
+        Comment = 4,
+    }
+
+    public enum PlatformType
+    {
+        /// <summary>
+        /// 无
+        /// </summary>
+        None = 0,
+        /// <summary>
+        /// 微信
+        /// </summary>
+        WeiXin = 1,
+        /// <summary>
+        /// 新浪
+        /// </summary>
+        Sina = 2,
+        /// <summary>
+        /// 腾讯Qzone
+        /// </summary>
+        Qzone = 3,
+        /// <summary>
+        /// 腾讯微博
+        /// </summary>
+        TencentMico = 4,
     }
 }

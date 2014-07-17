@@ -10,5 +10,6 @@ namespace Backstage.Model
         public IList<T> Results { get; set; }
 
         public int TotalCount { get; set; }
+
     }
 }

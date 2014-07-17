@@ -106,6 +106,9 @@ namespace Backstage.Core.Handler
             c.UserId = userId;
             c.Content = msg;
             c.Type = CommentType.Img;
+            //冗余两个字段
+            c.Img = sm.Url;
+            c.Title = sm.Title;
             try
             {
                 CommentHelper.Create(c);

@@ -19,7 +19,15 @@ namespace Backstage.Core.Entity
         public int UserId { get; set; }
 
         public DateTime CreateTime { get; set; }
-        
+
+        /// <summary>
+        /// 评论对象图片地址——冗余
+        /// </summary>
+        public string Img { get; set; }
+        /// <summary>
+        /// 评论对象标题——冗余
+        /// </summary>
+        public string Title { get; set; }
 
     }
 }

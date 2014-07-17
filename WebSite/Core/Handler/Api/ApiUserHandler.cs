@@ -30,10 +30,10 @@ namespace Backstage.Handler
                 case "login"://登录接口 7.3 
                     Login();
                     break;
-                case "thirdlogin"://登录接口 7.4
+                case "thirdlogin"://第三方登录接口 7.4
                     ThirdLogin();
                     break;
-                case "usercharge"://登录接口 7.5
+                case "usercharge"://充值金额 7.5
                     UserCharge();
                     break;
                 case "getmymoney"://获取可用余额 7.6 
@@ -51,13 +51,13 @@ namespace Backstage.Handler
                 case "getextcreditlog"://积分使用明细 7.10
                     GetExtcreditLog();
                     break;
-                case "updateuserinfo"://编辑收货信息 7.11
-                    UpdateUserInfo();
+                case "updatereceiptinfo"://编辑收货信息 7.11
+                    UpdateReceiptInfo();
                     break;
                 case "getreceiptinfo"://获取收货信息 7.12
                     GetReceiptInfo();
                     break;
-                case "getmycomment"://获取收货信息 7.13
+                case "getmycomment"://我的评论 7.13
                     GetMyComment();
                     break;
                 case "delfavorite"://删除收藏 7.14
@@ -87,6 +87,18 @@ namespace Backstage.Handler
                 default: break;
             }
         }
+
+        #region 返回积分的公用类 
+        public class IntegralData
+        {
+            public int integral { get; set; }
+
+            public IntegralData(int i)
+            {
+                integral = i;
+            }
+        }
+        #endregion
 
         #region 获取注册验证码 7.1
         public void GetRegisterCode()
@@ -308,14 +320,29 @@ namespace Backstage.Handler
             chargeLog.OrderId = orderid;
             chargeLog.PayName = payMent.Name;
 
+            //记录充值记录
+            ChargeLogHelper.AddChargeLog(chargeLog);
+
+            ExtcreditLog log = new ExtcreditLog();
+            log.UserId = uid;
+            log.SellerId = sellerid;
+            log.SourceId = DateTime.Now.GetUnixTime();
+            log.Extcredit = (int)(money * 1.0 / ParamHelper.ExtcreditCfgData.Charge);
+            log.Type = ExtcreditSourceType.Charge;
+
+            ExtcreditLogHelper.AddExtcreditLog(log);
+
+            user.Integral += log.Extcredit;
+
             user.Money += money;
             //保存用户信息
             AccountHelper.UpdateUser(user);
 
-            //记录充值记录
-            ChargeLogHelper.AddChargeLog(chargeLog);
-
-            ReturnCorrectMsg("添加余额成功");
+            JsonTransfer jt = new JsonTransfer();
+            jt.AddSuccessParam();
+            jt.Add("data", new IntegralData(log.Extcredit));
+            Response.Write(DesEncrypt(jt));
+            Response.End();
         }
         #endregion
 
@@ -409,7 +436,7 @@ namespace Backstage.Handler
         }
         #endregion
 
-        #region 商家信息7.8
+        #region 商家信息 7.8
         public class MerchantData
         {
             /// <summary>
@@ -562,7 +589,7 @@ namespace Backstage.Handler
         }
         #endregion
 
-        #region 资金使用明细 7.10
+        #region 积分使用明细 7.10
         public class ExtcreditLogData
         {
             public List<ExtcreditLogItem> extcreditlogs { get; set; }
@@ -577,7 +604,7 @@ namespace Backstage.Handler
             public int createtime { get; set; }
             public int sourceid { get; set; }
             public float extcredit { get; set; }
-            public float type { get; set; }
+            public int type { get; set; }
         }
         public void GetExtcreditLog()
         {
@@ -622,7 +649,7 @@ namespace Backstage.Handler
         #endregion
 
         #region 编辑收货信息 7.11
-        public void UpdateUserInfo()
+        public void UpdateReceiptInfo()
         {
             var uid = GetInt("uid");
             var sellerid = GetInt("sellerid");
@@ -702,8 +729,8 @@ namespace Backstage.Handler
         }
         public class MyCommentItem
         {
-            public string createtime { get; set; }
-            public string type { get; set; }
+            public int createtime { get; set; }
+            public int type { get; set; }
             public string content { get; set; }
             public string img { get; set; }
             public string title { get; set; }
@@ -728,12 +755,25 @@ namespace Backstage.Handler
                 return;
             }
 
+            var data = new MyCommentData();
             var ucommentlist = CommentHelper.GetList(uid, sellerid, type, start * limit, limit);
-            var glist = ucommentlist.Results.Where(o => o.Type == CommentType.Goods).ToList();
-            var plist = ucommentlist.Results.Where(o => o.Type == CommentType.Img).ToList();
-            var alist = ucommentlist.Results.Where(o => o.Type == CommentType.Avtive).ToList();
-            var clist = ucommentlist.Results.Where(o => o.Type == CommentType.Coupons).ToList();
+            foreach (var c in ucommentlist.Results)
+            {
+                var item = new MyCommentItem();
+                item.createtime = c.CreateTime.GetUnixTime();
+                item.type = (int)c.Type;
+                item.content = c.Content;
+                item.img = c.Img;
+                item.title = c.Title;
 
+                data.commmentlist.Add(item);
+            }
+
+            JsonTransfer jt = new JsonTransfer();
+            jt.AddSuccessParam();
+            jt.Add("data", data);
+            Response.Write(DesEncrypt(jt));
+            Response.End();
         }
         #endregion
 
@@ -755,11 +795,11 @@ namespace Backstage.Handler
             var favorite = FavoriteHelper.GetFavorite(uid);
             foreach (var i in gidlist)
             {
-                if (gidlist.Contains(i))
+                if (favorite.GidList.Contains(i))
                     favorite.GidList.Remove(i);
                 else
                 {
-                    ReturnErrorMsg(string.Format("传参出错，{0}该物品id不存在", i));
+                    ReturnErrorMsg(string.Format("传参出错，会员没有收藏id为{0}的物品", i));
                     return;
                 }
             }
@@ -873,7 +913,7 @@ namespace Backstage.Handler
             }
 
             user.Phone = verificationCode.Phone;
-                //保存用户
+            //保存用户
             AccountHelper.UpdateUser(user);
 
             ReturnCorrectMsg("更改绑定号码成功");
@@ -926,7 +966,7 @@ namespace Backstage.Handler
             VerificationCodeHelper.SaveVerificationCode(verificationCode);
 
             //返回
-            ReturnCorrectMsg("注册码已发送");
+            ReturnCorrectMsg("验证码已发送");
         }
         #endregion
 
@@ -1028,16 +1068,33 @@ namespace Backstage.Handler
             }
 
             ExtcreditLog log = new ExtcreditLog();
-            log.UserId = uid;
-            log.SellerId = sellerid;
-            log.SourceId = DateTime.Now.GetUnixTime();
-            log.Extcredit = 10;//TODO:待定
-            log.Type = ExtcreditSourceType.Register;
-            log.CreateTime = DateTime.Now;
+            var sourceId = DateTime.Today.GetUnixTime();
+            if (!ExtcreditLogHelper.JudgeExtcreditGet(ExtcreditSourceType.Register, sourceId, uid))
+            {
+                //积分获得
+                log.UserId = uid;
+                log.SellerId = user.SellerId;
+                log.SourceId = sourceId;
+                log.Extcredit = ParamHelper.ExtcreditCfgData.Register;
+                log.Type = ExtcreditSourceType.Register;
 
-            ExtcreditLogHelper.AddExtcreditLog(log);
+                ExtcreditLogHelper.AddExtcreditLog(log);
 
-            ReturnCorrectMsg("签到成功");
+                user.Integral += log.Extcredit;
+                AccountHelper.UpdateUser(user);
+            }
+            else
+            {
+                ReturnErrorMsg("今日已签到");
+                return;
+            }
+
+
+            JsonTransfer jt = new JsonTransfer();
+            jt.AddSuccessParam();
+            jt.Add("data", new IntegralData(log.Extcredit));
+            Response.Write(DesEncrypt(jt));
+            Response.End();
         }
         #endregion
     }

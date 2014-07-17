@@ -82,6 +82,9 @@ namespace Backstage.Core.Handler
             c.UserId = uid;
             c.Content = msg;
             c.Type = CommentType.Avtive;
+            //冗余两个字段
+            c.Img = active.CoverImgUrl;
+            c.Title = active.Title;
 
             try
             {

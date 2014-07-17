@@ -14,7 +14,7 @@ namespace Backstage.Core.Logic
     {
         public static string GetParamvalue(string key)
         {
-            var cmdText = string.Format("select * from Param where Key={0} limit 1;", key);
+            var cmdText = string.Format("select * from Param where `Key`='{0}' limit 1;", key);
             try
             {
                 using (var conn = Utility.ObtainConn(Utility._gameDbConn))
@@ -70,6 +70,71 @@ namespace Backstage.Core.Logic
                     MyCache.Put(key, obj);
                 }
                 return (PageAd)obj;
+            }
+        }
+        #endregion
+
+        #region 获取积分配置
+        public class ExtcreditCfg
+        {
+            public int Charge { get; set; }
+            /// <summary>
+            /// 分享获得
+            /// </summary>
+            public int Share { get; set; }
+            /// <summary>
+            /// 签到
+            /// </summary>
+            public int Register { get; set; }
+            /// <summary>
+            /// 消费（比例）
+            /// </summary>
+            public int Consume { get; set; }
+            /// <summary>
+            /// 评论
+            /// </summary>
+            public int Comment { get; set; } 
+        }
+        public static ExtcreditCfg ExtcreditCfgData
+        {
+            get
+            {
+                var key = "ExtcreditCfg";
+                var obj = MyCache.Get(key);
+                if (obj == null)
+                {
+                    obj = JsonConvert.DeserializeObject<ExtcreditCfg>(GetParamvalue(key));
+                    MyCache.Put(key, obj);
+                }
+                return (ExtcreditCfg)obj;
+            }
+        }
+        #endregion
+
+        #region 商户配置信息
+        public class MerchantCfg
+        {
+            /// <summary>
+            /// 送餐费
+            /// </summary>
+            public int SendPrice { get; set; }
+            /// <summary>
+            /// 免送餐费的价格
+            /// </summary>
+            public int FreeSendPrice { get; set; }
+        }
+        public static MerchantCfg MerchantCfgData
+        {
+            get
+            {
+                var key = "MerchantCfg";
+                var obj = MyCache.Get(key);
+                if (obj == null)
+                {
+                    obj = JsonConvert.DeserializeObject<MerchantCfg>(GetParamvalue(key));
+                    MyCache.Put(key, obj);
+                }
+                return (MerchantCfg)obj;
             }
         }
         #endregion

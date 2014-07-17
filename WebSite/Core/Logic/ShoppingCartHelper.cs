@@ -171,11 +171,11 @@ namespace Backstage.Core.Logic
                                         CreateTime           = ?CreateTime
                                     WHERE
                                         Id = ?Id";
-                                        //Img            = ?Img,
-                                        //Nowprice            = ?Nowprice,
-                                        //OriginalPrice            = ?OriginalPrice,
-                                        //Title            = ?Title,
-                                        //Description            = ?Description,
+                //Img            = ?Img,
+                //Nowprice            = ?Nowprice,
+                //OriginalPrice            = ?OriginalPrice,
+                //Title            = ?Title,
+                //Description            = ?Description,
                 parameters.Add(new MySqlParameter("?Id", shoppingcart.Id));
                 parameters.Add(new MySqlParameter("?UserId", shoppingcart.UserId));
                 parameters.Add(new MySqlParameter("?Gid", shoppingcart.Gid));
@@ -203,16 +203,16 @@ namespace Backstage.Core.Logic
                                         ?Num         ,
                                         ?CreateTime           
                                         )";
-                                        //Img          ,
-                                        //NowPrice         ,
-                                        //OriginalPrice         ,
-                                        //Title         ,
-                                        //Description         ,
-                                        //?Img          ,
-                                        //?NowPrice         ,
-                                        //?OriginalPrice         ,
-                                        //?Title         ,
-                                        //?Description         ,
+                //Img          ,
+                //NowPrice         ,
+                //OriginalPrice         ,
+                //Title         ,
+                //Description         ,
+                //?Img          ,
+                //?NowPrice         ,
+                //?OriginalPrice         ,
+                //?Title         ,
+                //?Description         ,
                 parameters.Add(new MySqlParameter("?UserId", shoppingcart.UserId));
                 parameters.Add(new MySqlParameter("?Gid", shoppingcart.Gid));
                 parameters.Add(new MySqlParameter("?Num", shoppingcart.Num));
@@ -256,12 +256,13 @@ namespace Backstage.Core.Logic
         /// <summary>
         /// 按照产品id列表删除产品列表
         /// </summary>
+        /// <param name="userId"></param>
         /// <param name="gids"></param>
         /// <returns></returns>
-        public static bool DeleteShoppingCartByGid(string gids)
+        public static bool DeleteShoppingCartByGid(int userId, string gids)
         {
             //var wheresql = Utility.GetWhereSql(gids, "Gid");
-            var cmdText = string.Format("delete from ShoppingCart where Gid in({0})", gids);
+            var cmdText = string.Format("delete from ShoppingCart where UserId={1} and Gid in({0})", gids, userId);
             try
             {
                 return MySqlHelper.ExecuteNonQuery(Utility._gameDbConn, CommandType.Text, cmdText) > 0;

@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Reflection;
+using System.Security.Permissions;
 using System.Web;
+using System.Web.UI.WebControls;
 using Backstage.Core;
 using Backstage.Core.Entity;
 using Backstage.Core.Handler;
@@ -64,6 +66,9 @@ namespace Backstage.Handler
                     break;
                 case "updateordersstatus"://更新订单状态
                     UpdateOrdersStatus();
+                    break;
+                case "delshoppingcart"://删除购物车
+                    DelShoppingCart();
                     break;
                 #endregion
 
@@ -460,6 +465,13 @@ namespace Backstage.Handler
             int gid = GetInt("gid");
             string message = GetString("message");
 
+            var user = AccountHelper.GetUser(uid);
+            if (user == null)
+            {
+                ReturnErrorMsg(string.Format("不存在Id={0}的用户", uid));
+                return;
+            }
+
             var goods = GoodsHelper.GetGoods(gid);
             var comment = new Comment();
             comment.Content = message;
@@ -468,12 +480,35 @@ namespace Backstage.Handler
             comment.Type = CommentType.Goods;
             comment.TypeId = gid;
             comment.UserId = uid;
+            //冗余两个字段
+            comment.Img = goods.LogoUrl;
+            comment.Title = goods.Title;
 
             //发表商品评论
             CommentHelper.Create(comment);
 
-            //返回
-            ReturnCorrectMsg("发表成功");
+            ExtcreditLog log = new ExtcreditLog();
+            if (!ExtcreditLogHelper.JudgeExtcreditGet(ExtcreditSourceType.CommentGoods, gid, uid))
+            {
+                //积分获得
+                log.UserId = uid;
+                log.SellerId = user.SellerId;
+                log.SourceId = gid;
+                log.Extcredit = ParamHelper.ExtcreditCfgData.Comment;
+                log.Type = ExtcreditSourceType.CommentGoods;
+                log.CreateTime = DateTime.Now;
+
+                ExtcreditLogHelper.AddExtcreditLog(log);
+
+                user.Integral += log.Extcredit;
+                AccountHelper.UpdateUser(user);
+            }
+
+            JsonTransfer jt = new JsonTransfer();
+            jt.AddSuccessParam();
+            jt.Add("data", new ApiUserHandler.IntegralData(log.Extcredit));
+            Response.Write(DesEncrypt(jt));
+            Response.End();
         }
         #endregion
 
@@ -505,19 +540,73 @@ namespace Backstage.Handler
         }
         #endregion
 
-        #region 商品分享 2.6
+        #region 商品/图片墙/活动分享 2.6
         public void ShareGoods()
         {
             int uid = GetInt("uid");
-            int gid = GetInt("gid");
+            int typeId = GetInt("typeid");
+            var type = (ExtcreditSourceType)GetInt("type");
+            var platform = (PlatformType)GetInt("platform");
+            var content = GetString("content");
 
-            var goods = GoodsHelper.GetGoods(gid);
-            goods.ShareCount++;
+            var user = AccountHelper.GetUser(uid);
+            if (user == null)
+            {
+                ReturnErrorMsg(string.Format("不存在Id={0}的用户", uid));
+                return;
+            }
+            if (user.SellerId <= 0)
+            {
+                ReturnErrorMsg("此用户木有商户");
+                return;
+            }
 
-            //保存商品
-            GoodsHelper.SaveGoods(goods);
-            //返回
-            ReturnCorrectMsg("分享成功");
+            if (type == ExtcreditSourceType.ShareGoods)
+            {
+                var goods = GoodsHelper.GetGoods(typeId);
+                goods.ShareCount++;
+
+                //保存商品
+                GoodsHelper.SaveGoods(goods);
+            }
+            else if (type == ExtcreditSourceType.ShareActive)
+            {
+                //TODO:
+            }
+            else if (type == ExtcreditSourceType.ShareImg)
+            {
+                //TODO:
+            }
+
+            ExtcreditLog log = new ExtcreditLog();
+            if (!ExtcreditLogHelper.JudgeExtcreditGet(type, typeId, uid, platform))
+            {
+                //积分获得
+                log.UserId = uid;
+                log.SellerId = user.SellerId;
+                log.SourceId = typeId;
+                log.Extcredit = ParamHelper.ExtcreditCfgData.Share;
+                log.Type = type;
+                log.PlatformType = platform;
+
+                ExtcreditLogHelper.AddExtcreditLog(log);
+
+                user.Integral += log.Extcredit;
+                AccountHelper.UpdateUser(user);
+            }
+
+            ShareLog shareLog = new ShareLog();
+            shareLog.UserId = uid;
+            shareLog.Type = (int)type;
+            shareLog.TypeId = typeId;
+            shareLog.Content = content;//记录分享内容
+            ShareLogHelper.AddShareLog(shareLog);
+
+            JsonTransfer jt = new JsonTransfer();
+            jt.AddSuccessParam();
+            jt.Add("data", new ApiUserHandler.IntegralData(log.Extcredit));
+            Response.Write(DesEncrypt(jt));
+            Response.End();
         }
         #endregion
 
@@ -683,7 +772,7 @@ namespace Backstage.Handler
                 return;
             }
             //删除购物车列表
-            ShoppingCartHelper.DeleteShoppingCartByGid(gids);
+            ShoppingCartHelper.DeleteShoppingCartByGid(uid, gids);
 
             var data = new AddOrdersData();
             data.orderid = orderid;
@@ -706,6 +795,7 @@ namespace Backstage.Handler
             public int status { get; set; }
             public int totalnum { get; set; }
             public float sendprice { get; set; }//送餐费
+            public float freesendprice { get; set; }//免费送餐价格
             public float totalprice { get; set; }//实际应付
             public int extcredit { get; set; }//可获积分
             public int couponid { get; set; }//优惠券id
@@ -756,9 +846,10 @@ namespace Backstage.Handler
                 orderpeople = orders.OrderPeople;
                 ordertype = (int)orders.OrderType;
                 status = (int)orders.Status;
-                sendprice = 5;//TODO:看看是否配置还是每个订单不一样
+                sendprice = ParamHelper.MerchantCfgData.SendPrice;
+                freesendprice = ParamHelper.MerchantCfgData.FreeSendPrice;
                 totalprice = orders.TotalPrice;
-                extcredit = (int)orders.TotalPrice;//TODO:换算比例
+                extcredit = (int)(orders.TotalPrice * 1.0 / ParamHelper.ExtcreditCfgData.Consume);
                 couponid = orders.CouponId;
                 ccontent = orders.Ccontent;
                 stotalprice = orders.StotalPrice;
@@ -910,7 +1001,7 @@ namespace Backstage.Handler
         }
         #endregion
 
-        #region 更新订单状态
+        #region 更新订单状态 6.7
         public void UpdateOrdersStatus()
         {
             var uid = GetInt("uid");
@@ -924,6 +1015,11 @@ namespace Backstage.Handler
                 ReturnErrorMsg("参数出错");
                 return;
             }
+            if (orders.UserId != uid)
+            {
+                ReturnErrorMsg("订单不属于该用户");
+                return;
+            }
             orders.Status = (OrderStatus)status;
             var user = AccountHelper.GetUser(uid);
             if (user == null)
@@ -932,16 +1028,18 @@ namespace Backstage.Handler
                 return;
             }
 
-            if (orders.Status == OrderStatus.Pay && orders.Pid == 0)
-            {//余额付款
-                if (user.Money < orders.TotalPrice)
-                {
-                    ReturnErrorMsg("余额不足");
-                    return;
+            ExtcreditLog log = new ExtcreditLog();
+            if (orders.Status == OrderStatus.Pay)
+            {
+                if (orders.Pid == 1)
+                {//余额付款
+                    if (user.Money < orders.TotalPrice)
+                    {
+                        ReturnErrorMsg("余额不足");
+                        return;
+                    }
+                    user.Money -= orders.TotalPrice;
                 }
-                user.Money -= orders.TotalPrice;
-                //保存用户信息
-                AccountHelper.UpdateUser(user);
 
                 var payMent = new Payment();
                 if (orders.Pid > 0)
@@ -956,11 +1054,58 @@ namespace Backstage.Handler
                 chargeLog.PayName = payMent.Id == 0 ? "账户余额" : payMent.Name;
                 //记录充值记录
                 ChargeLogHelper.AddChargeLog(chargeLog);
+
+                //积分获得
+                log.UserId = uid;
+                log.SellerId = user.SellerId;
+                log.SourceId = orders.Id;
+                log.Extcredit = (int)(orders.TotalPrice * 1.0 / ParamHelper.ExtcreditCfgData.Consume);
+                log.Type = ExtcreditSourceType.Consume;
+                log.CreateTime = DateTime.Now;
+
+                ExtcreditLogHelper.AddExtcreditLog(log);
+
+                user.Integral += log.Extcredit;
+
+                //保存用户信息
+                AccountHelper.UpdateUser(user);
             }
 
             OrdersHelper.SaveOrders(orders);
 
-            ReturnCorrectMsg("更新订单状态成功");
+            JsonTransfer jt = new JsonTransfer();
+            jt.AddSuccessParam();
+            jt.Add("data", new ApiUserHandler.IntegralData(log.Extcredit));
+            Response.Write(DesEncrypt(jt));
+            Response.End();
+        }
+        #endregion
+
+        #region 删除购物车 6.8
+        public void DelShoppingCart()
+        {
+            var uid = GetInt("uid");
+            var gid = GetInt("gid");
+
+            var goods = GoodsHelper.GetGoods(gid);
+            if (goods == null)
+            {
+                ReturnErrorMsg("商品不存在");
+                return;
+            }
+
+            var shoppingcart = ShoppingCartHelper.GetShoppingCartByGid(uid, gid);
+            if (shoppingcart == null)
+            {
+                ReturnErrorMsg("不存在该购物车");
+                return;
+            }
+
+            //删除购物车
+            ShoppingCartHelper.DeleteShoppingCart(shoppingcart.Id);
+
+            //返回
+            ReturnCorrectMsg("删除购物车成功");
         }
         #endregion
     }

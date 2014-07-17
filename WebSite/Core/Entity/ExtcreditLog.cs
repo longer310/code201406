@@ -22,5 +22,12 @@ namespace Backstage.Core.Entity
         public int Extcredit { get; set; }
         public ExtcreditSourceType Type { get; set; }
         public DateTime CreateTime { get; set; }
+        public PlatformType PlatformType { get; set; } 
+
+        public ExtcreditLog()
+        {
+            CreateTime = DateTime.Now;
+            PlatformType = PlatformType.None;
+        }
     }
 }

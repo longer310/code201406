@@ -11,11 +11,12 @@ namespace Backstage.Core.Logic
 {
     public static class ChargeLogHelper
     {
-        public static PagResults<ChargeLog> GetChargeLogList(int sellerId, int userId, int start = 0, int limit = 0,int ifgetcount = 0)
+        public static PagResults<ChargeLog> GetChargeLogList(int sellerId, int userId, int start = 0, int limit = 0, int ifgetcount = 0)
         {
             var result = new PagResults<ChargeLog>();
+            result.Results = new List<ChargeLog>();
             string limitsql = start != 0 ? " LIMIT ?start,?limit" : string.Empty;
-            var cmdText = @"select * from ChargeLog where SellerId=?SellerId and UserId=?UserId and order by createtime desc " + limitsql;
+            var cmdText = @"select * from ChargeLog where SellerId=?SellerId and UserId=?UserId order by createtime desc " + limitsql;
 
             List<MySqlParameter> parameters = new List<MySqlParameter>();
             if (start != 0)
@@ -45,14 +46,15 @@ namespace Backstage.Core.Logic
 
                         result.Results.Add(ChargeLog);
                     }
-                    //一个函数有两次连接数据库 先把连接断开 然后重连
-                    conn.Close();
-                    conn.Dispose();
-                    conn.Open();
 
                     if (ifgetcount > 0)
                     {
-                        cmdText = cmdText = @"select count(*) from ChargeLog where SellerId=?SellerId and UserId=?UserId;";
+                        //一个函数有两次连接数据库 先把连接断开 然后重连
+                        conn.Close();
+                        conn.Dispose();
+                        conn.Open();
+
+                        cmdText = @"select count(*) from ChargeLog where SellerId=?SellerId and UserId=?UserId;";
                         parameters = new List<MySqlParameter>();
                         parameters.Add(new MySqlParameter("?SellerId", sellerId));
                         parameters.Add(new MySqlParameter("?UserId", userId));
@@ -91,7 +93,8 @@ namespace Backstage.Core.Logic
                                         Pid,
                                         OrderId,
                                         SellerId,
-                                        PayName
+                                        PayName,
+                                        CreateTime
                                         ) 
                                         values 
                                         (
@@ -100,7 +103,8 @@ namespace Backstage.Core.Logic
                                         ?Pid,
                                         ?OrderId,
                                         ?SellerId,
-                                        ?PayName
+                                        ?PayName,
+                                        ?CreateTime
                                         )";
             parameters.Add(new MySqlParameter("?UserId", chargeLog.UserId));
             parameters.Add(new MySqlParameter("?Money", chargeLog.Money));
@@ -108,6 +112,7 @@ namespace Backstage.Core.Logic
             parameters.Add(new MySqlParameter("?OrderId", chargeLog.OrderId));
             parameters.Add(new MySqlParameter("?SellerId", chargeLog.SellerId));
             parameters.Add(new MySqlParameter("?PayName", chargeLog.PayName));
+            parameters.Add(new MySqlParameter("?CreateTime", chargeLog.CreateTime));
             try
             {
                 var num = MySqlHelper.ExecuteNonQuery(Utility._gameDbConn, CommandType.Text, cmdText, parameters.ToArray());

@@ -1013,13 +1013,15 @@ namespace Backstage.Handler
         #region 获取会员信息 7.20
         public class UserInfoData
         {
-            public string nickname { get; set; }
+            public string username { get; set; }
             public string phone { get; set; }
             public string avatar { get; set; }
             public int sex { get; set; }
             public float money { get; set; }
             public int integral { get; set; }
             public int sellerid { get; set; }
+            public int signin { get; set; }
+            public int signintegral { get; set; }
         }
         public void GetUserInfo()
         {
@@ -1038,13 +1040,17 @@ namespace Backstage.Handler
                 return;
             }
             var data = new UserInfoData();
-            data.nickname = user.NickName;
+            data.username = user.NickName;
             data.phone = user.Phone;
             data.avatar = user.Avatar;
             data.sex = (int)user.Sex;
             data.money = user.Money;
             data.integral = user.Integral;
             data.sellerid = user.SellerId;
+            var sourceId = DateTime.Today.GetUnixTime();
+            if (ExtcreditLogHelper.JudgeExtcreditGet(ExtcreditSourceType.Register, sourceId, uid))
+                data.signin = 1;
+            data.signintegral = ParamHelper.ExtcreditCfgData.Register;
 
             JsonTransfer jt = new JsonTransfer();
             jt.AddSuccessParam();

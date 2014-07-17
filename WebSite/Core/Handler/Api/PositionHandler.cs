@@ -113,6 +113,10 @@ namespace Backstage.Core.Handler
                     return;
                 }
                 PositionHelper.CreateUserPositon(userPosition);
+                userPosition = PositionHelper.GetUserPosition(userPosition.UserId, userPosition.PositionId);
+                var data = new { orderId = userPosition.Id };
+                jt.Add("data", data);
+
             }
             catch
             {

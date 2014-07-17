@@ -28,6 +28,11 @@ namespace Backstage.Core.Entity
         public DateTime Expiry { get; set; }
 
         /// <summary>
+        /// 摘要（截断Decription前20个字符串）
+        /// </summary>
+        public string Summary { get; set; }
+
+        /// <summary>
         /// 描述
         /// </summary>
         public string Description { get; set; }

@@ -21,7 +21,15 @@ namespace Backstage.Core.Entity
 
         public string Title { get; set; }
 
+        /// <summary>
+        /// 截取Description的前20个字符串
+        /// </summary>
         public string Summary { get; set; }
+
+        /// <summary>
+        /// 描述
+        /// </summary>
+        public string Description { get; set; }
 
         public int Commentnum { get; set; }
 

@@ -37,6 +37,7 @@ namespace Backstage.Core.Handler
             int userId = GetInt("uid");
             int index = GetInt("start");
             int size = GetInt("limit");
+            JsonTransfer jt = new JsonTransfer();
             try
             {
                 var userCoupon = new UserCoupon()
@@ -45,16 +46,15 @@ namespace Backstage.Core.Handler
                     UserId = userId
                     //CreateTime = DateTime.Now
                 };
-                //var old = CouponHelper.GetUserCoupon(userId, cid);
-                //if (old != null && old.Id != 0)
-                //{
-                //    JsonTransfer jt = new JsonTransfer();
-                //    jt.Add("status", 0);
-                //    jt.Add("message", "用户已经使用过该优惠券");
-                //    Response.Write(DesEncrypt(jt).ToLower());
-                //    Response.End();
-                //    return;
-                //}
+                var old = CouponHelper.GetUserCoupon(userId, cid);
+                if (old != null && old.Id != 0)
+                {
+                    jt.Add("status", 0);
+                    jt.Add("message", "用户已经使用过该优惠券");
+                    Response.Write(DesEncrypt(jt).ToLower());
+                    Response.End();
+                    return;
+                }
                 CouponHelper.CreateUserCoupon(userCoupon);
             }
             catch
@@ -62,7 +62,6 @@ namespace Backstage.Core.Handler
                 throw;
             }
 
-            JsonTransfer jt = new JsonTransfer();
             jt.AddSuccessParam();
             Response.Write(DesEncrypt(jt).ToLower());
             Response.End();

@@ -26,6 +26,10 @@ namespace Backstage.Core.Entity
         /// 过期时间
         /// </summary>
         public DateTime ExpiredTime { get; set; }
+        /// <summary>
+        /// 用户id——用于更改绑定phone
+        /// </summary>
+        public int UserId { get; set; }
 
         public VerificationCode()
         {

@@ -33,7 +33,9 @@ namespace Backstage.Core
 
         public static string _md5open = System.Configuration.ConfigurationManager.AppSettings["md5open"];//是否验证md5加密
         public static string _desopen = System.Configuration.ConfigurationManager.AppSettings["desopen"];//是否des加密返回
-        public static string _message = System.Configuration.ConfigurationManager.AppSettings["message"];//短信格式
+        public static string _register_message = System.Configuration.ConfigurationManager.AppSettings["register_message"];//注册短信格式
+        public static string _modifyphone_message = System.Configuration.ConfigurationManager.AppSettings["modifyphone_message"];//注册短信格式
+        public static string _message = System.Configuration.ConfigurationManager.AppSettings["message"];//注册短信格式
         public static string _msg_url = System.Configuration.ConfigurationManager.AppSettings["msg_url"];//短信请求地址
         public static string _msg_zh = System.Configuration.ConfigurationManager.AppSettings["msg_zh"];//账号名
         public static string _msg_mm = System.Configuration.ConfigurationManager.AppSettings["msg_mm"];//密码
@@ -378,9 +380,10 @@ namespace Backstage.Core
         /// </summary>
         /// <param name="code"></param>
         /// <param name="phone"></param>
-        public static void SendMsg(string code, string phone)
+        /// <param name="message"></param>
+        public static void SendMsg(string code, string phone, string message)
         {
-            string msg = string.Format(_message, code);
+            string msg = string.Format(message, code);
             Encoding encoding = Encoding.GetEncoding("UTF-8");
             IDictionary<string, string> parameters = new Dictionary<string, string>();
             parameters.Add("zh", _msg_zh);

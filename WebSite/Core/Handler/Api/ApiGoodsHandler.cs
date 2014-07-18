@@ -563,7 +563,7 @@ namespace Backstage.Handler
             }
             if (user.SellerId <= 0)
             {
-                ReturnErrorMsg("此用户木有商户");
+                ReturnErrorMsg("此用户没有有商户");
                 return;
             }
 
@@ -690,7 +690,10 @@ namespace Backstage.Handler
             var wheresql = string.Format(" where UserId = {0} ", uid);
             int totalcount;
             var list = ShoppingCartHelper.GetShoppingCartList(out totalcount, wheresql, "", 0);
-            wheresql = string.Format(" and a.Id in({0}) ", Utility.GetString(list.Select(o => o.Gid).Distinct().ToList()));
+            if (list.Count > 0)
+                wheresql = string.Format(" and a.Id in({0}) ",
+                    Utility.GetString(list.Select(o => o.Gid).Distinct().ToList()));
+            else wheresql = string.Empty;
             var glist = GoodsHelper.GetGoodsList(user.SellerId, out totalcount, wheresql, "", 0);
 
             var data = new ShoppingCartData();
@@ -969,6 +972,11 @@ namespace Backstage.Handler
                 ReturnErrorMsg("不存在该充值类型");
                 return;
             }
+            if (orders.Status >= OrderStatus.Update)
+            {
+                ReturnErrorMsg("已更新订单信息");
+                return;
+            }
 
             orders.OrderTime = ordertime;
             orders.OrderType = (OrderType)ordertype;
@@ -999,7 +1007,7 @@ namespace Backstage.Handler
             if (orders.TotalPrice < 0) orders.TotalPrice = 0;
             orders.Pid = pid;
             orders.Remark = remark;
-            orders.Status++;
+            orders.Status = OrderStatus.Update;
 
             OrdersHelper.SaveOrders(orders);
 

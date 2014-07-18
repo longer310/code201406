@@ -10,12 +10,13 @@ namespace Backstage.Core.Logic
 {
     public static class VerificationCodeHelper
     {
-        public static VerificationCode GetVerificationCode(int sellerId, string phone)
+        public static VerificationCode GetVerificationCode(int sellerId, string phone,int uid=0)
         {
-            var cmdText = @"select * from VerificationCode where SellerId=?SellerId and Phone =?Phone limit 1;";
+            var cmdText = @"select * from VerificationCode where SellerId=?SellerId and Phone =?Phone and UserId=?UserId limit 1;";
             List<MySqlParameter> parameters = new List<MySqlParameter>();
             parameters.Add(new MySqlParameter("?SellerId", sellerId));
             parameters.Add(new MySqlParameter("?Phone", phone));
+            parameters.Add(new MySqlParameter("?UserId", uid));
             try
             {
                 using (var conn = Utility.ObtainConn(Utility._gameDbConn))
@@ -127,6 +128,7 @@ namespace Backstage.Core.Logic
                                                     ExpiredTime,
                                                     Code,
                                                     SellerId,
+                                                    UserId,
                                                     Phone
                                                     ) 
                                                     values 
@@ -134,12 +136,14 @@ namespace Backstage.Core.Logic
                                                    ?ExpiredTime,
                                                    ?Code,
                                                    ?SellerId,
+                                                   ?UserId,
                                                    ?Phone
                                                     );";
                 parameters.Add(new MySqlParameter("?ExpiredTime", verificationCode.ExpiredTime));
                 parameters.Add(new MySqlParameter("?Code", verificationCode.Code));
                 parameters.Add(new MySqlParameter("?SellerId", verificationCode.SellerId));
                 parameters.Add(new MySqlParameter("?Phone", verificationCode.Phone));
+                parameters.Add(new MySqlParameter("?UserId", verificationCode.UserId));
             }
             try
             {

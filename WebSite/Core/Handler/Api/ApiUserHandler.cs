@@ -88,7 +88,7 @@ namespace Backstage.Handler
             }
         }
 
-        #region 返回积分的公用类 
+        #region 返回积分的公用类
         public class IntegralData
         {
             public int integral { get; set; }
@@ -138,7 +138,7 @@ namespace Backstage.Handler
             }
             //发送短信
             if (Utility._msg_opensend == "1")
-                Utility.SendMsg(verificationCode.Code, verificationCode.Phone);
+                Utility.SendMsg(verificationCode.Code, verificationCode.Phone, Utility._register_message);
             //保存验证信息
             VerificationCodeHelper.SaveVerificationCode(verificationCode);
 
@@ -877,9 +877,14 @@ namespace Backstage.Handler
                 ReturnErrorMsg("原密码错误");
                 return;
             }
-            if (newpwd.Length == 0 || newpwd.Length > 20)
+            if (oldpwd.Equals(newpwd))
             {
-                ReturnErrorMsg("新密码格式错误");
+                ReturnErrorMsg("密码未改变");
+                return;
+            }
+            if (newpwd.Length < 3 || newpwd.Length > 20)
+            {
+                ReturnErrorMsg("密码长度为3~20个字符");
                 return;
             }
 
@@ -911,7 +916,7 @@ namespace Backstage.Handler
             }
             var verificationCode = VerificationCodeHelper.GetVerificationCodeByUid(sellerid, uid);
 
-            if (verificationCode == null || verificationCode.ExpiredTime > DateTime.Now)
+            if (verificationCode == null)
             {
                 ReturnErrorMsg("验证码错误或已过期");
                 return;
@@ -938,20 +943,25 @@ namespace Backstage.Handler
                 ReturnErrorMsg(string.Format("不存在Id={0}的用户", uid));
                 return;
             }
-
+            if (string.IsNullOrEmpty(phone))
+            {
+                ReturnErrorMsg("传参错误，电话为空");
+                return;
+            }
             var euser = AccountHelper.FindUserByPhone(phone);
-            if (string.IsNullOrEmpty(phone) || euser != null)
+            if (euser != null)
             {
                 ReturnErrorMsg("此电话已注册");
                 return;
             }
-            var verificationCode = VerificationCodeHelper.GetVerificationCode(sellerId, phone);
+            var verificationCode = VerificationCodeHelper.GetVerificationCode(sellerId, phone, uid);
             bool needgen = false;
             if (verificationCode == null)
             {
                 verificationCode = new VerificationCode();
                 verificationCode.Phone = phone;
                 verificationCode.SellerId = sellerId;
+                verificationCode.UserId = uid;
                 needgen = true;
             }
             else
@@ -966,7 +976,7 @@ namespace Backstage.Handler
             }
             //发送短信
             if (Utility._msg_opensend == "1")
-                Utility.SendMsg(verificationCode.Code, verificationCode.Phone);
+                Utility.SendMsg(verificationCode.Code, verificationCode.Phone, Utility._modifyphone_message);
             //保存验证信息
             VerificationCodeHelper.SaveVerificationCode(verificationCode);
 

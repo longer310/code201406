@@ -37,11 +37,11 @@ namespace Backstage.Core.Logic
                                         ?Content,
                                         ?CreateTime
                                         )";
-            parameters.Add(new MySqlParameter("UserId    ", shareLog.UserId));
-            parameters.Add(new MySqlParameter("Type    ", shareLog.Type));
-            parameters.Add(new MySqlParameter("TypeId    ", shareLog.TypeId));
-            parameters.Add(new MySqlParameter("Content    ", shareLog.Content));
-            parameters.Add(new MySqlParameter("CreateTime    ", shareLog.CreateTime));
+            parameters.Add(new MySqlParameter("?UserId", shareLog.UserId));
+            parameters.Add(new MySqlParameter("?Type", shareLog.Type));
+            parameters.Add(new MySqlParameter("?TypeId", shareLog.TypeId));
+            parameters.Add(new MySqlParameter("?Content", shareLog.Content));
+            parameters.Add(new MySqlParameter("?CreateTime", shareLog.CreateTime));
             try
             {
                 var num = MySqlHelper.ExecuteNonQuery(Utility._gameDbConn, CommandType.Text, cmdText, parameters.ToArray());

@@ -23,5 +23,10 @@ namespace Backstage.Core.Entity
         /// 商户id
         /// </summary>
         public int SellerId { get; set; }
+
+        public GoodsCategories()
+        {
+            Name = "";
+        }
     }
 }

@@ -22,6 +22,11 @@ namespace Backstage.Core
             Add("message", "返回消息");
         }
 
+        public void AddPageCorrectReturn(string msg)
+        {
+            Add("success", msg);
+        }
+
         /// <summary>
         /// 默认追加到_contentKey里
         /// </summary>

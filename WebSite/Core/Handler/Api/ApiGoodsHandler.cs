@@ -130,8 +130,7 @@ namespace Backstage.Handler
             }
             //单独获取产品的列表 以后得改 +图片墙+活动
             var list = new List<TSlideItem>();
-            int totalnum;
-            var gads = GoodsHelper.GetGoodsList(sellerid, out totalnum, "", "", 0, 0, 5);
+            var gads = GoodsHelper.GetGoodsList(sellerid, "", "", 0, 5).Results;
             foreach (var gad in gads)
             {
                 var s = new TSlideItem();
@@ -179,8 +178,7 @@ namespace Backstage.Handler
             ParamHelper.PageAd mpparam = ParamHelper.PageAdData;
             data.ad = new AdItem() { img = mpparam.AdImgUrl, title = mpparam.Title, url = mpparam.Url };
 
-            int totalcount;
-            var glist = GoodsHelper.GetGoodsList(sellerid, out totalcount, " and IsHot = 1 ", "", 0, 0, 8);
+            var glist = GoodsHelper.GetGoodsList(sellerid, " and IsHot = 1 ", "", 0, 8).Results;
             foreach (var gl in glist)
             {
                 data.hots.Add(new HotItem() { img = gl.LogoUrl, gid = gl.Id });
@@ -247,6 +245,7 @@ namespace Backstage.Handler
             int order = GetInt("order");
             int start = GetInt("start");
             int limit = GetInt("limit");
+            int uid = GetInt("uid");
 
             string wheresql = string.Empty;
             string shoppingcartql = "";
@@ -268,17 +267,15 @@ namespace Backstage.Handler
             }
 
             //组装下发数据
-            int totalcount;
-            int totalccount;
-            var user = AccountHelper.GetCurUser();
-            var goodslist = GoodsHelper.GetGoodsList(sellerid, out totalcount, wheresql, shoppingcartql, 0, start * limit, limit);
+            //var user = AccountHelper.GetCurUser();
+            var goodslist = GoodsHelper.GetGoodsList(sellerid, wheresql, shoppingcartql, start * limit, limit).Results;
             //string pwheresql = GetWhereSql(goodslist.Select(o => o.Logo).ToList());
             //var picList = SourceMaterialHelper.GetList(0, 0, pwheresql, "");
-            var gclist = GoodsCategoriesHelper.GetList(sellerid, out totalccount);
+            var gclist = GoodsCategoriesHelper.GetList(sellerid).Results;
             Favorite favorite = null;
-            if (user != null)
+            if (uid > 0)
             {
-                favorite = FavoriteHelper.GetFavorite(user.Id);
+                favorite = FavoriteHelper.GetFavorite(uid);
             }
             GoodsListData data = new GoodsListData();
             foreach (var goodsCategoriese in gclist)
@@ -348,6 +345,7 @@ namespace Backstage.Handler
         {
             int gid = GetInt("gid");
             int sellerid = GetInt("sellerid");
+            int uid = GetInt("uid");
 
             var goods = GoodsHelper.GetGoods(gid);
             if (goods.SellerId != sellerid)
@@ -359,12 +357,12 @@ namespace Backstage.Handler
             var gcategories = GoodsCategoriesHelper.GetGoodsCategories(cid);
             string wheresql = Utility.GetWhereSql(goods.ImgIdList);
             var piclist = SourceMaterialHelper.GetList(0, 0, wheresql, "");
-            var user = AccountHelper.GetCurUser();
+            //var user = AccountHelper.GetCurUser();
             Favorite favorite = null;
-            if (user != null)
-                favorite = FavoriteHelper.GetFavorite(user.Id);
+            if (uid > 0)
+                favorite = FavoriteHelper.GetFavorite(uid);
             var data = new GoodsDetailItem();
-            
+
             foreach (var sourceMaterial in piclist)
             {
                 data.images.Add(sourceMaterial.Url);
@@ -688,13 +686,12 @@ namespace Backstage.Handler
             }
 
             var wheresql = string.Format(" where UserId = {0} ", uid);
-            int totalcount;
-            var list = ShoppingCartHelper.GetShoppingCartList(out totalcount, wheresql, "", 0);
+            var list = ShoppingCartHelper.GetShoppingCartList(wheresql).Results;
             if (list.Count > 0)
                 wheresql = string.Format(" and a.Id in({0}) ",
                     Utility.GetString(list.Select(o => o.Gid).Distinct().ToList()));
             else wheresql = string.Empty;
-            var glist = GoodsHelper.GetGoodsList(user.SellerId, out totalcount, wheresql, "", 0);
+            var glist = GoodsHelper.GetGoodsList(user.SellerId, wheresql).Results;
 
             var data = new ShoppingCartData();
             foreach (var shoppingCart in list)
@@ -746,9 +743,7 @@ namespace Backstage.Handler
                 ReturnErrorMsg("参数错误");
                 return;
             }
-            int totalcount;
-            var goodslist = GoodsHelper.GetGoodsList(sellerId, out totalcount, string.Format(" and a.Id in({0}) ", gids),
-                "", 0);
+            var goodslist = GoodsHelper.GetGoodsList(sellerId, string.Format(" and a.Id in({0}) ", gids)).Results;
             var orders = new Orders();
             orders.UserId = uid;
             foreach (var goods in goodslist)

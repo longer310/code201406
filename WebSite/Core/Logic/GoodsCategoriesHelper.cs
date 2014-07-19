@@ -4,6 +4,7 @@ using System.Data;
 using System.Linq;
 using System.Web;
 using Backstage.Core.Entity;
+using Backstage.Model;
 using MySql.Data.MySqlClient;
 
 namespace Backstage.Core.Logic
@@ -20,11 +21,11 @@ namespace Backstage.Core.Logic
         /// <param name="start"></param>
         /// <param name="limit"></param>
         /// <returns></returns>
-        public static List<GoodsCategories> GetList(int sellerId, out int totalnum, string wheresql = "",
-            string ordersql = "", int start = 0, int limit = 0)
+        public static PagResults<GoodsCategories> GetList(int sellerId, string wheresql = "",
+            string ordersql = "", int start = 0, int limit = 0, int isgettotal = 0)
         {
-            totalnum = 0;
-            List<GoodsCategories> list = new List<GoodsCategories>();
+            var result = new PagResults<GoodsCategories>();
+            result.Results = new List<GoodsCategories>();
             if (ordersql == "") ordersql = " order by `Index` ";
             string limitsql = limit != 0 ? " LIMIT ?start,?limit" : string.Empty;
             var cmdText = @"select * from GoodsCategories where SellerId=?SellerId " + wheresql + ordersql + limitsql;
@@ -46,28 +47,31 @@ namespace Backstage.Core.Logic
                     {
                         GoodsCategories goodsCategories = new GoodsCategories();
                         goodsCategories.Id = reader.GetInt32(0);
-                        goodsCategories.Index = (int) reader["Index"];
+                        goodsCategories.Index = (int)reader["Index"];
                         goodsCategories.Name = reader["Name"].ToString();
-                        goodsCategories.SellerId = (int) reader["SellerId"];
+                        goodsCategories.SellerId = (int)reader["SellerId"];
 
-                        list.Add(goodsCategories);
+                        result.Results.Add(goodsCategories);
                     }
 
-                    //一个函数有两次连接数据库 先把连接断开 然后重连
-                    conn.Close();
-                    conn.Dispose();
-                    conn.Open();
-
-                    cmdText = @"select count(*) from GoodsCategories where SellerId=?SellerId " + wheresql;
-                    parameters = new List<MySqlParameter>();
-                    parameters.Add(new MySqlParameter("?SellerId", sellerId));
-                    reader = MySqlHelper.ExecuteReader(conn, CommandType.Text, cmdText,
-                        parameters.ToArray());
-                    if (reader.HasRows)
+                    if (isgettotal > 0)
                     {
-                        if (reader.Read())
+                        //一个函数有两次连接数据库 先把连接断开 然后重连
+                        conn.Close();
+                        conn.Dispose();
+                        conn.Open();
+
+                        cmdText = @"select count(*) from GoodsCategories where SellerId=?SellerId " + wheresql;
+                        parameters = new List<MySqlParameter>();
+                        parameters.Add(new MySqlParameter("?SellerId", sellerId));
+                        reader = MySqlHelper.ExecuteReader(conn, CommandType.Text, cmdText,
+                            parameters.ToArray());
+                        if (reader.HasRows)
                         {
-                            totalnum = reader.GetInt32(0);
+                            if (reader.Read())
+                            {
+                                result.TotalCount = reader.GetInt32(0);
+                            }
                         }
                     }
                 }
@@ -76,7 +80,7 @@ namespace Backstage.Core.Logic
             {
                 throw;
             }
-            return list;
+            return result;
         }
         /// <summary>
         /// 获取分类项
@@ -108,6 +112,74 @@ namespace Backstage.Core.Logic
                 throw;
             }
             return null;
+        }
+        /// <summary>
+        /// 保存分类
+        /// </summary>
+        /// <param name="goodsCategories"></param>
+        /// <returns></returns>
+        public static bool SaveGoodsCategories(GoodsCategories goodsCategories)
+        {
+            var cmdText = string.Empty;
+            List<MySqlParameter> parameters = new List<MySqlParameter>();
+            if (goodsCategories.Id > 0)
+            {
+                cmdText = @"update GoodsCategories set 
+                                                   Index=?Index,
+                                                   Name =?Name,
+                                                   where 
+                                                   Id=?Id";
+                parameters.Add(new MySqlParameter("?Id", goodsCategories.Id));
+                parameters.Add(new MySqlParameter("?Index", goodsCategories.Index));
+                parameters.Add(new MySqlParameter("?Name", goodsCategories.Name));
+            }
+            else
+            {
+                cmdText = @"insert into GoodsCategories
+                                                   (
+                                                   Index,
+                                                   Name,
+                                                   SellerId
+                                                   ) 
+                                                   values 
+                                                   (
+                                                   ?Index,
+                                                   ?Name,
+                                                   ?SellerId
+                                                   )";
+                parameters.Add(new MySqlParameter("?Index", goodsCategories.Index));
+                parameters.Add(new MySqlParameter("?Name", goodsCategories.Name));
+                parameters.Add(new MySqlParameter("?SellerId", goodsCategories.SellerId));
+            }
+            try
+            {
+                var num = MySqlHelper.ExecuteNonQuery(Utility._gameDbConn, CommandType.Text, cmdText, parameters.ToArray());
+                return num > 0;
+            }
+            catch (System.Exception ex)
+            {
+                throw;
+            }
+            return false;
+        }
+
+
+        /// <summary>
+        /// 删除分类
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public static bool DeleteGoodsCategories(int id)
+        {
+            var cmdText = String.Format("delete from GoodsCategories where Id={0} limit 1;", id);
+            try
+            {
+                return MySqlHelper.ExecuteNonQuery(Utility._gameDbConn, CommandType.Text, cmdText) > 0;
+            }
+            catch (System.Exception ex)
+            {
+                throw;
+            }
         }
     }
 }

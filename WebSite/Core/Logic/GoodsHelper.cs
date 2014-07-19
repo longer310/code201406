@@ -5,16 +5,18 @@ using System.Linq;
 using System.Web;
 using Backstage.Core.Dapper;
 using Backstage.Core.Entity;
+using Backstage.Model;
 using MySql.Data.MySqlClient;
 
 namespace Backstage.Core.Logic
 {
     public static class GoodsHelper
     {
-        public static List<Goods> GetGoodsList(int sellerId, out int totalnum, string wheresql = "",
-            string ordersql = "", int gettotal = 1, int start = 0, int limit = 0)
+        public static PagResults<Goods> GetGoodsList(int sellerId, string wheresql = "",
+            string ordersql = "", int start = 0, int limit = 0, int gettotal = 0)
         {
-            totalnum = 0;
+            var result = new PagResults<Goods>();
+            result.Results = new List<Goods>();
             List<Goods> list = new List<Goods>();
             if (ordersql == "") ordersql = " order by CreateTime desc ";
             string limitsql = start != 0 ? " LIMIT ?start,?limit" : string.Empty;
@@ -53,10 +55,10 @@ namespace Backstage.Core.Logic
                         goods.Content = reader["Content"].ToString();
                         goods.LogoUrl = reader["Url"].ToString();
 
-                        list.Add(goods);
+                        result.Results.Add(goods);
                     }
 
-                    if (gettotal == 1)
+                    if (gettotal > 0)
                     {
                         //一个函数有两次连接数据库 先把连接断开 然后重连
                         conn.Close();
@@ -70,7 +72,7 @@ namespace Backstage.Core.Logic
                         {
                             if (reader.Read())
                             {
-                                totalnum = reader.GetInt32(0);
+                                result.TotalCount = reader.GetInt32(0);
                             }
                         }
                     }
@@ -81,7 +83,7 @@ namespace Backstage.Core.Logic
             {
                 throw;
             }
-            return list;
+            return result;
         }
 
         public static Goods GetGoods(int id)

@@ -458,6 +458,7 @@
     <Compile Include="Core\Entity\WeixinToken.cs" />
     <Compile Include="Core\Entity\ShareLog.cs" />
     <Compile Include="Core\Enums.cs" />
+    <Compile Include="Core\Handler\Goods\GoodsHandler.cs" />
     <Compile Include="Core\Logic\ShareLogHelper.cs" />
     <Compile Include="Core\MyCache.cs" />
     <Compile Include="Core\Handler\ActiveHelper.cs" />
@@ -566,6 +567,7 @@
     <Content Include="Handler\Api\SourceMaterialHandler.ashx" />
     <Content Include="Handler\Api\GeneralHandler.ashx" />
     <Content Include="Handler\Api\PositionHandler.ashx" />
+    <Content Include="Handler\Goods\GoodsHandler.ashx" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

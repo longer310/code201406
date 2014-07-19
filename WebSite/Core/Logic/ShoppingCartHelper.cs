@@ -4,16 +4,18 @@ using System.Data;
 using System.Linq;
 using System.Web;
 using Backstage.Core.Entity;
+using Backstage.Model;
 using MySql.Data.MySqlClient;
 
 namespace Backstage.Core.Logic
 {
     public static class ShoppingCartHelper
     {
-        public static List<ShoppingCart> GetShoppingCartList(out int totalnum, string wheresql = "",
-            string ordersql = "", int gettotal = 1, int start = 0, int limit = 0)
+        public static PagResults<ShoppingCart> GetShoppingCartList(string wheresql = "",
+            string ordersql = "", int start = 0, int limit = 0, int gettotal = 0)
         {
-            totalnum = 0;
+            var result = new PagResults<ShoppingCart>();
+            result.Results = new List<ShoppingCart>();
             List<ShoppingCart> list = new List<ShoppingCart>();
             if (ordersql == "") ordersql = " order by CreateTime desc ";
             string limitsql = limit != 0 ? " LIMIT ?start,?limit" : String.Empty;
@@ -45,7 +47,7 @@ namespace Backstage.Core.Logic
                         shoppingcart.Num = (int)reader["Num"];
                         shoppingcart.CreateTime = (DateTime)reader["CreateTime"];
 
-                        list.Add(shoppingcart);
+                        result.Results.Add(shoppingcart);
                     }
 
                     //一个函数有两次连接数据库 先把连接断开 然后重连
@@ -53,7 +55,7 @@ namespace Backstage.Core.Logic
                     conn.Dispose();
                     conn.Open();
 
-                    if (gettotal == 1)
+                    if (gettotal > 0)
                     {
                         cmdText = String.Format("select count(*) from ShoppingCart ") + wheresql;
                         reader = MySqlHelper.ExecuteReader(conn, CommandType.Text, cmdText);
@@ -61,7 +63,7 @@ namespace Backstage.Core.Logic
                         {
                             if (reader.Read())
                             {
-                                totalnum = reader.GetInt32(0);
+                                result.TotalCount = reader.GetInt32(0);
                             }
                         }
                     }
@@ -71,7 +73,7 @@ namespace Backstage.Core.Logic
             {
                 throw;
             }
-            return list;
+            return result;
         }
         /// <summary>
         /// 根据id查找购物车
@@ -236,7 +238,7 @@ namespace Backstage.Core.Logic
         }
 
         /// <summary>
-        /// 获取支付方式项
+        /// 删除购物车
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>

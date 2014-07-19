@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.SessionState;
+using Backstage.Core.Entity;
 using Newtonsoft.Json;
 
 namespace Backstage.Core
@@ -14,13 +15,48 @@ namespace Backstage.Core
     {
         protected HttpRequest Request;
         protected HttpResponse Response;
+        private Account _currentUser;
+        private bool _isLogin;
         private string _action;
+        private string _freeActions;
+        private RoleType _roleType;
 
         public virtual void ProcessRequest(HttpContext context)
         {
             context.Response.ContentType = "text/plain";
             Request = context.Request;
             Response = context.Response;
+
+            if (!IsLogin)//未登录
+            {
+                if (!string.IsNullOrEmpty(_freeActions) && _freeActions.IndexOf("," + Action + ",") > -1)
+                {
+                    if (_roleType < CurrentUser.RoleType)
+                    {
+                        Response.Write(new JsonTransfer().SetError("无权限"));
+                        Response.End();
+                    }
+                }
+                else
+                {
+                    Response.Write(new JsonTransfer().SetError("您还未登录或登录超时，请重新登录！"));
+                    Response.End();
+                }
+            }
+        }
+        /// <summary>
+        /// 是否登陆
+        /// </summary>
+        public bool IsLogin
+        {
+            get { return _isLogin; }
+        }
+        /// <summary>
+        /// 可能为null，使用的时候要记得判断
+        /// </summary>
+        public Account CurrentUser
+        {
+            get { return _currentUser; }
         }
         /// <summary>
         /// 获取当前的Action值
@@ -35,19 +71,49 @@ namespace Backstage.Core
                 return _action;
             }
         }
-        public void ReturnErrorMsg(string msg)
+        /// <summary>
+        /// 设置该页面为不验证登录的页面，格式“,a,b,c,”
+        /// </summary>
+        protected string FreeActions
         {
-            JsonTransfer jt = new JsonTransfer();
-            jt.Add("status", "0");
-            jt.Add("message", msg);
-            Response.Write(CryptHelper.DES_Encrypt(jt.ToJson()));
-            Response.End();
+            get { return _freeActions; }
+            set { _freeActions = value; }
+        }
+        /// <summary>
+        /// 设置访问权限
+        /// </summary>
+        protected RoleType RoleType
+        {
+            get { return _roleType; }
+            set { _roleType = value; }
+        }
+        /// <summary>
+        /// 初始化
+        /// </summary>
+        public BaseHandler()
+        {
+            _currentUser = AccountHelper.GetCurUser();
+            _isLogin = _currentUser != null;
         }
         public bool IsReusable
         {
             get { return false; }
         }
-
+        
+        public void ReturnErrorMsg(string msg)
+        {
+            JsonTransfer jt = new JsonTransfer();
+            jt.SetError("msg");
+            Response.Write(jt.ToJson());
+            Response.End();
+        }
+        public void ReturnCorrectMsg(string msg)
+        {
+            JsonTransfer jt = new JsonTransfer();
+            jt.Add("success", msg);
+            Response.Write(jt.ToJson());
+            Response.End();
+        }
         public int GetInt(string paramName, int defaultVale)
         {
             var p1 = Request.Form[paramName];

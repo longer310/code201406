@@ -5,6 +5,9 @@ using System.Web;
 
 namespace Backstage.Core
 {
+    /// <summary>
+    /// 数值越小 权限越大
+    /// </summary>
     public enum RoleType
     {
         /// <summary>
@@ -13,7 +16,7 @@ namespace Backstage.Core
         SuperManage = 1,
 
         /// <summary>
-        /// 一级管理员 不具备转账
+        /// 一级管理员 具备转账
         /// </summary>
         Manage = 2,
 

@@ -284,18 +284,19 @@ namespace Backstage.Core.Logic
         public static List<ShoppingCart> GetList(int uid, string ids)
         {
             var list = new List<ShoppingCart>();
-            string commandText = @"select * from ShoppingCart where UserId = ?UserId and Id in(?Id);";
+            //string commandText = @"select * from ShoppingCart where UserId = ?UserId and Id in(?Id);";
+            string commandText = string.Format("select * from ShoppingCart where UserId = {0} and Id in({1});",uid,ids);
 
-            List<MySqlParameter> parameters = new List<MySqlParameter>();
-            parameters.Add(new MySqlParameter("?UserId", uid));
-            parameters.Add(new MySqlParameter("?Id", ids));
+            //List<MySqlParameter> parameters = new List<MySqlParameter>();
+            //parameters.Add(new MySqlParameter("?UserId", uid));
+            //parameters.Add(new MySqlParameter("?Id", ids));
 
             try
             {
                 using (var conn = Utility.ObtainConn(Utility._gameDbConn))
                 {
-                    MySqlDataReader reader = MySqlHelper.ExecuteReader(conn, CommandType.Text, commandText,
-                        parameters.ToArray());
+                    MySqlDataReader reader = MySqlHelper.ExecuteReader(conn, CommandType.Text, commandText);//,
+                        //parameters.ToArray()
                     while (reader.Read())
                     {
                         ShoppingCart shoppingcart = new ShoppingCart();

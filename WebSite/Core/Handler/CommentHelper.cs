@@ -209,18 +209,19 @@ namespace Backstage.Core
         public static List<Comment> GetList(int uid, string ids)
         {
             var list = new List<Comment>();
-            string commandText = @"select * from comment where UserId = ?UserId and Id in(?Id);";
+            //string commandText = @"select * from comment where Id IN(??afsdfsdf);";
+            string commandText = string.Format("select * from comment where UserId = {0} and Id in({1});", uid, ids);
 
-            List<MySqlParameter> parameters = new List<MySqlParameter>();
-            parameters.Add(new MySqlParameter("?UserId", uid));
-            parameters.Add(new MySqlParameter("?Id", ids));
+            //List<MySqlParameter> parameters = new List<MySqlParameter>();
+            //parameters.Add(new MySqlParameter("?UserId", uid));
+            //gidList = new List<int>() { 215, 216 };
+            //parameters.Add(new MySqlParameter("??afsdfsdf", string.Join(",", gidList.ToArray())));
 
             try
             {
                 using (var conn = Utility.ObtainConn(Utility._gameDbConn))
                 {
-                    MySqlDataReader reader = MySqlHelper.ExecuteReader(conn, CommandType.Text, commandText,
-                        parameters.ToArray());
+                    MySqlDataReader reader = MySqlHelper.ExecuteReader(conn, CommandType.Text, commandText);//, parameters.ToArray()
                     while (reader.Read())
                     {
                         Comment c = new Comment();
@@ -252,17 +253,18 @@ namespace Backstage.Core
         /// <returns></returns>
         public static bool DelList(int uid, string ids)
         {
-            string commandText = @"delete from comment where UserId = ?UserId and Id in(?Id);";
+            //string commandText = @"delete from comment where UserId = ?UserId and Id in(?Id);";
+            string commandText = string.Format("delete from comment where UserId = {0} and Id in({1});", uid, ids);
 
-            List<MySqlParameter> parameters = new List<MySqlParameter>();
-            parameters.Add(new MySqlParameter("?UserId", uid));
-            parameters.Add(new MySqlParameter("?Id", ids));
+            //List<MySqlParameter> parameters = new List<MySqlParameter>();
+            //parameters.Add(new MySqlParameter("?UserId", uid));
+            //parameters.Add(new MySqlParameter("?Id", ids));
 
             try
             {
                 using (var conn = Utility.ObtainConn(Utility._gameDbConn))
                 {
-                    return MySqlHelper.ExecuteNonQuery(conn, CommandType.Text, commandText, parameters.ToArray()) > 0;
+                    return MySqlHelper.ExecuteNonQuery(conn, CommandType.Text, commandText) > 0;//, parameters.ToArray()
                 }
             }
             catch (System.Exception ex)

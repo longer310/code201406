@@ -137,7 +137,7 @@ namespace Backstage.Core
         /// <param name="start"></param>
         /// <param name="limit"></param>
         /// <returns></returns>
-        public static PagResults<Comment> GetList(int uid, int sellerId, CommentType type, int start, int limit,int isgetcount = 0)
+        public static PagResults<Comment> GetList(int uid, int sellerId, CommentType type, int start, int limit, int isgetcount = 0)
         {
             var results = new PagResults<Comment>();
             results.Results = new List<Comment>();
@@ -198,6 +198,78 @@ namespace Backstage.Core
                 throw;
             }
             return results;
+        }
+
+        /// <summary>
+        /// 获取用户评论列表
+        /// </summary>
+        /// <param name="uid"></param>
+        /// <param name="ids"></param>
+        /// <returns></returns>
+        public static List<Comment> GetList(int uid, string ids)
+        {
+            var list = new List<Comment>();
+            string commandText = @"select * from comment where UserId = ?UserId and Id in(?Id);";
+
+            List<MySqlParameter> parameters = new List<MySqlParameter>();
+            parameters.Add(new MySqlParameter("?UserId", uid));
+            parameters.Add(new MySqlParameter("?Id", ids));
+
+            try
+            {
+                using (var conn = Utility.ObtainConn(Utility._gameDbConn))
+                {
+                    MySqlDataReader reader = MySqlHelper.ExecuteReader(conn, CommandType.Text, commandText,
+                        parameters.ToArray());
+                    while (reader.Read())
+                    {
+                        Comment c = new Comment();
+                        c.Id = (int)reader["Id"];
+                        c.SellerId = (int)reader["SellerId"];
+                        c.Type = (CommentType)reader["Type"];
+                        c.TypeId = (int)reader["TypeId"];
+                        c.Content = reader["Content"].ToString();
+                        c.Img = reader["Img"].ToString();
+                        c.Title = reader["Title"].ToString();
+                        c.CreateTime = (DateTime)reader["CreateTime"];
+                        c.UserId = (int)reader["UserId"];
+                        list.Add(c);
+                    }
+                }
+            }
+            catch (System.Exception ex)
+            {
+                throw;
+            }
+            return list;
+        }
+
+        /// <summary>
+        /// 删除用户评论列表
+        /// </summary>
+        /// <param name="uid"></param>
+        /// <param name="ids"></param>
+        /// <returns></returns>
+        public static bool DelList(int uid, string ids)
+        {
+            string commandText = @"delete from comment where UserId = ?UserId and Id in(?Id);";
+
+            List<MySqlParameter> parameters = new List<MySqlParameter>();
+            parameters.Add(new MySqlParameter("?UserId", uid));
+            parameters.Add(new MySqlParameter("?Id", ids));
+
+            try
+            {
+                using (var conn = Utility.ObtainConn(Utility._gameDbConn))
+                {
+                    return MySqlHelper.ExecuteNonQuery(conn, CommandType.Text, commandText, parameters.ToArray()) > 0;
+                }
+            }
+            catch (System.Exception ex)
+            {
+                throw;
+            }
+            return false;
         }
     }
 }

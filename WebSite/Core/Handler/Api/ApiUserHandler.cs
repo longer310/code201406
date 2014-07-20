@@ -84,6 +84,9 @@ namespace Backstage.Handler
                 case "userregist"://签到接口 7.21
                     UserRegist();
                     break;
+                case "delmycommentlist"://删除我的评论列表 7.22
+                    DelMyCommentList();
+                    break;
                 default: break;
             }
         }
@@ -734,6 +737,7 @@ namespace Backstage.Handler
         }
         public class MyCommentItem
         {
+            public int id { get; set; }
             public int createtime { get; set; }
             public int type { get; set; }
             public string content { get; set; }
@@ -765,6 +769,7 @@ namespace Backstage.Handler
             foreach (var c in ucommentlist.Results)
             {
                 var item = new MyCommentItem();
+                item.id = c.Id;
                 item.createtime = c.CreateTime.GetUnixTime();
                 item.type = (int)c.Type;
                 item.content = c.Content;
@@ -1116,6 +1121,38 @@ namespace Backstage.Handler
             jt.Add("data", new IntegralData(log.Extcredit));
             Response.Write(DesEncrypt(jt));
             Response.End();
+        }
+        #endregion
+
+        #region 删除评论列表 7.22
+        public void DelMyCommentList()
+        {
+            var uid = GetInt("uid");
+            var ids = GetString("ids");
+
+            var user = AccountHelper.GetUser(uid);
+            if (user == null)
+            {
+                ReturnErrorMsg(string.Format("不存在Id={0}的用户", uid));
+                return;
+            }
+            var idList = Utility.GetListint(ids);
+            if (idList.Count == 0)
+            {
+                ReturnErrorMsg("参数错误，无id列表");
+                return;
+            }
+
+            var list = CommentHelper.GetList(uid, ids);
+            if (list.Count != idList.Count)
+            {
+                ReturnErrorMsg("存在不属于该用户的评论id或者找不到该id的评论");
+                return;
+            }
+            //删除评论
+            CommentHelper.DelList(uid, ids);
+
+            ReturnCorrectMsg("删除评论成功");
         }
         #endregion
     }

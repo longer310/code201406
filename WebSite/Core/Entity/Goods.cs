@@ -76,6 +76,14 @@ namespace Backstage.Core.Entity
         /// 是否推荐到首页
         /// </summary>
         public int IsHot { get; set; }
+        /// <summary>
+        /// 评论次数
+        /// </summary>
+        public int CommentCount { get; set; }
+        /// <summary>
+        /// 浏览次数
+        /// </summary>
+        public int BrowseCount { get; set; }
 
         public List<int> ImgIdList
         {

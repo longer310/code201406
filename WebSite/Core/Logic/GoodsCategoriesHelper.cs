@@ -113,6 +113,36 @@ namespace Backstage.Core.Logic
             }
             return null;
         }
+
+        /// <summary>
+        /// 获取分类最大排序
+        /// </summary>
+        /// <param name="sellerId"></param>
+        /// <returns></returns>
+        public static int GetMaxIndex(int sellerId)
+        {
+            int index = 0;
+            var cmdText = string.Format("select max(`index`) from GoodsCategories where sellerId={0}", sellerId);
+            try
+            {
+                using (var conn = Utility.ObtainConn(Utility._gameDbConn))
+                {
+                    MySqlDataReader reader = MySqlHelper.ExecuteReader(conn, CommandType.Text, cmdText);
+                    if (reader.HasRows)
+                    {
+                        if (reader.Read())
+                        {
+                            index = reader.GetInt32(0);
+                        }
+                    }
+                }
+            }
+            catch (System.Exception ex)
+            {
+                throw;
+            }
+            return index;
+        }
         /// <summary>
         /// 保存分类
         /// </summary>
@@ -163,6 +193,46 @@ namespace Backstage.Core.Logic
             return false;
         }
 
+        /// <summary>
+        /// 保存分类列表——事物处理
+        /// </summary>
+        /// <param name="goodsCategoriesList"></param>
+        /// <returns></returns>
+        public static bool SaveGoodsCategoriesList(List<GoodsCategories> goodsCategoriesList)
+        {
+            var cmdText = string.Empty;
+            List<MySqlParameter> parameters = new List<MySqlParameter>();
+            cmdText = "begin;";
+            foreach (var goodsCategories in goodsCategoriesList)
+            {
+                if (goodsCategories.Id > 0)
+                {
+                    cmdText += string.Format("update GoodsCategories set Index={0},Name ='{1}' where Id={2};", goodsCategories.Index, goodsCategories.Name, goodsCategories.Id);
+                    //parameters.Add(new MySqlParameter("?Id", goodsCategories.Id));
+                    //parameters.Add(new MySqlParameter("?Index", goodsCategories.Index));
+                    //parameters.Add(new MySqlParameter("?Name", goodsCategories.Name));
+                }
+                else
+                {
+                    cmdText += string.Format("insert into GoodsCategories(Index,Name,SellerId) values ({0},{1},{2});", goodsCategories.Index, goodsCategories.Name, goodsCategories.SellerId);
+                    //parameters.Add(new MySqlParameter("?Index", goodsCategories.Index));
+                    //parameters.Add(new MySqlParameter("?Name", goodsCategories.Name));
+                    //parameters.Add(new MySqlParameter("?SellerId", goodsCategories.SellerId));
+                }
+            }
+            cmdText += "commit;";
+            try
+            {
+                var num = MySqlHelper.ExecuteNonQuery(Utility._gameDbConn, CommandType.Text, cmdText);
+                return num > 0;
+            }
+            catch (System.Exception ex)
+            {
+                throw;
+            }
+            return false;
+        }
+
 
         /// <summary>
         /// 删除分类
@@ -175,6 +245,30 @@ namespace Backstage.Core.Logic
             try
             {
                 return MySqlHelper.ExecuteNonQuery(Utility._gameDbConn, CommandType.Text, cmdText) > 0;
+            }
+            catch (System.Exception ex)
+            {
+                throw;
+            }
+        }
+
+        /// <summary>
+        /// 删除分类列表
+        /// </summary>
+        /// <param name="sellerId"></param>
+        /// <param name="ids"></param>
+        /// <returns></returns>
+        public static bool DeleteGoodsCategoriesList(int sellerId, string ids)
+        {
+            var cmdText = @"delete from GoodsCategories where SellerId=?SellerId and Id in (?Id)";
+            var parameters = new List<MySqlParameter>();
+            parameters.Add(new MySqlParameter("?SellerId", sellerId));
+            parameters.Add(new MySqlParameter("?Id", ids));
+            try
+            {
+                return
+                    MySqlHelper.ExecuteNonQuery(Utility._gameDbConn, CommandType.Text, cmdText, parameters.ToArray()) >
+                    0;
             }
             catch (System.Exception ex)
             {

@@ -264,6 +264,7 @@ namespace Backstage.Handler
                     shoppingcartql += " order by Nowprice asc "; break;
                 case -3:
                     shoppingcartql += " order by Nowprice desc "; break;
+                default: break;
             }
 
             //组装下发数据
@@ -382,6 +383,10 @@ namespace Backstage.Handler
             if (gcategories != null)
                 data.cname = gcategories.Name;
 
+            //浏览次数加一
+            goods.BrowseCount++;
+            GoodsHelper.SaveGoods(goods);
+
             JsonTransfer jt = new JsonTransfer();
             jt.AddSuccessParam();
             jt.Add("data", data);
@@ -476,7 +481,11 @@ namespace Backstage.Handler
                 return;
             }
 
+            //评论次数加一
             var goods = GoodsHelper.GetGoods(gid);
+            goods.CommentCount++;
+            GoodsHelper.SaveGoods(goods);
+
             var comment = new Comment();
             comment.Content = message;
             comment.CreateTime = DateTime.Now;
@@ -1078,6 +1087,9 @@ namespace Backstage.Handler
 
                 //保存用户信息
                 AccountHelper.UpdateUser(user);
+
+                //更新订单中商品的销量
+                GoodsHelper.UpdateGoodsSales(Utility.GetListint(orders.Gids), Utility.GetListint(orders.Nums));
             }
 
             OrdersHelper.SaveOrders(orders);
@@ -1094,24 +1106,28 @@ namespace Backstage.Handler
         public void DelShoppingCart()
         {
             var uid = GetInt("uid");
-            var gid = GetInt("gid");
+            var gids = GetString("gids");
 
-            var goods = GoodsHelper.GetGoods(gid);
-            if (goods == null)
+            //var goods = GoodsHelper.GetGoods(gid);
+            //if (goods == null)
+            //{
+            //    ReturnErrorMsg("商品不存在");
+            //    return;
+            //}
+            var gidList = Utility.GetListint(gids);
+            if (gidList.Count == 0)
             {
-                ReturnErrorMsg("商品不存在");
+                ReturnErrorMsg("参数有误，没有商品id");
                 return;
             }
-
-            var shoppingcart = ShoppingCartHelper.GetShoppingCartByGid(uid, gid);
-            if (shoppingcart == null)
+            var list = ShoppingCartHelper.GetList(uid, gids);
+            if (list.Count != gidList.Count)
             {
-                ReturnErrorMsg("不存在该购物车");
+                ReturnErrorMsg("存在不属于该用户的购物车id或者找不到该id的购物车");
                 return;
             }
-
-            //删除购物车
-            ShoppingCartHelper.DeleteShoppingCart(shoppingcart.Id);
+            //批量删除购物车
+            ShoppingCartHelper.DeleteShoppingCartByGid(uid, gids);
 
             //返回
             ReturnCorrectMsg("删除购物车成功");

@@ -12,6 +12,16 @@ namespace Backstage.Core.Logic
 {
     public static class GoodsHelper
     {
+        /// <summary>
+        /// 根据条件获取产品列表
+        /// </summary>
+        /// <param name="sellerId"></param>
+        /// <param name="wheresql"></param>
+        /// <param name="ordersql"></param>
+        /// <param name="start"></param>
+        /// <param name="limit"></param>
+        /// <param name="gettotal"></param>
+        /// <returns></returns>
         public static PagResults<Goods> GetGoodsList(int sellerId, string wheresql = "",
             string ordersql = "", int start = 0, int limit = 0, int gettotal = 0)
         {
@@ -54,6 +64,8 @@ namespace Backstage.Core.Logic
                         goods.Tag = reader["Tag"].ToString();
                         goods.Content = reader["Content"].ToString();
                         goods.LogoUrl = reader["Url"].ToString();
+                        goods.CommentCount = (int)reader["CommentCount"];
+                        goods.BrowseCount = (int)reader["BrowseCount"];
 
                         result.Results.Add(goods);
                     }
@@ -86,6 +98,11 @@ namespace Backstage.Core.Logic
             return result;
         }
 
+        /// <summary>
+        /// 获得单个商品
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public static Goods GetGoods(int id)
         {
             var sql = string.Format("select a.*,m.Url from Goods as a left join material m on a.Logo=m.Id where a.Id={0} limit 1;", id);
@@ -115,6 +132,8 @@ namespace Backstage.Core.Logic
                             goods.Tag = reader["Tag"].ToString();
                             goods.Content = reader["Content"].ToString();
                             goods.LogoUrl = reader["Url"].ToString();
+                            goods.CommentCount = (int)reader["CommentCount"];
+                            goods.BrowseCount = (int)reader["BrowseCount"];
                             return goods;
                         }
                     }
@@ -126,7 +145,6 @@ namespace Backstage.Core.Logic
             }
             return null;
         }
-
 
         /// <summary>
         /// 保存商品 如果id为0 则添加新纪录
@@ -154,6 +172,8 @@ namespace Backstage.Core.Logic
                                         ShareCount      = ?ShareCount,
                                         Tag             = ?Tag,
                                         Content         = ?Content,
+                                        CommentCount         = ?CommentCount,
+                                        BrowseCount         = ?BrowseCount,
                                         IsHot           = ?IsHot
                                     WHERE
                                         Id = ?Id";
@@ -173,6 +193,8 @@ namespace Backstage.Core.Logic
                 parameters.Add(new MySqlParameter("?Tag", goods.Tag));
                 parameters.Add(new MySqlParameter("?Content", goods.Content));
                 parameters.Add(new MySqlParameter("?IsHot", goods.IsHot));
+                parameters.Add(new MySqlParameter("?CommentCount", goods.CommentCount));
+                parameters.Add(new MySqlParameter("?BrowseCount", goods.BrowseCount));
             }
             else
             {
@@ -192,6 +214,8 @@ namespace Backstage.Core.Logic
                                         ShareCount    ,
                                         Tag           ,
                                         Content       ,
+                                        CommentCount       ,
+                                        BrowseCount       ,
                                         IsHot         
                                         ) 
                                         values
@@ -210,6 +234,8 @@ namespace Backstage.Core.Logic
                                         ?ShareCount    ,
                                         ?Tag           ,
                                         ?Content       ,
+                                        ?CommentCount       ,
+                                        ?BrowseCount       ,
                                         ?IsHot         
                                         )";
                 parameters.Add(new MySqlParameter("?SellerId", goods.SellerId));
@@ -227,6 +253,8 @@ namespace Backstage.Core.Logic
                 parameters.Add(new MySqlParameter("?Tag", goods.Tag));
                 parameters.Add(new MySqlParameter("?Content", goods.Content));
                 parameters.Add(new MySqlParameter("?IsHot", goods.IsHot));
+                parameters.Add(new MySqlParameter("?CommentCount", goods.CommentCount));
+                parameters.Add(new MySqlParameter("?BrowseCount", goods.BrowseCount));
             }
             try
             {
@@ -238,6 +266,59 @@ namespace Backstage.Core.Logic
                 throw;
             }
             return false;
+        }
+
+        /// <summary>
+        /// 更新产品销量
+        /// </summary>
+        /// <param name="goodsIds"></param>
+        /// <param name="goodsNums"></param>
+        /// <returns></returns>
+        public static bool UpdateGoodsSales(List<int> goodsIds, List<int> goodsNums)
+        {
+            if (goodsIds.Count == 0 || goodsNums.Count == 0 || goodsIds.Count != goodsNums.Count) return false;
+            var cmdText = "begin;";
+            int index = 0;
+            foreach (var goodsId in goodsIds)
+            {
+                cmdText += string.Format("Update Goods Set Sales=Sales+{0} Where Id={1}", goodsNums[index], goodsId);
+                index++;
+            }
+            cmdText += "commit;";
+            try
+            {
+                var num = MySqlHelper.ExecuteNonQuery(Utility._gameDbConn, CommandType.Text, cmdText);
+                return num > 0;
+            }
+            catch (System.Exception ex)
+            {
+                throw;
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// 删除产品列表
+        /// </summary>
+        /// <param name="sellerId"></param>
+        /// <param name="gids"></param>
+        /// <returns></returns>
+        public static bool DelGoodsList(int sellerId, string gids)
+        {
+            var cmdText = @"delete from Goods where SellerId=?SellerId and Id in (?Id)";
+            var parameters = new List<MySqlParameter>();
+            parameters.Add(new MySqlParameter("?SellerId", sellerId));
+            parameters.Add(new MySqlParameter("?Id", gids));
+            try
+            {
+                return
+                    MySqlHelper.ExecuteNonQuery(Utility._gameDbConn, CommandType.Text, cmdText, parameters.ToArray()) >
+                    0;
+            }
+            catch (System.Exception ex)
+            {
+                throw;
+            }
         }
     }
 }

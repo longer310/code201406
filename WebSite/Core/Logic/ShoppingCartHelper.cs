@@ -274,5 +274,50 @@ namespace Backstage.Core.Logic
                 throw;
             }
         }
+
+        /// <summary>
+        /// 获取用户评论列表
+        /// </summary>
+        /// <param name="uid"></param>
+        /// <param name="ids"></param>
+        /// <returns></returns>
+        public static List<ShoppingCart> GetList(int uid, string ids)
+        {
+            var list = new List<ShoppingCart>();
+            string commandText = @"select * from ShoppingCart where UserId = ?UserId and Id in(?Id);";
+
+            List<MySqlParameter> parameters = new List<MySqlParameter>();
+            parameters.Add(new MySqlParameter("?UserId", uid));
+            parameters.Add(new MySqlParameter("?Id", ids));
+
+            try
+            {
+                using (var conn = Utility.ObtainConn(Utility._gameDbConn))
+                {
+                    MySqlDataReader reader = MySqlHelper.ExecuteReader(conn, CommandType.Text, commandText,
+                        parameters.ToArray());
+                    while (reader.Read())
+                    {
+                        ShoppingCart shoppingcart = new ShoppingCart();
+                        shoppingcart.Id = reader.GetInt32(0);
+                        shoppingcart.UserId = (int)reader["UserId"];
+                        shoppingcart.Gid = (int)reader["Gid"];
+                        //shoppingcart.Img = reader["Img"].ToString();
+                        //shoppingcart.Nowprice = (float)reader["Nowprice"];
+                        //shoppingcart.OriginalPrice = (float)reader["OriginalPrice"];
+                        //shoppingcart.Title = reader["Title"].ToString();
+                        //shoppingcart.Description = reader["Description"].ToString();
+                        shoppingcart.Num = (int)reader["Num"];
+                        shoppingcart.CreateTime = (DateTime)reader["CreateTime"];
+                        list.Add(shoppingcart);
+                    }
+                }
+            }
+            catch (System.Exception ex)
+            {
+                throw;
+            }
+            return list;
+        }
     }
 }

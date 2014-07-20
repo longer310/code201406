@@ -553,6 +553,56 @@ namespace Backstage.Handler
         }
         #endregion
 
+        #region 删除收藏  7.14
+        public void DeleteFav()
+        {
+            int uid = GetInt("uid");
+            var gids = GetString("gids").Split(new Char[] { ',' }, StringSplitOptions.RemoveEmptyEntries).ToList();
+            int sellid = GetInt("sellerid");
+            var favorite = FavoriteHelper.GetFavorite(uid);
+            foreach (var item in gids)
+            {
+                var gid = Convert.ToInt32(item);
+                var g = GoodsHelper.GetGoods(gid);
+                
+                if (favorite.GidList.Count == 0 || !favorite.GidList.Contains(gid))
+                    ReturnErrorMsg("该用户没有收藏过商品");
+                else
+                    favorite.GidList.Remove(gid);
+
+                g.FavCount--;
+                favorite.Gids = GetGidsString(favorite.GidList);
+                //保存商品
+                GoodsHelper.SaveGoods(g);
+            }
+            //保存收藏
+            FavoriteHelper.SaveFavorite(favorite);
+            //返回
+            ReturnCorrectMsg("收藏成功");
+            //var goods = GoodsHelper.GetGoods(gid);
+
+
+
+        }
+
+        string GetGidsString(IList<int> gids)
+        {
+            string result = string.Empty;
+            for (int i = 0; i < gids.Count; i++)
+            {
+                var gid = gids[i];
+                if (i == 0)
+                    result = gid.ToString();
+                else
+                    result += "," + gid.ToString();
+            }
+            return result;
+        }
+
+        #endregion
+
+
+
         #region 商品/图片墙/活动分享 2.6
         public void ShareGoods()
         {

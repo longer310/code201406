@@ -581,7 +581,7 @@ namespace Backstage.Handler
             //保存收藏
             FavoriteHelper.SaveFavorite(favorite);
             //返回
-            ReturnCorrectMsg("收藏成功");
+            ReturnCorrectMsg("删除成功");
             //var goods = GoodsHelper.GetGoods(gid);
 
 

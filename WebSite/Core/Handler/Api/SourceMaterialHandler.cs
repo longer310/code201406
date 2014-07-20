@@ -135,6 +135,8 @@ namespace Backstage.Core.Handler
             int pid = GetInt("pid");
             int index = GetInt("start");
             int size = GetInt("limit");
+            if (pid == 0)
+                ReturnErrorMsg("请传入正确的pid");
             SourceMaterial sm = SourceMaterialHelper.GetItem(pid);
             var cms = CommentHelper.GetPagings(sm.SellerId, CommentType.Img, pid, index, size);
             var users = AccountHelper.GetUserList(cms.Results.Select(c => c.UserId).ToList());

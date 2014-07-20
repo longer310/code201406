@@ -60,7 +60,7 @@ namespace Backstage.Handler
                 case "getmycomment"://我的评论 7.13
                     GetMyComment();
                     break;
-                case "myfavorite"://删除收藏 7.14
+                case "myfavorite"://我的收藏（7.20日补充的 by lintao)
                     MyFavorite();
                     break;
                 case "delfavorite"://删除收藏 7.14
@@ -526,6 +526,13 @@ namespace Backstage.Handler
             /// 关注微信地址
             /// </summary>
             public string wxurl { get; set; }
+
+            /// <summary>
+            /// 位置信息
+            /// </summary>
+            public string pointx { get; set; }
+
+            public string pointy { get; set; }
         }
         public void GetMerchant()
         {
@@ -558,6 +565,8 @@ namespace Backstage.Handler
             data.androidurl = merchant.AndroidUrl;
             data.iosurl = merchant.IosUrl;
             data.wxurl = merchant.WxUrl;
+            data.pointx = merchant.PointX;
+            data.pointy = merchant.PointY;
 
             JsonTransfer jt = new JsonTransfer();
             jt.AddSuccessParam();

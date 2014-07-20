@@ -231,7 +231,7 @@ namespace Backstage.Core.Handler
             	                                ( 
             	                                UserId, 
             	                                CouponId,
-            	                                CreateTime,
+            	                                CreateTime
             	                                )
             	                                VALUES
             	                                ( 

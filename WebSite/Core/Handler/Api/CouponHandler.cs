@@ -142,7 +142,7 @@ namespace Backstage.Core.Handler
                 title = item.Title,
                 img = item.ImgUrl,
                 extcredit = item.Extcredit,
-                expiry = item.Expiry,
+                expiry = item.Expiry.GetUnixTime(),
                 description = item.Description
 
             };
@@ -169,7 +169,7 @@ namespace Backstage.Core.Handler
                     title = r.Title,
                     img = r.ImgUrl,
                     extcredit = r.Extcredit,
-                    expiry = r.Expiry,
+                    expiry = r.Expiry.GetUnixTime(),
                     description = r.Description
                 };
                 data.Add(d);

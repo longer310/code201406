@@ -62,5 +62,9 @@ namespace Backstage.Core.Entity
         /// 关注微信地址
         /// </summary>
         public string WxUrl { get; set; }
+
+        public string PointX { get; set; }
+
+        public string PointY { get; set; }
     }
 }

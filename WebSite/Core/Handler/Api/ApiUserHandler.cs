@@ -60,6 +60,9 @@ namespace Backstage.Handler
                 case "getmycomment"://我的评论 7.13
                     GetMyComment();
                     break;
+                case "myfavorite"://删除收藏 7.14
+                    MyFavorite();
+                    break;
                 case "delfavorite"://删除收藏 7.14
                     DelFavorite();
                     break;
@@ -89,6 +92,34 @@ namespace Backstage.Handler
                     break;
                 default: break;
             }
+        }
+
+        private void MyFavorite()
+        {
+            var uid = GetInt("uid");
+            var favorite = FavoriteHelper.GetFavorite(uid);
+            var data = new List<object>();
+            foreach (var gid in favorite.GidList)
+            {
+                Goods goods = GoodsHelper.GetGoods(gid);
+                var o = new
+                {
+                    id = gid,
+                    img = goods.LogoUrl,
+                    title = goods.Title,
+                    nowprice = goods.Nowprice,
+                    originalPrice = goods.OriginalPrice,
+                    sales = goods.Sales
+                };
+                data.Add(o);
+            }
+
+            JsonTransfer jt = new JsonTransfer();
+            jt.AddSuccessParam();
+            jt.Add("data", data);
+            Response.Write(DesEncrypt(jt));
+            Response.End();
+            //throw new NotImplementedException();
         }
 
         #region 返回积分的公用类
@@ -803,8 +834,14 @@ namespace Backstage.Handler
                 return;
             }
             var favorite = FavoriteHelper.GetFavorite(uid);
+
             foreach (var i in gidlist)
             {
+                var goods = GoodsHelper.GetGoods(i);
+                goods.FavCount--;
+                //保存商品
+                GoodsHelper.SaveGoods(goods);
+
                 if (favorite.GidList.Contains(i))
                     favorite.GidList.Remove(i);
                 else

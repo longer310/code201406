@@ -40,6 +40,9 @@ namespace Backstage.Handler
                 case "favgoods"://收藏商品 2.5
                     FavGoods();
                     break;
+                case "deletefav"://分享商品 2.6
+                    DeleteFav();
+                    break;
                 case "sharegoods"://分享商品 2.6
                     ShareGoods();
                     break;

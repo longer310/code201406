@@ -30,6 +30,7 @@ namespace Backstage.Handler
                 case "modifyIndexGoodsCategories":
                     ModifyIndexGoodsCategories(); break;
                 #endregion
+
                 #region 产品列表
                 case "getGoodsList":
                     GetGoodsList(); break;
@@ -38,6 +39,7 @@ namespace Backstage.Handler
                 case "addGoods":
                     AddGoods(); break;
                 #endregion
+
                 default: break;
             }
         }
@@ -241,8 +243,24 @@ namespace Backstage.Handler
         /// </summary>
         public void AddGoods()
         {
-            var name = GetString("name");
+            var title = GetString("title");
+            var imgIds = GetString("imgIds");
+            var logo = GetInt("logo");
+            var nowPrice = GetFloat("nowPrice");
+            var originalPrice = GetFloat("originalPrice");
+            var tags = GetString("tags");
+            var cid = GetInt("cid");
+            var content = GetString("content");
+
             var goods = new Goods();
+            goods.Title = title;
+            goods.ImgIdList = Utility.GetListint(imgIds);
+            goods.Logo = logo;
+            goods.Nowprice = nowPrice;
+            goods.OriginalPrice = originalPrice;
+            goods.Tag = tags;
+            goods.Cid = cid;
+            goods.Content = content;
             if (GoodsHelper.SaveGoods(goods))
                 ReturnCorrectMsg("添加成功");
             else

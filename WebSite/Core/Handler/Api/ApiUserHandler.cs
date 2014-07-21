@@ -60,7 +60,7 @@ namespace Backstage.Handler
                 case "getmycomment"://我的评论 7.13
                     GetMyComment();
                     break;
-                case "myfavorite"://我的收藏（7.20日补充的 by lintao)
+                case "myfavorite"://我的收藏 7.23（7.20日补充的 by lintao)
                     MyFavorite();
                     break;
                 case "delfavorite"://删除收藏 7.14
@@ -94,24 +94,45 @@ namespace Backstage.Handler
             }
         }
 
+        #region 我的收藏7.23
+        public class MyFavoriteData
+        {
+            public int num { get; set; }
+            public List<MyFavoriteItem> lists { get; set; }
+        }
+        public class MyFavoriteItem
+        {
+            public int id { get; set; }
+            public string img { get; set; }
+            public string title { get; set; }
+            public float nowprice { get; set; }
+            public float originalprice { get; set; }
+            public int sales { get; set; }
+            public string content { get; set; }
+        }
         private void MyFavorite()
         {
             var uid = GetInt("uid");
+            var start = GetInt("start");
+            var limit = GetInt("limit");
             var favorite = FavoriteHelper.GetFavorite(uid);
-            var data = new List<object>();
-            foreach (var gid in favorite.GidList)
+            var gidList = favorite.GidList.Skip(start * limit).Take(limit);
+            var data = new MyFavoriteData();
+            data.num = favorite.GidList.Count;
+            foreach (var gid in gidList)
             {
                 Goods goods = GoodsHelper.GetGoods(gid);
-                var o = new
+                var o = new MyFavoriteItem()
                 {
                     id = gid,
                     img = goods.LogoUrl,
                     title = goods.Title,
                     nowprice = goods.Nowprice,
-                    originalPrice = goods.OriginalPrice,
-                    sales = goods.Sales
+                    originalprice = goods.OriginalPrice,
+                    sales = goods.Sales,
+                    content = goods.Content
                 };
-                data.Add(o);
+                data.lists.Add(o);
             }
 
             JsonTransfer jt = new JsonTransfer();
@@ -121,6 +142,7 @@ namespace Backstage.Handler
             Response.End();
             //throw new NotImplementedException();
         }
+        #endregion
 
         #region 返回积分的公用类
         public class IntegralData

@@ -18,10 +18,13 @@ namespace Backstage.Core.Entity
         /// 封面图
         /// </summary>
         public int Logo { get; set; }
+
         /// <summary>
         /// 产品图集
         /// </summary>
-        public string ImgIds { get; set; }
+        //public string ImgIds { get; set; }
+        public List<int> ImgIdList { get; set; }
+
         /// <summary>
         /// 销量
         /// </summary>
@@ -85,18 +88,16 @@ namespace Backstage.Core.Entity
         /// </summary>
         public int BrowseCount { get; set; }
 
-        public List<int> ImgIdList
-        {
-            get
-            {
-                var List = ImgIds.Split(new Char[] { ',' }, StringSplitOptions.RemoveEmptyEntries).ToList();
-                List<int> imgids = new List<int>();
-                foreach (var imgid in List)
-                {
-                    imgids.Add(Convert.ToInt32(imgid));
-                }
-                return imgids;
-            }
-        }
+        //public List<int> ImgIdList { get; set; //get
+            //{
+            //    var List = ImgIds.Split(new Char[] { ',' }, StringSplitOptions.RemoveEmptyEntries).ToList();
+            //    List<int> imgids = new List<int>();
+            //    foreach (var imgid in List)
+            //    {
+            //        imgids.Add(Convert.ToInt32(imgid));
+            //    }
+            //    return imgids;
+            //}
+        //}
     }
 }

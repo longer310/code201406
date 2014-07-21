@@ -24,7 +24,7 @@ namespace Backstage.Core.Logic
                         {
                             Favorite favorite = new Favorite();
                             favorite.Id = reader.GetInt32(0);
-                            favorite.Gids = reader["Gids"].ToString();
+                            favorite.GidList = Utility.GetListint(reader["Gids"].ToString());
                             return favorite;
                         }
                     }
@@ -58,13 +58,13 @@ namespace Backstage.Core.Logic
             {
                 cmdText = @"update Favorite set Gids=?Gids where Id=?Id";
                 parameters.Add(new MySqlParameter("?Id", favorite.Id));
-                parameters.Add(new MySqlParameter("?Gids", favorite.Gids));
+                parameters.Add(new MySqlParameter("?Gids", Utility.GetString(favorite.GidList)));
             }
             else
             {
                 cmdText = @"insert into Favorite(Id,Gids) values (?Id,?Gids)";
                 parameters.Add(new MySqlParameter("?Id", favorite.Id));
-                parameters.Add(new MySqlParameter("?Gids", favorite.Gids));
+                parameters.Add(new MySqlParameter("?Gids", Utility.GetString(favorite.GidList)));
             }
             try
             {

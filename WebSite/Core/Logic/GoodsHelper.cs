@@ -51,7 +51,7 @@ namespace Backstage.Core.Logic
                         goods.Id = reader.GetInt32(0);
                         goods.SellerId = (int)reader["SellerId"];
                         goods.Logo = (int)reader["Logo"];
-                        goods.ImgIds = reader["ImgIds"].ToString();
+                        goods.ImgIdList = Utility.GetListint(reader["ImgIds"].ToString());
                         goods.Sales = (int)reader["Sales"];
                         goods.Title = reader["Title"].ToString();
                         goods.Cid = (int)reader["Cid"];
@@ -119,7 +119,7 @@ namespace Backstage.Core.Logic
                             goods.Id = reader.GetInt32(0);
                             goods.SellerId = (int)reader["SellerId"];
                             goods.Logo = (int)reader["Logo"];
-                            goods.ImgIds = reader["ImgIds"].ToString();
+                            goods.ImgIdList = Utility.GetListint(reader["ImgIds"].ToString());
                             goods.Sales = (int)reader["Sales"];
                             goods.Title = reader["Title"].ToString();
                             goods.Cid = (int)reader["Cid"];
@@ -179,7 +179,7 @@ namespace Backstage.Core.Logic
                                         Id = ?Id";
                 parameters.Add(new MySqlParameter("?Id", goods.Id));
                 parameters.Add(new MySqlParameter("?SellerId", goods.SellerId));
-                parameters.Add(new MySqlParameter("?ImgIds", goods.ImgIds));
+                parameters.Add(new MySqlParameter("?ImgIds", Utility.GetString(goods.ImgIdList)));
                 parameters.Add(new MySqlParameter("?Logo", goods.Logo));
                 parameters.Add(new MySqlParameter("?Sales", goods.Sales));
                 parameters.Add(new MySqlParameter("?Title", goods.Title));
@@ -239,7 +239,7 @@ namespace Backstage.Core.Logic
                                         ?IsHot         
                                         )";
                 parameters.Add(new MySqlParameter("?SellerId", goods.SellerId));
-                parameters.Add(new MySqlParameter("?ImgIds", goods.ImgIds));
+                parameters.Add(new MySqlParameter("?ImgIds", Utility.GetString(goods.ImgIdList)));
                 parameters.Add(new MySqlParameter("?Logo", goods.Logo));
                 parameters.Add(new MySqlParameter("?Sales", goods.Sales));
                 parameters.Add(new MySqlParameter("?Title", goods.Title));

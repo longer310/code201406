@@ -539,10 +539,7 @@ namespace Backstage.Handler
                 ReturnErrorMsg("已收藏过该商品");
                 return;
             }
-            if (favorite.GidList.Count == 0)
-                favorite.Gids = gid.ToString();
-            else
-                favorite.Gids += "," + gid.ToString();
+            favorite.GidList.Add(gid);
 
             //保存商品
             GoodsHelper.SaveGoods(goods);
@@ -807,24 +804,17 @@ namespace Backstage.Handler
             orders.UserId = uid;
             foreach (var goods in goodslist)
             {
-                orders.Gids += goods.Id + ",";
-                orders.Imgs += goods.LogoUrl + ",";
-                orders.Titles += goods.Title + ",";
-                orders.Contents += goods.Content.Length > 30 ? goods.Content.Substring(0, 30) : goods.Content + ",";
-                orders.NowPrices += goods.Nowprice + ",";
-                orders.OriginalPrices += goods.OriginalPrice + ",";
+                orders.GidList.Add(goods.Id);
+                orders.ImgList.Add(goods.LogoUrl);
+                orders.TitleList.Add(goods.Title);
+                orders.ContentList.Add(goods.Content);
+                orders.NowPriceList.Add(goods.Nowprice);
+                orders.OriginalPriceList.Add(goods.OriginalPrice);
                 var num = Utility.GetValueByList(gidlist, numlist, goods.Id);
-                orders.Nums += num + ",";
+                orders.NumList.Add(num);
 
                 orders.StotalPrice += goods.Nowprice * num;
             }
-            orders.Imgs = orders.Imgs.TrimEnd(',');
-            orders.Titles = orders.Titles.TrimEnd(',');
-            orders.Contents = orders.Contents.TrimEnd(',');
-            orders.NowPrices = orders.NowPrices.TrimEnd(',');
-            orders.OriginalPrices = orders.OriginalPrices.TrimEnd(',');
-            orders.Gids = orders.Gids.TrimEnd(',');
-            orders.Nums = orders.Nums.TrimEnd(',');
             orders.TotalPrice = orders.StotalPrice;
             orders.SellerId = sellerId;
 
@@ -881,13 +871,13 @@ namespace Backstage.Handler
             public OrderDetailData(Orders orders)
             {
                 goodslist = new List<OrderGoddsItem>();
-                var gidlist = Utility.GetListint(orders.Gids);
-                var numlist = Utility.GetListint(orders.Nums);
-                var titlelist = Utility.GetListstring(orders.Titles);
-                var imglist = Utility.GetListstring(orders.Imgs);
-                var originalpricelist = Utility.GetListfloat(orders.OriginalPrices);
-                var nowpricelist = Utility.GetListfloat(orders.NowPrices);
-                var contentlist = Utility.GetListstring(orders.Contents);
+                var gidlist = orders.GidList;
+                var numlist = orders.NumList;
+                var titlelist = orders.TitleList;
+                var imglist = orders.ImgList;
+                var originalpricelist = orders.OriginalPriceList;
+                var nowpricelist = orders.NowPriceList;
+                var contentlist = orders.ContentList;
 
                 for (int i = 0; i < gidlist.Count; i++)
                 {
@@ -1044,7 +1034,7 @@ namespace Backstage.Handler
             bool ifdiscount = coupon == null ? false : true;
             if (coupon != null)
             {//判断是否是优惠产品
-                var gidlist = Utility.GetListint(orders.Gids);
+                var gidlist = orders.GidList;
                 foreach (var i in gidlist)
                 {
                     if (coupon.GoodsIds.Contains(i))
@@ -1139,7 +1129,7 @@ namespace Backstage.Handler
                 AccountHelper.UpdateUser(user);
 
                 //更新订单中商品的销量
-                GoodsHelper.UpdateGoodsSales(Utility.GetListint(orders.Gids), Utility.GetListint(orders.Nums));
+                GoodsHelper.UpdateGoodsSales(orders.GidList, orders.NumList);
             }
 
             OrdersHelper.SaveOrders(orders);

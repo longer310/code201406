@@ -17,31 +17,38 @@ namespace Backstage.Core.Entity
         /// <summary>
         /// 产品id
         /// </summary>
-        public string Gids { get; set; }
+        //public string Gids { get; set; }
+        public List<int> GidList { get; set; }
         /// <summary>
         /// 数量列表
         /// </summary>
-        public string Nums { get; set; }
+        //public string Nums { get; set; }
+        public List<int> NumList { get; set; }
         /// <summary>
         /// 产品图片地址
         /// </summary>
-        public string Imgs { get; set; }
+        //public string Imgs { get; set; }
+        public List<string> ImgList { get; set; }
         /// <summary>
         /// 产品标题列表
         /// </summary>
-        public string Titles { get; set; }
+        //public string Titles { get; set; }
+        public List<string> TitleList { get; set; }
         /// <summary>
         /// 产品说明列表
         /// </summary>
-        public string Contents { get; set; }
+        //public string Contents { get; set; }
+        public List<string> ContentList { get; set; }
         /// <summary>
         /// 产品现价列表
         /// </summary>
-        public string NowPrices { get; set; }
+        //public string NowPrices { get; set; }
+        public List<float> NowPriceList { get; set; }
         /// <summary>
         /// 产品原价列表
         /// </summary>
-        public string OriginalPrices { get; set; }
+        //public string OriginalPrices { get; set; }
+        public List<float> OriginalPriceList { get; set; }
         /// <summary>
         /// 最后总价
         /// </summary>
@@ -117,7 +124,16 @@ namespace Backstage.Core.Entity
 
         public Orders()
         {
-            Gids = Nums = Imgs = NowPrices = OriginalPrices = Address = LinkMan = Mobile = "";
+            //Gids = Nums = Imgs = NowPrices = OriginalPrices = 
+            GidList = new List<int>();
+            NumList = new List<int>();
+            ImgList = new List<string>();
+            TitleList = new List<string>();
+            ContentList = new List<string>();
+            NowPriceList = new List<float>();
+            OriginalPriceList = new List<float>();
+
+            Address = LinkMan = Mobile = "";
             CreateTime = DateTime.Now;
             OrderTime = DateTime.Now;
         }

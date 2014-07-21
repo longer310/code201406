@@ -846,11 +846,6 @@ namespace Backstage.Handler
 
             foreach (var i in gidlist)
             {
-                var goods = GoodsHelper.GetGoods(i);
-                goods.FavCount--;
-                //保存商品
-                GoodsHelper.SaveGoods(goods);
-
                 if (favorite.GidList.Contains(i))
                     favorite.GidList.Remove(i);
                 else
@@ -858,9 +853,12 @@ namespace Backstage.Handler
                     ReturnErrorMsg(string.Format("传参出错，会员没有收藏id为{0}的物品", i));
                     return;
                 }
+                var goods = GoodsHelper.GetGoods(i);
+                goods.FavCount--;
+                //保存商品收藏个数
+                GoodsHelper.SaveGoods(goods);
             }
 
-            favorite.Gids = Utility.GetString(favorite.GidList);
             FavoriteHelper.SaveFavorite(favorite);
 
             ReturnCorrectMsg("删除收藏成功");

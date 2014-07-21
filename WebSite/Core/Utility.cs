@@ -317,6 +317,16 @@ namespace Backstage.Core
         {
             return String.Join(",", list.ConvertAll<string>(new Converter<int, string>(m => m.ToString())).ToArray());
         }
+
+        public static string GetString(List<string> list)
+        {
+            return String.Join(",", list.ConvertAll<string>(new Converter<string, string>(m => m.ToString())).ToArray());
+        }
+
+        public static string GetString(List<float> list)
+        {
+            return String.Join(",", list.ConvertAll<string>(new Converter<float, string>(m => m.ToString())).ToArray());
+        }
         public static string GetWhereSql(List<int> idlist, string columnname = "Id")
         {
             if (idlist == null || idlist.Count == 0) return string.Empty;

@@ -74,29 +74,41 @@ namespace Backstage.Core.Handler
             int size = GetInt("limit");
             var coupon = CouponHelper.GetItem(cid);
             var cms = CommentHelper.GetPagings(coupon.SellerId, CommentType.Coupons, cid, index, size);
-            var users = AccountHelper.GetUserList(cms.Results.Select(c => c.UserId).ToList());
             var data = new CommentsForApis();
-            foreach (var cm in cms.Results)
-            {
-                var user = users.FirstOrDefault(u => u.Id == cm.UserId);
-                if (user == null)
-                    throw new ArgumentNullException(string.Format("userId:{0}", cm.UserId));
-                var result = new ComentsForApi
-                {
-                    Avatar = user.Avatar,
-                    UserName = user.UserName,
-                    Sex = (int)user.Sex,
-                    Dateline = cm.CreateTime.GetUnixTime(),
-                    Message = cm.Content
-                };
-                data.Comments.Add(result);
-            }
             data.Commentnum = cms.TotalCount;
-            JsonTransfer jt = new JsonTransfer();
-            jt.AddSuccessParam();
-            jt.Add("data", data);
-            Response.Write(DesEncrypt(jt).ToLower());
-            Response.End();
+            if (cms.TotalCount == 0)
+            {
+                JsonTransfer jt = new JsonTransfer();
+                jt.AddSuccessParam();
+                jt.Add("data", data);
+                Response.Write(DesEncrypt(jt).ToLower());
+                Response.End();
+            }
+            else
+            {
+                var users = AccountHelper.GetUserList(cms.Results.Select(c => c.UserId).ToList());
+                foreach (var cm in cms.Results)
+                {
+                    var user = users.FirstOrDefault(u => u.Id == cm.UserId);
+                    if (user == null)
+                        throw new ArgumentNullException(string.Format("userId:{0}", cm.UserId));
+                    var result = new ComentsForApi
+                    {
+                        Avatar = user.Avatar,
+                        UserName = user.UserName,
+                        Sex = (int)user.Sex,
+                        Dateline = cm.CreateTime.GetUnixTime(),
+                        Message = cm.Content
+                    };
+                    data.Comments.Add(result);
+                }
+
+                JsonTransfer jt = new JsonTransfer();
+                jt.AddSuccessParam();
+                jt.Add("data", data);
+                Response.Write(DesEncrypt(jt).ToLower());
+                Response.End();
+            }
         }
 
         private void CouponComment()

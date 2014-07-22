@@ -34,8 +34,9 @@ namespace Backstage.Core.Handler
                         c.Extcredit = (int)reader["Extcredit"];
                         c.FullMoney = (int)reader["FullMoney"];
                         c.DiscountMoney = (int)reader["DiscountMoney"];
-                        c.GoodsIds = GetGoodsIds(reader["GoodsIds"].ToString());
+                        c.GoodsIds = Utility.GetListint(reader["GoodsIds"].ToString());
                         c.Commentnum = (int)reader["Commentnum"];
+                        c.SellerId = (int)reader["SellerId"];
                     }
                 }
             }
@@ -85,8 +86,9 @@ namespace Backstage.Core.Handler
                         c.Extcredit = (int)reader["Extcredit"];
                         c.FullMoney = (int)reader["FullMoney"];
                         c.DiscountMoney = (int)reader["DiscountMoney"];
-                        c.GoodsIds = GetGoodsIds(reader["GoodsIds"].ToString());
+                        c.GoodsIds = Utility.GetListint(reader["GoodsIds"].ToString());
                         c.Commentnum = (int)reader["Commentnum"];
+                        c.SellerId = (int)reader["SellerId"];
                         results.Results.Add(c);
                     }
 
@@ -150,8 +152,9 @@ namespace Backstage.Core.Handler
                         c.Extcredit = (int)reader["Extcredit"];
                         c.FullMoney = (int)reader["FullMoney"];
                         c.DiscountMoney = (int)reader["DiscountMoney"];
-                        c.GoodsIds = GetGoodsIds(reader["GoodsIds"].ToString());
+                        c.GoodsIds = Utility.GetListint(reader["GoodsIds"].ToString());
                         c.Commentnum = (int)reader["Commentnum"];
+                        c.SellerId = (int)reader["SellerId"];
                         results.Add(c);
                     }
                 }
@@ -192,6 +195,7 @@ namespace Backstage.Core.Handler
             parameters.Add(new MySqlParameter("?FullMoney", coupon.FullMoney));
             parameters.Add(new MySqlParameter("?DiscountMoney", coupon.FullMoney));
             parameters.Add(new MySqlParameter("?GoodsIds", GetGoodsIdsString(coupon.GoodsIds)));
+            parameters.Add(new MySqlParameter("?Commentnum", coupon.Commentnum));
 
             MySqlHelper.ExecuteNonQuery(GlobalConfig.DbConn, CommandType.Text, commandText, parameters.ToArray());
 
@@ -317,6 +321,7 @@ namespace Backstage.Core.Handler
                         c.DiscountMoney = (int)reader["DiscountMoney"];
                         c.GoodsIds = GetGoodsIds(reader["GoodsIds"].ToString());
                         c.Commentnum = (int)reader["Commentnum"];
+                        c.SellerId = (int)reader["SellerId"];
                         results.Results.Add(c);
                     }
 

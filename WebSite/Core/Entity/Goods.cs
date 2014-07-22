@@ -76,7 +76,7 @@ namespace Backstage.Core.Entity
         public string LogoUrl { get; set; }
 
         /// <summary>
-        /// 是否推荐到首页
+        /// 是否热销
         /// </summary>
         public int IsHot { get; set; }
         /// <summary>
@@ -87,6 +87,11 @@ namespace Backstage.Core.Entity
         /// 浏览次数
         /// </summary>
         public int BrowseCount { get; set; }
+
+        /// <summary>
+        /// 是否推荐
+        /// </summary>
+        public int IsRecommend { get; set; }
 
         //public List<int> ImgIdList { get; set; //get
             //{

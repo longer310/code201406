@@ -66,6 +66,8 @@ namespace Backstage.Core.Logic
                         goods.LogoUrl = reader["Url"].ToString();
                         goods.CommentCount = (int)reader["CommentCount"];
                         goods.BrowseCount = (int)reader["BrowseCount"];
+                        goods.IsHot = (int)reader["IsHot"];
+                        goods.IsRecommend = (int)reader["IsRecommend"];
 
                         result.Results.Add(goods);
                     }
@@ -134,6 +136,8 @@ namespace Backstage.Core.Logic
                             goods.LogoUrl = reader["Url"].ToString();
                             goods.CommentCount = (int)reader["CommentCount"];
                             goods.BrowseCount = (int)reader["BrowseCount"];
+                            goods.IsHot = (int)reader["IsHot"];
+                            goods.IsRecommend = (int)reader["IsRecommend"];
                             return goods;
                         }
                     }
@@ -174,6 +178,7 @@ namespace Backstage.Core.Logic
                                         Content         = ?Content,
                                         CommentCount         = ?CommentCount,
                                         BrowseCount         = ?BrowseCount,
+                                        IsRecommend         = ?IsRecommend,
                                         IsHot           = ?IsHot
                                     WHERE
                                         Id = ?Id";
@@ -192,6 +197,7 @@ namespace Backstage.Core.Logic
                 parameters.Add(new MySqlParameter("?ShareCount", goods.ShareCount));
                 parameters.Add(new MySqlParameter("?Tag", goods.Tag));
                 parameters.Add(new MySqlParameter("?Content", goods.Content));
+                parameters.Add(new MySqlParameter("?IsRecommend", goods.IsRecommend));
                 parameters.Add(new MySqlParameter("?IsHot", goods.IsHot));
                 parameters.Add(new MySqlParameter("?CommentCount", goods.CommentCount));
                 parameters.Add(new MySqlParameter("?BrowseCount", goods.BrowseCount));
@@ -216,6 +222,7 @@ namespace Backstage.Core.Logic
                                         Content       ,
                                         CommentCount       ,
                                         BrowseCount       ,
+                                        IsRecommend       ,
                                         IsHot         
                                         ) 
                                         values
@@ -236,6 +243,7 @@ namespace Backstage.Core.Logic
                                         ?Content       ,
                                         ?CommentCount       ,
                                         ?BrowseCount       ,
+                                        ?IsRecommend       ,
                                         ?IsHot         
                                         )";
                 parameters.Add(new MySqlParameter("?SellerId", goods.SellerId));
@@ -253,6 +261,7 @@ namespace Backstage.Core.Logic
                 parameters.Add(new MySqlParameter("?Tag", goods.Tag));
                 parameters.Add(new MySqlParameter("?Content", goods.Content));
                 parameters.Add(new MySqlParameter("?IsHot", goods.IsHot));
+                parameters.Add(new MySqlParameter("?IsRecommend", goods.IsRecommend));
                 parameters.Add(new MySqlParameter("?CommentCount", goods.CommentCount));
                 parameters.Add(new MySqlParameter("?BrowseCount", goods.BrowseCount));
             }

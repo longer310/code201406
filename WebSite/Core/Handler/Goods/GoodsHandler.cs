@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.EnterpriseServices;
 using System.Linq;
 using System.Web;
+using System.Web.Script.Serialization;
 using Backstage.Core;
 using Backstage.Core.Entity;
 using Backstage.Core.Logic;
@@ -13,8 +14,8 @@ namespace Backstage.Handler
     {
         public override void ProcessRequest(HttpContext context)
         {
-            FreeActions = "";
-            RoleType = RoleType.Merchant;//需商家管理权限 暂定权限管理
+            FreeActions = ",saveGoodsList,";
+            RoleType = RoleType.ThirdUser;//需商家管理权限 暂定权限管理
             base.ProcessRequest(HttpContext.Current);
             switch (Action)
             {
@@ -38,6 +39,10 @@ namespace Backstage.Handler
                     DelGoodsList(); break;
                 case "addGoods":
                     AddGoods(); break;
+                case "updateGoods":
+                    UpdateGoods(); break;
+                case "saveGoodsList":
+                    SaveGoodsList(); break;
                 #endregion
 
                 default: break;
@@ -266,6 +271,80 @@ namespace Backstage.Handler
             else
                 ReturnErrorMsg("添加失败");
         }
+
+        /// <summary>
+        /// 编辑产品
+        /// </summary>
+        public void UpdateGoods()
+        {
+            var id = GetInt("id");
+            var title = GetString("title");
+            var imgIds = GetString("imgIds");
+            var logo = GetInt("logo");
+            var nowPrice = GetFloat("nowPrice");
+            var originalPrice = GetFloat("originalPrice");
+            var tags = GetString("tags");
+            var cid = GetInt("cid");
+            var content = GetString("content");
+
+            var goods = GoodsHelper.GetGoods(id);
+            if (goods.SellerId != CurrentUser.Id)
+            {
+                ReturnErrorMsg("没有权限修改改该商户产品");
+                return;
+            }
+            goods.Title = title;
+            goods.ImgIdList = Utility.GetListint(imgIds);
+            goods.Logo = logo;
+            goods.Nowprice = nowPrice;
+            goods.OriginalPrice = originalPrice;
+            goods.Tag = tags;
+            goods.Cid = cid;
+            goods.Content = content;
+            if (GoodsHelper.SaveGoods(goods))
+                ReturnCorrectMsg("添加成功");
+            else
+                ReturnErrorMsg("添加失败");
+        }
+
+        public class ChangeGoods
+        {
+            public int Id { get; set; }
+            public float Nowprice { get; set; }
+            public float OriginalPrice { get; set; }
+            public int Cid { get; set; }
+            public int IsRecommend { get; set; }//传大于1的值
+            public int IsHot { get; set; }//传大于1的值
+        }
+        /// <summary>
+        /// 一键保存产品列表
+        /// </summary>
+        public void SaveGoodsList()
+        {
+            string jsonArray = GetString("jsonArray");
+            var json = new JavaScriptSerializer();
+            var list = json.Deserialize(jsonArray, typeof(List<ChangeGoods>)) as List<ChangeGoods>;
+
+            foreach (var changeGoodse in list)
+            {
+                var goods = GoodsHelper.GetGoods(changeGoodse.Id);
+                if (goods == null || goods.SellerId != CurrentUser.Id)
+                {
+                    ReturnErrorMsg("没有权限修改产品或者产品不存在");
+                    return;
+                }
+                if (changeGoodse.Nowprice > 0)
+                    goods.Nowprice = changeGoodse.Nowprice;
+                if (changeGoodse.OriginalPrice > 0)
+                    goods.OriginalPrice = changeGoodse.OriginalPrice;
+                if (changeGoodse.Cid > 0) goods.Cid = changeGoodse.Cid;
+                if (changeGoodse.IsRecommend > 0) goods.IsRecommend = changeGoodse.IsRecommend - 1;
+                if (changeGoodse.IsHot > 0) goods.IsRecommend = changeGoodse.IsHot - 1;
+
+                GoodsHelper.SaveGoods(goods);
+            }
+        }
+
         #endregion
     }
 }

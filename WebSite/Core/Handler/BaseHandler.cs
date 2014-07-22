@@ -31,7 +31,7 @@ namespace Backstage.Core
             {
                 if (!string.IsNullOrEmpty(_freeActions) && _freeActions.IndexOf("," + Action + ",") > -1)
                 {
-                    if (_roleType < CurrentUser.RoleType)
+                    if (CurrentUser != null && _roleType < CurrentUser.RoleType)
                     {
                         Response.Write(new JsonTransfer().SetError("无权限"));
                         Response.End();
@@ -99,7 +99,7 @@ namespace Backstage.Core
         {
             get { return false; }
         }
-        
+
         public void ReturnErrorMsg(string msg)
         {
             JsonTransfer jt = new JsonTransfer();

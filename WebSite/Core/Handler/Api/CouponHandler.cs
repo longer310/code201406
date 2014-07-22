@@ -122,7 +122,7 @@ namespace Backstage.Core.Handler
             c.TypeId = coupon.Id;
             c.UserId = uid;
             c.Content = msg;
-            c.Type = CommentType.Avtive;
+            c.Type = CommentType.Coupons;
             //冗余两个字段
             c.Img = coupon.ImgUrl;
             c.Title = coupon.Title;

@@ -99,10 +99,15 @@ namespace Backstage.Handler
         {
             public int num { get; set; }
             public List<MyFavoriteItem> lists { get; set; }
+
+            public MyFavoriteData()
+            {
+                lists = new List<MyFavoriteItem>();
+            }
         }
         public class MyFavoriteItem
         {
-            public int id { get; set; }
+            public int gid { get; set; }
             public string img { get; set; }
             public string title { get; set; }
             public float nowprice { get; set; }
@@ -115,24 +120,35 @@ namespace Backstage.Handler
             var uid = GetInt("uid");
             var start = GetInt("start");
             var limit = GetInt("limit");
+            var user = AccountHelper.GetUser(uid);
+            if (user == null)
+            {
+                ReturnErrorMsg(string.Format("不存在Id={0}的用户", uid));
+                return;
+            }
             var favorite = FavoriteHelper.GetFavorite(uid);
-            var gidList = favorite.GidList.Skip(start * limit).Take(limit);
+            var gidList = favorite.GidList.Skip(start * limit).Take(limit).ToList();
             var data = new MyFavoriteData();
             data.num = favorite.GidList.Count;
-            foreach (var gid in gidList)
+            if (gidList.Count > 0)
             {
-                Goods goods = GoodsHelper.GetGoods(gid);
-                var o = new MyFavoriteItem()
+                var wheresql = string.Format(" and a.Id in({0})", Utility.GetString(gidList));
+                var goodslist = GoodsHelper.GetGoodsList(user.SellerId, wheresql).Results;
+                foreach (var goods in goodslist)
                 {
-                    id = gid,
-                    img = goods.LogoUrl,
-                    title = goods.Title,
-                    nowprice = goods.Nowprice,
-                    originalprice = goods.OriginalPrice,
-                    sales = goods.Sales,
-                    content = goods.Content
-                };
-                data.lists.Add(o);
+                    //Goods goods = GoodsHelper.GetGoods(gid);
+                    var o = new MyFavoriteItem()
+                    {
+                        gid = goods.Id,
+                        img = goods.LogoUrl,
+                        title = goods.Title,
+                        nowprice = goods.Nowprice,
+                        originalprice = goods.OriginalPrice,
+                        sales = goods.Sales,
+                        content = goods.Content
+                    };
+                    data.lists.Add(o);
+                }
             }
 
             JsonTransfer jt = new JsonTransfer();

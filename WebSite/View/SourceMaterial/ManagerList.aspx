@@ -1,6 +1,6 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/View/Master.Master" AutoEventWireup="true" CodeBehind="ManagerList.aspx.cs" Inherits="WebSite.View.SourceMaterial.ManagerList" %>
 
-<asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
+<asp:Content ID="Content1" ContentPlaceHolderID="Header" runat="server">
     <script type="text/javascript" src="/Script/jquery-bootstrap/jquery.dialog.js"></script>
 
     <script src="/Script/View/SourceMaterial/managerlist.js" type="text/javascript"></script>
@@ -8,7 +8,7 @@
 
 
 </asp:Content>
-<asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
+<asp:Content ID="Content2" ContentPlaceHolderID="Content" runat="server">
 
     <div style="margin: 0 auto;" class="panel panel-users">
         <div class="panel-heading">
@@ -70,3 +70,6 @@
     </table>
 </textarea>
 </asp:Content>
+<asp:Content ID="Content3" ContentPlaceHolderID="Footer" runat="server">
+</asp:Content>
+

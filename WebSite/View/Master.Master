@@ -4,34 +4,154 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title></title>
     <link rel="stylesheet" href="/Script/jquery-pagination/lib/jquery_pagination/pagination.css" />
 
-	<link href="/archon/bootstrap/css/bootstrap.css" rel="stylesheet">
-	<link href="/archon/bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
-	<link href="/archon/css/archon.css" rel="stylesheet">
-	<link href="/archon/css/custom.css" rel="stylesheet">
-   
-    <script src="/archon/js/jquery-1.8.3.min.js"></script>
-    <script src="/Script/jquery-bootstrap/bootstrap.min.js"></script>
-    <script src="/Script/jquery-bootstrap/jquery.bootstrap.min.js"></script>
-    <script src="/Script/utility.js" type="text/javascript"></script>
-    <script type="text/javascript" src="/Script/jquery-pagination/lib/jquery_pagination/jquery.pagination.js"></script>
-    <script type="text/javascript" src="/Script/template/trimpath-template.js"></script>
-    <script type="text/javascript" src="/Script/layer/layer.min.js"></script>
-    <asp:ContentPlaceHolder ID="head" runat="server">
-    
-    
+    <link rel="stylesheet" href="../public/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="../public/css/bootstrap-responsive.min.css" />
+    <link rel="stylesheet" href="../public/css/fullcalendar.css" />
+    <link rel="stylesheet" href="../public/css/unicorn.main.css" />
+    <link rel="stylesheet" href="../public/css/unicorn.grey.css" class="skin-color" />
+
+    <asp:ContentPlaceHolder ID="Header" runat="server">
     </asp:ContentPlaceHolder>
 </head>
 <body>
     <form id="form1" runat="server">
-    <div>
-        <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
-        
-        </asp:ContentPlaceHolder>
-    </div>
+        <div>
+            <asp:ContentPlaceHolder ID="Content" runat="server">
+            </asp:ContentPlaceHolder>
+        </div>
     </form>
+    <script src="../public/js/excanvas.min.js"></script>
+    <script src="../public/js/jquery.min.js"></script>
+    <script src="../public/js/jquery.ui.custom.js"></script>
+    <script src="../public/js/bootstrap.min.js"></script>
+    <script src="../public/js/jquery.peity.min.js"></script>
+    <script src="../public/js/unicorn.js"></script>
+    <script src="../public/js/ue.pager.js"></script>
+    <script src="../public/js/jquery.tmpl.min.js"></script>
+    <script type="text/jquery-tmpl-x" id="j-tmpl-listitem">
+        	{{each(i, v) list}}
+	        	<li class="item">
+					<div class="item-in">
+						<div class="article-thumb">
+							<img alt="User" src="../public/img/demo/av2.jpg" />
+						</div>
+						<div class="article-post">
+							<span class="post-title">主题名称主主题名称主题注明主题名称题注明主题名称</span>
+							<p class="post-desc">
+								活动简介活动简介活动简介活动简介活动简介活动简介活动简介活动简介活动简介活动简介活动简介活动简介活动简介
+							</p>
+							<p class="post-meta">
+								<span class="pull-left">浏览：<span class="text-error">103</span> 
+								评论：<span class="text-error">103</span>条</span> 
+								发布时间：<span class="text-error">2014-06-13</span> 
+							</p>
+							<div class="post-action">
+								<div class="checker"><span><input type="checkbox" name="radios" data-id="1"></span></div>
+								<span class="label label-warning pull-left">电子券</span>
+								<a href="#" class="btn btn-primary btn-mini">编辑</a>
+								<a href="#" class="btn btn-danger btn-mini">删除</a>
+							</div>
+						</div>
+					</div>
+				</li>
+			{{/each}}
+        </script>
+    <script type="text/javascript">
+        var MPage = {
+            init: function () {
+                var mpage = this;
+
+                mpage.getList(1);
+
+                $("#j-btn-selectAll").bind("click", function () {
+                    if (!$(this).data("checked")) {
+                        $("#j-list :checkbox").attr("checked", "checked");
+                        $(this).data("checked", true).html('取消全选');
+                    } else {
+                        $("#j-list :checkbox").removeAttr("checked");
+                        $(this).data("checked", false).html('全选');
+                    }
+
+                    return false;
+                });
+
+                $("#j-btn-delSelected").bind("click", function () {
+                    var $checked = $("#j-list :checked");
+
+                    var ids = [];
+                    $checked.each(function () {
+                        ids.push($(this).attr("data-id"));
+                    });
+
+                    if (ids.length > 0) {
+
+                    } else {
+                        alert("请至少选择一项");
+                    }
+
+                    return false;
+                });
+            },
+
+            getList: function (p) {
+                var mpage = this;
+
+                //$.getJSON("?&p="+p,function(json){
+                var json = {
+                    code: 0,
+                    msg: "",
+                    result: {
+                        count: 59,
+                        list: [
+                            {},
+                            {},
+                            {},
+                            {},
+                            {},
+                            {}
+                        ]
+                    }
+                };
+
+                $("#j-list").html($("#j-tmpl-listitem").tmpl(json.result));
+
+                ue.pager({
+                    //target : $(".list_pager"),//放置分页的元素
+                    pagerTarget: $("#j-pagination ul"),
+                    first: '<li><a href="#">首页</a></li>',
+                    firstDisabled: '<li class="disabled"><a href="#">首页</a></li>',
+                    last: '<li><a href="#">末页</a></li>',
+                    lastDisabled: '<li class="disabled"><a href="#">末页</a></li>',
+                    prev: '<li><a href="#">上一页</a></li>',
+                    prevDisabled: '<li class="disabled"><a href="#">上一页</a></li>',
+                    next: '<li><a href="#">下一页</a></li>',
+                    nextDisabled: '<li class="disabled"><a href="#">下一页</a></li>',
+                    current: '<li class="active"><a href="#">@{page}</a></li>',
+                    page: '<li><a href="#">@{page}</a></li>',
+                    tip: '<li class="page-info"><b class="text-info">@{nowPage}</b>/@{pageCount}页 共<b class="text-info">@{count}</b>条记录</li>',
+                    now: p,//当前页
+                    maxPage: 5,//显示的最多页数
+                    per: 6,//每页显示几个
+                    count: json.result.count,
+                    onchange: function (page) {//切换页数回调函数
+                        mpage.getList(page);
+                    }
+                })
+                //})
+
+            }
+        }
+
+        $(function () {
+            MPage.init();
+        });
+
+        </script>
+    <asp:ContentPlaceHolder ID="Footer" runat="server">
+    </asp:ContentPlaceHolder>
 </body>
 </html>

@@ -6,9 +6,12 @@
 		<meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<link rel="stylesheet" href="../public/css/bootstrap.min.css" />
-		<link rel="stylesheet" href="../public/css/bootstrap-responsive.min.css" />
+		<link rel="stylesheet" href="../public/css/bootstrap-responsive.min.css" />	
 		<link rel="stylesheet" href="../public/css/unicorn.main.css" />
-		<link rel="stylesheet" href="../public/css/unicorn.grey.css" class="skin-color" />
+		<link rel="stylesheet" href="../public/css/unicorn.grey.css" />
+		<link href="../public/kindeditor/themes/default/default.css" type="text/css" rel="stylesheet">
+
+		<link rel="stylesheet" href="../public/css/select2.css" />
 	</head>
 	<body>
 		
@@ -100,35 +103,86 @@
 					<span class="icon">
 						<i class="icon-gift"></i>
 					</span>
-					<h5>活动列表</h5>
-					<div class="buttons">
-						<a href="#" class="btn btn-primary btn-mini" id="j-btn-selectAll">全选</a>
-						<a href="#" class="btn btn-danger btn-mini" id="j-btn-delSelected">删除</a>
-					</div>
+					<h5>新增活动</h5>
 				</div>
 				<div class="widget-content nopadding">
-					<div class="list-2col">
-						<ul class="list-in" id="j-list">
-						</ul>
-					</div>
+
 				</div>
 
 				<div class="widget-footer">
-					<div class="pagination alternate" id="j-pagination">
-						<ul class="page-main">
-							<li class="disabled"><a href="#">首页</a></li>
-							<li class="disabled"><a href="#">上一页</a></li>
-							<li class="active">
-								<a href="#">1</a>
-							</li>
-							<li><a href="#">2</a></li>
-							<li><a href="#">3</a></li>
-							<li><a href="#">4</a></li>
-							<li><a href="#">下一页</a></li>
-							<li><a href="#">末页</a></li>
-							<li class="page-info"><b class="text-info">1</b>/8页 共<b class="text-info">18</b>条记录</li>
-						</ul>
-					</div>
+					<form action="#" method="get" class="form-horizontal" />
+						<div class="control-group">
+							<label class="control-label">活动主题</label>
+							<div class="controls">
+								<input type="text" />
+							</div>
+						</div>
+						<div class="control-group">
+							<label class="control-label">电子券</label>
+							<div class="controls">
+								<input type="text" id="j-btn-gift-selected" />
+
+								<div id="j-gift-selectModal" class="modal hide">
+									<div class="modal-header">
+										<button data-dismiss="modal" class="close" type="button">×</button>
+										<h3>选择电子券</h3>
+									</div>
+									<div class="modal-body">
+										<ul class="activity-list" id="j-gift-list">
+	                                        <li><a href="#">电子券名称电子券名称电子券名称电子券名称电子券名称</a></li>
+	                                        <li><a href="#">电子券名称电子券名称电子券名称电子券名称电子券名称</a></li>
+	                                        <li><a href="#">电子券名称电子券名称电子券名称电子券名称电子券名称</a></li>
+	                                        <li><a href="#">电子券名称电子券名称电子券名称电子券名称电子券名称</a></li>
+	                                        <li><a href="#">电子券名称电子券名称电子券名称电子券名称电子券名称</a></li>
+	                                        <li><a href="#">电子券名称电子券名称电子券名称电子券名称电子券名称</a></li>
+	                                    </ul>
+									</div>
+									<div class="modal-footer">
+										<div class="pagination alternate" id="j-pagination">
+											<ul class="page-main">
+												<li class="disabled"><a href="#">首页</a></li>
+												<li class="disabled"><a href="#">上一页</a></li>
+												<li class="active">
+													<a href="#">1</a>
+												</li>
+												<li><a href="#">2</a></li>
+												<li><a href="#">3</a></li>
+												<li><a href="#">4</a></li>
+												<li><a href="#">下一页</a></li>
+												<li><a href="#">末页</a></li>
+												<li class="page-info"><b class="text-info">1</b>/8页 共<b class="text-info">18</b>条记录</li>
+											</ul>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="control-group">
+							<label class="control-label">活动图片</label>
+							<div class="controls">
+								
+								<input type="button" class="btn btn-info" id="image3" value="本地上传" />
+								<input type="button" class="btn btn-success" id="filemanager" value="素材库选择" />
+								<span class="help-inline">图片的要求</span>
+								<div class="clearfix" style="margin-top:10px;">
+									<span class="thumbnail pull-left">
+										<img src="http://placehold.it/140x140" alt="" id="j-img-placehold">
+									</span>
+								</div>
+							</div>
+						</div>
+
+						<div class="control-group">
+							<label class="control-label">活动内容</label>
+							<div class="controls">
+								<textarea name="content" style="height:400px;visibility:hidden;"></textarea>
+							</div>
+						</div>
+						<div class="form-actions">
+							<button type="reset" class="btn">清除重置</button>
+							<button type="submit" class="btn btn-primary">完成保存</button>
+						</div>
+					</form>
 				</div>
 			</div>
 
@@ -146,74 +200,73 @@
         <script src="../public/js/jquery.tmpl.min.js"></script>
 
         <!--页面js-->
+        <script src="../public/js/select2.min.js"></script>
         <script src="../public/js/ue.pager.js"></script>
 
-        <script type="text/jquery-tmpl-x" id="j-tmpl-listitem">
+        <script charset="utf-8" src="../public/kindeditor/kindeditor-min.js"></script>
+		<script charset="utf-8" src="../public/kindeditor/lang/zh_CN.js"></script>
+
+
+		<script type="text/jquery-tmpl-x" id="j-tmpl-listitem">
         	{{each(i, v) list}}
-	        	<li class="item">
-					<div class="item-in">
-						<div class="article-thumb">
-							<img alt="User" src="../public/img/demo/av2.jpg" />
-						</div>
-						<div class="article-post">
-							<span class="post-title">主题名称主主题名称主题注明主题名称题注明主题名称</span>
-							<p class="post-desc">
-								活动简介活动简介活动简介活动简介活动简介活动简介活动简介活动简介活动简介活动简介活动简介活动简介活动简介
-							</p>
-							<p class="post-meta">
-								<span class="pull-left">浏览：<span class="text-error">103</span> 
-								评论：<span class="text-error">103</span>条</span> 
-								发布时间：<span class="text-error">2014-06-13</span> 
-							</p>
-							<div class="post-action">
-								<div class="checker"><span><input type="checkbox" name="radios" data-id="1"></span></div>
-								<span class="label label-warning pull-left">电子券</span>
-								<a href="#" class="btn btn-primary btn-mini">编辑</a>
-								<a href="#" class="btn btn-danger btn-mini">删除</a>
-							</div>
-						</div>
-					</div>
-				</li>
+	        	<li data-id="1"><a href="#">电子券名称电子券名称电子券名称电子券名称电子券名称</a></li>
 			{{/each}}
         </script>
+
         <script type="text/javascript">
         	var MPage = {
         		init : function(){
         			var mpage = this;
 
-        			mpage.getList(1);
+        			var editor,
+        				editor_1;
+					KindEditor.ready(function(K) {
+						editor = K.create('textarea[name="content"]', {
+							allowFileManager : true
+						});
 
-        			$("#j-btn-selectAll").bind("click", function(){
-        				if(!$(this).data("checked")){
-        					$("#j-list :checkbox").attr("checked", "checked");
-        					$(this).data("checked", true).html('取消全选');
-        				} else {
-        					$("#j-list :checkbox").removeAttr("checked");
-        					$(this).data("checked", false).html('全选');
-        				}
-        				
-        				return false;
-        			});
 
-        			$("#j-btn-delSelected").bind("click", function(){
-        				var $checked = $("#j-list :checked");
+						editor_1 = K.editor({
+							fileManagerJson : '../public/kindeditor/php/file_manager_json.php'
+						});
+						
+						K('#filemanager').click(function() {
+							editor_1.loadPlugin('filemanager', function() {
+								editor_1.plugin.filemanagerDialog({
+									viewType : 'VIEW',
+									dirName : 'image',
+									clickFn : function(url, title) {
+										K('#j-img-placehold').attr("src", url);
+										editor_1.hideDialog();
+									}
+								});
+							});
+						});
 
-        				var ids = [];
-        				$checked.each(function(){
-        					ids.push( $(this).attr("data-id") );
-        				});
+						K('#image3').click(function() {
+							editor_1.loadPlugin('image', function() {
+								editor_1.plugin.imageDialog({
+									showRemote : false,
+									imageUrl : K('#j-img-placehold').attr("src"),
+									clickFn : function(url, title, width, height, border, align) {
+										K('#j-img-placehold').attr("src", url);
+										editor_1.hideDialog();
+									}
+								});
+							});
+						});
+					});
 
-        				if(ids.length > 0){
+					$('select').select2();
 
-        				} else {
-        					alert("请至少选择一项");
-        				}
+					$("#j-btn-gift-selected").bind("focus", function(){
+						mpage.getGiftList(1);
+						$('#j-gift-selectModal').modal('show');
+					});
 
-        				return false;
-        			});
         		},
 
-    		    getList : function (p){
+        		getGiftList : function (p){
     		    	var mpage = this;
 
 					//$.getJSON("?&p="+p,function(json){
@@ -233,7 +286,16 @@
 							}
 						};
 						
-						$("#j-list").html( $("#j-tmpl-listitem").tmpl(json.result) );
+						$("#j-gift-list").html( $("#j-tmpl-listitem").tmpl(json.result) );
+
+						$("#j-gift-list li").bind("click", function(){
+							var gid = $(this).attr("data-id"),
+								title = $(this).text();
+
+							$("#j-btn-gift-selected").attr("data-id", gid).val(title);	
+							$('#j-gift-selectModal').modal('hide');
+							return false;
+						});
 
 						ue.pager({
 							//target : $(".list_pager"),//放置分页的元素
@@ -254,7 +316,7 @@
 							per : 6,//每页显示几个
 							count : json.result.count,
 							onchange : function(page){//切换页数回调函数
-								mpage.getList(page);
+								mpage.getGiftList(page);
 							}
 						})
 					//});

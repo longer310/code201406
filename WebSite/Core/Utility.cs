@@ -367,7 +367,7 @@ namespace Backstage.Core
             }
         }
         //base64编码的文本 转为    图片  
-        public static void Base64StringToImage(string base64Str, string name)
+        public static void Base64StringToImage(string base64Str, string folderUrl)
         {
             try
             {
@@ -375,7 +375,7 @@ namespace Backstage.Core
                 MemoryStream ms = new MemoryStream(arr);
                 Bitmap bmp = new Bitmap(ms);
 
-                bmp.Save("./userhead/" + name + ".jpg", System.Drawing.Imaging.ImageFormat.Jpeg);
+                bmp.Save(folderUrl + ".jpg", System.Drawing.Imaging.ImageFormat.Jpeg);
             }
             catch (Exception ex)
             {

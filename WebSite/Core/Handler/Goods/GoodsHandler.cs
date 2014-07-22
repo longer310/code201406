@@ -19,6 +19,11 @@ namespace Backstage.Handler
             base.ProcessRequest(HttpContext.Current);
             switch (Action)
             {
+                #region 上传图片
+                case "uploadPic":
+                    UploadPic(); break;
+                #endregion
+
                 #region 产品分类管理
                 case "getGoodsCategoriesList":
                     GetGoodsCategoriesList(); break;
@@ -48,6 +53,12 @@ namespace Backstage.Handler
                 default: break;
             }
         }
+        #region 上传图片
+        private void UploadPic()
+        {
+            
+        }
+        #endregion
 
         #region 产品分类管理
         /// <summary>

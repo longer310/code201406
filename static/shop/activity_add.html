@@ -121,8 +121,8 @@
 							<label class="control-label">活动图片</label>
 							<div class="controls">
 								
-								<input type="button" class="btn btn-info" id="j-btn_image_upload" value="本地上传" />
-								<input type="button" class="btn btn-success" id="j-btn-image_manager" value="素材库选择" />
+								<input type="button" class="btn btn-info" id="j-btn-imageUpload" value="本地上传" />
+								<input type="button" class="btn btn-success" id="j-btn-imageManager" value="素材库选择" />
 								<span class="help-inline">图片的要求</span>
 								<div class="clearfix" style="margin-top:10px;">
 									<span class="thumbnail pull-left">
@@ -230,7 +230,7 @@
 						});
 						
 						//图片上传绑定
-						K('#j-btn-image_manager').click(function() {
+						K('#j-btn-imageManager').click(function() {
 							image_editor.loadPlugin('filemanager', function() {
 								image_editor.plugin.filemanagerDialog({
 									viewType : 'VIEW',
@@ -244,7 +244,7 @@
 						});
 
 						//从资料库选择图片
-						K('#j-btn_image_upload').click(function() {
+						K('#j-btn-imageUpload').click(function() {
 							image_editor.loadPlugin('image', function() {
 								image_editor.plugin.imageDialog({
 									showRemote : false,

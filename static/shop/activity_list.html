@@ -216,7 +216,7 @@
         							alert('执行确认回调');
 
         							//删除成功后刷新本页
-        							document.location.reload();
+        							mpage.getActivityList(mpage.activityCurrentPage);
         						},
         						cancel : function(){
         							//执行取消回调
@@ -242,6 +242,7 @@
     		    	var mpage = this;
 
 					//$.getJSON("", { p: p}， function(json){
+						mpage.activityCurrentPage = p;
 						var json = {
 							code : 0,
 							msg : "", 

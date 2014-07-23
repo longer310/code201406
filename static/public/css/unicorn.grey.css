@@ -81,11 +81,13 @@ body {
 }
 
 .list-2col{
+	overflow: hidden;
 }
 
 .list-2col .list-in{
 	overflow: hidden;
 	margin: 0;
+	margin-bottom: -1px;
 }
 .list-2col .item {
     list-style: none outside none;

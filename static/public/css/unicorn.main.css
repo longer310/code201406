@@ -661,6 +661,7 @@ a:hover {
 
 .widget-content {
 	padding: 10px 15px 0;
+	border-bottom: 1px solid #cdcdcd;
 }
 .widget-box.widget-plain .widget-content {
 	padding: 12px 0 0;

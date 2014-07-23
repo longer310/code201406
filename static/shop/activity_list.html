@@ -151,7 +151,7 @@
         <!--活动列表模版-->
         <script type="text/jquery-tmpl-x" id="j-tmpl-activity-listitem">
         	{{each(i, v) list}}
-	        	<li class="item">
+	        	<li class="item" data-id="1">
 					<div class="item-in">
 						<div class="article-thumb">
 							<img alt="User" src="http://placehold.it/128x128" />
@@ -167,10 +167,10 @@
 								发布时间：<span class="text-error">2014-06-13</span> 
 							</p>
 							<div class="post-action">
-								<div class="checker"><span><input type="checkbox" name="radios" data-id="1"></span></div>
+								<div class="checker"><span><input type="checkbox" name="radios"></span></div>
 								<span class="label label-warning pull-left">电子券</span>
 								<a href="#" class="btn btn-primary btn-mini"><i class="icon-pencil icon-white"></i> 编辑</a>
-								<a href="#" class="btn btn-danger btn-mini"><i class="icon-remove icon-white"></i> 删除</a>
+								<a href="#" class="btn btn-danger btn-mini j-btn-del"><i class="icon-remove icon-white"></i> 删除</a>
 							</div>
 						</div>
 					</div>
@@ -204,7 +204,7 @@
 
         				var ids = [];
         				$checked.each(function(){
-        					ids.push( $(this).attr("data-id") );
+        					ids.push( $(this).parents("li").attr("data-id") );
         				});
 
         				if(ids.length > 0){
@@ -284,7 +284,29 @@
 							onchange : function(page){//切换页数回调函数
 								mpage.getActivityList(page);
 							}
-						})
+						});
+
+						//绑定单个删除
+	        			$("#j-activity-list .j-btn-del").bind("click", function(){
+	        				var $item = $(this).parents("li");
+	        				var id = $item.attr("data-id");
+
+	        				Common.confirm({
+        						title : "删除确认提示",
+        						content : "您确定要删除当前活动？",
+        						confirm : function(){
+        							//执行确认回调
+        							alert('执行确认回调');
+
+        							$item.remove();
+        						},
+        						cancel : function(){
+        							//执行取消回调
+        							alert('执行取消回调');
+        						}
+        					});
+	        				return false;
+	        			});
 					//});
 	
 				}

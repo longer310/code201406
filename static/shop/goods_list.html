@@ -185,7 +185,7 @@
 						<button class="btn btn-success btn-mini j-isrecommend" data-toggle="buttons-checkbox"><i class="icon-thumbs-up icon-white"></i> 推荐</button>
 						<button class="btn btn-info btn-mini j-ishot active" data-toggle="buttons-checkbox"><i class="icon-fire icon-white"></i> 热销</button>
 						<a class="btn btn-primary btn-mini" href=""><i class="icon-pencil icon-white"></i> 编辑</a>
-						<a class="btn btn-danger btn-mini" href=""><i class="icon-remove icon-white"></i> 删除</a>
+						<a class="btn btn-danger btn-mini j-btn-del" href=""><i class="icon-remove icon-white"></i> 删除</a>
 					</td>
 				</tr>
 			{{/each}}
@@ -350,7 +350,29 @@
 							onchange : function(page){//切换页数回调函数
 								mpage.getGoodsList(page);
 							}
-						})
+						});
+
+						//绑定单个删除
+	        			$("#j-goods-list .j-btn-del").bind("click", function(){
+	        				var $item = $(this).parents("tr");
+	        				var id = $item.attr("data-id");
+
+	        				Common.confirm({
+        						title : "删除确认提示",
+        						content : "您确定要删除当前活动？",
+        						confirm : function(){
+        							//执行确认回调
+        							alert('执行确认回调');
+
+        							$item.remove();
+        						},
+        						cancel : function(){
+        							//执行取消回调
+        							alert('执行取消回调');
+        						}
+        					});
+	        				return false;
+	        			});
 					//});
 	
 				}

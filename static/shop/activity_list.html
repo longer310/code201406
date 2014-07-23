@@ -144,10 +144,11 @@
         <script src="../public/js/bootstrap.min.js"></script>
         <script src="../public/js/unicorn.js"></script>
         <script src="../public/js/jquery.tmpl.min.js"></script>
-
+        <script src="../public/js/common.js"></script>
         <!--页面js-->
         <script src="../public/js/ue.pager.js"></script>
 
+        <!--活动列表模版-->
         <script type="text/jquery-tmpl-x" id="j-tmpl-listitem">
         	{{each(i, v) list}}
 	        	<li class="item">
@@ -176,6 +177,7 @@
 				</li>
 			{{/each}}
         </script>
+
         <script type="text/javascript">
         	var MPage = {
         		init : function(){
@@ -204,9 +206,27 @@
         				});
 
         				if(ids.length > 0){
-
+        					Common.confirm({
+        						title : "删除确认提示",
+        						content : "您确定要删除当前选择的所有数据吗？",
+        						confirm : function(){
+        							//执行确认回调
+        							alert('执行确认回调');
+        						},
+        						cancel : function(){
+        							//执行取消回调
+        							alert('执行取消回调');
+        						}
+        					});
         				} else {
-        					alert("请至少选择一项");
+        					Common.alert({
+        						title : "提示",
+        						content : "请至少选择一项",
+        						confirm : function(){
+        							//执行确认回调
+        							alert('执行确认回调');
+        						}
+        					});
         				}
 
         				return false;
@@ -265,7 +285,6 @@
     		$(function(){
     			MPage.init();
     		});
-    		
         </script>
 	</body>
 </html>

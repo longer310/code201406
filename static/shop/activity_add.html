@@ -158,7 +158,8 @@
         <script src="../public/js/bootstrap.min.js"></script>
         <script src="../public/js/unicorn.js"></script>
         <script src="../public/js/jquery.tmpl.min.js"></script>
-
+        <script src="../public/js/common.js"></script>
+        
         <!--页面js-->
         <script src="../public/js/select2.min.js"></script>
         <script src="../public/js/ue.pager.js"></script>
@@ -166,6 +167,7 @@
         <script charset="utf-8" src="../public/kindeditor/kindeditor-min.js"></script>
 		<script charset="utf-8" src="../public/kindeditor/lang/zh_CN.js"></script>
 
+		<!--选择电子券弹窗-->
 		<div id="j-ticket-selectModal" class="modal hide">
 			<div class="modal-header">
 				<button data-dismiss="modal" class="close" type="button">×</button>
@@ -200,6 +202,7 @@
 			</div>
 		</div>
 
+		<!--电子券列表模版-->
 		<script type="text/jquery-tmpl-x" id="j-tmpl-listitem">
         	{{each(i, v) list}}
 	        	<li data-id="1"><a href="#">电子券名称电子券名称电子券名称电子券名称电子券名称</a></li>

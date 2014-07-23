@@ -121,40 +121,6 @@
 							<label class="control-label">电子券</label>
 							<div class="controls">
 								<input type="text" id="j-btn-gift-selected" />
-
-								<div id="j-gift-selectModal" class="modal hide">
-									<div class="modal-header">
-										<button data-dismiss="modal" class="close" type="button">×</button>
-										<h3>选择电子券</h3>
-									</div>
-									<div class="modal-body">
-										<ul class="activity-list" id="j-gift-list">
-	                                        <li><a href="#">电子券名称电子券名称电子券名称电子券名称电子券名称</a></li>
-	                                        <li><a href="#">电子券名称电子券名称电子券名称电子券名称电子券名称</a></li>
-	                                        <li><a href="#">电子券名称电子券名称电子券名称电子券名称电子券名称</a></li>
-	                                        <li><a href="#">电子券名称电子券名称电子券名称电子券名称电子券名称</a></li>
-	                                        <li><a href="#">电子券名称电子券名称电子券名称电子券名称电子券名称</a></li>
-	                                        <li><a href="#">电子券名称电子券名称电子券名称电子券名称电子券名称</a></li>
-	                                    </ul>
-									</div>
-									<div class="modal-footer">
-										<div class="pagination alternate" id="j-pagination">
-											<ul class="page-main">
-												<li class="disabled"><a href="#">首页</a></li>
-												<li class="disabled"><a href="#">上一页</a></li>
-												<li class="active">
-													<a href="#">1</a>
-												</li>
-												<li><a href="#">2</a></li>
-												<li><a href="#">3</a></li>
-												<li><a href="#">4</a></li>
-												<li><a href="#">下一页</a></li>
-												<li><a href="#">末页</a></li>
-												<li class="page-info"><b class="text-info">1</b>/8页 共<b class="text-info">18</b>条记录</li>
-											</ul>
-										</div>
-									</div>
-								</div>
 							</div>
 						</div>
 						<div class="control-group">
@@ -206,6 +172,39 @@
         <script charset="utf-8" src="../public/kindeditor/kindeditor-min.js"></script>
 		<script charset="utf-8" src="../public/kindeditor/lang/zh_CN.js"></script>
 
+		<div id="j-gift-selectModal" class="modal hide">
+			<div class="modal-header">
+				<button data-dismiss="modal" class="close" type="button">×</button>
+				<h3>选择电子券</h3>
+			</div>
+			<div class="modal-body">
+				<ul class="activity-list" id="j-gift-list">
+                    <li><a href="#">电子券名称电子券名称电子券名称电子券名称电子券名称</a></li>
+                    <li><a href="#">电子券名称电子券名称电子券名称电子券名称电子券名称</a></li>
+                    <li><a href="#">电子券名称电子券名称电子券名称电子券名称电子券名称</a></li>
+                    <li><a href="#">电子券名称电子券名称电子券名称电子券名称电子券名称</a></li>
+                    <li><a href="#">电子券名称电子券名称电子券名称电子券名称电子券名称</a></li>
+                    <li><a href="#">电子券名称电子券名称电子券名称电子券名称电子券名称</a></li>
+                </ul>
+			</div>
+			<div class="modal-footer">
+				<div class="pagination alternate" id="j-pagination">
+					<ul class="page-main">
+						<li class="disabled"><a href="#">首页</a></li>
+						<li class="disabled"><a href="#">上一页</a></li>
+						<li class="active">
+							<a href="#">1</a>
+						</li>
+						<li><a href="#">2</a></li>
+						<li><a href="#">3</a></li>
+						<li><a href="#">4</a></li>
+						<li><a href="#">下一页</a></li>
+						<li><a href="#">末页</a></li>
+						<li class="page-info"><b class="text-info">1</b>/8页 共<b class="text-info">18</b>条记录</li>
+					</ul>
+				</div>
+			</div>
+		</div>
 
 		<script type="text/jquery-tmpl-x" id="j-tmpl-listitem">
         	{{each(i, v) list}}

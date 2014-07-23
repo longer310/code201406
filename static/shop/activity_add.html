@@ -184,7 +184,7 @@
                 </ul>
 			</div>
 			<div class="modal-footer">
-				<div class="pagination alternate" id="j-pagination">
+				<div class="pagination alternate" id="j-ticket-pagination">
 					<ul class="page-main">
 						<li class="disabled"><a href="#">首页</a></li>
 						<li class="disabled"><a href="#">上一页</a></li>
@@ -203,7 +203,7 @@
 		</div>
 
 		<!--电子券列表模版-->
-		<script type="text/jquery-tmpl-x" id="j-tmpl-listitem">
+		<script type="text/jquery-tmpl-x" id="j-tmpl-ticket-listitem">
         	{{each(i, v) list}}
 	        	<li data-id="1"><a href="#">电子券名称电子券名称电子券名称电子券名称电子券名称</a></li>
 			{{/each}}
@@ -284,7 +284,7 @@
 							}
 						};
 						
-						$("#j-ticket-list").html( $("#j-tmpl-listitem").tmpl(json.result) );
+						$("#j-ticket-list").html( $("#j-tmpl-ticket-listitem").tmpl(json.result) );
 
 						$("#j-ticket-list li").bind("click", function(){
 							var gid = $(this).attr("data-id"),
@@ -297,7 +297,7 @@
 
 						ue.pager({
 							//target : $(".list_pager"),//放置分页的元素
-							pagerTarget : $("#j-pagination ul"),
+							pagerTarget : $("#j-ticket-pagination ul"),
 							first : '<li><a href="#">首页</a></li>',
 							firstDisabled : '<li class="disabled"><a href="#">首页</a></li>',
 							last : '<li><a href="#">末页</a></li>',

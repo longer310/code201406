@@ -181,7 +181,7 @@
         		init : function(){
         			var mpage = this;
 
-        			mpage.getList(1);
+        			mpage.getActivityList(1);
 
         			$("#j-btn-selectAll").bind("click", function(){
         				if(!$(this).data("checked")){
@@ -213,7 +213,7 @@
         			});
         		},
 
-    		    getList : function (p){
+    		    getActivityList : function (p){
     		    	var mpage = this;
 
 					//$.getJSON("?&p="+p,function(json){
@@ -254,7 +254,7 @@
 							per : 6,//每页显示几个
 							count : json.result.count,
 							onchange : function(page){//切换页数回调函数
-								mpage.getList(page);
+								mpage.getActivityList(page);
 							}
 						})
 					//});

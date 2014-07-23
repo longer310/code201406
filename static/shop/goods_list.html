@@ -250,7 +250,7 @@
         							alert('执行确认回调');
 
         							//删除成功后刷新本页
-        							document.location.reload();
+        							mpage.getGoodsList(mpage.goodsCurrentPage, mpage.goodsCurrentType);
         						},
         						cancel : function(){
         							//执行取消回调
@@ -324,6 +324,9 @@
     		    	var mpage = this;
 
 					//$.getJSON("", { p: p, type : type}， function(json){
+						mpage.goodsCurrentPage = p;
+						mpage.goodsCurrentType = type;
+						$("#j-btn-selectAll").removeAttr("checked");
 						var json = {
 							code : 0,
 							msg : "", 

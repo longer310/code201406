@@ -108,7 +108,7 @@
 				</div>
 				<div class="widget-content">
 					<div class="list-2col">
-						<ul class="list-in" id="j-list">
+						<ul class="list-in" id="j-activity-list">
 						</ul>
 					</div>
 				</div>
@@ -187,10 +187,10 @@
 
         			$("#j-btn-selectAll").bind("click", function(){
         				if(!$(this).data("checked")){
-        					$("#j-list :checkbox").attr("checked", "checked");
+        					$("#j-activity-list :checkbox").attr("checked", "checked");
         					$(this).data("checked", true).html('取消全选');
         				} else {
-        					$("#j-list :checkbox").removeAttr("checked");
+        					$("#j-activity-list :checkbox").removeAttr("checked");
         					$(this).data("checked", false).html('全选');
         				}
         				
@@ -198,7 +198,7 @@
         			});
 
         			$("#j-btn-delSelected").bind("click", function(){
-        				var $checked = $("#j-list :checked");
+        				var $checked = $("#j-activity-list :checked");
 
         				var ids = [];
         				$checked.each(function(){
@@ -253,7 +253,7 @@
 							}
 						};
 						
-						$("#j-list").html( $("#j-tmpl-listitem").tmpl(json.result) );
+						$("#j-activity-list").html( $("#j-tmpl-listitem").tmpl(json.result) );
 
 						ue.pager({
 							//target : $(".list_pager"),//放置分页的元素

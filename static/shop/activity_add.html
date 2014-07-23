@@ -159,7 +159,7 @@
         <script src="../public/js/unicorn.js"></script>
         <script src="../public/js/jquery.tmpl.min.js"></script>
         <script src="../public/js/common.js"></script>
-        
+
         <!--页面js-->
         <script src="../public/js/select2.min.js"></script>
         <script src="../public/js/ue.pager.js"></script>
@@ -218,11 +218,13 @@
         				editor_1;
 					KindEditor.ready(function(K) {
 						editor = K.create('textarea[name="content"]', {
+							uploadJson : '../public/kindeditor/php/upload_json.php',
 							allowFileManager : true
 						});
 
 
 						editor_1 = K.editor({
+							uploadJson : '../public/kindeditor/php/upload_json.php',
 							fileManagerJson : '../public/kindeditor/php/file_manager_json.php'
 						});
 						

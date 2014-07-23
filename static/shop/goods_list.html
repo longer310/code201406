@@ -35,17 +35,17 @@
 		<div id="sidebar">
 			<ul>
 				<li><a href="index.html"><i class="icon icon-home"></i> <span>首页</span></a></li>
-				<li class="submenu active open">
+				<li class="submenu">
 					<a href="#"><i class="icon icon-gift"></i> <span>活动管理</span> <span class="label">2</span></a>
 					<ul>
-						<li class="active"><a href="activity_list.html">活动列表</a></li>
+						<li><a href="activity_list.html">活动列表</a></li>
 						<li><a href="activity_add.html">新增活动</a></li>
 					</ul>
 				</li>
-				<li class="submenu">
+				<li class="submenu active open">
 					<a href="#"><i class="icon icon-tint"></i> <span>产品管理</span><span class="label">3</span></a>
 					<ul>
-						<li><a href="goods_list.html">产品列表</a></li>
+						<li class="active"><a href="goods_list.html">产品列表</a></li>
 						<li><a href="goods_add.html">新增产品</a></li>
 						<li><a href="categroy.html">分类管理</a></li>
 					</ul>
@@ -100,21 +100,57 @@
 					<span class="icon">
 						<i class="icon-gift"></i>
 					</span>
-					<h5>活动列表</h5>
+					<h5>商品列表</h5>
 					<div class="buttons">
-						<a href="#" class="btn btn-primary btn-mini" id="j-btn-selectAll">全选</a>
+						<a href="#" class="btn btn-primary btn-mini" id="j-btn-saveAll">保存</a>
 						<a href="#" class="btn btn-danger btn-mini" id="j-btn-delSelected">删除</a>
 					</div>
 				</div>
 				<div class="widget-content">
-					<div class="list-2col">
-						<ul class="list-in" id="j-activity-list">
-						</ul>
-					</div>
+				<ul class="nav nav-tabs" id="j-goods-tab">
+					<li class="active">
+						<a href="#">所有商品</a>
+					</li>
+					<li><a href="#">推荐商品</a></li>
+					<li><a href="#">热销商品</a></li>
+				</ul>
+					<table class="table table-bordered table-striped with-check">
+						<thead>
+							<tr>
+								<th><input type="checkbox" id="j-btn-selectAll" name="title-table-checkbox" /></th>
+								<th>编号</th>
+								<th>图片</th>
+								<th>名称</th>
+								<th>现价</th>
+								<th>原价</th>
+								<th>已售</th>
+								<th>评论/浏览</th>
+								<th>操作</th>
+							</tr>
+						</thead>
+						<tbody id="j-goods-list">
+							<tr>
+								<td><input type="checkbox" /></td>
+								<td style="width:30px;">1</td>
+								<td style="width:45px;"><img src="http://placehold.it/45x45"></td>
+								<td>水煮活鱼水煮活鱼水煮活鱼</td>
+								<td style="width:104px;"><input type="text" class="input-small" value="34" ></td>
+								<td style="width:104px;"><input type="text" class="input-small" value="43" ></td>
+								<td>56</td>
+								<td>12 / 123</td>
+								<td style="width:164px;">
+									<button class="btn btn-success btn-mini" data-toggle="buttons-checkbox">推荐</button>
+									<button class="btn btn-info btn-mini" data-toggle="buttons-checkbox">热销</button>
+									<a class="btn btn-primary btn-mini" href="">编辑</a>
+									<a class="btn btn-danger btn-mini" href="">删除</a>
+								</td>
+							</tr>
+						</tbody>
+					</table>
 				</div>
 
 				<div class="widget-footer">
-					<div class="pagination alternate" id="j-activity-pagination">
+					<div class="pagination alternate" id="j-goods-pagination">
 						<ul class="page-main">
 							<li class="disabled"><a href="#">首页</a></li>
 							<li class="disabled"><a href="#">上一页</a></li>
@@ -145,54 +181,52 @@
         <script src="../public/js/unicorn.js"></script>
         <script src="../public/js/jquery.tmpl.min.js"></script>
         <script src="../public/js/common.js"></script>
+
         <!--页面js-->
         <script src="../public/js/ue.pager.js"></script>
 
-        <!--活动列表模版-->
-        <script type="text/jquery-tmpl-x" id="j-tmpl-activity-listitem">
+        <!--推荐和热销 如果选择 加上 active 的class-->
+        <script type="text/jquery-tmpl-x" id="j-tmpl-goods-listitem">
         	{{each(i, v) list}}
-	        	<li class="item">
-					<div class="item-in">
-						<div class="article-thumb">
-							<img alt="User" src="http://placehold.it/128x128" />
-						</div>
-						<div class="article-post">
-							<span class="post-title">主题名称主主题名称主题注明主题名称题注明主题名称</span>
-							<p class="post-desc">
-								活动简介活动简介活动简介活动简介活动简介活动简介活动简介活动简介活动简介活动简介活动简介活动简介活动简介
-							</p>
-							<p class="post-meta">
-								<span class="pull-left">浏览：<span class="text-error">103</span> 
-								评论：<span class="text-error">103</span>条</span> 
-								发布时间：<span class="text-error">2014-06-13</span> 
-							</p>
-							<div class="post-action">
-								<div class="checker"><span><input type="checkbox" name="radios" data-id="1"></span></div>
-								<span class="label label-warning pull-left">电子券</span>
-								<a href="#" class="btn btn-primary btn-mini">编辑</a>
-								<a href="#" class="btn btn-danger btn-mini">删除</a>
-							</div>
-						</div>
-					</div>
-				</li>
+	        	<tr data-gid="1">
+					<td><input type="checkbox" /></td>
+					<td style="width:30px;">1</td>
+					<td style="width:45px;"><img src="http://placehold.it/45x45"></td>
+					<td>水煮活鱼水煮活鱼水煮活鱼</td>
+					<td style="width:104px;"><input type="text" class="input-small j-price" value="34" ></td>
+					<td style="width:104px;"><input type="text" class="input-small j-preprice" value="43" ></td>
+					<td>56</td>
+					<td>12 / 123</td>
+					<td style="width:164px;">
+						<button class="btn btn-success btn-mini j-isrecommend" data-toggle="buttons-checkbox">推荐</button>
+						<button class="btn btn-info btn-mini j-ishot active" data-toggle="buttons-checkbox">热销</button>
+						<a class="btn btn-primary btn-mini" href="">编辑</a>
+						<a class="btn btn-danger btn-mini" href="">删除</a>
+					</td>
+				</tr>
 			{{/each}}
         </script>
-
         <script type="text/javascript">
         	var MPage = {
         		init : function(){
         			var mpage = this;
 
-        			mpage.getActivityList(1);
+        			mpage.getGoodsList(1, 0);
+
+        			//绑定tab
+        			$('#j-goods-tab a').click(function (e) {
+        				var type = $(this).parent().index();
+						$(this).tab('show');
+						mpage.getGoodsList(1, type);
+						return false
+					});
 
         			//绑定全选
-        			$("#j-btn-selectAll").bind("click", function(){
-        				if(!$(this).data("checked")){
-        					$("#j-activity-list :checkbox").attr("checked", "checked");
-        					$(this).data("checked", true).html('取消全选');
+        			$("#j-btn-selectAll").bind("change", function(){
+        				if($(this).attr("checked")){
+        					$("#j-goods-list :checkbox").attr("checked", "checked");
         				} else {
-        					$("#j-activity-list :checkbox").removeAttr("checked");
-        					$(this).data("checked", false).html('全选');
+        					$("#j-goods-list :checkbox").removeAttr("checked");
         				}
         				
         				return false;
@@ -200,7 +234,7 @@
 
         			//绑定批量删除
         			$("#j-btn-delSelected").bind("click", function(){
-        				var $checked = $("#j-activity-list :checked");
+        				var $checked = $("#j-goods-list :checked");
 
         				var ids = [];
         				$checked.each(function(){
@@ -236,12 +270,60 @@
 
         				return false;
         			});
+
+        			//绑定批量保存
+        			$("#j-btn-saveAll").bind("click", function(){
+        				var $checked = $("#j-goods-list :checked");
+
+        				var data_save = [];
+
+        				$checked.each(function(){
+        					var $item = $(this).parents("tr");
+        					data_save.push(
+        					{
+        						id : $item.attr("data-gid"),
+        						price : $item.find(".j-price").val(),
+        						preprice : $item.find(".j-preprice").val(),
+        						isrecommend : $item.find(".j-isrecommend").hasClass("active") ? 1 : 0,
+        						ishot : $item.find(".j-ishot").hasClass("active") ? 1 : 0
+        					});
+        				});
+
+        				if(data_save.length > 0){
+        					Common.confirm({
+        						title : "保存确认提示",
+        						content : "您确定要保存当前选择的所有修改吗？",
+        						confirm : function(){
+        							//执行确认回调
+        							alert('执行确认回调');
+
+        						},
+        						cancel : function(){
+        							//执行取消回调
+        							alert('执行取消回调');
+        						}
+        					});
+        				} else {
+        					Common.alert({
+        						title : "提示",
+        						content : "请至少选择一项",
+        						confirm : function(){
+        							//执行确认回调
+        							alert('执行确认回调');
+        						}
+        					});
+        				}
+
+        				return false;
+        			});
         		},
 
-    		    getActivityList : function (p){
+        		//p 页码
+        		//type tab 类型
+    		    getGoodsList : function (p, type){
     		    	var mpage = this;
 
-					//$.getJSON("", { p: p}， function(json){
+					//$.getJSON("", { p: p, type : type}， function(json){
 						var json = {
 							code : 0,
 							msg : "", 
@@ -258,11 +340,11 @@
 							}
 						};
 						
-						$("#j-activity-list").html( $("#j-tmpl-activity-listitem").tmpl(json.result) );
+						$("#j-goods-list").html( $("#j-tmpl-goods-listitem").tmpl(json.result) );
 
 						ue.pager({
 							//target : $(".list_pager"),//放置分页的元素
-							pagerTarget : $("#j-activity-pagination ul"),
+							pagerTarget : $("#j-goods-pagination ul"),
 							first : '<li><a href="#">首页</a></li>',
 							firstDisabled : '<li class="disabled"><a href="#">首页</a></li>',
 							last : '<li><a href="#">末页</a></li>',
@@ -279,7 +361,7 @@
 							per : 6,//每页显示几个
 							count : json.result.count,
 							onchange : function(page){//切换页数回调函数
-								mpage.getActivityList(page);
+								mpage.getGoodsList(page);
 							}
 						})
 					//});
@@ -290,6 +372,7 @@
     		$(function(){
     			MPage.init();
     		});
+    		
         </script>
 	</body>
 </html>

@@ -229,6 +229,7 @@
 							fileManagerJson : '../public/kindeditor/php/file_manager_json.php'
 						});
 						
+						//图片上传绑定
 						K('#j-btn-image_manager').click(function() {
 							image_editor.loadPlugin('filemanager', function() {
 								image_editor.plugin.filemanagerDialog({
@@ -242,6 +243,7 @@
 							});
 						});
 
+						//从资料库选择图片
 						K('#j-btn_image_upload').click(function() {
 							image_editor.loadPlugin('image', function() {
 								image_editor.plugin.imageDialog({
@@ -255,9 +257,9 @@
 							});
 						});
 					});
-
+					
+					//绑定选择电子券
 					$('select').select2();
-
 					$("#j-btn-ticket-selected").bind("focus", function(){
 						mpage.getTicketList(1);
 						$('#j-ticket-selectModal').modal('show');

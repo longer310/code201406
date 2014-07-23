@@ -86,7 +86,6 @@ body {
 .list-2col .list-in{
 	overflow: hidden;
 	margin: 0;
-	padding: 10px 10px 0;
 }
 .list-2col .item {
     list-style: none outside none;

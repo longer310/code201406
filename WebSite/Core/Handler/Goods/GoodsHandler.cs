@@ -56,7 +56,8 @@ namespace Backstage.Handler
         #region 上传图片
         private void UploadPic()
         {
-            
+            var localUrl = GetString("localUrl");
+
         }
         #endregion
 

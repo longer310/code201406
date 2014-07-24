@@ -6,12 +6,11 @@
 <head runat="server">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title></title>
-    <link rel="stylesheet" href="../Script/jquery-pagination/lib/jquery_pagination/pagination.css" />
-    <link rel="stylesheet" href="../Css/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="../Css/css/bootstrap-responsive.min.css" />
-    <link rel="stylesheet" href="../Css/css/fullcalendar.css" />
-    <link rel="stylesheet" href="../Css/css/unicorn.main.css" />
-    <link rel="stylesheet" href="../Css/css/unicorn.grey.css" class="skin-color" />
+    <%--公用css--%>
+	<link rel="stylesheet" href="../Css/css/bootstrap.min.css" />
+	<link rel="stylesheet" href="../Css/css/bootstrap-responsive.min.css" />
+	<link rel="stylesheet" href="../Css/css/unicorn.main.css" />
+	<link rel="stylesheet" href="../Css/css/unicorn.grey.css" class="skin-color" />
 
     <asp:ContentPlaceHolder ID="Header" runat="server">
     </asp:ContentPlaceHolder>
@@ -97,16 +96,15 @@
             </ul>
 
         </div>
-        <!--优先于content加载-->
-        <script type="text/javascript" src="../../Script/js/excanvas.min.js"></script>
+
+        <!--公用js 优先于content加载-->
         <script type="text/javascript" src="../../Script/js/jquery.min.js"></script>
         <script type="text/javascript" src="../../Script/js/jquery.ui.custom.js"></script>
         <script type="text/javascript" src="../../Script/js/bootstrap.min.js"></script>
-        <script type="text/javascript" src="../../Script/js/jquery.peity.min.js"></script>
         <script type="text/javascript" src="../../Script/js/unicorn.js"></script>
-        <script type="text/javascript" src="../../Script/js/ue.pager.js"></script>
         <script type="text/javascript" src="../../Script/js/jquery.tmpl.min.js"></script>
         <script type="text/javascript" src="../../Script/js/common.js"></script>
+
         <div id="content">
             <asp:ContentPlaceHolder ID="Content" runat="server">
             </asp:ContentPlaceHolder>

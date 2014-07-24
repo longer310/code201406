@@ -44,6 +44,7 @@ namespace Backstage.Core
                 }
             }
         }
+
         /// <summary>
         /// 是否登陆
         /// </summary>

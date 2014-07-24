@@ -61,6 +61,9 @@
         </div>
     </div>
 
+    <!--页面js-->
+    <script type="text/javascript" src="../../Script/js/ue.pager.js"></script>
+
     <!--推荐和热销 如果选择 加上 active 的class-->
     <script type="text/jquery-tmpl-x" id="j-tmpl-goods-listitem">
         {{each(i, v) list}}
@@ -73,9 +76,9 @@
 				<td style="width:104px;"><input type="text" class="input-small j-preprice" value="${v.OriginalPrice}" ></td>
 				<td>${v.Sales}</td>
 				<td>${v.CommentCount} / ${v.BrowseCount}</td>
-				<td style="width:250px;">
-					<button class="btn btn-success btn-mini j-isrecommend" data-toggle="buttons-checkbox"><i class="icon-thumbs-up icon-white"></i> {{if v.IsRecommend>0}}已推荐{{else}}推荐{{/if}}</button>
-					<button class="btn btn-info btn-mini j-ishot active" data-toggle="buttons-checkbox"><i class="icon-fire icon-white"></i> {{if v.IsHot>0}}已热销{{else}}热销{{/if}}</button>
+				<td style="width:270px;">
+					<button class="btn btn-success btn-mini j-isrecommend" data-toggle="buttons-checkbox"><i class="icon-thumbs-up icon-white"></i> {{if v.IsRecommend>0}}取消推荐{{else}}推荐{{/if}}</button>
+					<button class="btn btn-info btn-mini j-ishot active" data-toggle="buttons-checkbox"><i class="icon-fire icon-white"></i> {{if v.IsHot>0}}取消热销{{else}}热销{{/if}}</button>
 					<a class="btn btn-primary btn-mini" href=""><i class="icon-pencil icon-white"></i> 编辑</a>
 					<a class="btn btn-danger btn-mini j-btn-del" href=""><i class="icon-remove icon-white"></i> 删除</a>
 				</td>
@@ -91,7 +94,7 @@
             init: function () {
                 var mpage = this;
 
-                mpage.getGoodsList(0, 0);
+                mpage.getGoodsList(1, 0);
 
                 //绑定tab
                 $('#j-goods-tab a').click(function (e) {
@@ -118,23 +121,22 @@
 
                     var ids = [];
                     $checked.each(function () {
-                        ids.push($(this).attr("data-id"));
+                        alert($(this).attr("data-gid"));
+                        ids.push($(this).attr("data-gid"));
                     });
-
+                    alert(ids.join(","));
                     if (ids.length > 0) {
                         Common.confirm({
                             title: "删除确认提示",
                             content: "您确定要删除当前选择的所有数据吗？",
                             confirm: function () {
                                 //执行确认回调
-                                alert('执行确认回调');
 
                                 //删除成功后刷新本页
                                 mpage.getGoodsList(mpage.goodsCurrentPage, mpage.goodsCurrentType);
                             },
                             cancel: function () {
                                 //执行取消回调
-                                alert('执行取消回调');
                             }
                         });
                     } else {
@@ -143,7 +145,6 @@
                             content: "请至少选择一项",
                             confirm: function () {
                                 //执行确认回调
-                                alert('执行确认回调');
                             }
                         });
                     }
@@ -175,12 +176,10 @@
                             content: "您确定要保存当前选择的所有修改吗？",
                             confirm: function () {
                                 //执行确认回调
-                                alert('执行确认回调');
 
                             },
                             cancel: function () {
                                 //执行取消回调
-                                alert('执行取消回调');
                             }
                         });
                     } else {
@@ -189,7 +188,6 @@
                             content: "请至少选择一项",
                             confirm: function () {
                                 //执行确认回调
-                                alert('执行确认回调');
                             }
                         });
                     }
@@ -198,8 +196,7 @@
                 });
             },
 
-            //p 页码
-            //type tab 类型
+            //获取商品列表 p：页码 type：tab 类型
             getGoodsList: function (p, type) {
                 var mpage = this;
                 mpage.start = p;
@@ -208,23 +205,44 @@
                 //mpage.goodsCurrentPage = p;
                 mpage.goodsCurrentType = type;
                 $("#j-btn-selectAll").removeAttr("checked");
-                var totalcount = 10;
-                $.post(mpage.hander + "getGoodsList", { start: mpage.start, limit: mpage.limit, type: mpage.goodsCurrentType }, function (data) {
+                $.post(mpage.hander + "getGoodsList", { start: mpage.start-1, limit: mpage.limit, type: mpage.goodsCurrentType }, function (data) {
                     if (!data.error) {
                         $("#j-goods-list").html($("#j-tmpl-goods-listitem").tmpl(data));
-                        totalcount = data.totalcount;
+                        mpage.showPager(data.totalcount);
                     } else {
                         Common.alert({
                             title: "提示",
                             content: data.error,
                             confirm: function () {
-                                if(data.error =="您还未登录或登录超时，请重新登录！")
-                                    location.href = "../../Login.aspx";
                             }
                         });
                     }
                 }, "JSON");
 
+
+                //绑定单个删除
+                $("#j-goods-list .j-btn-del").bind("click", function () {
+                    var $item = $(this).parents("tr");
+                    var id = $item.attr("data-id");
+
+                    Common.confirm({
+                        title: "删除确认提示",
+                        content: "您确定要删除当前活动？",
+                        confirm: function () {
+                            //执行确认回调
+
+                            $item.remove();
+                        },
+                        cancel: function () {
+                            //执行取消回调
+                        }
+                    });
+                    return false;
+                });
+            },
+            //分页 totalCount：总数
+            showPager: function (totalCount) {
+                var mpage = this;
                 ue.pager({
                     //target : $(".list_pager"),//放置分页的元素
                     pagerTarget: $("#j-goods-pagination ul"),
@@ -242,35 +260,29 @@
                     now: mpage.start,//当前页
                     maxPage: mpage.maxpage,//显示的最多页数
                     per: mpage.limit,//每页显示几个
-                    count: totalcount,
+                    count: totalCount,
                     onchange: function (page) {//切换页数回调函数
                         mpage.getGoodsList(page);
                     }
                 });
+            },
 
-                //绑定单个删除
-                $("#j-goods-list .j-btn-del").bind("click", function () {
-                    var $item = $(this).parents("tr");
-                    var id = $item.attr("data-id");
-
-                    Common.confirm({
-                        title: "删除确认提示",
-                        content: "您确定要删除当前活动？",
-                        confirm: function () {
-                            //执行确认回调
-                            alert('执行确认回调');
-
-                            $item.remove();
-                        },
-                        cancel: function () {
-                            //执行取消回调
-                            alert('执行取消回调');
-                        }
-                    });
-                    return false;
-                });
-                //});
-
+            //删除商品
+            delGoods: function (ids) {
+                var mpage = this;
+                $.post(mpage.hander + "delGoodsList", {  }, function (data) {
+                    if (!data.error) {
+                        $("#j-goods-list").html($("#j-tmpl-goods-listitem").tmpl(data));
+                        mpage.showPager(data.totalcount);
+                    } else {
+                        Common.alert({
+                            title: "提示",
+                            content: data.error,
+                            confirm: function () {
+                            }
+                        });
+                    }
+                }, "JSON");
             }
         }
 

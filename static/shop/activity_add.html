@@ -12,7 +12,6 @@
 		<link rel="stylesheet" href="../public/css/unicorn.grey.css" />
 		<!--页面样式-->
 		<link href="../public/kindeditor/themes/default/default.css" type="text/css" rel="stylesheet">
-		<link rel="stylesheet" href="../public/css/select2.css" />
 	</head>
 	<body>
 		<div id="header">
@@ -161,7 +160,6 @@
         <script src="../public/js/common.js"></script>
 
         <!--页面js-->
-        <script src="../public/js/select2.min.js"></script>
         <script src="../public/js/ue.pager.js"></script>
 
         <script charset="utf-8" src="../public/kindeditor/kindeditor-min.js"></script>
@@ -259,7 +257,6 @@
 					});
 					
 					//绑定选择电子券
-					$('select').select2();
 					$("#j-btn-ticket-selected").bind("focus", function(){
 						mpage.getTicketList(1);
 						$('#j-ticket-selectModal').modal('show');

@@ -218,7 +218,8 @@
                             title: "提示",
                             content: data.error,
                             confirm: function () {
-                                //执行确认回调
+                                if(data.error =="您还未登录或登录超时，请重新登录！")
+                                    location.href = "../../Login.aspx";
                             }
                         });
                     }

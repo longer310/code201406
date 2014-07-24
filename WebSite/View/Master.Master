@@ -7,37 +7,119 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title></title>
     <link rel="stylesheet" href="/Script/jquery-pagination/lib/jquery_pagination/pagination.css" />
-
-    <link rel="stylesheet" href="../public/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="../public/css/bootstrap-responsive.min.css" />
-    <link rel="stylesheet" href="../public/css/fullcalendar.css" />
-    <link rel="stylesheet" href="../public/css/unicorn.main.css" />
-    <link rel="stylesheet" href="../public/css/unicorn.grey.css" class="skin-color" />
+    <link rel="stylesheet" href="/css/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="/css/css/bootstrap-responsive.min.css" />
+    <link rel="stylesheet" href="/css/css/fullcalendar.css" />
+    <link rel="stylesheet" href="/css/css/unicorn.main.css" />
+    <link rel="stylesheet" href="/css/css/unicorn.grey.css" class="skin-color" />
 
     <asp:ContentPlaceHolder ID="Header" runat="server">
     </asp:ContentPlaceHolder>
 </head>
 <body>
     <form id="form1" runat="server">
-        <div>
+        <div id="header">
+			<h1><a href="./dashboard.html">APP 商户管理系统</a></h1>		
+		</div>
+		
+		<div id="hotline" class="muted">服务热线：400-800-8888</div>
+
+		<div id="user-nav" class="navbar navbar-inverse">
+			<dl class="user-info">
+				<dt class="muted">福建省宁德米克中式餐饮</dt>
+				<dd><span class="muted">用户名：</span><b class="text-error">80222222</b></dd>
+				<dd><span class="muted">可提现金额：</span><b class="text-error">￥3088.00</b></dd>
+			</dl>
+            <ul class="nav btn-group">
+                <li class="btn btn-inverse"><a title="" href="#"><i class="icon icon-share"></i> <span class="text">提现</span></a></li>
+                <li class="btn btn-inverse"><a title="" href="login.html"><i class="icon icon-off"></i> <span class="text">退出登陆</span></a></li>
+            </ul>
+        </div>
+            
+		<div id="sidebar">
+			<ul>
+				<li><a href="index.html"><i class="icon icon-home"></i> <span>首页</span></a></li>
+				<li class="submenu active open">
+					<a href="#"><i class="icon icon-gift"></i> <span>活动管理</span> <span class="label">2</span></a>
+					<ul>
+						<li><a href="form-common.html">活动列表</a></li>
+						<li><a href="form-validation.html">新增活动</a></li>
+					</ul>
+				</li>
+				<li class="submenu">
+					<a href="buttons.html"><i class="icon icon-tint"></i> <span>产品管理</span><span class="label">3</span></a>
+					<ul>
+						<li><a href="form-common.html">产品列表</a></li>
+						<li><a href="form-validation.html">新增产品</a></li>
+						<li><a href="form-validation.html">分类管理</a></li>
+					</ul>
+				</li>
+				<li><a href="interface.html"><i class="icon icon-shopping-cart"></i> <span>订单管理</span></a></li>
+				<li class="submenu">
+					<a href="#"><i class="icon icon-picture"></i> <span>图片墙管理</span> <span class="label">2</span></a>
+					<ul>
+						<li><a href="form-common.html">图片墙列表</a></li>
+						<li><a href="form-validation.html">新增图片墙</a></li>
+					</ul>
+				</li>
+				<li><a href="grid.html"><i class="icon icon-user"></i> <span>会员管理</span></a></li>
+				<li><a href="grid.html"><i class="icon icon-comment"></i> <span>留言管理</span></a></li>
+				<li class="submenu">
+					<a href="#"><i class="icon icon-tags"></i> <span>电子券管理</span> <span class="label">2</span></a>
+					<ul>
+						<li><a href="invoice.html">电子券列表</a></li>
+						<li><a href="chat.html">新增电子券</a></li>
+					</ul>
+				</li>
+				<li>
+					<a href="charts.html"><i class="icon icon-bullhorn"></i> <span>广告设置</span></a>
+				</li>
+				<li class="submenu">
+					<a href="#"><i class="icon icon-hdd"></i> <span>数据库统计</span> <span class="label">4</span></a>
+					<ul>
+						<li><a href="invoice.html">访问量统计</a></li>
+						<li><a href="chat.html">销量统计</a></li>
+						<li><a href="chat.html">充值量统计</a></li>
+						<li><a href="chat.html">数据备份导出</a></li>
+					</ul>
+				</li>
+				<li class="submenu">
+					<a href="widgets.html"><i class="icon icon-cog"></i> <span>系统设置</span> <span class="label">6</span></a>
+					<ul>
+						<li><a href="invoice.html">登录设置</a></li>
+						<li><a href="chat.html">资料设置</a></li>
+						<li><a href="chat.html">推送服务</a></li>
+						<li><a href="chat.html">规则设置</a></li>
+						<li><a href="chat.html">素材库管理</a></li>
+						<li><a href="chat.html">提现管理</a></li>
+					</ul>
+				</li>
+			</ul>
+		
+		</div>
+        <div id="content">
             <asp:ContentPlaceHolder ID="Content" runat="server">
             </asp:ContentPlaceHolder>
+            <div id="footer">
+                <p>关于淘宝合作伙伴营销中心廉正举报联系客服开放平台诚征英才联系我们网站地图法律声明© 2003-2014 Taobao.com 版权所有</p>
+                <p>网络文化经营许可证：文网文[2010]040号|增值电信业务经营许可证：浙B2-20080224-1|信息网络传播视听节目许可证：1109364号 </p>
+            </div>
         </div>
     </form>
-    <script src="../public/js/excanvas.min.js"></script>
-    <script src="../public/js/jquery.min.js"></script>
-    <script src="../public/js/jquery.ui.custom.js"></script>
-    <script src="../public/js/bootstrap.min.js"></script>
-    <script src="../public/js/jquery.peity.min.js"></script>
-    <script src="../public/js/unicorn.js"></script>
-    <script src="../public/js/ue.pager.js"></script>
-    <script src="../public/js/jquery.tmpl.min.js"></script>
+    <script src="/Script/js/excanvas.min.js"></script>
+    <script src="/Script/js/jquery.min.js"></script>
+    <script src="/Script/js/jquery.ui.custom.js"></script>
+    <script src="/Script/js/bootstrap.min.js"></script>
+    <script src="/Script/js/jquery.peity.min.js"></script>
+    <script src="/Script/js/unicorn.js"></script>
+    <script src="/Script/js/ue.pager.js"></script>
+    <script src="/Script/js/jquery.tmpl.min.js"></script>
     <script type="text/jquery-tmpl-x" id="j-tmpl-listitem">
         	{{each(i, v) list}}
 	        	<li class="item">
 					<div class="item-in">
 						<div class="article-thumb">
-							<img alt="User" src="../public/img/demo/av2.jpg" />
+							<img alt="User" src="/css/img/demo/av2.jpg" />
 						</div>
 						<div class="article-post">
 							<span class="post-title">主题名称主主题名称主题注明主题名称题注明主题名称</span>

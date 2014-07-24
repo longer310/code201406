@@ -16,11 +16,11 @@ namespace Backstage.Core.Logic
         {
             var result = new PagResults<ExtcreditLog>();
             result.Results = new List<ExtcreditLog>();
-            string limitsql = start != 0 ? " LIMIT ?start,?limit" : string.Empty;
+            string limitsql = limit != 0 ? " LIMIT ?start,?limit" : string.Empty;
             var cmdText = @"select * from ExtcreditLog where SellerId=?SellerId and UserId=?UserId order by createtime desc " + limitsql;
 
             List<MySqlParameter> parameters = new List<MySqlParameter>();
-            if (start != 0)
+            if (limit != 0)
             {
                 parameters.Add(new MySqlParameter("?start", start));
                 parameters.Add(new MySqlParameter("?limit", limit));

@@ -201,10 +201,22 @@ namespace Backstage.Handler
             int order = GetInt("order");
             int start = GetInt("start");
             int limit = GetInt("limit");
+            int type = GetInt("type");
 
             string wheresql = string.Empty;
             string shoppingcartql = "";
             if (cid > 0) wheresql += string.Format(" and Cid={0}", cid);
+            if (type > 0)
+            {
+                switch (type)
+                {
+                    case 1:
+                        wheresql += " and IsRecommend>0 "; break;
+                    case 2:
+                        wheresql += " and IsHot>0 "; break;
+                    default:break;
+                }
+            }
             switch (order)
             {
                 case 1:

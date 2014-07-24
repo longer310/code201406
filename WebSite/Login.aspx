@@ -135,7 +135,7 @@
                     if (rtn != null && rtn != "") {
                         location.href = rtn; //跳转到指定页面
                     }
-                    location.href = "Index.aspx"; //跳转到首页
+                    location.href = "View/Goods/List.aspx"; //跳转到首页
                 }
                 else {
                     //alert(data.error);

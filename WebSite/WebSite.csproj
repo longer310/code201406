@@ -261,10 +261,118 @@
     <Content Include="archon\typography.html" />
     <Content Include="archon\ui-features.html" />
     <Content Include="archon\widgets.html" />
+    <Content Include="Css\css\bootstrap-responsive.min.css" />
+    <Content Include="Css\css\bootstrap.min.css" />
+    <Content Include="Css\css\colorpicker.css" />
+    <Content Include="Css\css\datepicker.css" />
+    <Content Include="Css\css\fullcalendar.css" />
+    <Content Include="Css\css\jquery.gritter.css" />
+    <Content Include="Css\css\select2.css" />
+    <Content Include="Css\css\unicorn.blue.css" />
+    <Content Include="Css\css\unicorn.grey.css" />
+    <Content Include="Css\css\unicorn.login.css" />
+    <Content Include="Css\css\unicorn.main.css" />
+    <Content Include="Css\css\unicorn.red.css" />
+    <Content Include="Css\css\uniform.css" />
     <Content Include="Css\default.css" />
+    <Content Include="Css\img\alpha.png" />
+    <Content Include="Css\img\breadcrumb.png" />
+    <Content Include="Css\img\demo\av1.jpg" />
+    <Content Include="Css\img\demo\av2.jpg" />
+    <Content Include="Css\img\demo\av3.jpg" />
+    <Content Include="Css\img\glyphicons-halflings-white.png" />
+    <Content Include="Css\img\glyphicons-halflings.png" />
+    <Content Include="Css\img\gritter-light.png" />
+    <Content Include="Css\img\gritter.png" />
+    <Content Include="Css\img\hue.png" />
+    <Content Include="Css\img\icons\16\book.png" />
+    <Content Include="Css\img\icons\16\cabinet.png" />
+    <Content Include="Css\img\icons\16\calendar.png" />
+    <Content Include="Css\img\icons\16\client.png" />
+    <Content Include="Css\img\icons\16\database.png" />
+    <Content Include="Css\img\icons\16\download.png" />
+    <Content Include="Css\img\icons\16\graph.png" />
+    <Content Include="Css\img\icons\16\home.png" />
+    <Content Include="Css\img\icons\16\lock.png" />
+    <Content Include="Css\img\icons\16\mail.png" />
+    <Content Include="Css\img\icons\16\pdf.png" />
+    <Content Include="Css\img\icons\16\people.png" />
+    <Content Include="Css\img\icons\16\piechart.png" />
+    <Content Include="Css\img\icons\16\search.png" />
+    <Content Include="Css\img\icons\16\shopping-bag.png" />
+    <Content Include="Css\img\icons\16\survey.png" />
+    <Content Include="Css\img\icons\16\tag.png" />
+    <Content Include="Css\img\icons\16\user.png" />
+    <Content Include="Css\img\icons\16\wallet.png" />
+    <Content Include="Css\img\icons\16\web.png" />
+    <Content Include="Css\img\icons\32\book.png" />
+    <Content Include="Css\img\icons\32\cabinet.png" />
+    <Content Include="Css\img\icons\32\calendar.png" />
+    <Content Include="Css\img\icons\32\client.png" />
+    <Content Include="Css\img\icons\32\database.png" />
+    <Content Include="Css\img\icons\32\download.png" />
+    <Content Include="Css\img\icons\32\graph.png" />
+    <Content Include="Css\img\icons\32\home.png" />
+    <Content Include="Css\img\icons\32\lock.png" />
+    <Content Include="Css\img\icons\32\mail.png" />
+    <Content Include="Css\img\icons\32\pdf.png" />
+    <Content Include="Css\img\icons\32\people.png" />
+    <Content Include="Css\img\icons\32\piechart.png" />
+    <Content Include="Css\img\icons\32\search.png" />
+    <Content Include="Css\img\icons\32\shopping-bag.png" />
+    <Content Include="Css\img\icons\32\survey.png" />
+    <Content Include="Css\img\icons\32\tag.png" />
+    <Content Include="Css\img\icons\32\user.png" />
+    <Content Include="Css\img\icons\32\wallet.png" />
+    <Content Include="Css\img\icons\32\web.png" />
+    <Content Include="Css\img\larrow.png" />
+    <Content Include="Css\img\line.png" />
+    <Content Include="Css\img\logo.png" />
+    <Content Include="Css\img\menu-active.png" />
+    <Content Include="Css\img\rarrow.png" />
+    <Content Include="Css\img\saturation.png" />
+    <Content Include="Css\img\select2.png" />
+    <Content Include="Css\img\select2x2.png" />
+    <Content Include="Css\img\spinner.gif" />
+    <Content Include="Css\img\sprite.png" />
     <Content Include="Css\login.css" />
     <Content Include="Css\main.css" />
     <Content Include="Css\style.css" />
+    <Content Include="Public\img\favicon.ico" />
+    <Content Include="Public\js\common.js" />
+    <Content Include="Script\js\bootstrap-colorpicker.js" />
+    <Content Include="Script\js\bootstrap-datepicker.js" />
+    <Content Include="Script\js\bootstrap.min.js" />
+    <Content Include="Script\js\common.js" />
+    <Content Include="Script\js\excanvas.min.js" />
+    <Content Include="Script\js\fullcalendar.min.js" />
+    <Content Include="Script\js\jquery.dataTables.min.js" />
+    <Content Include="Script\js\jquery.flot.min.js" />
+    <Content Include="Script\js\jquery.flot.pie.min.js" />
+    <Content Include="Script\js\jquery.flot.resize.min.js" />
+    <Content Include="Script\js\jquery.gritter.min.js" />
+    <Content Include="Script\js\jquery.min.js" />
+    <Content Include="Script\js\jquery.min_74e92c4.js" />
+    <Content Include="Script\js\jquery.peity.min.js" />
+    <Content Include="Script\js\jquery.tmpl.min.js" />
+    <Content Include="Script\js\jquery.ui.custom.js" />
+    <Content Include="Script\js\jquery.ui.custom_a3d4650c.js" />
+    <Content Include="Script\js\jquery.uniform.js" />
+    <Content Include="Script\js\jquery.validate.js" />
+    <Content Include="Script\js\jquery.wizard.js" />
+    <Content Include="Script\js\select2.min.js" />
+    <Content Include="Script\js\ue.pager.js" />
+    <Content Include="Script\js\unicorn.calendar.js" />
+    <Content Include="Script\js\unicorn.charts.js" />
+    <Content Include="Script\js\unicorn.chat.js" />
+    <Content Include="Script\js\unicorn.dashboard.js" />
+    <Content Include="Script\js\unicorn.form_common.js" />
+    <Content Include="Script\js\unicorn.form_validation.js" />
+    <Content Include="Script\js\unicorn.interface.js" />
+    <Content Include="Script\js\unicorn.js" />
+    <Content Include="Script\js\unicorn.login.js" />
+    <Content Include="Script\js\unicorn.tables.js" />
+    <Content Include="Script\js\unicorn.wizard.js" />
     <Content Include="Images\bar1.gif" />
     <Content Include="Images\body_background.png" />
     <Content Include="Images\border_bg.png" />
@@ -797,6 +905,7 @@
     <Content Include="View\Shop\activity_add.html" />
     <Content Include="View\SourceMaterial\ManagerList.aspx" />
     <Content Include="View\UCenter\ManagerList.aspx" />
+    <Content Include="View\Goods\List.aspx" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -889,12 +998,12 @@
     <Compile Include="Model\CommentsForApi.cs" />
     <Compile Include="Model\PagResults.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="View\Master.Master.cs">
-      <DependentUpon>Master.Master</DependentUpon>
+    <Compile Include="View\merchant.Master.cs">
+      <DependentUpon>merchant.Master</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="View\Master.Master.designer.cs">
-      <DependentUpon>Master.Master</DependentUpon>
+    <Compile Include="View\merchant.Master.designer.cs">
+      <DependentUpon>merchant.Master</DependentUpon>
     </Compile>
     <Compile Include="View\SourceMaterial\ManagerList.aspx.cs">
       <DependentUpon>ManagerList.aspx</DependentUpon>
@@ -906,6 +1015,13 @@
     <Compile Include="View\UCenter\ManagerList.aspx.cs">
       <DependentUpon>ManagerList.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="View\Goods\List.aspx.cs">
+      <DependentUpon>List.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="View\Goods\List.aspx.designer.cs">
+      <DependentUpon>List.aspx</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -931,7 +1047,7 @@
     <Content Include="archon\bootstrap_2\fonts\glyphicons-halflings-regular.woff" />
     <Content Include="archon\bootstrap_2\fonts\glyphicons-halflings-regulard41d.eot" />
     <Content Include="Handler\Api\ApiHandler.ashx" />
-    <Content Include="View\Master.Master" />
+    <Content Include="View\merchant.Master" />
     <Content Include="Handler\Api\ApiGoodsHandler.ashx" />
     <Content Include="Handler\Api\ApiUserHandler.ashx" />
     <Content Include="Handler\Api\ActiveHandler.ashx" />

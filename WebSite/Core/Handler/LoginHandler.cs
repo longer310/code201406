@@ -11,6 +11,7 @@ namespace Backstage.Handler
     {
         public override void ProcessRequest(HttpContext context)
         {
+            FreeActions = ",login,";
             base.ProcessRequest(HttpContext.Current);
             switch (Action)
             {

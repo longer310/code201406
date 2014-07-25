@@ -98,7 +98,7 @@ namespace Backstage.Core
         /// <summary>
         /// 新建
         /// </summary>
-        New = 0 ,
+        New = 0,
         /// <summary>
         /// 填写了基本信息，未付款
         /// </summary>
@@ -234,5 +234,11 @@ namespace Backstage.Core
         /// 腾讯微博
         /// </summary>
         TencentMico = 4,
+    }
+
+    public enum CouponStatus
+    {
+        Used = 1,
+        UnUse = 0
     }
 }

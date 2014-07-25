@@ -8,6 +8,8 @@ using WebSite;
 
 using Backstage.Core.Entity;
 using Backstage.Model;
+using Backstage.Core.Logic;
+using Backstage.Handler;
 
 namespace Backstage.Core.Handler
 {
@@ -76,6 +78,7 @@ namespace Backstage.Core.Handler
         {
             int aid = GetInt("newid");
             int uid = GetInt("uid");
+            var user = AccountHelper.GetUser(uid);
             string msg = GetString("message");
             var active = ActiveHelper.GetItem(aid);
             Comment c = new Comment();
@@ -99,8 +102,26 @@ namespace Backstage.Core.Handler
                 ReturnErrorMsg("fail");
                 throw;
             }
+            ExtcreditLog log = new ExtcreditLog();
+            if (!ExtcreditLogHelper.JudgeExtcreditGet(ExtcreditSourceType.CommentActive, aid, uid))
+            {
+                //积分获得
+                log.UserId = uid;
+                log.SellerId = user.SellerId;
+                log.SourceId = aid;
+                log.Extcredit = ParamHelper.ExtcreditCfgData.Comment;
+                log.Type = ExtcreditSourceType.CommentActive;
+                log.CreateTime = DateTime.Now;
+
+                ExtcreditLogHelper.AddExtcreditLog(log);
+
+                user.Integral += log.Extcredit;
+                AccountHelper.UpdateUser(user);
+            }
+
+            //ReturnCorrectMsg("评论成功");
             JsonTransfer jt = new JsonTransfer();
-            jt.AddSuccessParam();
+            jt.Add("data", new IntegralData(log.Extcredit));
             Response.Write(DesEncrypt(jt).ToLower());
             Response.End();
         }
@@ -383,4 +404,5 @@ namespace Backstage.Core.Handler
             }
         }
     }
+   
 }

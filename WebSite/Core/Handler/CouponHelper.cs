@@ -204,8 +204,13 @@ namespace Backstage.Core.Handler
 
         static IList<int> GetGoodsIds(string goodsIds)
         {
-            string[] ids = goodsIds.Split(',');
             var results = new List<int>();
+            if (goodsIds == string.Empty)
+            {
+                return results;  
+            }
+            string[] ids = goodsIds.Split(',');
+            
             foreach (var id in ids)
             {
                 results.Add(Convert.ToInt32(id));

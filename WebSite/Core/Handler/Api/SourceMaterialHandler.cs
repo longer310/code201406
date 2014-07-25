@@ -7,6 +7,7 @@ using System.Web;
 using WebSite;
 using Backstage.Core.Entity;
 using Backstage.Model;
+using Backstage.Core.Logic;
 
 namespace Backstage.Core.Handler
 {
@@ -47,7 +48,7 @@ namespace Backstage.Core.Handler
             int pageSize = GetInt("limit");
             int sellerId = GetInt("sellerid");
 
-            PagResults<SourceMaterial> results = SourceMaterialHelper.GetPaging(pageIndex, pageSize, sellerId);
+            PagResults<SourceMaterial> results = SourceMaterialHelper.GetPaging(pageIndex * pageSize, pageSize, sellerId);
             var data = new List<object>();
             foreach (var r in results.Results)
             {
@@ -99,6 +100,7 @@ namespace Backstage.Core.Handler
             int userId = GetInt("uid");
             int imgId = GetInt("pid");
             string msg = GetString("message");
+            var user = AccountHelper.GetUser(userId);
             SourceMaterial sm = SourceMaterialHelper.GetItem(imgId);
             Comment c = new Comment();
             c.SellerId = sm.SellerId;
@@ -120,8 +122,26 @@ namespace Backstage.Core.Handler
                 ReturnErrorMsg("fail");
                 throw;
             }
+            ExtcreditLog log = new ExtcreditLog();
+            if (!ExtcreditLogHelper.JudgeExtcreditGet(ExtcreditSourceType.CommentImg, imgId, userId))
+            {
+                //积分获得
+                log.UserId = userId;
+                log.SellerId = user.SellerId;
+                log.SourceId = imgId;
+                log.Extcredit = ParamHelper.ExtcreditCfgData.Comment;
+                log.Type = ExtcreditSourceType.CommentImg;
+                log.CreateTime = DateTime.Now;
+
+                ExtcreditLogHelper.AddExtcreditLog(log);
+
+                user.Integral += log.Extcredit;
+                AccountHelper.UpdateUser(user);
+            }
+
+            //ReturnCorrectMsg("评论成功");
             JsonTransfer jt = new JsonTransfer();
-            jt.AddSuccessParam();
+            jt.Add("data", new IntegralData(log.Extcredit));
             Response.Write(DesEncrypt(jt).ToLower());
             Response.End();
         }

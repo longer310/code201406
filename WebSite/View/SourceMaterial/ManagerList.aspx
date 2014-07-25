@@ -1,75 +1,47 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/View/Master.Master" AutoEventWireup="true" CodeBehind="ManagerList.aspx.cs" Inherits="WebSite.View.SourceMaterial.ManagerList" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="Header" runat="server">
-    <script type="text/javascript" src="/Script/jquery-bootstrap/jquery.dialog.js"></script>
-
-    <script src="/Script/View/SourceMaterial/managerlist.js" type="text/javascript"></script>
-
-
-
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="Content" runat="server">
+    <div class="widget-box">
+        <div class="widget-title">
+            <span class="icon">
+                <i class="icon-gift"></i>
+            </span>
+            <h5>活动列表</h5>
+            <div class="buttons">
+                <a href="#" class="btn btn-primary btn-mini" id="j-btn-selectAll">全选</a>
+                <a href="#" class="btn btn-danger btn-mini" id="j-btn-delSelected">删除</a>
+            </div>
+        </div>
+        <div class="widget-content nopadding">
+            <div class="list-2col">
+                <ul class="list-in" id="j-list">
+                </ul>
+            </div>
+        </div>
 
-    <div style="margin: 0 auto;" class="panel panel-users">
-        <div class="panel-heading">
-            <h3 class="panel-title">添加素材<span class="pull-right"></span>
-                <a title="添加" href="javascript:void(0);" id="clickmymodal" role="button" class="btn btn-primary">
-                    <i class="icon-plus-sign red"></i>
-                </a>
-            </h3>
-        </div>
-        <div id="managerList"></div>
-        <div id="pager" style="margin-top: 10px;"></div>
-    </div>
-    <div id="source_wrap" style="display: none;">
-        <div id="source_form">
-            <div class="form-group">
-                <label for="logo">素材名称</label>
-                <input type="text" class="form-control"
-                    id="logo" />
-            </div>
-            <div class="form-group">
-                <label for="logo_ads">素材地址</label>
-                <input type="text" class="form-control"
-                    id="logo_ads" />
-            </div>
-            <div class="form-group">
-                <label for="remark">备注</label>
-                <input type="text" class="form-control"
-                    id="remark" />
+        <div class="widget-footer">
+            <div class="pagination alternate" id="j-pagination">
+                <ul class="page-main">
+                    <li class="disabled"><a href="#">首页</a></li>
+                    <li class="disabled"><a href="#">上一页</a></li>
+                    <li class="active">
+                        <a href="#">1</a>
+                    </li>
+                    <li><a href="#">2</a></li>
+                    <li><a href="#">3</a></li>
+                    <li><a href="#">4</a></li>
+                    <li><a href="#">下一页</a></li>
+                    <li><a href="#">末页</a></li>
+                    <li class="page-info"><b class="text-info">1</b>/8页 共<b class="text-info">18</b>条记录</li>
+                </ul>
             </div>
         </div>
     </div>
-    <%--数据模板--%>
-    <textarea name="template_jst_list" id="template_jst_list" style="display: none" cols="0" rows="0">
-    <table width="100%" class="table users-table table-condensed table-hover  ">
-        <thead>
-        <tr>
-			<th width="140px">序号</th>
-            <th width="140px">素材名称</th>
-            <th width="140px">素材地址</th>
-            <th width="140px">备注</th>
-        </tr>
-        </thead>
-        <tbody>
-       {for p in list}
-        <tr>
-        <td>@{page.itemIndex++}</td>
-        <td>@{p.Name}</td>
-        <td>@{p.Address}</td>
-        <td>@{p.Remark}</td>
-        <td>
-		   <button type="button" title="删除" class="btn btn-info"><i class="icon-remove-sign"></i></button>
-           <button type="button" title="编辑" class="btn btn-info"><i class="icon-edit"></i></button>
-        </td>
-        </tr>
-        {forelse}
-        <tr><td colspan="6"><div class="info">暂时无管理员列表数据</div></td></tr>
-        {/for}
-        </tbody>
-    </table>
-</textarea>
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="Footer" runat="server">
+    <script type="text/javascript" src="/Script/jquery-bootstrap/jquery.dialog.js"></script>
+    <%--<script src="/Script/View/SourceMaterial/managerlist.js" type="text/javascript"></script>--%>
 </asp:Content>
 

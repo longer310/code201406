@@ -26,7 +26,12 @@ body {
     position: relative;
 }
 #logo {
-    padding: 20px 0 20px 5px;
+    padding: 50px 0 30px 5px;
+    font-size: 34px;
+    text-align: center;
+    color: #fff;
+    font-family: 'microsoft yahei';
+    font-weight: normal;
 }
 #logo img {
     width: 215px;

@@ -226,7 +226,7 @@
 
         				var ids = [];
         				$checked.each(function(){
-        					ids.push( $(this).parents("tr").attr("data-id") );
+        					ids.push( $(this).parents("tr").attr("data-gid") );
         				});
 
         				if(ids.length > 0){
@@ -361,7 +361,7 @@
 						//绑定单个删除
 	        			$("#j-goods-list .j-btn-del").bind("click", function(){
 	        				var $item = $(this).parents("tr");
-	        				var id = $item.attr("data-id");
+	        				var id = $item.attr("data-gid");
 
 	        				Common.confirm({
         						title : "删除确认提示",

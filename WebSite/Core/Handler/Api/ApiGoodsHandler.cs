@@ -792,6 +792,13 @@ namespace Backstage.Handler
             var gids = GetString("gids");
             var nums = GetString("nums");
 
+            var user = AccountHelper.GetUser(uid);
+            if (user == null)
+            {
+                ReturnErrorMsg(string.Format("不存在Id={0}的用户", uid));
+                return;
+            }
+
             var gidlist = Utility.GetListint(gids);
             var numlist = Utility.GetListint(nums);
             if (gidlist.Count != numlist.Count)
@@ -814,6 +821,11 @@ namespace Backstage.Handler
                 orders.NumList.Add(num);
 
                 orders.StotalPrice += goods.Nowprice * num;
+
+                //初始化订单 收货信息
+                orders.LinkMan = user.LinkMan;
+                orders.Mobile = user.Phone;
+                orders.Address = user.Address;
             }
             orders.TotalPrice = orders.StotalPrice;
             orders.SellerId = sellerId;

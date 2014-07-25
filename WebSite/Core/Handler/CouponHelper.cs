@@ -293,7 +293,7 @@ namespace Backstage.Core.Handler
         {
             var results = new PagResults<Coupon>();
             results.Results = new List<Coupon>();
-            string limitsql = start != 0 ? " LIMIT ?start,?limit" : string.Empty;
+            string limitsql = limit != 0 ? " LIMIT ?start,?limit" : string.Empty;
             string commandText = @"select a.* from coupon a left join usercoupon b on a.id=b.CouponId where b.userId = ?userId and a.SellerId=?sellerId order by Expiry desc " + limitsql;
 
             List<MySqlParameter> parameters = new List<MySqlParameter>();
@@ -319,7 +319,7 @@ namespace Backstage.Core.Handler
                         c.Extcredit = (int)reader["Extcredit"];
                         c.FullMoney = (int)reader["FullMoney"];
                         c.DiscountMoney = (int)reader["DiscountMoney"];
-                        c.GoodsIds = GetGoodsIds(reader["GoodsIds"].ToString());
+                        c.GoodsIds = Utility.GetListint(reader["GoodsIds"].ToString());
                         c.Commentnum = (int)reader["Commentnum"];
                         c.SellerId = (int)reader["SellerId"];
                         results.Results.Add(c);

@@ -44,8 +44,10 @@ namespace Backstage.Core.Handler
             int index = GetInt("start");
             int size = GetInt("limit");
             var active = ActiveHelper.GetItem(aid);
-            var cms = CommentHelper.GetPagings(active.SellerId, CommentType.Avtive, aid, index, size);
-            var users = AccountHelper.GetUserList(cms.Results.Select(c => c.UserId).ToList());
+            var cms = CommentHelper.GetPagings(active.SellerId, CommentType.Avtive, aid, index * size, size);
+            var users = new List<Account>();
+            if (cms.Results.Count != 0)
+                users = AccountHelper.GetUserList(cms.Results.Select(c => c.UserId).ToList()).ToList();
             var data = new CommentsForApis();
             foreach (var cm in cms.Results)
             {

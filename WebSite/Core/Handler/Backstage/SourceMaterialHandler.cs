@@ -7,6 +7,7 @@ using System.Web;
 using WebSite;
 using Backstage.Core.Entity;
 using Backstage.Model;
+using System.IO;
 
 namespace Backstage.Core.Handler.Backstage
 {
@@ -29,9 +30,34 @@ namespace Backstage.Core.Handler.Backstage
                     Update(); break;
                 case "delete":
                     Delete(); break;
+                case "add":
+                    Add(); break;
                 default: break;
             }
         }
+
+        private void Add()
+        {
+            var sm = new SourceMaterial();
+            sm.SellerId = GetInt("sellid");
+            sm.Title = GetString("title");
+            sm.Url = GetString("url");
+            sm.Description = GetString("description");
+            sm.CreateTime = DateTime.Now;
+            SourceMaterialHelper.Create(sm);
+        }
+
+        private void Update()
+        {
+            var id = GetInt("id");
+            var sm = SourceMaterialHelper.GetItem(id);
+            sm.Title = GetString("title");
+            sm.Url = GetString("url");
+            sm.Description = GetString("description");
+            SourceMaterialHelper.Update(sm);
+        }
+
+
 
         /// <summary>
         /// 图片列表接口
@@ -68,13 +94,16 @@ namespace Backstage.Core.Handler.Backstage
             Response.End();
         }
 
-        
-
         public void Delete()
         {
-            
+            //int sid = GetInt("sid");
+            IList<int> ids = Utility.GetListint(GetString("ids"));
+            foreach (var id in ids)
+            {
+                SourceMaterialHelper.Delete(id);
+            }
         }
-
+        #region 图片上传接口
 
         //public void LoadImg(string kindId, string type)
         //{
@@ -83,17 +112,13 @@ namespace Backstage.Core.Handler.Backstage
         //    {
         //        if (Request.Files.Count > 0)
         //        {
-        //            HttpPostedFileBase file = Request.Files[0];
+        //            HttpPostedFile file = Request.Files[0];
         //            if (file == null)
         //            {
         //                throw new Exception("文件为空，无法上传");
         //            }
         //            string extension = Path.GetExtension(file.FileName).ToLower();
         //            var oldFileName = "u_logo_temp_" + type.ToLower().ToString() + kindId.ToLower().ToString() + extension;
-        //            if (kindId == "-1")
-        //            {
-        //                oldFileName = "u_logo_temp_user_" + type.ToLower().ToString() + CurrentUserId.ToString().ToLower().ToString() + extension;
-        //            }
         //            LoadFile(file, oldFileName, Server.MapPath(GlobalConfig.UploadFilePath), GlobalConfig.UploadAllowedFileTypes);
         //            return Content("<script>document.domain='" + domain + "'</script>" + GlobalConfig.UploadPath + oldFileName);
         //        }
@@ -192,7 +217,6 @@ namespace Backstage.Core.Handler.Backstage
         //    }
         //}
 
-        //[AjaxApi]
         //public object SaveImg(int width, int height, int starX, int starY, string kindId, string type, int sizeW, int sizeH, string extension)
         //{
         //    var oldFileName = "u_logo_temp_" + type.ToLower().ToString() + kindId.ToLower().ToString() + extension;
@@ -244,6 +268,7 @@ namespace Backstage.Core.Handler.Backstage
         //    return new { link = GlobalConfig.UploadPath + newFileName, name = newFileName };
         //}
 
+        #endregion
         public bool IsReusable
         {
             get

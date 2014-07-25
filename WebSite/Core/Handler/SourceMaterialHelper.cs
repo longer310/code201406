@@ -186,29 +186,41 @@ namespace Backstage.Core
             return results;
         }
 
-        //        public static void Create(SourceMaterial sm)
-        //        {
-        //            string connectionString = GlobalConfig.DbConn;
-        //            string commandText = @"INSERT INTO material 
-        //	                                ( 
-        //	                                Name, 
-        //	                                Address,
-        //	                                Remark,
-        //	                                )
-        //	                                VALUES
-        //	                                ( 
-        //	                                ?Name, 
-        //	                                ?Address, 
-        //	                                ?Remark
-        //	                                )";
+        public static void Create(SourceMaterial sm)
+        {
+            string connectionString = GlobalConfig.DbConn;
+            string commandText = @"INSERT INTO material 
+        	                                ( 
+        	                                Title, 
+        	                                Url,
+        	                                Description,
+        	                                Views, 
+        	                                Commentnum,
+        	                                SellerId,
+        	                                CreateTime
+        	                                )
+        	                                VALUES
+        	                                ( 
+        	                                ?Title, 
+        	                                ?Url,
+        	                                ?Description,
+        	                                ?Views, 
+        	                                ?Commentnum,
+        	                                ?SellerId,
+        	                                ?CreateTime
+        	                                )";
 
-        //            List<MySqlParameter> parameters = new List<MySqlParameter>();
-        //            parameters.Add(new MySqlParameter("?Name", sm.Name));
-        //            parameters.Add(new MySqlParameter("?Address", sm.Address));
-        //            parameters.Add(new MySqlParameter("?Remark", sm.Remark));
+            List<MySqlParameter> parameters = new List<MySqlParameter>();
+            parameters.Add(new MySqlParameter("?Title", sm.Title));
+            parameters.Add(new MySqlParameter("?Url", sm.Url));
+            parameters.Add(new MySqlParameter("?Description", sm.Description));
+            parameters.Add(new MySqlParameter("?Views", sm.Views));
+            parameters.Add(new MySqlParameter("?Commentnum", sm.Commentnum));
+            parameters.Add(new MySqlParameter("?SellerId", sm.SellerId));
+            parameters.Add(new MySqlParameter("?CreateTime", sm.CreateTime));
 
-        //            MySqlHelper.ExecuteNonQuery(connectionString, CommandType.Text, commandText, parameters.ToArray());
-        //        }
+            MySqlHelper.ExecuteNonQuery(connectionString, CommandType.Text, commandText, parameters.ToArray());
+        }
 
         public static void Update(SourceMaterial sm)
         {
@@ -246,6 +258,16 @@ namespace Backstage.Core
 
         //            MySqlHelper.ExecuteNonQuery(GlobalConfig.DbConn, CommandType.Text, commandText, parameters.ToArray());
         //        }
+
+
+        internal static void Delete(int id)
+        {
+            string commandText = @"DELETE FROM material WHERE Id = ?Id";
+            List<MySqlParameter> parameters = new List<MySqlParameter>();
+            parameters.Add(new MySqlParameter("?Id", id));
+
+            MySqlHelper.ExecuteNonQuery(GlobalConfig.DbConn, CommandType.Text, commandText, parameters.ToArray());
+        }
 
     }
 }

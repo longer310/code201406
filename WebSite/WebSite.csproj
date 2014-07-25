@@ -280,6 +280,7 @@
     <Content Include="Css\img\demo\av1.jpg" />
     <Content Include="Css\img\demo\av2.jpg" />
     <Content Include="Css\img\demo\av3.jpg" />
+    <Content Include="Css\img\favicon.ico" />
     <Content Include="Css\img\glyphicons-halflings-white.png" />
     <Content Include="Css\img\glyphicons-halflings.png" />
     <Content Include="Css\img\gritter-light.png" />
@@ -358,6 +359,7 @@
     <Content Include="Script\js\jquery.uniform.js" />
     <Content Include="Script\js\jquery.validate.js" />
     <Content Include="Script\js\jquery.wizard.js" />
+    <Content Include="Script\js\json2.js" />
     <Content Include="Script\js\select2.min.js" />
     <Content Include="Script\js\ue.pager.js" />
     <Content Include="Script\js\unicorn.calendar.js" />

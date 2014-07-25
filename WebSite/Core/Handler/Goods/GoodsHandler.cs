@@ -4,6 +4,7 @@ using System.EnterpriseServices;
 using System.Linq;
 using System.Web;
 using System.Web.Script.Serialization;
+using System.Xml.Serialization;
 using Backstage.Core;
 using Backstage.Core.Entity;
 using Backstage.Core.Logic;
@@ -214,7 +215,7 @@ namespace Backstage.Handler
                         wheresql += " and IsRecommend>0 "; break;
                     case 2:
                         wheresql += " and IsHot>0 "; break;
-                    default:break;
+                    default: break;
                 }
             }
             switch (order)
@@ -254,7 +255,7 @@ namespace Backstage.Handler
                 ReturnErrorMsg("参数有误");
                 return;
             }
-            var wheresql = string.Format(" and Id in({0})", gids);
+            var wheresql = string.Format(" and a.Id in({0})", gids);
             var goodsresult = GoodsHelper.GetGoodsList(CurrentUser.Id, wheresql);
             if (goodsresult.Results.Count != gidList.Count)
             {
@@ -330,14 +331,18 @@ namespace Backstage.Handler
             else
                 ReturnErrorMsg("添加失败");
         }
-
+        [Serializable]
         public class ChangeGoods
         {
+            [XmlElement("Id")]
             public int Id { get; set; }
+            [XmlElement("Nowprice")]
             public float Nowprice { get; set; }
+            [XmlElement("OriginalPrice")]
             public float OriginalPrice { get; set; }
-            public int Cid { get; set; }
+            [XmlElement("IsRecommend")]
             public int IsRecommend { get; set; }//传大于1的值
+            [XmlElement("IsHot")]
             public int IsHot { get; set; }//传大于1的值
         }
         /// <summary>
@@ -345,10 +350,22 @@ namespace Backstage.Handler
         /// </summary>
         public void SaveGoodsList()
         {
-            string jsonArray = GetString("jsonArray");
-            var json = new JavaScriptSerializer();
-            var list = json.Deserialize(jsonArray, typeof(List<ChangeGoods>)) as List<ChangeGoods>;
+            string data_save = GetString("data_save");
+            if (string.IsNullOrEmpty(data_save))
+            {
+                ReturnErrorMsg("没有选择需要保存的商品");
+                return;
+            }
 
+            var json = new JavaScriptSerializer();
+            var list = json.Deserialize(data_save, typeof(List<ChangeGoods>)) as List<ChangeGoods>;
+            if (list == null)
+            {
+                ReturnErrorMsg("没有选择需要保存的商品");
+                return;
+            }
+
+            var saveList = new List<Goods>();
             foreach (var changeGoodse in list)
             {
                 var goods = GoodsHelper.GetGoods(changeGoodse.Id);
@@ -357,16 +374,22 @@ namespace Backstage.Handler
                     ReturnErrorMsg("没有权限修改产品或者产品不存在");
                     return;
                 }
-                if (changeGoodse.Nowprice > 0)
-                    goods.Nowprice = changeGoodse.Nowprice;
-                if (changeGoodse.OriginalPrice > 0)
-                    goods.OriginalPrice = changeGoodse.OriginalPrice;
-                if (changeGoodse.Cid > 0) goods.Cid = changeGoodse.Cid;
-                if (changeGoodse.IsRecommend > 0) goods.IsRecommend = changeGoodse.IsRecommend - 1;
-                if (changeGoodse.IsHot > 0) goods.IsRecommend = changeGoodse.IsHot - 1;
+                goods.Nowprice = changeGoodse.Nowprice;
+                goods.OriginalPrice = changeGoodse.OriginalPrice;
+                goods.IsRecommend = changeGoodse.IsRecommend;
+                goods.IsHot = changeGoodse.IsHot;
 
-                GoodsHelper.SaveGoods(goods);
+                saveList.Add(goods);
             }
+            if (saveList.Count > 0)
+            {
+                if (GoodsHelper.SaveGoodsList(saveList))
+                {
+                    ReturnCorrectMsg("保存成功");
+                    return;
+                }
+            }
+            ReturnCorrectMsg("保存失败");
         }
 
         #endregion

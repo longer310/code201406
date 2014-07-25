@@ -277,6 +277,74 @@ namespace Backstage.Core.Logic
         }
 
         /// <summary>
+        /// 保存商品 如果id为0 则添加新纪录
+        /// </summary>
+        /// <param name="goods"></param>
+        /// <returns></returns>
+        public static bool SaveGoodsList(List<Goods> goodsList)
+        {
+            List<MySqlParameter> parameters = new List<MySqlParameter>();
+            var cmdText = "begin;";
+            foreach (var goods in goodsList)
+            {
+                var tempcmdText = @"UPDATE Goods SET
+                                        SellerId        = ?SellerId,
+                                        ImgIds          = ?ImgIds,
+                                        Logo            = ?Logo,
+                                        Sales           = ?Sales,
+                                        Title           = ?Title,
+                                        Cid             = ?Cid,
+                                        Nowprice        = ?Nowprice,
+                                        OriginalPrice   = ?OriginalPrice,
+                                        Score           = ?Score,
+                                        CreateTime      = ?CreateTime,
+                                        FavCount        = ?FavCount,
+                                        ShareCount      = ?ShareCount,
+                                        Tag             = ?Tag,
+                                        Content         = ?Content,
+                                        CommentCount         = ?CommentCount,
+                                        BrowseCount         = ?BrowseCount,
+                                        IsRecommend         = ?IsRecommend,
+                                        IsHot           = ?IsHot
+                                    WHERE
+                                        Id = ?Id;";
+                string newStr = string.Format("?{0}", goods.Id);
+                tempcmdText = tempcmdText.Replace("?", newStr);
+                cmdText += tempcmdText;
+                parameters.Add(new MySqlParameter(newStr + "Id", goods.Id));
+                parameters.Add(new MySqlParameter(newStr + "SellerId", goods.SellerId));
+                parameters.Add(new MySqlParameter(newStr + "ImgIds", Utility.GetString(goods.ImgIdList)));
+                parameters.Add(new MySqlParameter(newStr + "Logo", goods.Logo));
+                parameters.Add(new MySqlParameter(newStr + "Sales", goods.Sales));
+                parameters.Add(new MySqlParameter(newStr + "Title", goods.Title));
+                parameters.Add(new MySqlParameter(newStr + "Cid", goods.Cid));
+                parameters.Add(new MySqlParameter(newStr + "Nowprice", goods.Nowprice));
+                parameters.Add(new MySqlParameter(newStr + "OriginalPrice", goods.OriginalPrice));
+                parameters.Add(new MySqlParameter(newStr + "Score", goods.Score));
+                parameters.Add(new MySqlParameter(newStr + "CreateTime", goods.CreateTime));
+                parameters.Add(new MySqlParameter(newStr + "FavCount", goods.FavCount));
+                parameters.Add(new MySqlParameter(newStr + "ShareCount", goods.ShareCount));
+                parameters.Add(new MySqlParameter(newStr + "Tag", goods.Tag));
+                parameters.Add(new MySqlParameter(newStr + "Content", goods.Content));
+                parameters.Add(new MySqlParameter(newStr + "IsRecommend", goods.IsRecommend));
+                parameters.Add(new MySqlParameter(newStr + "IsHot", goods.IsHot));
+                parameters.Add(new MySqlParameter(newStr + "CommentCount", goods.CommentCount));
+                parameters.Add(new MySqlParameter(newStr + "BrowseCount", goods.BrowseCount));
+            }
+            cmdText += "commit;";
+            try
+            {
+                var num = MySqlHelper.ExecuteNonQuery(Utility._gameDbConn, CommandType.Text, cmdText, parameters.ToArray());
+                return num > 0;
+            }
+            catch (System.Exception ex)
+            {
+                throw;
+            }
+            return false;
+        }
+
+        /// <summary>
         /// 更新产品销量
         /// </summary>
         /// <param name="goodsIds"></param>
@@ -313,7 +381,7 @@ namespace Backstage.Core.Logic
         /// <returns></returns>
         public static bool DelGoodsList(int sellerId, string gids)
         {
-            var cmdText = @"delete from Goods where SellerId=?SellerId and Id in (?Id)";
+            var cmdText = @"delete from Goods where SellerId=?SellerId and find_in_set(`Id`,?Id)";
             var parameters = new List<MySqlParameter>();
             parameters.Add(new MySqlParameter("?SellerId", sellerId));
             parameters.Add(new MySqlParameter("?Id", gids));

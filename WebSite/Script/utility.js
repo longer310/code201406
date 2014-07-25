@@ -97,7 +97,6 @@ Utility.QueryString = function (key) {
     //    }
     //    
     //    return "";
-    //2010-07-16  by叶志阳  实现不区分大小写
     var svalue = location.search.match(new RegExp("[\?\&]" + key + "=([^\&]*)(\&?)", "i"));
     return svalue ? svalue[1] : "";
 }

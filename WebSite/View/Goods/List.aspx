@@ -1,6 +1,7 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/View/merchant.Master" AutoEventWireup="true" CodeBehind="List.aspx.cs" Inherits="Backstage.View.Goods.List" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="Header" runat="server">
+    <link rel="shortcut icon" href="../../Css/img/favicon.ico">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="Content" runat="server">
     <div class="widget-box">
@@ -63,12 +64,14 @@
 
     <!--页面js-->
     <script type="text/javascript" src="../../Script/js/ue.pager.js"></script>
+    <script type="text/javascript" src="../../Script/js/json2.js"></script>
 
     <!--推荐和热销 如果选择 加上 active 的class-->
     <script type="text/jquery-tmpl-x" id="j-tmpl-goods-listitem">
+        {{if list.length > 0}}
         {{each(i, v) list}}
 	        <tr data-gid="${v.Id}">
-				<td><input type="checkbox" /></td>
+				<td><input type="checkbox" class="j-select"/></td>
 				<td style="width:30px;">${v.Id}</td>
                 <td style="width:45px;"><img style="max-width:45px;min-width:45px;max-height:45px;min-height:45px;" src="${v.LogoUrl}"></td>
 				<td>${v.Title}</td>
@@ -76,23 +79,39 @@
 				<td style="width:104px;"><input type="text" class="input-small j-preprice" value="${v.OriginalPrice}" ></td>
 				<td>${v.Sales}</td>
 				<td>${v.CommentCount} / ${v.BrowseCount}</td>
-				<td style="width:270px;">
-					<button class="btn btn-success btn-mini j-isrecommend" data-toggle="buttons-checkbox"><i class="icon-thumbs-up icon-white"></i> {{if v.IsRecommend>0}}取消推荐{{else}}推荐{{/if}}</button>
-					<button class="btn btn-info btn-mini j-ishot active" data-toggle="buttons-checkbox"><i class="icon-fire icon-white"></i> {{if v.IsHot>0}}取消热销{{else}}热销{{/if}}</button>
-					<a class="btn btn-primary btn-mini" href=""><i class="icon-pencil icon-white"></i> 编辑</a>
-					<a class="btn btn-danger btn-mini j-btn-del" href=""><i class="icon-remove icon-white"></i> 删除</a>
+				<td style="width:200px;">
+					<div class="pull-left" style="height:45px;">
+						<label class="checkbox"><input type="checkbox" {{if v.IsRecommend>0}} checked="checked" {{/if}}  class="j-isrecommend"> 推荐</label>
+						<label class="checkbox"><input type="checkbox" {{if v.IsHot>0}} checked="checked" {{/if}} class="j-ishot"> 热销</label>
+					</div>
+
+					<div class="pull-right">
+						<a class="btn btn-primary btn-mini" href=""><i class="icon-pencil icon-white"></i> 编辑</a>
+						<a class="btn btn-danger btn-mini j-btn-del" href="javascript:void(0);" onclick="MPage.delSingleGoods(${v.Id})"><i class="icon-remove icon-white"></i> 删除</a>
+					</div>
 				</td>
 			</tr>
 		{{/each}}
+        {{else}}
+            <tr>
+                <td colspan="8" align="center">此条件下无商品</td>
+            </tr>
+        {{/if}}
+    
     </script>
     <script type="text/javascript">
         var MPage = {
             hander: "../../Handler/Goods/GoodsHandler.ashx?action=",
-            maxpage: 5,
-            start: 0,
-            limit: 3,
+            maxpage: 5,     //最多显示的页数
+            start: 0,       //页码
+            limit: 3,       //一页条数
+            type: 0,         //当前产品类型
             init: function () {
                 var mpage = this;
+
+                //去掉之前选中打开的项 选中产品列表
+                $("#sidebar li").removeClass("active open");
+                $("#sidebar .sidebar_goods").addClass("active open").find(".sidebar_goodslist").addClass("active");
 
                 mpage.getGoodsList(1, 0);
 
@@ -107,9 +126,9 @@
                 //绑定全选
                 $("#j-btn-selectAll").bind("change", function () {
                     if ($(this).attr("checked")) {
-                        $("#j-goods-list :checkbox").attr("checked", "checked");
+                        $("#j-goods-list .j-select:checkbox").attr("checked", "checked");
                     } else {
-                        $("#j-goods-list :checkbox").removeAttr("checked");
+                        $("#j-goods-list .j-select:checkbox").removeAttr("checked");
                     }
 
                     return false;
@@ -117,23 +136,18 @@
 
                 //绑定批量删除
                 $("#j-btn-delSelected").bind("click", function () {
-                    var $checked = $("#j-goods-list :checked");
+                    var $checked = $("#j-goods-list .j-select:checked");
 
                     var ids = [];
                     $checked.each(function () {
-                        alert($(this).attr("data-gid"));
-                        ids.push($(this).attr("data-gid"));
+                        ids.push($(this).parents("tr").attr("data-gid"));
                     });
-                    alert(ids.join(","));
                     if (ids.length > 0) {
                         Common.confirm({
                             title: "删除确认提示",
                             content: "您确定要删除当前选择的所有数据吗？",
                             confirm: function () {
-                                //执行确认回调
-
-                                //删除成功后刷新本页
-                                mpage.getGoodsList(mpage.goodsCurrentPage, mpage.goodsCurrentType);
+                                mpage.delGoods(ids.join(","));
                             },
                             cancel: function () {
                                 //执行取消回调
@@ -142,32 +156,28 @@
                     } else {
                         Common.alert({
                             title: "提示",
-                            content: "请至少选择一项",
-                            confirm: function () {
-                                //执行确认回调
-                            }
+                            content: "请至少选择一项删除"
                         });
                     }
-
                     return false;
                 });
 
                 //绑定批量保存
                 $("#j-btn-saveAll").bind("click", function () {
-                    var $checked = $("#j-goods-list :checked");
+                    var $checked = $("#j-goods-list .j-select:checked");
 
                     var data_save = [];
 
                     $checked.each(function () {
                         var $item = $(this).parents("tr");
                         data_save.push(
-                        {
-                            id: $item.attr("data-gid"),
-                            price: $item.find(".j-price").val(),
-                            preprice: $item.find(".j-preprice").val(),
-                            isrecommend: $item.find(".j-isrecommend").hasClass("active") ? 1 : 0,
-                            ishot: $item.find(".j-ishot").hasClass("active") ? 1 : 0
-                        });
+                            {
+                                Id: $item.attr("data-gid"),
+                                Nowprice: $item.find(".j-price").val(),
+                                OriginalPrice: $item.find(".j-preprice").val(),
+                                IsRecommend: $item.find(".j-isrecommend").attr("checked") ? 1 : 0,
+                                IsHot: $item.find(".j-ishot").attr("checked") ? 1 : 0
+                            });
                     });
 
                     if (data_save.length > 0) {
@@ -176,19 +186,13 @@
                             content: "您确定要保存当前选择的所有修改吗？",
                             confirm: function () {
                                 //执行确认回调
-
-                            },
-                            cancel: function () {
-                                //执行取消回调
+                                mpage.saveGoods(data_save);
                             }
                         });
                     } else {
                         Common.alert({
                             title: "提示",
-                            content: "请至少选择一项",
-                            confirm: function () {
-                                //执行确认回调
-                            }
+                            content: "请至少选择一项保存修改"
                         });
                     }
 
@@ -196,16 +200,14 @@
                 });
             },
 
-            //获取商品列表 p：页码 type：tab 类型
-            getGoodsList: function (p, type) {
+            //获取商品列表 start：页码 type：tab 类型
+            getGoodsList: function (start, type) {
                 var mpage = this;
-                mpage.start = p;
+                mpage.start = start;
+                mpage.type = type;
 
-                //$.getJSON("", { p: p, type : type}， function(json){
-                //mpage.goodsCurrentPage = p;
-                mpage.goodsCurrentType = type;
                 $("#j-btn-selectAll").removeAttr("checked");
-                $.post(mpage.hander + "getGoodsList", { start: mpage.start-1, limit: mpage.limit, type: mpage.goodsCurrentType }, function (data) {
+                $.post(mpage.hander + "getGoodsList", { start: mpage.start - 1, limit: mpage.limit, type: mpage.type }, function (data) {
                     if (!data.error) {
                         $("#j-goods-list").html($("#j-tmpl-goods-listitem").tmpl(data));
                         mpage.showPager(data.totalcount);
@@ -240,6 +242,7 @@
                     return false;
                 });
             },
+            
             //分页 totalCount：总数
             showPager: function (totalCount) {
                 var mpage = this;
@@ -261,30 +264,56 @@
                     maxPage: mpage.maxpage,//显示的最多页数
                     per: mpage.limit,//每页显示几个
                     count: totalCount,
-                    onchange: function (page) {//切换页数回调函数
+                    onchange: function (page) { //切换页数回调函数
                         mpage.getGoodsList(page);
                     }
                 });
             },
 
-            //删除商品
+            //删除单个商品 id:商品id
+            delSingleGoods: function (id) {
+                Common.confirm({
+                    title: "删除确认提示",
+                    content: Str.format("您确定要删除编号为{0}的商品？", id),
+                    confirm: function () {
+                        //执行确认回调
+                        delGoods(id);
+                    }
+                });
+            },
+
+            //删除商品列表 ids:商品id字符串,隔开
             delGoods: function (ids) {
                 var mpage = this;
-                $.post(mpage.hander + "delGoodsList", {  }, function (data) {
+                $.post(mpage.hander + "delGoodsList", { gids: ids }, function (data) {
                     if (!data.error) {
-                        $("#j-goods-list").html($("#j-tmpl-goods-listitem").tmpl(data));
-                        mpage.showPager(data.totalcount);
+                        //删除成功后刷新本页
+                        mpage.getGoodsList(mpage.start, mpage.type);
                     } else {
                         Common.alert({
-                            title: "提示",
-                            content: data.error,
-                            confirm: function () {
-                            }
+                            title: "错误提示",
+                            content: data.error
                         });
                     }
                 }, "JSON");
-            }
-        }
+            },
+            
+            //保存修改的列表 data:json修改串
+            saveGoods: function (data_save) {
+                var mpage = this;
+                $.post(mpage.hander + "saveGoodsList", { data_save: JSON.stringify(data_save) }, function (data) {
+                    if (!data.error) {
+                        //提示弹窗toast
+                        mpage.getGoodsList(mpage.start, mpage.type);
+                    } else {
+                        Common.alert({
+                            title: "错误提示",
+                            content: data.error
+                        });
+                    }
+                }, "JSON");
+            },
+        };
 
         $(function () {
             MPage.init();

@@ -10,7 +10,7 @@
 	<link rel="stylesheet" href="../Css/css/bootstrap.min.css" />
 	<link rel="stylesheet" href="../Css/css/bootstrap-responsive.min.css" />
 	<link rel="stylesheet" href="../Css/css/unicorn.main.css" />
-	<link rel="stylesheet" href="../Css/css/unicorn.grey.css" class="skin-color" />
+	<link rel="stylesheet" href="../Css/css/unicorn.grey.css"/>
 
     <asp:ContentPlaceHolder ID="Header" runat="server">
     </asp:ContentPlaceHolder>
@@ -37,18 +37,18 @@
 
         <div id="sidebar">
             <ul>
-                <li><a href="#"><i class="icon icon-home"></i><span>首页</span></a></li>
-                <li class="submenu">
+                <li class="active"><a href="#"><i class="icon icon-home"></i><span>首页</span></a></li>
+                <li class="submenu active open">
                     <a href="#"><i class="icon icon-gift"></i><span>活动管理</span> <span class="label">2</span></a>
                     <ul>
-                        <li><a href="#">活动列表</a></li>
+                        <li class="active"><a href="#">活动列表</a></li>
                         <li><a href="#">新增活动</a></li>
                     </ul>
                 </li>
-                <li class="submenu active open">
+                <li class="submenu sidebar_goods">
                     <a href="../Goods/List.aspx"><i class="icon icon-tint"></i><span>产品管理</span><span class="label">3</span></a>
                     <ul>
-                        <li class="active"><a href="../Goods/List.aspx">产品列表</a></li>
+                        <li class="sidebar_goodslist"><a href="../Goods/List.aspx">产品列表</a></li>
                         <li><a href="#">新增产品</a></li>
                         <li><a href="#">分类管理</a></li>
                     </ul>

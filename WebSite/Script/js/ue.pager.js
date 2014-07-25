@@ -210,6 +210,9 @@
 				if (isNaN(p)){
 					p = parseInt($(this).parents("[data-page]").attr("data-page"));
 				}
+				if (isNaN(p)){
+					return false;
+				}
 				options.onchange.call(_this, p);
 				return false;
 			})

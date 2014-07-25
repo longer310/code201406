@@ -279,13 +279,13 @@ namespace Backstage.Core.Logic
         /// 获取用户评论列表
         /// </summary>
         /// <param name="uid"></param>
-        /// <param name="ids"></param>
+        /// <param name="gids"></param>
         /// <returns></returns>
-        public static List<ShoppingCart> GetList(int uid, string ids)
+        public static List<ShoppingCart> GetList(int uid, string gids)
         {
             var list = new List<ShoppingCart>();
             //string commandText = @"select * from ShoppingCart where UserId = ?UserId and Id in(?Id);";
-            string commandText = string.Format("select * from ShoppingCart where UserId = {0} and Id in({1});",uid,ids);
+            string commandText = string.Format("select * from ShoppingCart where UserId = {0} and Gid in({1});", uid, gids);
 
             //List<MySqlParameter> parameters = new List<MySqlParameter>();
             //parameters.Add(new MySqlParameter("?UserId", uid));

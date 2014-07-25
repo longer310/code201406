@@ -111,6 +111,12 @@ namespace Backstage.Core
         /// 已完结（到店吃或者已送餐）
         /// </summary>
         End = 3,
+
+
+        /// <summary>
+        /// 取消订单
+        /// </summary>
+        Cancel = -1,
     }
 
     /// <summary>

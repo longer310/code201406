@@ -292,9 +292,10 @@ namespace Backstage.Core.Handler
         /// <param name="sellerId"></param>
         /// <param name="start"></param>
         /// <param name="limit"></param>
+        /// <param name="type"></param>
         /// <param name="ifgetcount"></param>
         /// <returns></returns>
-        public static PagResults<Coupon> GetUserCouponList(int userId, int sellerId, int start, int limit, int ifgetcount = 0)
+        public static PagResults<Coupon> GetUserCouponList(int userId, int sellerId, int start, int limit,int type, int ifgetcount = 0)
         {
             var results = new PagResults<Coupon>();
             results.Results = new List<Coupon>();

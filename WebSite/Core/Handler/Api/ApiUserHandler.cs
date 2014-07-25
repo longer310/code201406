@@ -640,6 +640,7 @@ namespace Backstage.Handler
             var sellerid = GetInt("sellerid");
             var start = GetInt("start");
             var limit = GetInt("limit");
+            var type = GetInt("type");
 
             var user = AccountHelper.GetUser(uid);
             if (user == null)
@@ -655,7 +656,7 @@ namespace Backstage.Handler
             var data = new UserCouponData();
             data.extcredit = user.Integral;
 
-            var result = CouponHelper.GetUserCouponList(uid, sellerid, start * limit, limit);
+            var result = CouponHelper.GetUserCouponList(uid, sellerid, start * limit, limit,type);
             foreach (var coupon in result.Results)
             {
                 var item = new CouponItem();

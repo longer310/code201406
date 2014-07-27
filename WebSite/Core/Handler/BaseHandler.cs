@@ -104,7 +104,7 @@ namespace Backstage.Core
         public void ReturnErrorMsg(string msg)
         {
             JsonTransfer jt = new JsonTransfer();
-            jt.SetError("msg");
+            jt.SetError(msg);
             Response.Write(jt.ToJson());
             Response.End();
         }

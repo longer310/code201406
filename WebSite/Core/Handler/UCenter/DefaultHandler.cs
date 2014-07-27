@@ -22,15 +22,15 @@ namespace Backstage.Handler
                     UpdateData(); break;
                 case "deldata":
                     DelData(); break;
-                case "getpwd":
-                    GetPwd(); break;
+                case "getpwdvercode":
+                    GetPwdVerCode(); break;
                 case "updatepwd":
                     UpdatePwd(); break;
                 default: break;
             }
         }
 
-        private void GetPwd()
+        private void GetPwdVerCode()
         {
             string phone = GetString("phone");
             int sellerid = GetInt("sellerid");
@@ -45,6 +45,7 @@ namespace Backstage.Handler
             verificationCode.SellerId = sellerid;
             verificationCode.Code = Utility.GetVerificationCode(6);
             verificationCode.ExpiredTime = DateTime.Now.AddMinutes(30);
+            verificationCode.UserId = user.Id;
             VerificationCodeHelper.SaveVerificationCode(verificationCode);
             if (Utility._msg_opensend == "1")
                 Utility.SendMsg(verificationCode.Code, verificationCode.Phone, Utility._modifyphone_message);
@@ -65,7 +66,7 @@ namespace Backstage.Handler
             }
             var verificationCode = VerificationCodeHelper.GetVerificationCode(sellerid, phone, user.Id);
 
-            if (verificationCode.ExpiredTime > DateTime.Now)
+            if (verificationCode.ExpiredTime < DateTime.Now)
                 ReturnErrorMsg("验证码已经过期了");
             if (code != verificationCode.Code)
                 ReturnCorrectMsg("验证码错误");

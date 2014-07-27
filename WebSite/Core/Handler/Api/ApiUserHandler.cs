@@ -45,7 +45,7 @@ namespace Backstage.Handler
                 case "getmerchant"://商家信息 7.8
                     GetMerchant();
                     break;
-                case "getusercouponlist"://获取可兑换的电子券 7.9
+                case "getusercouponlist"://获取用户的电子券 7.9
                     GetUserCouponList();
                     break;
                 case "getextcreditlog"://积分使用明细 7.10
@@ -89,6 +89,9 @@ namespace Backstage.Handler
                     break;
                 case "delmycommentlist"://删除我的评论列表 7.22
                     DelMyCommentList();
+                    break;
+                case "getordercouponlist"://获取可兑换的电子券 7.23
+                    GetOrderCouponList();
                     break;
                 default: break;
             }
@@ -627,6 +630,7 @@ namespace Backstage.Handler
         }
         public class CouponItem
         {
+            public int id { get; set; }
             public string title { get; set; }
             public string description { get; set; }
             public string img { get; set; }
@@ -640,7 +644,7 @@ namespace Backstage.Handler
             var sellerid = GetInt("sellerid");
             var start = GetInt("start");
             var limit = GetInt("limit");
-            var type = GetInt("type");
+            var status = GetInt("status");
 
             var user = AccountHelper.GetUser(uid);
             if (user == null)
@@ -656,7 +660,7 @@ namespace Backstage.Handler
             var data = new UserCouponData();
             data.extcredit = user.Integral;
 
-            var result = CouponHelper.GetUserCouponList(uid, sellerid, start * limit, limit,type);
+            var result = CouponHelper.GetUserCouponList(uid, sellerid, start * limit, limit, status);
             foreach (var coupon in result.Results)
             {
                 var item = new CouponItem();
@@ -1236,6 +1240,53 @@ namespace Backstage.Handler
             CommentHelper.DelList(uid, ids);
 
             ReturnCorrectMsg("删除评论成功");
+        }
+        #endregion
+
+        #region 获取可用于订单的优惠券列表 7.23
+        public void GetOrderCouponList()
+        {
+            var uid = GetInt("uid");
+            var sellerid = GetInt("sellerid");
+            var orderid = GetInt("orderid");
+
+            var user = AccountHelper.GetUser(uid);
+            if (user == null)
+            {
+                ReturnErrorMsg(string.Format("不存在Id={0}的用户", uid));
+                return;
+            }
+            if (user.SellerId != sellerid)
+            {
+                ReturnErrorMsg("商户无此用户");
+                return;
+            }
+            var orders = OrdersHelper.GetOrders(orderid);
+            if (orders == null)
+            {
+                ReturnErrorMsg(string.Format("不存在Id={0}的订单", orderid));
+                return;
+            }
+            var gids = Utility.GetString(orders.GidList);
+            var data = new UserCouponData();
+            data.extcredit = user.Integral;
+
+            var result = CouponHelper.GetOrderCouponList(uid, sellerid, gids);
+            foreach (var coupon in result.Results)
+            {
+                var item = new CouponItem();
+                item.id = coupon.Id;
+                item.title = coupon.Title;
+                item.description = coupon.Description;
+                item.img = coupon.ImgUrl;
+                item.expiry = coupon.Expiry.GetUnixTime();
+                item.sellerid = sellerid;
+
+                data.couponlist.Add(item);
+            }
+
+            //返回数据
+            ReturnCorrectData(data);
         }
         #endregion
     }

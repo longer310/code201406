@@ -194,7 +194,7 @@ namespace Backstage.Core.Handler
             parameters.Add(new MySqlParameter("?Extcredit", coupon.Extcredit));
             parameters.Add(new MySqlParameter("?FullMoney", coupon.FullMoney));
             parameters.Add(new MySqlParameter("?DiscountMoney", coupon.FullMoney));
-            parameters.Add(new MySqlParameter("?GoodsIds", GetGoodsIdsString(coupon.GoodsIds)));
+            parameters.Add(new MySqlParameter("?GoodsIds", Utility.GetString(coupon.GoodsIds.ToList())));
             parameters.Add(new MySqlParameter("?Commentnum", coupon.Commentnum));
 
             MySqlHelper.ExecuteNonQuery(GlobalConfig.DbConn, CommandType.Text, commandText, parameters.ToArray());
@@ -207,10 +207,10 @@ namespace Backstage.Core.Handler
             var results = new List<int>();
             if (goodsIds == string.Empty)
             {
-                return results;  
+                return results;
             }
             string[] ids = goodsIds.Split(',');
-            
+
             foreach (var id in ids)
             {
                 results.Add(Convert.ToInt32(id));
@@ -292,21 +292,22 @@ namespace Backstage.Core.Handler
         /// <param name="sellerId"></param>
         /// <param name="start"></param>
         /// <param name="limit"></param>
-        /// <param name="type"></param>
+        /// <param name="status"></param>
         /// <param name="ifgetcount"></param>
         /// <returns></returns>
-        public static PagResults<Coupon> GetUserCouponList(int userId, int sellerId, int start, int limit,int type, int ifgetcount = 0)
+        public static PagResults<Coupon> GetUserCouponList(int userId, int sellerId, int start, int limit, int status = 0, int ifgetcount = 0)
         {
             var results = new PagResults<Coupon>();
             results.Results = new List<Coupon>();
             string limitsql = limit != 0 ? " LIMIT ?start,?limit" : string.Empty;
-            string commandText = @"select a.* from coupon a left join usercoupon b on a.id=b.CouponId where b.userId = ?userId and a.SellerId=?sellerId order by Expiry desc " + limitsql;
+            string commandText = @"select a.* from coupon a left join usercoupon b on a.id=b.CouponId where b.userId = ?userId and a.SellerId=?sellerId and find_in_set(`Status`,?status) order by Expiry desc " + limitsql;
 
             List<MySqlParameter> parameters = new List<MySqlParameter>();
             parameters.Add(new MySqlParameter("?userId", userId));
             parameters.Add(new MySqlParameter("?sellerId", sellerId));
             parameters.Add(new MySqlParameter("?start", start));
             parameters.Add(new MySqlParameter("?limit", limit));
+            parameters.Add(new MySqlParameter("?status", status > 1 ? "0,1" : status.ToString()));
 
             try
             {
@@ -359,5 +360,118 @@ namespace Backstage.Core.Handler
             return results;
         }
 
+        /// <summary>
+        /// 获取订单可用的优惠券列表
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="sellerId"></param>
+        /// <param name="gids"></param>
+        /// <returns></returns>
+        public static PagResults<Coupon> GetOrderCouponList(int userId, int sellerId, string gids)
+        {
+            var results = new PagResults<Coupon>();
+            results.Results = new List<Coupon>();
+            string commandText = @"select a.*,b.Id as userCouponId from coupon a left join usercoupon b on a.id=b.CouponId where b.userId = ?userId and a.SellerId=?sellerId and b.Status = 0 and a.GoodsIds not LIKE ?gids order by Expiry desc ";
+
+            List<MySqlParameter> parameters = new List<MySqlParameter>();
+            parameters.Add(new MySqlParameter("?userId", userId));
+            parameters.Add(new MySqlParameter("?sellerId", sellerId));
+            parameters.Add(new MySqlParameter("?gids", gids + "%"));
+
+            try
+            {
+                using (var conn = new MySqlConnection(GlobalConfig.DbConn))
+                {
+                    MySqlDataReader reader = MySqlHelper.ExecuteReader(conn, CommandType.Text, commandText, parameters.ToArray());
+                    while (reader.Read())
+                    {
+                        Coupon c = new Coupon();
+                        c.Id = Convert.ToInt32(reader["userCouponId"]);
+                        c.ImgId = (int)reader["ImgId"];
+                        c.ImgUrl = reader["ImgUrl"].ToString();
+                        c.Title = reader["Title"].ToString();
+                        c.Description = reader["Description"].ToString();
+                        c.Expiry = (DateTime)reader["Expiry"];
+                        c.Extcredit = (int)reader["Extcredit"];
+                        c.FullMoney = (int)reader["FullMoney"];
+                        c.DiscountMoney = (int)reader["DiscountMoney"];
+                        c.GoodsIds = Utility.GetListint(reader["GoodsIds"].ToString());
+                        c.Commentnum = (int)reader["Commentnum"];
+                        c.SellerId = (int)reader["SellerId"];
+                        results.Results.Add(c);
+                    }
+                }
+            }
+            catch (System.Exception ex)
+            {
+                throw;
+            }
+            return results;
+        }
+
+        /// <summary>
+        /// 根据玩家获取优惠券
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="sellerId"></param>
+        /// <param name="couponId"></param>
+        /// <returns></returns>
+        public static Coupon GetCoupon(int couponId, int userId, int sellerId)
+        {
+            string commandText = @"select a.* from coupon a left join usercoupon b on a.id=b.CouponId where b.userId = ?userId and a.SellerId=?sellerId and b.Status = 0 and b.id=?id;";
+
+            List<MySqlParameter> parameters = new List<MySqlParameter>();
+            parameters.Add(new MySqlParameter("?userId", userId));
+            parameters.Add(new MySqlParameter("?sellerId", sellerId));
+            parameters.Add(new MySqlParameter("?id", couponId));
+
+            Coupon c = null;
+            try
+            {
+                using (var conn = new MySqlConnection(GlobalConfig.DbConn))
+                {
+                    MySqlDataReader reader = MySqlHelper.ExecuteReader(conn, CommandType.Text, commandText, parameters.ToArray());
+                    while (reader.Read())
+                    {
+                        c = new Coupon();
+                        c.Id = reader.GetInt32(0);
+                        c.ImgId = (int)reader["ImgId"];
+                        c.ImgUrl = reader["ImgUrl"].ToString();
+                        c.Title = reader["Title"].ToString();
+                        c.Description = reader["Description"].ToString();
+                        c.Expiry = (DateTime)reader["Expiry"];
+                        c.Extcredit = (int)reader["Extcredit"];
+                        c.FullMoney = (int)reader["FullMoney"];
+                        c.DiscountMoney = (int)reader["DiscountMoney"];
+                        c.GoodsIds = Utility.GetListint(reader["GoodsIds"].ToString());
+                        c.Commentnum = (int)reader["Commentnum"];
+                        c.SellerId = (int)reader["SellerId"];
+                    }
+                }
+            }
+            catch (System.Exception ex)
+            {
+                throw;
+            }
+            return c;
+        }
+
+
+        public static bool UpdateCouponStatus(int id, int status)
+        {
+            if (id == 0) return false;
+            string commandText = @"UPDATE usercoupon SET
+                                        Status = ?Status
+                                    WHERE
+                                        Id = ?Id";
+
+            List<MySqlParameter> parameters = new List<MySqlParameter>();
+            parameters.Add(new MySqlParameter("?Status", status));
+            parameters.Add(new MySqlParameter("?Id", id));
+
+            return
+                MySqlHelper.ExecuteNonQuery(GlobalConfig.DbConn, CommandType.Text, commandText, parameters.ToArray()) >
+                0;
+        }
     }
 }

@@ -315,6 +315,7 @@ namespace Backstage.Core
 
         public static string GetString(List<int> list)
         {
+            list = list.OrderBy(o => o).ToList();//升序排列 很重要 关系到查找！
             return String.Join(",", list.ConvertAll<string>(new Converter<int, string>(m => m.ToString())).ToArray());
         }
 

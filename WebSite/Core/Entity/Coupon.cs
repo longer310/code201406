@@ -57,6 +57,9 @@ namespace Backstage.Core.Entity
         /// </summary>
         public int Commentnum { get; set; }
 
-        
+        /// <summary>
+        /// 是否使用 0：未使用 1：已使用
+        /// </summary>
+        public int Status { get; set; }
     }
 }

@@ -84,6 +84,15 @@ namespace Backstage.Core
             Response.End();
         }
 
+        public void ReturnCorrectData(object data)
+        {
+            JsonTransfer jt = new JsonTransfer();
+            jt.AddSuccessParam();
+            jt.Add("data", data);
+            Response.Write(DesEncrypt(jt));
+            Response.End();
+        }
+
         public string ApiName
         {
             get

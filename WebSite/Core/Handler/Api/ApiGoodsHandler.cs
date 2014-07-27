@@ -46,28 +46,28 @@ namespace Backstage.Handler
                 #endregion
 
                 #region 订单
-                case "addshoppingcart"://添加产品到购物车
+                case "addshoppingcart"://添加产品到购物车 6.1
                     AddShoppingCart();
                     break;
-                case "getshoppingcartlist"://获取购物车列表
+                case "getshoppingcartlist"://获取购物车列表 6.2
                     GetShoppingCartList();
                     break;
-                case "getpaymentlist"://获取支付方式列表
+                case "getpaymentlist"://获取支付方式列表 6.3
                     GetPaymentList();
                     break;
-                case "addorders"://添加订单
+                case "addorders"://添加订单 6.4
                     AddOrders();
                     break;
-                case "getordersdetail"://获取订单详情
+                case "getordersdetail"://获取订单详情 6.5
                     GetOrdersDetail();
                     break;
-                case "updateorders"://更新订单
+                case "updateorders"://更新订单 6.6
                     UpdateOrders();
                     break;
-                case "updateordersstatus"://更新订单状态
+                case "updateordersstatus"://更新订单状态 6.7
                     UpdateOrdersStatus();
                     break;
-                case "delshoppingcart"://删除购物车
+                case "delshoppingcart"://删除购物车 6.8
                     DelShoppingCart();
                     break;
                 #endregion
@@ -550,56 +550,6 @@ namespace Backstage.Handler
         }
         #endregion
 
-        //#region 删除收藏  7.14
-        //public void DeleteFav()
-        //{
-        //    int uid = GetInt("uid");
-        //    var gids = GetString("gids").Split(new Char[] { ',' }, StringSplitOptions.RemoveEmptyEntries).ToList();
-        //    int sellid = GetInt("sellerid");
-        //    var favorite = FavoriteHelper.GetFavorite(uid);
-        //    foreach (var item in gids)
-        //    {
-        //        var gid = Convert.ToInt32(item);
-        //        var g = GoodsHelper.GetGoods(gid);
-                
-        //        if (favorite.GidList.Count == 0 || !favorite.GidList.Contains(gid))
-        //            ReturnErrorMsg("该用户没有收藏过商品");
-        //        else
-        //            favorite.GidList.Remove(gid);
-
-        //        g.FavCount--;
-        //        favorite.Gids = GetGidsString(favorite.GidList);
-        //        //保存商品
-        //        GoodsHelper.SaveGoods(g);
-        //    }
-        //    //保存收藏
-        //    FavoriteHelper.SaveFavorite(favorite);
-        //    //返回
-        //    ReturnCorrectMsg("删除成功");
-        //    //var goods = GoodsHelper.GetGoods(gid);
-
-
-
-        //}
-
-        //string GetGidsString(IList<int> gids)
-        //{
-        //    string result = string.Empty;
-        //    for (int i = 0; i < gids.Count; i++)
-        //    {
-        //        var gid = gids[i];
-        //        if (i == 0)
-        //            result = gid.ToString();
-        //        else
-        //            result += "," + gid.ToString();
-        //    }
-        //    return result;
-        //}
-
-        //#endregion
-
-
-
         #region 商品/图片墙/活动分享 2.6
         public void ShareGoods()
         {
@@ -1017,6 +967,13 @@ namespace Backstage.Handler
 
             var orders = OrdersHelper.GetOrders(orderId, uid);
 
+            var user = AccountHelper.GetUser(uid);
+            if (user == null)
+            {
+                ReturnErrorMsg(string.Format("不存在Id={0}的用户", uid));
+                return;
+            }
+
             if (orders == null)
             {
                 ReturnErrorMsg("参数出错");
@@ -1042,16 +999,18 @@ namespace Backstage.Handler
             orders.Mobile = phone;
             orders.CouponId = couponid;
             //获取优惠券优惠的价格
-            var coupon = CouponHelper.GetItem(orders.CouponId);
-            bool ifdiscount = coupon == null ? false : true;
-            if (coupon != null)
-            {//判断是否是优惠产品
-                var gidlist = orders.GidList;
-                foreach (var i in gidlist)
-                {
-                    if (coupon.GoodsIds.Contains(i))
-                        ifdiscount = false;
-                }
+            var coupon = CouponHelper.GetCoupon(orders.CouponId, uid, user.SellerId);
+            if (coupon == null)
+            {
+                ReturnErrorMsg("未找到相应的优惠券或优惠券已被使用了");
+                return;
+            }
+            bool ifdiscount = true;
+            var gidlist = orders.GidList;
+            foreach (var i in gidlist)
+            {
+                if (coupon.GoodsIds.Contains(i))
+                    ifdiscount = false;
             }
             float discount = 0;
             if (ifdiscount)
@@ -1066,6 +1025,7 @@ namespace Backstage.Handler
             orders.Status = OrderStatus.Update;
 
             OrdersHelper.SaveOrders(orders);
+            CouponHelper.UpdateCouponStatus(couponid, 1); //更新优惠券已使用
 
             ReturnCorrectMsg("更新成功");
         }
@@ -1080,7 +1040,7 @@ namespace Backstage.Handler
 
             var orders = OrdersHelper.GetOrders(orderId, uid);
 
-            if (orders == null || status <= 1 || ((int)orders.Status + 1) != status)
+            if (orders == null || (status > 0 && ((int)orders.Status + 1) != status))
             {
                 ReturnErrorMsg("参数出错");
                 return;
@@ -1143,14 +1103,15 @@ namespace Backstage.Handler
                 //更新订单中商品的销量
                 GoodsHelper.UpdateGoodsSales(orders.GidList, orders.NumList);
             }
+            else if (orders.Status == OrderStatus.Cancel)
+            {//取消订单——返回优惠券
+                CouponHelper.UpdateCouponStatus(orders.CouponId, 0); //更新优惠券未使用
+            }
 
             OrdersHelper.SaveOrders(orders);
 
-            JsonTransfer jt = new JsonTransfer();
-            jt.AddSuccessParam();
-            jt.Add("data", new ApiUserHandler.IntegralData(log.Extcredit));
-            Response.Write(DesEncrypt(jt));
-            Response.End();
+            //返回信息
+            ReturnCorrectData(new ApiUserHandler.IntegralData(log.Extcredit));
         }
         #endregion
 

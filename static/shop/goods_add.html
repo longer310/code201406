@@ -113,8 +113,8 @@
 						<div class="control-group">
 							<label class="control-label">推荐和热销</label>
 							<div class="controls">
-								<label class="checkbox"><input type="checkbox" class="j-isrecommend"> 推荐</label>
-								<label class="checkbox"><input type="checkbox" class="j-ishot"> 热销</label>
+								<label class="checkbox"><input type="checkbox" id="j-goods-isrecommend"> 推荐</label>
+								<label class="checkbox"><input type="checkbox" id="j-goods-ishot"> 热销</label>
 							</div>
 						</div>
 
@@ -194,20 +194,22 @@
 
 		<!--产品图片缩略图模版-->
 		<script type="text/jquery-tmpl-x" id="j-tmpl-goods-thumbnail">
-        	<li class="span">
-				<span class="thumbnail">
-					<img src="${thumbnail}" alt="" class="j-thumbnail">
-				</span>
-				<div class="clearfix" style="margin-top:5px;">
-					<label class="radio pull-left"><input type="radio" name="ishot" class="j-islogo"> 设为logo</label>
-					<a title="删除图片" href="javascript:;" class="pull-right j-btn-delThumbnail"><i class="icon-remove"></i></a>
-				</div>
-			</li>
+			{{each(i, v) thumbnails}}
+	        	<li class="span">
+					<span class="thumbnail">
+						<img src="${v.thumbnail}" alt="" class="j-goods-thumbnail">
+					</span>
+					<div class="clearfix" style="margin-top:5px;">
+						<label class="radio pull-left"><input type="radio" name="islogo" class="j-goods-islogo" {{if v.islogo}}checked="checked"{{/if}}> 设为logo</label>
+						<a title="删除图片" href="javascript:;" class="pull-right j-btn-delThumbnail"><i class="icon-remove"></i></a>
+					</div>
+				</li>
+			{{/each}}
         </script>
         <!--标签输入框模版-->
         <script type="text/jquery-tmpl-x" id="j-tmpl-goods-tag">
         	{{each(i, v) tags}}
-        		<li style="margin-bottom:5px;"><input type="text" class="input-small j-tag" /> <a href="javascript:;" class="icon-remove j-btn-delTag"></a></li>
+        		<li style="margin-bottom:5px;"><input type="text" class="input-small j-goods-tag" {{if v}}value="${v}"{{/if}} /> <a href="javascript:;" class="icon-remove j-btn-delTag"></a></li>
         	{{/each}}
         </script>
 
@@ -244,7 +246,10 @@
 									viewType : 'VIEW',
 									dirName : 'image',
 									clickFn : function(url, title) {
-										mpage.addThumbnail(url);
+										mpage.addThumbnail([{
+											thumbnail : url,
+											islogo : 0
+										}]);
 										image_editor.hideDialog();
 									}
 								});
@@ -258,7 +263,10 @@
 									showRemote : false,
 									imageUrl : K('#j-img-placehold').attr("src"),
 									clickFn : function(url, title, width, height, border, align) {
-										mpage.addThumbnail(url);
+										mpage.addThumbnail([{
+											thumbnail : url,
+											islogo : 0
+										}]);
 										image_editor.hideDialog();
 									}
 								});
@@ -283,11 +291,11 @@
 					});
 
 					$("#j-btn-addTag").bind("click", function(){
-						mpage.addTag(1);
+						mpage.addTag(['']);
 						return false;
 					});
 
-					mpage.addTag(2);
+					mpage.addTag(['','']);
 					mpage.getCategoryList(1);
 
 					//提交表单
@@ -301,14 +309,14 @@
 							var $item = $(this);
 
 							thumbnails.push({
-								url : $item.find(".j-thumbnail").attr("src"),
-								islogo : $item.find(".j-islogo").attr("checked") ? 1 : 0
+								url : $item.find(".j-goods-thumbnail").attr("src"),
+								islogo : $item.find(".j-goods-islogo").attr("checked") ? 1 : 0
 							});
 						});
 
 						//获取所有的标签
 
-						$("#j-goods-tags .j-tag").each(function(){
+						$("#j-goods-tags .j-goods-tag").each(function(){
 							var tag = $.trim( $(this).val() );
 							if( tag != ""){
 								tags.push(tag);
@@ -365,13 +373,14 @@
 					//});
 				},
 
-				addThumbnail : function(url){
-					$("#j-goods-thumbnails").append( $("#j-tmpl-goods-thumbnail").tmpl({thumbnail : url}) ).show();
+				addThumbnail : function(thumbnails){
+					$("#j-goods-thumbnails").append( $("#j-tmpl-goods-thumbnail").tmpl({
+						thumbnails : thumbnails
+					})).show();
 				},
 
-				addTag : function(num){
-					num = num || 1;
-					$("#j-goods-tags").append( $("#j-tmpl-goods-tag").tmpl({tags : new Array(num)})).show();
+				addTag : function(tags){
+					$("#j-goods-tags").append( $("#j-tmpl-goods-tag").tmpl({tags : tags})).show();
 				}
     		}
 

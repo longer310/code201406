@@ -107,14 +107,14 @@
 						<div class="control-group">
 							<label class="control-label">商品名称</label>
 							<div class="controls">
-								<input type="text" />
+								<input type="text" id="j-goods-title" />
 							</div>
 						</div>
 						<div class="control-group">
 							<label class="control-label">推荐和热销</label>
 							<div class="controls">
-								<label class="checkbox"><input type="checkbox" class="j-isrecommend"> 推荐</label>
-								<label class="checkbox"><input type="checkbox" class="j-ishot"> 热销</label>
+								<label class="checkbox"><input type="checkbox" id="j-goods-isrecommend"> 推荐</label>
+								<label class="checkbox"><input type="checkbox" id="j-goods-ishot"> 热销</label>
 							</div>
 						</div>
 
@@ -133,7 +133,7 @@
 						<div class="control-group">
 							<label class="control-label">现价</label>
 							<div class="controls">
-								<input type="text" class="input-small" /><span style="padding:0 20px;">原价</span><input type="text" class="input-small" />
+								<input type="text" class="input-small" id="j-goods-price" /><span style="padding:0 20px;">原价</span><input type="text" class="input-small" id="j-goods-preprice" />
 							</div>
 						</div>
 
@@ -194,20 +194,22 @@
 
 		<!--产品图片缩略图模版-->
 		<script type="text/jquery-tmpl-x" id="j-tmpl-goods-thumbnail">
-        	<li class="span">
-				<span class="thumbnail">
-					<img src="${thumbnail}" alt="" class="j-thumbnail">
-				</span>
-				<div class="clearfix" style="margin-top:5px;">
-					<label class="radio pull-left"><input type="radio" name="ishot" class="j-islogo"> 设为logo</label>
-					<a title="删除图片" href="javascript:;" class="pull-right j-btn-delThumbnail"><i class="icon-remove"></i></a>
-				</div>
-			</li>
+			{{each(i, v) thumbnails}}
+	        	<li class="span">
+					<span class="thumbnail">
+						<img src="${v.thumbnail}" alt="" class="j-goods-thumbnail">
+					</span>
+					<div class="clearfix" style="margin-top:5px;">
+						<label class="radio pull-left"><input type="radio" name="islogo" class="j-goods-islogo" {{if v.islogo}}checked="checked"{{/if}}> 设为logo</label>
+						<a title="删除图片" href="javascript:;" class="pull-right j-btn-delThumbnail"><i class="icon-remove"></i></a>
+					</div>
+				</li>
+			{{/each}}
         </script>
         <!--标签输入框模版-->
         <script type="text/jquery-tmpl-x" id="j-tmpl-goods-tag">
         	{{each(i, v) tags}}
-        		<li style="margin-bottom:5px;"><input type="text" class="input-small j-tag" /> <a href="javascript:;" class="icon-remove j-btn-delTag"></a></li>
+        		<li style="margin-bottom:5px;"><input type="text" class="input-small j-goods-tag" {{if v}}value="${v}"{{/if}} /> <a href="javascript:;" class="icon-remove j-btn-delTag"></a></li>
         	{{/each}}
         </script>
 
@@ -264,6 +266,15 @@
 								});
 							});
 						});
+
+						//解析url中的id
+						var goods_id = /\?id=(\d+)/.test(document.location.href);
+						if(goods_id){
+							mpage.getGoodsDetail(goods_id);
+						} else {
+							alert("该活动不存在");
+							window.history.back();
+						}
 					});
 
 					$("#j-goods-thumbnails").delegate(".j-btn-delThumbnail", "click", function(){
@@ -301,14 +312,14 @@
 							var $item = $(this);
 
 							thumbnails.push({
-								url : $item.find(".j-thumbnail").attr("src"),
-								islogo : $item.find(".j-islogo").attr("checked") ? 1 : 0
+								url : $item.find(".j-goods-thumbnail").attr("src"),
+								islogo : $item.find(".j-goods-islogo").attr("checked") ? 1 : 0
 							});
 						});
 
 						//获取所有的标签
 
-						$("#j-goods-tags .j-tag").each(function(){
+						$("#j-goods-tags .j-goods-tag").each(function(){
 							var tag = $.trim( $(this).val() );
 							if( tag != ""){
 								tags.push(tag);
@@ -329,6 +340,66 @@
 					$("#j-goods-addForm").bind("reset", function(){
 						$("#j-goods-thumbnails").html('').hide();
 					});
+        		},
+
+        		getGoodsDetail : function(goods_id){
+        			var mpage = this;
+
+        			//$.getJSON("", { id: goods_id}， function(json){
+        				var json = {
+        					code : 0,
+							msg : "", 
+							result : {
+								title : "活动主题",
+								ishot : 1,
+								isrecommend : 0,
+								thumbnails : [
+									{
+										islogo : 1,
+										url : "/public/kindeditor/attached/image/20140723/20140723161001_48669.jpg"
+									},{
+										islogo : 0,
+										url : "/public/kindeditor/attached/image/20140723/20140723161001_48669.jpg"
+									},{
+										islogo : 0,
+										url : "/public/kindeditor/attached/image/20140723/20140723161001_48669.jpg"
+									},{
+										islogo : 0,
+										url : "/public/kindeditor/attached/image/20140723/20140723161001_48669.jpg"
+									}
+								],
+
+								price : 35,
+								preprice : 44,
+								tags : ["标签1","标签2","标签3"],
+								cid : 1,//分类id
+								content : "活动简介活动简介"
+							}
+        				}
+
+        				mpage.goodsDetailData = json.result;
+        				mpage.setGoodsFormData()
+        				
+        				
+        			//});
+        		},
+
+        		setGoodsFormData : function(){
+        			var mpage = this,
+        				detail = mpage.goodsDetailData;
+
+        			$("#j-goods-title").val(detail.title);
+        			if(detail.ishot){
+        				$("#j-goods-ishot").attr("checked", 'checked');
+        			}
+
+        			if(detail.isrecommend){
+        				$("#j-goods-isrecommend").attr("checked", 'checked');
+        			}
+
+    				//$("#j-btn-ticket-selected").attr("data-id", detail.ticket.id).val(detail.ticket.title);
+    				//$('#j-img-placehold').attr("src", detail.thumbnail);
+    				//mpage.text_editor.html(detail.content);
         		},
 
         		getCategoryList : function (p){
@@ -365,13 +436,14 @@
 					//});
 				},
 
-				addThumbnail : function(url){
-					$("#j-goods-thumbnails").append( $("#j-tmpl-goods-thumbnail").tmpl({thumbnail : url}) ).show();
+				addThumbnail : function(thumbnails){
+					$("#j-goods-thumbnails").append( $("#j-tmpl-goods-thumbnail").tmpl({
+						thumbnails : thumbnails
+					})).show();
 				},
 
-				addTag : function(num){
-					num = num || 1;
-					$("#j-goods-tags").append( $("#j-tmpl-goods-tag").tmpl({tags : new Array(num)})).show();
+				addTag : function(tags){
+					$("#j-goods-tags").append( $("#j-tmpl-goods-tag").tmpl({tags : tags})).show();
 				}
     		}
 

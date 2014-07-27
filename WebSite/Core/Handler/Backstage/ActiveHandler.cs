@@ -102,15 +102,8 @@ namespace Backstage.Core.Handler.Backstage
         private void GetItem()
         {
             int aid = GetInt("newid");
-            var item = ActiveHelper.GetItem(aid);
-            var data = new
-            {
-                newid = item.Id,
-                title = item.Title,
-                img = item.CoverImgUrl,
-                summary = item.Summary,
-                dateline = item.CreateTime.GetUnixTime()
-            };
+            var data = ActiveHelper.GetItem(aid);
+
             JsonTransfer jt = new JsonTransfer();
             jt.AddSuccessParam();
             jt.Add("data", data);
@@ -124,20 +117,7 @@ namespace Backstage.Core.Handler.Backstage
             int size = GetInt("limit");
             int sid = GetInt("sellerid");
 
-            var results = ActiveHelper.GetPagings(sid, index, size);
-            var data = new List<object>();
-            foreach (var r in results.Results)
-            {
-                var d = new
-                {
-                    newid = r.Id,
-                    title = r.Title,
-                    img = r.CoverImgUrl,
-                    dateline = r.CreateTime.GetUnixTime(),
-                    summary = r.Summary
-                };
-                data.Add(d);
-            }
+            var data = ActiveHelper.GetPagings(sid, index, size);
 
             JsonTransfer jt = new JsonTransfer();
             jt.AddSuccessParam();

@@ -337,9 +337,9 @@ namespace Backstage.Core
             return null;
         }
 
-        public static Account GetUserByPhone(int phone)
+        public static Account GetUserByPhone(string phone, int sellerid)
         {
-            var sql = String.Format("select * from account where phone={0} limit 1;", phone);
+            var sql = String.Format("select * from account where phone={0} and sellerid={1} limit 1;", phone, sellerid);
             try
             {
                 using (var conn = Utility.ObtainConn(Utility._gameDbConn))

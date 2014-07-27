@@ -29,8 +29,9 @@ namespace Backstage.Handler
 
         private void GetPwd()
         {
-            int phone = GetInt("phone");
-            var user = AccountHelper.GetUserByPhone(phone);
+            string phone = GetString("phone");
+            int sellerid = GetInt("sellerid");
+            var user = AccountHelper.GetUserByPhone(phone, sellerid);
             if (user.Id == 0)
             {
                 ReturnErrorMsg("手机号码不存在");

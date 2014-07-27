@@ -148,6 +148,23 @@ namespace Backstage.Core
             return returnVaLue;
         }
 
+        public long GetLong(string paramName)
+        {
+            int defaultVale = 0;
+            var p1 = Request.Form[paramName];
+            if (string.IsNullOrEmpty(p1))
+            {
+                p1 = Request.QueryString[paramName];
+                if (string.IsNullOrEmpty(p1))
+                {
+                    return defaultVale;
+                }
+            }
+            long returnVaLue = 0;
+            long.TryParse(p1.Trim(), out returnVaLue);
+            return returnVaLue;
+        }
+
         public float GetFloat(string paramName, int defaultVale)
         {
             var p1 = Request.Form[paramName];

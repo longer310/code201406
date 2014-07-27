@@ -532,6 +532,7 @@
     <Content Include="Script\Util\jquery.leanModal.min.js" />
     <Content Include="Script\View\SourceMaterial\managerlist.js" />
     <Content Include="Script\View\UCenter\ManagerList.js" />
+    <Content Include="Script\View\unicorn.login.js" />
     <Content Include="Test.html" />
     <Content Include="View\Goods\Add.aspx" />
     <Content Include="View\Shop\activity_add.html" />

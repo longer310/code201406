@@ -122,6 +122,7 @@ namespace Backstage.Core.Handler
             //ReturnCorrectMsg("评论成功");
             JsonTransfer jt = new JsonTransfer();
             jt.Add("data", new IntegralData(log.Extcredit));
+            jt.AddSuccessParam();
             Response.Write(DesEncrypt(jt).ToLower());
             Response.End();
         }

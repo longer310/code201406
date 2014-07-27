@@ -42,6 +42,8 @@ namespace Backstage.Core.Logic
                             merchant.AndroidUrl     = reader["AndroidUrl"].ToString();
                             merchant.IosUrl         = reader["IosUrl"].ToString();
                             merchant.WxUrl          = reader["WxUrl"].ToString();
+                            merchant.PointX = reader["PointX"].ToString();
+                            merchant.PointY = reader["PointY"].ToString();
                             return merchant;
                         }
                     }
@@ -79,7 +81,9 @@ namespace Backstage.Core.Logic
                                         AccessExpire   = ?AccessExpire,
                                         AndroidUrl     = ?AndroidUrl  ,
                                         IosUrl         = ?IosUrl      ,
-                                        WxUrl          = ?WxUrl       
+                                        WxUrl          = ?WxUrl       ,
+                                        PointX         = ?PointX      ,
+                                        PointY         = ?PointY      
                                     WHERE
                                         Id = ?Id";
                 parameters.Add(new MySqlParameter("?Name           ", merchant.Name));
@@ -96,6 +100,9 @@ namespace Backstage.Core.Logic
                 parameters.Add(new MySqlParameter("?IosUrl         ", merchant.IosUrl));
                 parameters.Add(new MySqlParameter("?WxUrl          ", merchant.WxUrl));
                 parameters.Add(new MySqlParameter("?Id             ", merchant.Id));
+                parameters.Add(new MySqlParameter("?PointX             ", merchant.PointX));
+                parameters.Add(new MySqlParameter("?PointY             ", merchant.PointY));
+
             }
             else
             {
@@ -113,7 +120,9 @@ namespace Backstage.Core.Logic
                                         AccessExpire ,
                                         AndroidUrl   ,
                                         IosUrl       ,
-                                        WxUrl       
+                                        WxUrl        ,
+                                        PointX       ,
+                                        PonitY        
                                         ) 
                                         values
                                         (
@@ -129,7 +138,9 @@ namespace Backstage.Core.Logic
                                         ?AccessExpire ,
                                         ?AndroidUrl   ,
                                         ?IosUrl       ,
-                                        ?WxUrl        
+                                        ?WxUrl        ,
+                                        ?PointX       ,
+                                        ?PonitY   
                                         )";
                 parameters.Add(new MySqlParameter("?Name           ", merchant.Name));
                 parameters.Add(new MySqlParameter("?Tname          ", merchant.Tname));
@@ -144,6 +155,8 @@ namespace Backstage.Core.Logic
                 parameters.Add(new MySqlParameter("?AndroidUrl     ", merchant.AndroidUrl));
                 parameters.Add(new MySqlParameter("?IosUrl         ", merchant.IosUrl));
                 parameters.Add(new MySqlParameter("?WxUrl          ", merchant.WxUrl));
+                parameters.Add(new MySqlParameter("?PointX         ", merchant.IosUrl));
+                parameters.Add(new MySqlParameter("?PonitY          ", merchant.WxUrl));
             }
             try
             {

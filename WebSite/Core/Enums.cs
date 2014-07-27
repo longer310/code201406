@@ -189,6 +189,10 @@ namespace Backstage.Core
         /// 评论图片墙——同上
         /// </summary>
         CommentImg = 23,
+        /// <summary>
+        /// 评论优惠卷
+        /// </summary>
+        CommentCoupon = 24
     }
 
     /// <summary>

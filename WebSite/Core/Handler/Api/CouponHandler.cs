@@ -1,4 +1,5 @@
 ﻿using Backstage.Core.Entity;
+using Backstage.Core.Logic;
 using Backstage.Model;
 using System;
 using System.Collections.Generic;
@@ -138,7 +139,27 @@ namespace Backstage.Core.Handler
                 ReturnErrorMsg("fail");
                 throw;
             }
+            var user = AccountHelper.GetUser(uid);
+            ExtcreditLog log = new ExtcreditLog();
+            if (!ExtcreditLogHelper.JudgeExtcreditGet(ExtcreditSourceType.CommentCoupon, cid, uid))
+            {
+                //积分获得
+                log.UserId = uid;
+                log.SellerId = user.SellerId;
+                log.SourceId = cid;
+                log.Extcredit = ParamHelper.ExtcreditCfgData.Comment;
+                log.Type = ExtcreditSourceType.CommentCoupon;
+                log.CreateTime = DateTime.Now;
+
+                ExtcreditLogHelper.AddExtcreditLog(log);
+
+                user.Integral += log.Extcredit;
+                AccountHelper.UpdateUser(user);
+            }
+
+            //ReturnCorrectMsg("评论成功");
             JsonTransfer jt = new JsonTransfer();
+            jt.Add("data", new IntegralData(log.Extcredit));
             jt.AddSuccessParam();
             Response.Write(DesEncrypt(jt).ToLower());
             Response.End();

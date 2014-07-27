@@ -1289,10 +1289,26 @@ form {
 .form-horizontal input[type=text], .form-horizontal input[type=password], .form-horizontal textarea {
 	width: 80%;
 }
+
+.form-horizontal input.input-medium{
+	width: 150px;
+}
+
+.form-horizontal input.input-small{
+	width: 90px;
+}
+
 .form-horizontal .form-actions {
 	margin-top: 0;
 	margin-bottom: 0;
 }
 .help-block, .help-inline {
     color: #999999;
+}
+
+ul.inline,ol.inline{
+	margin-left:0;list-style:none
+}
+ul.inline>li,ol.inline>li{
+	display:inline-block;*display:inline;padding-right:5px;*zoom:1
 }

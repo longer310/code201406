@@ -184,11 +184,8 @@ namespace Backstage.Handler
                 data.hots.Add(new HotItem() { img = gl.LogoUrl, gid = gl.Id });
             }
 
-            JsonTransfer jt = new JsonTransfer();
-            jt.AddSuccessParam();
-            jt.Add("data", data);
-            Response.Write(DesEncrypt(jt));
-            Response.End();
+            //返回信息
+            ReturnCorrectData(data);
         }
         #endregion
 
@@ -246,10 +243,12 @@ namespace Backstage.Handler
             int start = GetInt("start");
             int limit = GetInt("limit");
             int uid = GetInt("uid");
+            var keyword = GetString("keyword");
 
             string wheresql = string.Empty;
             string shoppingcartql = "";
             if (cid > 0) wheresql += string.Format(" and Cid={0}", cid);
+            if (!string.IsNullOrEmpty(keyword)) wheresql += string.Format(" and a.Title like'%{0}%'", keyword);
             switch (order)
             {
                 case 1:
@@ -307,11 +306,8 @@ namespace Backstage.Handler
                 data.goods.Add(gitem);
             }
 
-            JsonTransfer jt = new JsonTransfer();
-            jt.AddSuccessParam();
-            jt.Add("data", data);
-            Response.Write(DesEncrypt(jt));
-            Response.End();
+            //返回信息
+            ReturnCorrectData(data);
         }
         #endregion
 
@@ -387,11 +383,8 @@ namespace Backstage.Handler
             goods.BrowseCount++;
             GoodsHelper.SaveGoods(goods);
 
-            JsonTransfer jt = new JsonTransfer();
-            jt.AddSuccessParam();
-            jt.Add("data", data);
-            Response.Write(DesEncrypt(jt));
-            Response.End();
+            //返回信息
+            ReturnCorrectData(data);
         }
         #endregion
 
@@ -459,11 +452,8 @@ namespace Backstage.Handler
                 data.comments.Add(item);
             }
 
-            JsonTransfer jt = new JsonTransfer();
-            jt.AddSuccessParam();
-            jt.Add("data", data);
-            Response.Write(DesEncrypt(jt));
-            Response.End();
+            //返回信息
+            ReturnCorrectData(data);
         }
         #endregion
 
@@ -517,11 +507,8 @@ namespace Backstage.Handler
                 AccountHelper.UpdateUser(user);
             }
 
-            JsonTransfer jt = new JsonTransfer();
-            jt.AddSuccessParam();
-            jt.Add("data", new ApiUserHandler.IntegralData(log.Extcredit));
-            Response.Write(DesEncrypt(jt));
-            Response.End();
+            //返回信息
+            ReturnCorrectData(new ApiUserHandler.IntegralData(log.Extcredit));
         }
         #endregion
 
@@ -612,11 +599,8 @@ namespace Backstage.Handler
             shareLog.Content = content;//记录分享内容
             ShareLogHelper.AddShareLog(shareLog);
 
-            JsonTransfer jt = new JsonTransfer();
-            jt.AddSuccessParam();
-            jt.Add("data", new ApiUserHandler.IntegralData(log.Extcredit));
-            Response.Write(DesEncrypt(jt));
-            Response.End();
+            //返回信息
+            ReturnCorrectData(new ApiUserHandler.IntegralData(log.Extcredit));
         }
         #endregion
 
@@ -722,11 +706,8 @@ namespace Backstage.Handler
                 }
             }
 
-            JsonTransfer jt = new JsonTransfer();
-            jt.AddSuccessParam();
-            jt.Add("data", data);
-            Response.Write(DesEncrypt(jt));
-            Response.End();
+            //返回信息
+            ReturnCorrectData(data);
         }
         #endregion
 
@@ -792,11 +773,8 @@ namespace Backstage.Handler
             var data = new AddOrdersData();
             data.orderid = orderid;
 
-            JsonTransfer jt = new JsonTransfer();
-            jt.AddSuccessParam();
-            jt.Add("data", data);
-            Response.Write(DesEncrypt(jt));
-            Response.End();
+            //返回信息
+            ReturnCorrectData(data);
         }
         #endregion
 
@@ -902,11 +880,8 @@ namespace Backstage.Handler
 
             var data = new OrderDetailData(orders);
 
-            JsonTransfer jt = new JsonTransfer();
-            jt.AddSuccessParam();
-            jt.Add("data", data);
-            Response.Write(DesEncrypt(jt));
-            Response.End();
+            //返回信息
+            ReturnCorrectData(data);
         }
         #endregion
 
@@ -942,11 +917,8 @@ namespace Backstage.Handler
                 data.paymentlist.Add(item);
             }
 
-            JsonTransfer jt = new JsonTransfer();
-            jt.AddSuccessParam();
-            jt.Add("data", data);
-            Response.Write(DesEncrypt(jt));
-            Response.End();
+            //返回信息
+            ReturnCorrectData(data);
         }
         #endregion
 

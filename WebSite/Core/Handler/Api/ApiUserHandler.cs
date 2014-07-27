@@ -60,9 +60,6 @@ namespace Backstage.Handler
                 case "getmycomment"://我的评论 7.13
                     GetMyComment();
                     break;
-                case "myfavorite"://我的收藏 7.23（7.20日补充的 by lintao)
-                    MyFavorite();
-                    break;
                 case "delfavorite"://删除收藏 7.14
                     DelFavorite();
                     break;
@@ -90,7 +87,10 @@ namespace Backstage.Handler
                 case "delmycommentlist"://删除我的评论列表 7.22
                     DelMyCommentList();
                     break;
-                case "getordercouponlist"://获取可兑换的电子券 7.23
+                case "myfavorite"://我的收藏 7.23（7.20日补充的 by lintao)
+                    MyFavorite();
+                    break;
+                case "getordercouponlist"://获取可兑换的电子券 7.24
                     GetOrderCouponList();
                     break;
                 default: break;
@@ -154,12 +154,8 @@ namespace Backstage.Handler
                 }
             }
 
-            JsonTransfer jt = new JsonTransfer();
-            jt.AddSuccessParam();
-            jt.Add("data", data);
-            Response.Write(DesEncrypt(jt));
-            Response.End();
-            //throw new NotImplementedException();
+            //返回信息
+            ReturnCorrectData(data);
         }
         #endregion
 
@@ -301,11 +297,8 @@ namespace Backstage.Handler
             data.sex = (int)user.Sex;
             data.nickname = user.NickName;
 
-            JsonTransfer jt = new JsonTransfer();
-            jt.AddSuccessParam();
-            jt.Add("data", data);
-            Response.Write(DesEncrypt(jt));
-            Response.End();
+            //返回信息
+            ReturnCorrectData(data);
         }
         #endregion
 
@@ -362,11 +355,8 @@ namespace Backstage.Handler
             data.sex = (int)user.Sex;
             data.nickname = user.NickName;
 
-            JsonTransfer jt = new JsonTransfer();
-            jt.AddSuccessParam();
-            jt.Add("data", data);
-            Response.Write(DesEncrypt(jt));
-            Response.End();
+            //返回信息
+            ReturnCorrectData(data);
         }
         #endregion
 
@@ -418,11 +408,8 @@ namespace Backstage.Handler
             //保存用户信息
             AccountHelper.UpdateUser(user);
 
-            JsonTransfer jt = new JsonTransfer();
-            jt.AddSuccessParam();
-            jt.Add("data", new IntegralData(log.Extcredit));
-            Response.Write(DesEncrypt(jt));
-            Response.End();
+            //返回信息
+            ReturnCorrectData(new IntegralData(log.Extcredit));
         }
         #endregion
 
@@ -451,11 +438,8 @@ namespace Backstage.Handler
             var data = new MyMoneyData();
             data.money = user.Money;
 
-            JsonTransfer jt = new JsonTransfer();
-            jt.AddSuccessParam();
-            jt.Add("data", data);
-            Response.Write(DesEncrypt(jt));
-            Response.End();
+            //返回信息
+            ReturnCorrectData(data);
         }
         #endregion
 
@@ -508,11 +492,8 @@ namespace Backstage.Handler
                 data.moneylogs.Add(item);
             }
 
-            JsonTransfer jt = new JsonTransfer();
-            jt.AddSuccessParam();
-            jt.Add("data", data);
-            Response.Write(DesEncrypt(jt));
-            Response.End();
+            //返回信息
+            ReturnCorrectData(data);
         }
         #endregion
 
@@ -609,11 +590,8 @@ namespace Backstage.Handler
             data.pointx = merchant.PointX;
             data.pointy = merchant.PointY;
 
-            JsonTransfer jt = new JsonTransfer();
-            jt.AddSuccessParam();
-            jt.Add("data", data);
-            Response.Write(DesEncrypt(jt));
-            Response.End();
+            //返回信息
+            ReturnCorrectData(data);
         }
         #endregion
 
@@ -637,6 +615,7 @@ namespace Backstage.Handler
             public int expiry { get; set; }
             public int extcredit { get; set; }
             public int sellerid { get; set; }
+            public int status { get; set; }
         }
         public void GetUserCouponList()
         {
@@ -669,14 +648,13 @@ namespace Backstage.Handler
                 item.img = coupon.ImgUrl;
                 item.expiry = coupon.Expiry.GetUnixTime();
                 item.sellerid = sellerid;
+                item.status = coupon.Status;
 
                 data.couponlist.Add(item);
             }
-            JsonTransfer jt = new JsonTransfer();
-            jt.AddSuccessParam();
-            jt.Add("data", data);
-            Response.Write(DesEncrypt(jt));
-            Response.End();
+
+            //返回信息
+            ReturnCorrectData(data);
         }
         #endregion
 
@@ -731,11 +709,8 @@ namespace Backstage.Handler
                 data.extcreditlogs.Add(item);
             }
 
-            JsonTransfer jt = new JsonTransfer();
-            jt.AddSuccessParam();
-            jt.Add("data", data);
-            Response.Write(DesEncrypt(jt));
-            Response.End();
+            //返回信息
+            ReturnCorrectData(data);
         }
         #endregion
 
@@ -800,11 +775,8 @@ namespace Backstage.Handler
             data.address = user.Address;
             data.sellerid = sellerid;
 
-            JsonTransfer jt = new JsonTransfer();
-            jt.AddSuccessParam();
-            jt.Add("data", data);
-            Response.Write(DesEncrypt(jt));
-            Response.End();
+            //返回信息
+            ReturnCorrectData(data);
         }
         #endregion
 
@@ -862,11 +834,8 @@ namespace Backstage.Handler
                 data.commmentlist.Add(item);
             }
 
-            JsonTransfer jt = new JsonTransfer();
-            jt.AddSuccessParam();
-            jt.Add("data", data);
-            Response.Write(DesEncrypt(jt));
-            Response.End();
+            //返回信息
+            ReturnCorrectData(data);
         }
         #endregion
 
@@ -928,7 +897,7 @@ namespace Backstage.Handler
             if (!CheckUserByIdAndSellerId(uid, sellerid)) return;
 
             int totalnum;
-            string wheresql = string.Format(" where UserId={0} and SellerId={1} ", uid, sellerid);
+            string wheresql = string.Format(" where Status > 0 and UserId={0} and SellerId={1} ", uid, sellerid);
             var orderslist = OrdersHelper.GetOrdersList(out totalnum, wheresql, "", start * limit, limit, 0);
             var data = new OrdersListData();
             foreach (var orderse in orderslist)
@@ -936,11 +905,8 @@ namespace Backstage.Handler
                 data.orderslist.Add(new ApiGoodsHandler.OrderDetailData(orderse));
             }
 
-            JsonTransfer jt = new JsonTransfer();
-            jt.AddSuccessParam();
-            jt.Add("data", data);
-            Response.Write(DesEncrypt(jt));
-            Response.End();
+            //返回信息
+            ReturnCorrectData(data);
         }
         #endregion
 
@@ -1154,11 +1120,8 @@ namespace Backstage.Handler
                 data.signin = 1;
             data.signintegral = ParamHelper.ExtcreditCfgData.Register;
 
-            JsonTransfer jt = new JsonTransfer();
-            jt.AddSuccessParam();
-            jt.Add("data", data);
-            Response.Write(DesEncrypt(jt));
-            Response.End();
+            //返回信息
+            ReturnCorrectData(data);
         }
         #endregion
 
@@ -1202,12 +1165,8 @@ namespace Backstage.Handler
                 return;
             }
 
-
-            JsonTransfer jt = new JsonTransfer();
-            jt.AddSuccessParam();
-            jt.Add("data", new IntegralData(log.Extcredit));
-            Response.Write(DesEncrypt(jt));
-            Response.End();
+            //返回信息
+            ReturnCorrectData(new IntegralData(log.Extcredit));
         }
         #endregion
 

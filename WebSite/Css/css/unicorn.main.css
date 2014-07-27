@@ -1312,3 +1312,5 @@ ul.inline,ol.inline{
 ul.inline>li,ol.inline>li{
 	display:inline-block;*display:inline;padding-right:5px;*zoom:1
 }
+
+.tip-error { color:red; font-size:14px; display:none; }

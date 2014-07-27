@@ -17,18 +17,13 @@ $(document).ready(function () {
         recover.fadeTo(speed, 0.01).css('z-index', '100');
         login.fadeTo(speed, 1).css('z-index', '200');
     });
-
+    $(document).keydown(function (event) {
+        if (event.keyCode == 13) {
+            flogin();
+        }
+    });
     $("#login-submit").click(function () {
-        var username = $("#txt-username").val();
-        var pwd = $("#txt-pwd").val();
-        $.ajax({
-            url: "/Handler/LoginHandler.ashx?action=login&userName=" + username + "&pwd=" + pwd,
-            type: "get",
-            dataType: "json"
-            //context: document.body
-        }).success(function () {
-            window.location.href = "/Index.aspx";
-        });
+        flogin();
     });
 
     if ($.browser.msie == true && $.browser.version.slice(0, 3) < 10) {
@@ -51,4 +46,23 @@ $(document).ready(function () {
             });
         });
     }
+
+    function flogin() {
+        var username = $("#txt-username").val();
+        var pwd = $("#txt-pwd").val();
+        if (username == "" || pwd == "") {
+            $(".tip-error").show();
+            return;
+        }
+
+        $.ajax({
+            url: "Handler/LoginHandler.ashx?action=login&userName=" + username + "&pwd=" + pwd,
+            type: "get",
+            dataType: "json"
+            //context: document.body
+        }).success(function () {
+            window.location.href = "View/Index.aspx";
+        });
+    }
+
 });

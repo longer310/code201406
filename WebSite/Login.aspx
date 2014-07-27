@@ -5,12 +5,12 @@
 <head>
     <meta http-equiv="content-type" content="text/html; charset=gb2312" />
     <title>我的站点</title>
-    <link rel="stylesheet" href="/css/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="/css/css/bootstrap-responsive.min.css" />
-    <link rel="stylesheet" href="/css/css/unicorn.main.css" />
-    <link rel="stylesheet" href="/css/css/unicorn.grey.css" />
+    <link rel="stylesheet" href="css/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="css/css/bootstrap-responsive.min.css" />
+    <link rel="stylesheet" href="css/css/unicorn.main.css" />
+    <link rel="stylesheet" href="css/css/unicorn.grey.css" />
     <!--页面样式-->
-    <link rel="stylesheet" href="/css/css/unicorn.login.css" />
+    <link rel="stylesheet" href="css/css/unicorn.login.css" />
 </head>
 <body>
     <div id="logo">
@@ -36,6 +36,7 @@
         </div>
         <div class="form-actions">
             <span class="pull-left"><a href="#" class="flip-link" id="to-recover">找回密码?</a></span>
+            <span class="tip-error">请输入正确帐号和密码</span>
             <span class="pull-right">
                 <label class="checkbox inline">
                     <input type="checkbox">
@@ -54,22 +55,22 @@
             </div>
         </div>
         <div class="form-actions">
+            
             <span class="pull-left"><a href="#" class="flip-link" id="to-login">&lt; 返回登陆</a></span>
             <span class="pull-right">
                 <input type="submit"  class="btn btn-inverse" value="提交" /></span>
         </div>
-        </form>
     </div>
     <!--公用js-->
-    <script src="/Script/js/jquery.min.js"></script>
-    <script src="/Script/js/jquery.ui.custom.js"></script>
-    <script src="/Script/js/bootstrap.min.js"></script>
-    <script src="/Script/js/unicorn.js"></script>
-    <script src="/Script/js/jquery.tmpl.min.js"></script>
-    <script src="/Script/js/common.js"></script>
+    <script src="Script/js/jquery.min.js"></script>
+    <script src="Script/js/jquery.ui.custom.js"></script>
+    <script src="Script/js/bootstrap.min.js"></script>
+    <script src="Script/js/unicorn.js"></script>
+    <script src="Script/js/jquery.tmpl.min.js"></script>
+    <script src="Script/js/common.js"></script>
 
     <!--页面js-->
-    <script src="/Script/view/unicorn.login.js"></script>
+    <script src="Script/view/unicorn.login.js"></script>
 </body>
 
 </html>

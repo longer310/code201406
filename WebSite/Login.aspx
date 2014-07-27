@@ -17,13 +17,12 @@
         APP 商户管理系统
     </div>
     <div id="loginbox">
-        <form id="loginform" class="form-vertical" action="index.html" />
         <p>请输入用户名和密码</p>
         <div class="control-group">
             <div class="controls">
                 <div class="input-prepend">
                     <span class="add-on"><i class="icon-user"></i></span>
-                    <input type="text" placeholder="用户名" />
+                    <input type="text" id="txt-username" placeholder="用户名" />
                 </div>
             </div>
         </div>
@@ -31,7 +30,7 @@
             <div class="controls">
                 <div class="input-prepend">
                     <span class="add-on"><i class="icon-lock"></i></span>
-                    <input type="password" placeholder="密码" />
+                    <input type="password" id="txt-pwd" placeholder="密码" />
                 </div>
             </div>
         </div>
@@ -41,10 +40,9 @@
                 <label class="checkbox inline">
                     <input type="checkbox">
                     记住我</label>
-                <input type="submit" class="btn btn-inverse" value="登陆" />
+                <input type="submit" id="login-submit" class="btn btn-inverse" value="登陆" />
             </span>
         </div>
-        </form>
             <form id="recoverform" action="#" class="form-vertical" />
         <p>请输入您注册时填写的邮箱地址。</p>
         <div class="control-group">
@@ -58,7 +56,7 @@
         <div class="form-actions">
             <span class="pull-left"><a href="#" class="flip-link" id="to-login">&lt; 返回登陆</a></span>
             <span class="pull-right">
-                <input type="submit" class="btn btn-inverse" value="提交" /></span>
+                <input type="submit"  class="btn btn-inverse" value="提交" /></span>
         </div>
         </form>
     </div>
@@ -71,7 +69,7 @@
     <script src="/Script/js/common.js"></script>
 
     <!--页面js-->
-    <script src="/Script/js/unicorn.login.js"></script>
+    <script src="/Script/view/unicorn.login.js"></script>
 </body>
 
 </html>

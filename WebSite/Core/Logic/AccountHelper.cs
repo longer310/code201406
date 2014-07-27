@@ -337,6 +337,8 @@ namespace Backstage.Core
             return null;
         }
 
+      
+
         public static Account FindUser(string userName)
         {
             var sql = @"select * from account where username=?username and roletype <>?roletype limit 1;";

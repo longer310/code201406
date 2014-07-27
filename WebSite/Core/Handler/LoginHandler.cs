@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using Backstage.Core;
 using Backstage.Core.Entity;
+using System.Net.Mail;
 
 namespace Backstage.Handler
 {
@@ -18,11 +19,41 @@ namespace Backstage.Handler
                 case "login":
                     Login(); break;
                 case "logout":
-                    Logout();break;
+                    Logout(); break;
                 case "getUserList":
-                    GetUserList();break;
+                    GetUserList(); break;
+                case "getpwd":
+                    GetPwd();
+                    break;
                 default: break;
             }
+        }
+
+        private void GetPwd()
+        {
+            string mail = GetString("mail");
+            //AccountHelper.GetUser()
+
+            //var mSmtpClient = new SmtpClient();
+            ////mSmtpClient.Host = "smtp." + mMailMessage.From.Host;
+            //mSmtpClient.Host = 
+            //mSmtpClient.Port = this.mSenderPort;
+            //mSmtpClient.UseDefaultCredentials = false;
+            //mSmtpClient.EnableSsl = this.mEnableSsl;
+            //if (this.mEnablePwdAuthentication)
+            //{
+            //    System.Net.NetworkCredential nc = new System.Net.NetworkCredential(this.mSenderUsername, this.mSenderPassword);
+            //    //mSmtpClient.Credentials = new System.Net.NetworkCredential(this.mSenderUsername, this.mSenderPassword);
+            //    //NTLM: Secure Password Authentication in Microsoft Outlook Express
+            //    mSmtpClient.Credentials = nc.GetCredential(mSmtpClient.Host, mSmtpClient.Port, "NTLM");
+            //}
+            //else
+            //{
+            //    mSmtpClient.Credentials = new System.Net.NetworkCredential(this.mSenderUsername, this.mSenderPassword);
+            //}
+            //mSmtpClient.DeliveryMethod = System.Net.Mail.SmtpDeliveryMethod.Network;
+            //mSmtpClient.Send(mMailMessage);
+
         }
         private void Login()
         {
@@ -40,7 +71,7 @@ namespace Backstage.Handler
             {
                 //设置已登录
                 AccountHelper.SetLogOn(user.Id, true, AccountHelper.GetStringFromEntity(user), DateTime.Now.AddDays(1));
-                jt.Add("success","登录成功");
+                jt.Add("success", "登录成功");
             }
             Response.Write(jt.ToJson());
         }

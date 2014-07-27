@@ -337,7 +337,44 @@ namespace Backstage.Core
             return null;
         }
 
-      
+        public static Account GetUserByPhone(int phone)
+        {
+            var sql = String.Format("select * from account where phone={0} limit 1;", phone);
+            try
+            {
+                using (var conn = Utility.ObtainConn(Utility._gameDbConn))
+                {
+                    MySqlDataReader reader = MySqlHelper.ExecuteReader(conn, CommandType.Text, sql);
+                    if (reader.HasRows)
+                    {
+                        if (reader.Read())
+                        {
+                            Account user = new Account();
+                            user.Id = reader.GetInt32(0);
+                            user.UserName = reader["UserName"].ToString();
+                            user.NickName = reader["NickName"].ToString();
+                            user.Pwd = reader["Pwd"].ToString();
+                            user.RoleType = (RoleType)reader["RoleType"];
+                            user.Avatar = reader["Avatar"].ToString();
+                            user.Sex = (SexType)reader["Sex"];
+                            user.Phone = reader["Phone"].ToString();
+                            user.Address = reader["Address"].ToString();
+                            user.Money = (float)reader["Money"];
+                            user.SellerId = (int)reader["SellerId"]; ;
+                            user.CreateTime = (DateTime)reader["CreateTime"];
+                            user.Integral = (int)reader["Integral"];
+                            user.LinkMan = reader["LinkMan"].ToString();
+                            return user;
+                        }
+                    }
+                }
+            }
+            catch (System.Exception ex)
+            {
+                throw;
+            }
+            return null;
+        }
 
         public static Account FindUser(string userName)
         {

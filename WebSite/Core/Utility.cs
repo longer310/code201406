@@ -37,6 +37,7 @@ namespace Backstage.Core
         public static string _modifyphone_message = System.Configuration.ConfigurationManager.AppSettings["modifyphone_message"];//注册短信格式
         public static string _message = System.Configuration.ConfigurationManager.AppSettings["message"];//注册短信格式
         public static string _msg_url = System.Configuration.ConfigurationManager.AppSettings["msg_url"];//短信请求地址
+        public static string _msg_getpwd = System.Configuration.ConfigurationManager.AppSettings["msg_getpwd"];//找回密码信息格式
         public static string _msg_zh = System.Configuration.ConfigurationManager.AppSettings["msg_zh"];//账号名
         public static string _msg_mm = System.Configuration.ConfigurationManager.AppSettings["msg_mm"];//密码
         public static string _msg_sms_type = System.Configuration.ConfigurationManager.AppSettings["msg_sms_type"];//通道ID
@@ -404,6 +405,8 @@ namespace Backstage.Core
             parameters.Add("sms_type", _msg_sms_type);
             CreatePostHttpResponse(_msg_url, parameters, null, null, encoding, null);
         }
+
+
         private static readonly string DefaultUserAgent = "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.2; SV1; .NET CLR 1.1.4322; .NET CLR 2.0.50727)";
         private static bool CheckValidationResult(object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors errors)
         {

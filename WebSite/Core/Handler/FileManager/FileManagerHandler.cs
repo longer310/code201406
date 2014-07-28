@@ -37,7 +37,7 @@ namespace Backstage.Handler
             String moveupDirPath = "";
 
             String dirPath = context.Server.MapPath(rootPath);
-            String dirName = CurrentUser.Id.ToString();//context.Request.QueryString["dir"];
+            String dirName = context.Request.QueryString["dir"];
             if (!String.IsNullOrEmpty(dirName))
             {
                 if (Array.IndexOf("image,flash,media,file".Split(','), dirName) == -1)

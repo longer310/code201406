@@ -93,71 +93,12 @@ namespace Backstage.Handler
                 case "getordercouponlist"://获取可兑换的电子券 7.24
                     GetOrderCouponList();
                     break;
+                case "modifymerchant"://更新商户信息 7.25
+                    ModifyMerchant();
+                    break;
                 default: break;
             }
         }
-
-        #region 我的收藏7.23
-        public class MyFavoriteData
-        {
-            public int num { get; set; }
-            public List<MyFavoriteItem> lists { get; set; }
-
-            public MyFavoriteData()
-            {
-                lists = new List<MyFavoriteItem>();
-            }
-        }
-        public class MyFavoriteItem
-        {
-            public int gid { get; set; }
-            public string img { get; set; }
-            public string title { get; set; }
-            public float nowprice { get; set; }
-            public float originalprice { get; set; }
-            public int sales { get; set; }
-            public string content { get; set; }
-        }
-        private void MyFavorite()
-        {
-            var uid = GetInt("uid");
-            var start = GetInt("start");
-            var limit = GetInt("limit");
-            var user = AccountHelper.GetUser(uid);
-            if (user == null)
-            {
-                ReturnErrorMsg(string.Format("不存在Id={0}的用户", uid));
-                return;
-            }
-            var favorite = FavoriteHelper.GetFavorite(uid);
-            var gidList = favorite.GidList.Skip(start * limit).Take(limit).ToList();
-            var data = new MyFavoriteData();
-            data.num = favorite.GidList.Count;
-            if (gidList.Count > 0)
-            {
-                var wheresql = string.Format(" and a.Id in({0})", Utility.GetString(gidList));
-                var goodslist = GoodsHelper.GetGoodsList(user.SellerId, wheresql).Results;
-                foreach (var goods in goodslist)
-                {
-                    //Goods goods = GoodsHelper.GetGoods(gid);
-                    var o = new MyFavoriteItem()
-                    {
-                        gid = goods.Id,
-                        img = goods.LogoUrl,
-                        title = goods.Title,
-                        nowprice = goods.Nowprice,
-                        originalprice = goods.OriginalPrice,
-                        sales = goods.Sales,
-                        content = goods.Content
-                    };
-                    data.lists.Add(o);
-                }
-            }
-
-            //返回信息
-            ReturnCorrectData(data);
-        }
-        #endregion
 
         #region 返回积分的公用类
         public class IntegralData
@@ -1202,7 +1143,69 @@ namespace Backstage.Handler
         }
         #endregion
 
-        #region 获取可用于订单的优惠券列表 7.23
+        #region 我的收藏7.23
+        public class MyFavoriteData
+        {
+            public int num { get; set; }
+            public List<MyFavoriteItem> lists { get; set; }
+
+            public MyFavoriteData()
+            {
+                lists = new List<MyFavoriteItem>();
+            }
+        }
+        public class MyFavoriteItem
+        {
+            public int gid { get; set; }
+            public string img { get; set; }
+            public string title { get; set; }
+            public float nowprice { get; set; }
+            public float originalprice { get; set; }
+            public int sales { get; set; }
+            public string content { get; set; }
+        }
+        private void MyFavorite()
+        {
+            var uid = GetInt("uid");
+            var start = GetInt("start");
+            var limit = GetInt("limit");
+            var user = AccountHelper.GetUser(uid);
+            if (user == null)
+            {
+                ReturnErrorMsg(string.Format("不存在Id={0}的用户", uid));
+                return;
+            }
+            var favorite = FavoriteHelper.GetFavorite(uid);
+            var gidList = favorite.GidList.Skip(start * limit).Take(limit).ToList();
+            var data = new MyFavoriteData();
+            data.num = favorite.GidList.Count;
+            if (gidList.Count > 0)
+            {
+                var wheresql = string.Format(" and a.Id in({0})", Utility.GetString(gidList));
+                var goodslist = GoodsHelper.GetGoodsList(user.SellerId, wheresql).Results;
+                foreach (var goods in goodslist)
+                {
+                    //Goods goods = GoodsHelper.GetGoods(gid);
+                    var o = new MyFavoriteItem()
+                    {
+                        gid = goods.Id,
+                        img = goods.LogoUrl,
+                        title = goods.Title,
+                        nowprice = goods.Nowprice,
+                        originalprice = goods.OriginalPrice,
+                        sales = goods.Sales,
+                        content = goods.Content
+                    };
+                    data.lists.Add(o);
+                }
+            }
+
+            //返回信息
+            ReturnCorrectData(data);
+        }
+        #endregion
+
+        #region 获取可用于订单的优惠券列表 7.24
         public void GetOrderCouponList()
         {
             var uid = GetInt("uid");
@@ -1246,6 +1249,22 @@ namespace Backstage.Handler
 
             //返回数据
             ReturnCorrectData(data);
+        }
+        #endregion
+
+        #region 更新商户信息 7.25
+        public void ModifyMerchant()
+        {
+            var accesstoken = GetString("accesstoken");
+            var sellerid = GetInt("sellerid");
+            var accessexpire = GetInt("accessexpire");
+
+            var user = AccountHelper.GetUser(sellerid);
+            if (user == null)
+            {
+                ReturnErrorMsg(string.Format("不存在Id={0}的用户", sellerid));
+                return;
+            }
         }
         #endregion
     }

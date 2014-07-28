@@ -197,7 +197,7 @@
 			{{each(i, v) thumbnails}}
 	        	<li class="span">
 					<span class="thumbnail">
-						<img src="${v.thumbnail}" alt="" class="j-goods-thumbnail">
+						<img src="${v.url}" alt="" class="j-goods-thumbnail">
 					</span>
 					<div class="clearfix" style="margin-top:5px;">
 						<label class="radio pull-left"><input type="radio" name="islogo" class="j-goods-islogo" {{if v.islogo}}checked="checked"{{/if}}> 设为logo</label>
@@ -247,7 +247,7 @@
 									dirName : 'image',
 									clickFn : function(url, title) {
 										mpage.addThumbnail([{
-											thumbnail : url,
+											url : url,
 											islogo : 0
 										}]);
 										image_editor.hideDialog();
@@ -264,7 +264,7 @@
 									imageUrl : K('#j-img-placehold').attr("src"),
 									clickFn : function(url, title, width, height, border, align) {
 										mpage.addThumbnail([{
-											thumbnail : url,
+											url : url,
 											islogo : 0
 										}]);
 										image_editor.hideDialog();
@@ -295,6 +295,7 @@
 						return false;
 					});
 
+					//默认先创建两个空标签
 					mpage.addTag(['','']);
 					mpage.getCategoryList(1);
 

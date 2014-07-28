@@ -197,7 +197,7 @@
 			{{each(i, v) thumbnails}}
 	        	<li class="span">
 					<span class="thumbnail">
-						<img src="${v.thumbnail}" alt="" class="j-goods-thumbnail">
+						<img src="${v.url}" alt="" class="j-goods-thumbnail">
 					</span>
 					<div class="clearfix" style="margin-top:5px;">
 						<label class="radio pull-left"><input type="radio" name="islogo" class="j-goods-islogo" {{if v.islogo}}checked="checked"{{/if}}> 设为logo</label>
@@ -226,15 +226,16 @@
 
         			var text_editor,
         				image_editor;
+
 					KindEditor.ready(function(K) {
 						//文本编辑器
-						text_editor = K.create('textarea[name="content"]', {
+						mpage.text_editor = text_editor = K.create('textarea[name="content"]', {
 							uploadJson : '../public/kindeditor/php/upload_json.php',
 							allowFileManager : true
 						});
 
 						//图片上传编辑
-						image_editor = K.editor({
+						mpage.image_editor = image_editor = K.editor({
 							uploadJson : '../public/kindeditor/php/upload_json.php',
 							fileManagerJson : '../public/kindeditor/php/file_manager_json.php'
 						});
@@ -246,7 +247,10 @@
 									viewType : 'VIEW',
 									dirName : 'image',
 									clickFn : function(url, title) {
-										mpage.addThumbnail(url);
+										mpage.addThumbnail([{
+											url : url,
+											islogo : 0
+										}]);
 										image_editor.hideDialog();
 									}
 								});
@@ -260,7 +264,10 @@
 									showRemote : false,
 									imageUrl : K('#j-img-placehold').attr("src"),
 									clickFn : function(url, title, width, height, border, align) {
-										mpage.addThumbnail(url);
+										mpage.addThumbnail([{
+											url : url,
+											islogo : 0
+										}]);
 										image_editor.hideDialog();
 									}
 								});
@@ -294,11 +301,10 @@
 					});
 
 					$("#j-btn-addTag").bind("click", function(){
-						mpage.addTag(1);
+						mpage.addTag(['']);
 						return false;
 					});
 
-					mpage.addTag(2);
 					mpage.getCategoryList(1);
 
 					//提交表单
@@ -338,7 +344,8 @@
 					
 					//重置表单
 					$("#j-goods-addForm").bind("reset", function(){
-						$("#j-goods-thumbnails").html('').hide();
+						mpage.setGoodsFormData();
+						return false;
 					});
         		},
 
@@ -372,13 +379,13 @@
 								price : 35,
 								preprice : 44,
 								tags : ["标签1","标签2","标签3"],
-								cid : 1,//分类id
+								cid : 2,//分类id
 								content : "活动简介活动简介"
 							}
         				}
 
         				mpage.goodsDetailData = json.result;
-        				mpage.setGoodsFormData()
+        				mpage.setGoodsFormData();
         				
         				
         			//});
@@ -389,17 +396,26 @@
         				detail = mpage.goodsDetailData;
 
         			$("#j-goods-title").val(detail.title);
+        			$("#j-goods-ishot").removeAttr("checked");
         			if(detail.ishot){
         				$("#j-goods-ishot").attr("checked", 'checked');
         			}
 
+        			$("#j-goods-isrecommend").removeAttr("checked");
         			if(detail.isrecommend){
         				$("#j-goods-isrecommend").attr("checked", 'checked');
         			}
 
-    				//$("#j-btn-ticket-selected").attr("data-id", detail.ticket.id).val(detail.ticket.title);
-    				//$('#j-img-placehold').attr("src", detail.thumbnail);
-    				//mpage.text_editor.html(detail.content);
+        			$("#j-goods-thumbnails").html("").hide();
+        			mpage.addThumbnail(detail.thumbnails);
+    			
+        			$("#j-goods-price").val(detail.price);
+        			$("#j-goods-preprice").val(detail.preprice);
+        			
+        			$("#j-goods-tags").html("").hide();
+    				mpage.addTag(detail.tags);
+    				mpage.text_editor.html(detail.content);
+    				$("#j-category-list").val(detail.cid);
         		},
 
         		getCategoryList : function (p){

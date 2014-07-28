@@ -1,4 +1,5 @@
 ﻿using Backstage.Core.Entity;
+using Backstage.Core.Logic;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,9 +21,59 @@ namespace Backstage.Core.Handler
                     Verificate_Wifi(); break;
                 case "updateweixin":
                     UpdateWeixin(); break;
+                case "getpwdvercode":
+                    GetPwdVerCode(); break;
+                case "updatepwd":
+                    UpdatePwd(); break;
                 default: break;
             }
         }
+
+        private void GetPwdVerCode()
+        {
+            string phone = GetString("phone");
+            int sellerid = GetInt("sellerid");
+            var user = AccountHelper.GetUserByPhone(phone, sellerid);
+            if (user == null)
+            {
+                ReturnErrorMsg("手机号码不存在");
+            }
+
+            var verificationCode = new VerificationCode();
+            verificationCode.Phone = phone;
+            verificationCode.SellerId = sellerid;
+            verificationCode.Code = Utility.GetVerificationCode(6);
+            verificationCode.ExpiredTime = DateTime.Now.AddMinutes(30);
+            verificationCode.UserId = user.Id;
+            VerificationCodeHelper.SaveVerificationCode(verificationCode);
+            if (Utility._msg_opensend == "1")
+                Utility.SendMsg(verificationCode.Code, verificationCode.Phone, Utility._modifyphone_message);
+            ReturnCorrectMsg("请注意查收验证码");
+        }
+
+        private void UpdatePwd()
+        {
+            string phone = GetString("phone");
+            int sellerid = GetInt("sellerid");
+            string pwd = GetString("pwd");
+            string code = GetString("code");
+
+            var user = AccountHelper.GetUserByPhone(phone, sellerid);
+            if (user == null)
+            {
+                ReturnErrorMsg("手机号码不存在");
+            }
+            var verificationCode = VerificationCodeHelper.GetVerificationCode(sellerid, phone, user.Id);
+
+            if (verificationCode.ExpiredTime < DateTime.Now)
+                ReturnErrorMsg("验证码已经过期了");
+            if (code != verificationCode.Code)
+                ReturnCorrectMsg("验证码错误");
+            user.Pwd = pwd;
+            AccountHelper.UpdateUser(user);
+            ReturnCorrectMsg("密码修改成功");
+        }
+
 
         private void UpdateWeixin()
         {

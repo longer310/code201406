@@ -359,7 +359,9 @@
 						}
 
 						console.log(save_data);
-						alert('提交数据')
+						alert('提交数据');
+						//添加成功后重新获取分类列表
+						mpage.getCategroyList();
 						return false;
 					});
 

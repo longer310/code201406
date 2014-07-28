@@ -118,7 +118,6 @@ namespace Backstage.Core.Handler.Backstage
             int sid = GetInt("sellerid");
 
             var data = ActiveHelper.GetPagings(sid, index, size);
-
             JsonTransfer jt = new JsonTransfer();
             jt.AddSuccessParam();
             jt.Add("data", data);

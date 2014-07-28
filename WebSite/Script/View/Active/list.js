@@ -102,7 +102,7 @@
                 now: p,//当前页
                 maxPage: 5,//显示的最多页数
                 per: 10,//每页显示几个
-                count: json.result.count,
+                count: json.result.totalcount,
                 onchange: function (page) {//切换页数回调函数
                     mpage.getActivityList(page);
                 }

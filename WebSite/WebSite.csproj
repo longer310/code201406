@@ -530,6 +530,7 @@
     <Content Include="Login.aspx" />
     <Content Include="Script\Util\jquery.js" />
     <Content Include="Script\Util\jquery.leanModal.min.js" />
+    <Content Include="Script\View\Active\list.js" />
     <Content Include="Script\View\SourceMaterial\managerlist.js" />
     <Content Include="Script\View\UCenter\ManagerList.js" />
     <Content Include="Script\View\unicorn.login.js" />
@@ -718,6 +719,10 @@
     <Content Include="Handler\Api\GeneralHandler.ashx" />
     <Content Include="Handler\Api\PositionHandler.ashx" />
     <Content Include="Handler\Goods\GoodsHandler.ashx" />
+    <Content Include="Handler\Backstage\ActiveHandler.ashx" />
+    <Content Include="Handler\Backstage\CouponHandler.ashx" />
+    <Content Include="Handler\Backstage\SourceMaterialHandler.ashx" />
+    <Content Include="Handler\Backstage\CommentHandler.ashx" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

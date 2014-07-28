@@ -35,5 +35,10 @@ namespace Backstage.Core.Entity
 
         public DateTime CreateTime { get; set; }
 
+        /// <summary>
+        /// 浏览次数
+        /// </summary>
+        public int Views { get; set; }
+
     }
 }

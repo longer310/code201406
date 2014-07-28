@@ -139,6 +139,9 @@ namespace Backstage.Core.Handler
                 summary = item.Summary,
                 dateline = item.CreateTime.GetUnixTime()
             };
+            item.Views++;
+            ActiveHelper.Update(item);
+
             JsonTransfer jt = new JsonTransfer();
             jt.AddSuccessParam();
             jt.Add("data", data);

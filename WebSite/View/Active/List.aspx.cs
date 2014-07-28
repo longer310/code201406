@@ -9,9 +9,11 @@ namespace Backstage.View.Active
 {
     public partial class List : System.Web.UI.Page
     {
+        public string sellerid;
+
         protected void Page_Load(object sender, EventArgs e)
         {
-
+            sellerid = Request.QueryString["sellerid"].ToString();
         }
     }
 }

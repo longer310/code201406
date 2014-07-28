@@ -14,7 +14,7 @@ namespace Backstage.Core
 
         public static Active GetItem(int id)
         {
-            var a = new Active();
+            Active a = null;
             string commandText = @"select * from active where id = ?id";
             List<MySqlParameter> parameters = new List<MySqlParameter>();
             parameters.Add(new MySqlParameter("?id", id));
@@ -26,12 +26,14 @@ namespace Backstage.Core
                         commandText, parameters.ToArray());
                     while (reader.Read())
                     {
+                        a = new Active();
                         a.Id = reader.GetInt32(0);
-                        a.SellerId = (int) reader["SellerId"];
-                        a.CoverImgId = (int) reader["CoverImgId"];
+                        a.SellerId = (int)reader["SellerId"];
+                        a.CoverImgId = (int)reader["CoverImgId"];
                         a.Title = reader["Title"].ToString();
                         a.Summary = reader["Summary"].ToString();
-                        a.CreateTime = (DateTime) reader["CreateTime"];
+                        a.CreateTime = (DateTime)reader["CreateTime"];
+                        a.Views = (int)reader["Views"];
                     }
                 }
             }
@@ -71,13 +73,14 @@ namespace Backstage.Core
                     while (reader.Read())
                     {
                         Active a = new Active();
-                        a.Id = (int) reader["Id"];
-                        a.SellerId = (int) reader["SellerId"];
-                        a.CoverImgId = (int) reader["CoverImgId"];
+                        a.Id = (int)reader["Id"];
+                        a.SellerId = (int)reader["SellerId"];
+                        a.CoverImgId = (int)reader["CoverImgId"];
                         a.CoverImgUrl = reader["CoverImgUrl"].ToString();
                         a.Title = reader["Title"].ToString();
                         a.Summary = reader["Summary"].ToString();
-                        a.CreateTime = (DateTime) reader["CreateTime"];
+                        a.CreateTime = (DateTime)reader["CreateTime"];
+                        a.Views = (int)reader["Views"];
                         results.Results.Add(a);
                     }
 
@@ -140,6 +143,7 @@ namespace Backstage.Core
                         a.Summary = reader["Summary"].ToString();
                         a.CreateTime = (DateTime)reader["CreateTime"];
                         a.CoverImgUrl = reader["CoverImgUrl"].ToString();
+                        a.Views = (int)reader["Views"];
                         results.Add(a);
                     }
                 }

@@ -3,15 +3,14 @@
 <!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
-<head runat="server">
+<head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title></title>
-    <%--公用css--%>
-	<link rel="stylesheet" href="../Css/css/bootstrap.min.css" />
-	<link rel="stylesheet" href="../Css/css/bootstrap-responsive.min.css" />
-	<link rel="stylesheet" href="../Css/css/unicorn.main.css" />
-	<link rel="stylesheet" href="../Css/css/unicorn.grey.css"/>
-
+    <%--公用css 注意这里head不能加 runat="server"!!!--%>
+	<link rel="stylesheet" type="text/css"  href="<%=DomainUrl %>/Css/css/bootstrap.min.css" />
+	<link rel="stylesheet" type="text/css"  href="<%=DomainUrl %>/Css/css/bootstrap-responsive.min.css" />
+	<link rel="stylesheet" type="text/css"  href="<%=DomainUrl %>/Css/css/unicorn.main.css" />
+	<link rel="stylesheet" type="text/css"  href="<%=DomainUrl %>/Css/css/unicorn.grey.css"/>
     <asp:ContentPlaceHolder ID="Header" runat="server">
     </asp:ContentPlaceHolder>
 </head>
@@ -46,11 +45,11 @@
                     </ul>
                 </li>
                 <li class="submenu sidebar_goods">
-                    <a href="../..View/Goods/List.aspx"><i class="icon icon-tint"></i><span>产品管理</span><span class="label">3</span></a>
+                    <a href="<%=DomainUrl %>/View/Goods/List.aspx"><i class="icon icon-tint"></i><span>产品管理</span><span class="label">3</span></a>
                     <ul>
-                        <li class="sidebar_goodslist"><a href="../Goods/List.aspx">产品列表</a></li>
-                        <li><a href="#">新增产品</a></li>
-                        <li><a href="#">分类管理</a></li>
+                        <li class="sidebar_goodslist"><a href="<%=DomainUrl %>/View/Goods/List.aspx">产品列表</a></li>
+                        <li class="sidebar_goodsadd"><a href="<%=DomainUrl %>/View/Goods/Add.aspx">新增产品</a></li>
+                        <li class="sidebar_categories"><a href="#">分类管理</a></li>
                     </ul>
                 </li>
                 <li><a href="#"><i class="icon icon-shopping-cart"></i><span>订单管理</span></a></li>
@@ -96,14 +95,14 @@
             </ul>
 
         </div>
-
-        <!--公用js 优先于content加载-->
-        <script type="text/javascript" src="../../Script/js/jquery.min.js"></script>
-        <script type="text/javascript" src="../../Script/js/jquery.ui.custom.js"></script>
-        <script type="text/javascript" src="../../Script/js/bootstrap.min.js"></script>
-        <script type="text/javascript" src="../../Script/js/unicorn.js"></script>
-        <script type="text/javascript" src="../../Script/js/jquery.tmpl.min.js"></script>
-        <script type="text/javascript" src="../../Script/js/common.js"></script>
+                                                  
+        <!--公用js 优先于content加载-->           
+        <script type="text/javascript" src="<%=DomainUrl %>/Script/js/jquery.min.js"></script>
+        <script type="text/javascript" src="<%=DomainUrl %>/Script/js/jquery.ui.custom.js"></script>
+        <script type="text/javascript" src="<%=DomainUrl %>/Script/js/bootstrap.min.js"></script>
+        <script type="text/javascript" src="<%=DomainUrl %>/Script/js/unicorn.js"></script>
+        <script type="text/javascript" src="<%=DomainUrl %>/Script/js/jquery.tmpl.min.js"></script>
+        <script type="text/javascript" src="<%=DomainUrl %>/Script/js/common.js"></script>
 
         <div id="content">
             <asp:ContentPlaceHolder ID="Content" runat="server">
@@ -116,7 +115,7 @@
     </form>
     <script type="text/javascript">
         var page = {
-            hander: "../../Handler/LoginHandler.ashx?action=",
+            hander: "<%=DomainUrl %>/Handler/LoginHandler.ashx?action=",
 
             alertlogout: function () {
                 Common.confirm({
@@ -135,7 +134,7 @@
             logout: function () {
                 $.post(page.hander + "logout", {}, function (data) {
                     if (!data.error) {
-                        location.href = "../../Login.aspx";
+                        location.href = "<%=DomainUrl %>/Login.aspx";
                     }
                 }, "json");
             }

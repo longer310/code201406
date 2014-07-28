@@ -43,6 +43,7 @@ namespace Backstage.Core
         public static string _msg_sms_type = System.Configuration.ConfigurationManager.AppSettings["msg_sms_type"];//通道ID
         public static string _msg_opensend = System.Configuration.ConfigurationManager.AppSettings["msg_opensend"];//是否开启短信发送验证码
         public static string _userdefaulthead = System.Configuration.ConfigurationManager.AppSettings["userdefaulthead"];//用户默认头像
+        public static string _domainurl = System.Configuration.ConfigurationManager.AppSettings["domainurl"];//域名头
         #endregion
 
         #region 判断是否具有权限

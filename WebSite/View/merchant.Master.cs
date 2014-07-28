@@ -14,8 +14,11 @@ namespace WebSite.View
     /// </summary>
     public class MerchantMasterBasePage : System.Web.UI.MasterPage
     {
-        public Account Merchant {
-            get { return AccountHelper.GetCurUser(); }}
+        public Account Merchant
+        {
+            get { return AccountHelper.GetCurUser(); }
+        }
+        public string DomainUrl { get { ; return Utility._domainurl; } }
     }
     public partial class MerchantMaster : MerchantMasterBasePage
     {

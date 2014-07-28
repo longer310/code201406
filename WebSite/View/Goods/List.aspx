@@ -1,7 +1,7 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/View/merchant.Master" AutoEventWireup="true" CodeBehind="List.aspx.cs" Inherits="Backstage.View.Goods.List" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="Header" runat="server">
-    <link rel="shortcut icon" href="../../Css/img/favicon.ico">
+    <link rel="shortcut icon" href="<%=DomainUrl %>/Css/img/favicon.ico">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="Content" runat="server">
     <div class="widget-box">
@@ -63,8 +63,8 @@
     </div>
 
     <!--页面js-->
-    <script type="text/javascript" src="../../Script/js/ue.pager.js"></script>
-    <script type="text/javascript" src="../../Script/js/json2.js"></script>
+    <script type="text/javascript" src="<%=DomainUrl %>/Script/js/ue.pager.js"></script>
+    <script type="text/javascript" src="<%=DomainUrl %>/Script/js/json2.js"></script>
 
     <!--推荐和热销 如果选择 加上 active 的class-->
     <script type="text/jquery-tmpl-x" id="j-tmpl-goods-listitem">
@@ -99,9 +99,10 @@
         {{/if}}
     
     </script>
+
     <script type="text/javascript">
         var MPage = {
-            hander: "../../Handler/Goods/GoodsHandler.ashx?action=",
+            hander: "<%=DomainUrl %>/Handler/Goods/GoodsHandler.ashx?action=",
             maxpage: 5,     //最多显示的页数
             start: 0,       //页码
             limit: 3,       //一页条数

@@ -13,6 +13,11 @@ namespace Backstage.Core
         private Account _currentUser;
         private bool _isLogin;
 
+        public string DomainUrl
+        {
+            get { return Utility._domainurl; }
+        }
+
         /// <summary>
         /// 可能为null，使用的时候要记得判断
         /// </summary>

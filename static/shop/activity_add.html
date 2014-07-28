@@ -103,11 +103,11 @@
 					<h5>新增活动</h5>
 				</div>
 				<div class="widget-content">
-					<form action="#" method="get" class="form-horizontal" />
+					<form action="#" method="get" class="form-horizontal" id="j-activity-addForm" />
 						<div class="control-group">
 							<label class="control-label">活动主题</label>
 							<div class="controls">
-								<input type="text" />
+								<input type="text" id="j-activity-title" />
 							</div>
 						</div>
 						<div class="control-group">
@@ -216,13 +216,13 @@
         				image_editor;
 					KindEditor.ready(function(K) {
 						//文本编辑器
-						text_editor = K.create('textarea[name="content"]', {
+						mpage.text_editor = text_editor = K.create('textarea[name="content"]', {
 							uploadJson : '../public/kindeditor/php/upload_json.php',
 							allowFileManager : true
 						});
 
 						//图片上传编辑
-						image_editor = K.editor({
+						mpage.image_editor = image_editor = K.editor({
 							uploadJson : '../public/kindeditor/php/upload_json.php',
 							fileManagerJson : '../public/kindeditor/php/file_manager_json.php'
 						});
@@ -262,6 +262,29 @@
 						$('#j-ticket-selectModal').modal('show');
 					});
 
+					//绑定提交表单
+					$("#j-activity-addForm").bind("submit", function(){
+						var save_data = {
+							title : $.trim($("#j-activity-title").val()),
+							ticket_id : $("#j-btn-ticket-selected").attr("data-id"),
+							thumbnail : $('#j-img-placehold').attr("src"),
+							content : text_editor.html()
+
+						}
+
+						console.log(save_data);
+						alert('提交数据')
+						return false;
+					});
+
+					//绑定重置表单
+					$("#j-activity-addForm").bind("reset", function(){
+						$("#j-activity-title").val('');
+	    				$("#j-btn-ticket-selected").removeAttr("data-id").val('');
+	    				$('#j-img-placehold').attr("src", 'http://placehold.it/128x128');
+	    				mpage.text_editor.html('');
+						return false;
+					});
         		},
 
         		getTicketList : function (p){

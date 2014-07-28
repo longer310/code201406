@@ -41,8 +41,13 @@
     </div>
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="Footer" runat="server">
+    <script src="../../script/js/unicorn.js"></script>
+    <script src="../../script/js/jquery.tmpl.min.js"></script>
+    <script src="../../script/js/common.js"></script>
+    <!--页面js-->
+    <script src="../../script/js/ue.pager.js"></script>
     <script type="text/javascript">
-        var sellerid = '<%=sellerid%>' ;
+        var sellerid = '<%=sellerid%>';
     </script>
     <!--活动列表模版-->
     <script type="text/jquery-tmpl-x" id="j-tmpl-activity-listitem">

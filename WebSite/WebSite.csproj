@@ -799,6 +799,7 @@
     <Content Include="Script\View\UCenter\ManagerList.js" />
     <Content Include="Script\View\unicorn.login.js" />
     <Content Include="Test.html" />
+    <Content Include="View\Active\Add.aspx" />
     <Content Include="View\Active\List.aspx" />
     <Content Include="View\Goods\Add.aspx" />
     <Content Include="View\Index.aspx" />
@@ -905,6 +906,13 @@
     <Compile Include="Model\CommentsForApi.cs" />
     <Compile Include="Model\PagResults.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="View\Active\Add.aspx.cs">
+      <DependentUpon>Add.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="View\Active\Add.aspx.designer.cs">
+      <DependentUpon>Add.aspx</DependentUpon>
+    </Compile>
     <Compile Include="View\Active\List.aspx.cs">
       <DependentUpon>List.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

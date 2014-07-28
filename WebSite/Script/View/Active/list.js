@@ -74,17 +74,18 @@
                 ]
             }
         };
-        console.log(1);
         $.ajax({
             url: "../../Handler/Backstage/ActiveHandler.ashx?action=getlist&sellerid=" + sellerid + "&start=" + p + "&limit=" + 6,
             type: "get",
             dataType: "json"
             //context: document.body
         }).success(function (data) {
-            json = data;
+            json.result.count = data.data.totalcount;
+            json.result.list = data.data.results;
             mpage.activityCurrentPage = p;
             $("#j-btn-selectAll").data("checked", false).html('<i class="icon-check icon-white"></i> 全选');
-            $("#j-activity-list").html($("#j-tmpl-activity-listitem").tmpl(json.result));
+            //console.log(json);
+            $("#j-activity-list").html($("#j-tmpl-activity-listitem").tmpl(json));
             ue.pager({
                 //target : $(".list_pager"),//放置分页的元素
                 pagerTarget: $("#j-activity-pagination ul"),
@@ -102,7 +103,7 @@
                 now: p,//当前页
                 maxPage: 5,//显示的最多页数
                 per: 10,//每页显示几个
-                count: json.result.totalcount,
+                count: data.data.totalcount,
                 onchange: function (page) {//切换页数回调函数
                     mpage.getActivityList(page);
                 }

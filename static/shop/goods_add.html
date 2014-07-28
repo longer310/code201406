@@ -148,7 +148,7 @@
 						<div class="control-group">
 							<label class="control-label">所属分类</label>
 							<div class="controls">
-								<select id="j-category-list">
+								<select id="j-categroy-list">
 									<option>1</option>
 									<option>2</option>
 									<option>3</option>
@@ -214,7 +214,7 @@
         </script>
 
         <!--分类下拉框模版-->
-        <script type="text/jquery-tmpl-x" id="j-tmpl-category-listitem">
+        <script type="text/jquery-tmpl-x" id="j-tmpl-categroy-listitem">
         	{{each(i, v) list}}
         		<option value="${v.id}">${v.title}</option>
         	{{/each}}
@@ -297,7 +297,7 @@
 
 					//默认先创建两个空标签
 					mpage.addTag(['','']);
-					mpage.getCategoryList(1);
+					mpage.getCategroyList(1);
 
 					//提交表单
 					$("#j-goods-addForm").bind("submit", function(){
@@ -330,7 +330,7 @@
 						alert(text_editor.html());
 
 						//获取所属分类
-						alert($("#j-category-list").val());
+						alert($("#j-categroy-list").val());
 						return false;
 					});
 					
@@ -340,7 +340,7 @@
 					});
         		},
 
-        		getCategoryList : function (p){
+        		getCategroyList : function (p){
     		    	var mpage = this;
 
 					//$.getJSON("", { p: p}， function(json){
@@ -370,7 +370,7 @@
 							}
 						};
 						
-						$("#j-category-list").html( $("#j-tmpl-category-listitem").tmpl(json.result) );
+						$("#j-categroy-list").html( $("#j-tmpl-categroy-listitem").tmpl(json.result) );
 					//});
 				},
 

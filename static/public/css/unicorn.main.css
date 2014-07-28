@@ -1312,3 +1312,7 @@ ul.inline,ol.inline{
 ul.inline>li,ol.inline>li{
 	display:inline-block;*display:inline;padding-right:5px;*zoom:1
 }
+
+.icon-gray{
+	background-image: url("../img/glyphicons-halflings-gray.png");
+}

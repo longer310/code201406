@@ -78,13 +78,7 @@ namespace Backstage.Handler
             }
 
 
-            var typeName = "/goods";
-            ImageType type = (ImageType)Convert.ToInt32(context.Request.QueryString["type"]);
-            switch (type)
-            {
-                case ImageType.Goods: typeName = "/goods"; break;
-                default: break;
-            }
+            var typeName = GetTypeName(context);
             //创建文件夹
             dirPath += dirName + typeName + "/";
             saveUrl += dirName + typeName + "/";
@@ -149,6 +143,18 @@ namespace Backstage.Handler
             Response.AddHeader("Content-Type", "text/html; charset=UTF-8");
             Response.Write(JsonMapper.ToJson(hash));
             Response.End();
+        }
+
+        public static string GetTypeName(HttpContext context)
+        {
+            var typeName = "/goods";
+            ImageType type = (ImageType)Convert.ToInt32(context.Request.QueryString["type"]);
+            switch (type)
+            {
+                case ImageType.Goods: typeName = "/goods"; break;
+                default: break;
+            }
+            return typeName;
         }
     }
 }

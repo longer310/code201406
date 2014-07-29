@@ -86,22 +86,22 @@ namespace Backstage.Core.Logic
                                         PointY         = ?PointY      
                                     WHERE
                                         Id = ?Id";
-                parameters.Add(new MySqlParameter("?Name           ", merchant.Name));
-                parameters.Add(new MySqlParameter("?Tname          ", merchant.Tname));
-                parameters.Add(new MySqlParameter("?Address        ", merchant.Address));
-                parameters.Add(new MySqlParameter("?Phone          ", merchant.Phone));
-                parameters.Add(new MySqlParameter("?Description    ", merchant.Description));
-                parameters.Add(new MySqlParameter("?Mapurl         ", merchant.Mapurl));
-                parameters.Add(new MySqlParameter("?AppId          ", merchant.AppId));
-                parameters.Add(new MySqlParameter("?AppSecret      ", merchant.AppSecret));
-                parameters.Add(new MySqlParameter("?AccessToken    ", merchant.AccessToken));
-                parameters.Add(new MySqlParameter("?AccessExpire   ", merchant.AccessExpire));
-                parameters.Add(new MySqlParameter("?AndroidUrl     ", merchant.AndroidUrl));
-                parameters.Add(new MySqlParameter("?IosUrl         ", merchant.IosUrl));
-                parameters.Add(new MySqlParameter("?WxUrl          ", merchant.WxUrl));
-                parameters.Add(new MySqlParameter("?Id             ", merchant.Id));
-                parameters.Add(new MySqlParameter("?PointX             ", merchant.PointX));
-                parameters.Add(new MySqlParameter("?PointY             ", merchant.PointY));
+                parameters.Add(new MySqlParameter("?Name",merchant.Name));
+                parameters.Add(new MySqlParameter("?Tname",merchant.Tname));
+                parameters.Add(new MySqlParameter("?Address",merchant.Address));
+                parameters.Add(new MySqlParameter("?Phone",merchant.Phone));
+                parameters.Add(new MySqlParameter("?Description",merchant.Description));
+                parameters.Add(new MySqlParameter("?Mapurl",merchant.Mapurl));
+                parameters.Add(new MySqlParameter("?AppId",merchant.AppId));
+                parameters.Add(new MySqlParameter("?AppSecret",merchant.AppSecret));
+                parameters.Add(new MySqlParameter("?AccessToken",merchant.AccessToken));
+                parameters.Add(new MySqlParameter("?AccessExpire",merchant.AccessExpire));
+                parameters.Add(new MySqlParameter("?AndroidUrl",merchant.AndroidUrl));
+                parameters.Add(new MySqlParameter("?IosUrl",merchant.IosUrl));
+                parameters.Add(new MySqlParameter("?WxUrl",merchant.WxUrl));
+                parameters.Add(new MySqlParameter("?Id",merchant.Id));
+                parameters.Add(new MySqlParameter("?PointX",merchant.PointX));
+                parameters.Add(new MySqlParameter("?PointY",merchant.PointY));
 
             }
             else
@@ -142,21 +142,21 @@ namespace Backstage.Core.Logic
                                         ?PointX       ,
                                         ?PonitY   
                                         )";
-                parameters.Add(new MySqlParameter("?Name           ", merchant.Name));
-                parameters.Add(new MySqlParameter("?Tname          ", merchant.Tname));
-                parameters.Add(new MySqlParameter("?Address        ", merchant.Address));
-                parameters.Add(new MySqlParameter("?Phone          ", merchant.Phone));
-                parameters.Add(new MySqlParameter("?Description    ", merchant.Description));
-                parameters.Add(new MySqlParameter("?Mapurl         ", merchant.Mapurl));
-                parameters.Add(new MySqlParameter("?AppId          ", merchant.AppId));
-                parameters.Add(new MySqlParameter("?AppSecret      ", merchant.AppSecret));
-                parameters.Add(new MySqlParameter("?AccessToken    ", merchant.AccessToken));
-                parameters.Add(new MySqlParameter("?AccessExpire   ", merchant.AccessExpire));
-                parameters.Add(new MySqlParameter("?AndroidUrl     ", merchant.AndroidUrl));
-                parameters.Add(new MySqlParameter("?IosUrl         ", merchant.IosUrl));
-                parameters.Add(new MySqlParameter("?WxUrl          ", merchant.WxUrl));
-                parameters.Add(new MySqlParameter("?PointX         ", merchant.IosUrl));
-                parameters.Add(new MySqlParameter("?PonitY          ", merchant.WxUrl));
+                parameters.Add(new MySqlParameter("?Name",merchant.Name));
+                parameters.Add(new MySqlParameter("?Tname",merchant.Tname));
+                parameters.Add(new MySqlParameter("?Address",merchant.Address));
+                parameters.Add(new MySqlParameter("?Phone",merchant.Phone));
+                parameters.Add(new MySqlParameter("?Description",merchant.Description));
+                parameters.Add(new MySqlParameter("?Mapurl",merchant.Mapurl));
+                parameters.Add(new MySqlParameter("?AppId",merchant.AppId));
+                parameters.Add(new MySqlParameter("?AppSecret",merchant.AppSecret));
+                parameters.Add(new MySqlParameter("?AccessToken",merchant.AccessToken));
+                parameters.Add(new MySqlParameter("?AccessExpire",merchant.AccessExpire));
+                parameters.Add(new MySqlParameter("?AndroidUrl",merchant.AndroidUrl));
+                parameters.Add(new MySqlParameter("?IosUrl",merchant.IosUrl));
+                parameters.Add(new MySqlParameter("?WxUrl",merchant.WxUrl));
+                parameters.Add(new MySqlParameter("?PointX",merchant.IosUrl));
+                parameters.Add(new MySqlParameter("?PonitY",merchant.WxUrl));
             }
             try
             {

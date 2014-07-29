@@ -140,7 +140,7 @@
                 //图片上传编辑
                 mpage.image_editor = image_editor = K.editor({
                     uploadJson: '<%=DomainUrl %>/Handler/FileManager/UploadHandler.ashx?type=3',
-                    fileManagerJson: '<%=DomainUrl %>/Handler/FileManager/FileManagerHandler.ashx',
+                    fileManagerJson: '<%=DomainUrl %>/Handler/FileManager/FileManagerHandler.ashx?type=3',
                 });
 
                 //从资料库选择图片

@@ -45,8 +45,9 @@ namespace Backstage.Handler
                     context.Response.Write("Invalid Directory name.");
                     context.Response.End();
                 }
-                dirPath += dirName + "/";
-                rootUrl += dirName + "/";
+                var typeName = UploadHandler.GetTypeName(context);
+                dirPath += dirName + typeName + "/";
+                rootUrl += dirName + typeName + "/";
                 if (!Directory.Exists(dirPath))
                 {
                     Directory.CreateDirectory(dirPath);

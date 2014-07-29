@@ -1259,12 +1259,18 @@ namespace Backstage.Handler
             var sellerid = GetInt("sellerid");
             var accessexpire = GetInt("accessexpire");
 
-            var user = AccountHelper.GetUser(sellerid);
-            if (user == null)
+            var merchant = MerchantHelper.GetMerchant(sellerid);
+            if (merchant == null)
             {
-                ReturnErrorMsg(string.Format("不存在Id={0}的用户", sellerid));
+                ReturnErrorMsg(string.Format("不存在Id={0}的商户", sellerid));
                 return;
             }
+            merchant.AccessExpire = Utility.FromUnixTime(accessexpire);
+            merchant.AccessToken = accesstoken;
+
+            MerchantHelper.SaveMerchant(merchant);
+
+            ReturnCorrectMsg("更新商户信息成功");
         }
         #endregion
     }

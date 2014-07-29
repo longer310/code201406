@@ -305,7 +305,6 @@ namespace Backstage.Core.Logic
                             }
                         }
                     }
-
                 }
                 return num;
             }

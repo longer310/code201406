@@ -1,93 +1,97 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/View/merchant.Master" AutoEventWireup="true" CodeBehind="Add.aspx.cs" Inherits="Backstage.View.Goods.Add" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="Header" runat="server">
-	<link href="<%=DomainUrl %>/Script/kindeditor/themes/default/default.css" type="text/css" rel="stylesheet">
+    <link href="<%=DomainUrl %>/Script/kindeditor/themes/default/default.css" type="text/css" rel="stylesheet">
     <link rel="shortcut icon" href="<%=DomainUrl %>/Css/img/favicon.ico">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="Content" runat="server">
-<div class="widget-box" >
-	<div class="widget-title">
-		<span class="icon">
-			<i class="icon-gift"></i>
-		</span>
-		<h5>新增商品</h5>
-	</div>
-	<div class="widget-content">
-		<div action="#" method="post" class="form-horizontal" id="j-goods-addForm" />
-			<div class="control-group">
-				<label class="control-label">商品名称</label>
-				<div class="controls">
-					<input type="text" id="j-goods-title" />
-				</div>
-			</div>
-			<div class="control-group">
-				<label class="control-label">推荐和热销</label>
-				<div class="controls">
-					<label class="checkbox"><input type="checkbox" id="j-goods-isrecommend"> 推荐</label>
-					<label class="checkbox"><input type="checkbox" id="j-goods-ishot"> 热销</label>
-				</div>
-			</div>
+    <div class="widget-box">
+        <div class="widget-title">
+            <span class="icon">
+                <i class="icon-gift"></i>
+            </span>
+            <h5>新增商品</h5>
+        </div>
+        <div class="widget-content">
+            <div action="#" method="post" class="form-horizontal" id="j-goods-addForm" />
+            <div class="control-group">
+                <label class="control-label">商品名称</label>
+                <div class="controls">
+                    <input type="text" id="j-goods-title" />
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">推荐和热销</label>
+                <div class="controls">
+                    <label class="checkbox">
+                        <input type="checkbox" id="j-goods-isrecommend">
+                        推荐</label>
+                    <label class="checkbox">
+                        <input type="checkbox" id="j-goods-ishot">
+                        热销</label>
+                </div>
+            </div>
 
-			<div class="control-group">
-				<label class="control-label">商品图片</label>
-				<div class="controls">
-								
-					<a class="btn btn-info" href="javascript:;" id="j-btn-imageUpload"><i class="icon-folder-open icon-white"></i> 本地上传</a>
-					<a class="btn btn-success" href="javascript:;" id="j-btn-imageManager"><i class="icon-picture icon-white"></i> 素材库选择</a>
-					<span class="help-inline">上传过的图片可以直接从素材库选择</span>
-					<ul class="thumbnails" id="j-goods-thumbnails" style="display:none;margin-top:10px;">
-						</ul>
-				</div>
-			</div>
+            <div class="control-group">
+                <label class="control-label">商品图片</label>
+                <div class="controls">
 
-			<div class="control-group">
-				<label class="control-label">现价</label>
-				<div class="controls">
-					<input type="text" class="input-small" id="j-goods-price" /><span style="padding:0 20px;">原价</span><input type="text" class="input-small" id="j-goods-preprice" />
-				</div>
-			</div>
+                    <a class="btn btn-info" href="javascript:;" id="j-btn-imageUpload"><i class="icon-folder-open icon-white"></i>本地上传</a>
+                    <a class="btn btn-success" href="javascript:;" id="j-btn-imageManager"><i class="icon-picture icon-white"></i>素材库选择</a>
+                    <span class="help-inline">上传过的图片可以直接从素材库选择</span>
+                    <ul class="thumbnails" id="j-goods-thumbnails" style="display: none; margin-top: 10px;">
+                    </ul>
+                </div>
+            </div>
 
-			<div class="control-group">
-				<label class="control-label">标签</label>
-				<div class="controls">
-					<ul id="j-goods-tags" class="inline" style="display:none;"></ul>
-					<a href="" class="btn" id="j-btn-addTag"><i class="icon-plus"></i> 添加标签</a>
-				</div>
-			</div>
+            <div class="control-group">
+                <label class="control-label">现价</label>
+                <div class="controls">
+                    <input type="text" class="input-small" id="j-goods-price" /><span style="padding: 0 20px;">原价</span><input type="text" class="input-small" id="j-goods-preprice" />
+                </div>
+            </div>
 
-			<div class="control-group">
-				<label class="control-label">所属分类</label>
-				<div class="controls">
-					<select id="j-categroy-list">
-						<option>1</option>
-						<option>2</option>
-						<option>3</option>
-						<option>4</option>
-						<option>5</option>
-					</select>
-				</div>
-			</div>
+            <div class="control-group">
+                <label class="control-label">标签</label>
+                <div class="controls">
+                    <ul id="j-goods-tags" class="inline" style="display: none;"></ul>
+                    <a href="" class="btn" id="j-btn-addTag"><i class="icon-plus"></i>添加标签</a>
+                </div>
+            </div>
 
-			<div class="control-group">
-				<label class="control-label">商品简介</label>
-				<div class="controls">
-					<textarea name="content" style="height:400px;visibility:hidden;"></textarea>
-				</div>
-			</div>
-			<div class="form-actions">
-				<button type="reset" class="btn"><i class="icon-refresh"></i> 清除重置</button>
-				<button type="submit" class="btn btn-primary"><i class="icon-ok icon-white"></i> 完成保存</button>
-			</div>
-		</div>
-	</div>
-</div>
+            <div class="control-group">
+                <label class="control-label">所属分类</label>
+                <div class="controls">
+                    <select id="j-categroy-list">
+                        <option>1</option>
+                        <option>2</option>
+                        <option>3</option>
+                        <option>4</option>
+                        <option>5</option>
+                    </select>
+                </div>
+            </div>
 
-<!--页面js-->
-<script type="text/javascript" src="<%=DomainUrl %>/Script/js/ue.pager.js"></script>
-<script type="text/javascript" src="<%=DomainUrl %>/Script/kindeditor/kindeditor-min.js"></script>
-<script type="text/javascript" src="<%=DomainUrl %>/Script/kindeditor/lang/zh_CN.js"></script>
-<!--产品图片缩略图模版-->
-<script type="text/jquery-tmpl-x" id="j-tmpl-goods-thumbnail">
+            <div class="control-group">
+                <label class="control-label">商品简介</label>
+                <div class="controls">
+                    <textarea name="content" style="height: 400px; visibility: hidden;"></textarea>
+                </div>
+            </div>
+            <div class="form-actions">
+                <button type="reset" class="btn"><i class="icon-refresh"></i>清除重置</button>
+                <button type="submit" class="btn btn-primary"><i class="icon-ok icon-white"></i>完成保存</button>
+            </div>
+        </div>
+    </div>
+    </div>
+
+    <!--页面js-->
+    <script type="text/javascript" src="<%=DomainUrl %>/Script/js/ue.pager.js"></script>
+    <script type="text/javascript" src="<%=DomainUrl %>/Script/kindeditor/kindeditor-min.js"></script>
+    <script type="text/javascript" src="<%=DomainUrl %>/Script/kindeditor/lang/zh_CN.js"></script>
+    <!--产品图片缩略图模版-->
+    <script type="text/jquery-tmpl-x" id="j-tmpl-goods-thumbnail">
 	{{each(i, v) thumbnails}}
 	    <li class="span">
 			<span class="thumbnail">
@@ -100,23 +104,23 @@
 		</li>
 	{{/each}}
 </script>
-<!--标签输入框模版-->
-<script type="text/jquery-tmpl-x" id="j-tmpl-goods-tag">
+    <!--标签输入框模版-->
+    <script type="text/jquery-tmpl-x" id="j-tmpl-goods-tag">
     {{each(i, v) tags}}
         <li style="margin-bottom:5px;"><input type="text" class="input-small j-goods-tag" {{if v}}value="${v}"{{/if}} /> <a href="javascript:;" class="icon-remove j-btn-delTag"></a></li>
     {{/each}}
 </script>
 
-<!--分类下拉框模版-->
-<script type="text/jquery-tmpl-x" id="j-tmpl-categroy-listitem">
+    <!--分类下拉框模版-->
+    <script type="text/jquery-tmpl-x" id="j-tmpl-categroy-listitem">
     {{each(i, v) list}}
         <option value="${v.Id}">${v.Name}</option>
     {{/each}}
 </script>
 
-<script type="text/javascript">
-    var MPage = {
-        hander: "<%=DomainUrl %>/Handler/Goods/GoodsHandler.ashx?action=",
+    <script type="text/javascript">
+        var MPage = {
+            hander: "<%=DomainUrl %>/Handler/Goods/GoodsHandler.ashx?action=",
         init: function () {
             var mpage = this;
 
@@ -129,17 +133,17 @@
 
             KindEditor.ready(function (K) {
                 mpage.text_editor = text_editor = K.create('textarea[name="content"]', {
-                    uploadJson: '<%=DomainUrl %>/Handler/FileManager/UploadHandler.ashx',
+                    uploadJson: '<%=DomainUrl %>/Handler/FileManager/UploadHandler.ashx?type=3',
                     allowFileManager: true
                 });
 
                 //图片上传编辑
                 mpage.image_editor = image_editor = K.editor({
-                    uploadJson: '<%=DomainUrl %>/Handler/FileManager/UploadHandler.ashx',
+                    uploadJson: '<%=DomainUrl %>/Handler/FileManager/UploadHandler.ashx?type=3',
                     fileManagerJson: '<%=DomainUrl %>/Handler/FileManager/FileManagerHandler.ashx',
                 });
 
-                //图片上传绑定
+                //从资料库选择图片
                 K('#j-btn-imageManager').click(function () {
                     image_editor.loadPlugin('filemanager', function () {
                         image_editor.plugin.filemanagerDialog({
@@ -156,7 +160,7 @@
                     });
                 });
 
-                //从资料库选择图片
+                //图片上传绑定
                 K('#j-btn-imageUpload').click(function () {
                     image_editor.loadPlugin('image', function () {
                         image_editor.plugin.imageDialog({
@@ -285,9 +289,6 @@
 
             mpage.goodsDetailData = json.result;
             mpage.setGoodsFormData();
-
-
-            //});
         },
 
         setGoodsFormData: function () {
@@ -317,38 +318,13 @@
             $("#j-categroy-list").val(detail.cid);
         },
 
-        getCategroyList: function (p) {
+        getCategroyList: function () {
             var mpage = this;
-
-            //$.getJSON("", { p: p}， function(json){
-            var json = {
-                code: 0,
-                msg: "",
-                result: {
-                    count: 59,
-                    list: [
-                        {
-                            id: 1,
-                            title: "分类1"
-                        },
-                        {
-                            id: 2,
-                            title: "分类2"
-                        },
-                        {
-                            id: 3,
-                            title: "分类3"
-                        },
-                        {
-                            id: 4,
-                            title: "分类4"
-                        }
-                    ]
+            $.post(mpage.hander + "getGoodsCategoriesList", {}, function (data) {
+                if (!data.error) {
+                    $("#j-categroy-list").html($("#j-tmpl-categroy-listitem").tmpl(data));
                 }
-            };
-
-            $("#j-categroy-list").html($("#j-tmpl-categroy-listitem").tmpl(json.result));
-            //});
+            });
         },
 
         addThumbnail: function (thumbnails) {

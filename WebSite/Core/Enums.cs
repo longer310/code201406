@@ -251,4 +251,27 @@ namespace Backstage.Core
         Used = 1,
         UnUse = 0
     }
+
+    /// <summary>
+    /// 素材库图片类型 1、图片墙，2、活动，3、产品
+    /// </summary>
+    public enum ImageType
+    {
+        /// <summary>
+        /// 所有
+        /// </summary>
+        All = 0,
+        /// <summary>
+        /// 图片墙
+        /// </summary>
+        Img = 1,
+        /// <summary>
+        /// 活动
+        /// </summary>
+        Avtive = 2,
+        /// <summary>
+        /// 产品
+        /// </summary>
+        Goods = 3,
+    }
 }

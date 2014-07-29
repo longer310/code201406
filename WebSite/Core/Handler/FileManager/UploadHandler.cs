@@ -77,9 +77,17 @@ namespace Backstage.Handler
                 showError("上传文件扩展名是不允许的扩展名。\n只允许" + ((String)extTable[dirName]) + "格式。");
             }
 
+
+            var typeName = "/goods";
+            ImageType type = (ImageType)Convert.ToInt32(context.Request.QueryString["type"]);
+            switch (type)
+            {
+                case ImageType.Goods: typeName = "/goods"; break;
+                default: break;
+            }
             //创建文件夹
-            dirPath += dirName + "/";
-            saveUrl += dirName + "/";
+            dirPath += dirName + typeName + "/";
+            saveUrl += dirName + typeName + "/";
             if (!Directory.Exists(dirPath))
             {
                 Directory.CreateDirectory(dirPath);
@@ -92,16 +100,42 @@ namespace Backstage.Handler
                 Directory.CreateDirectory(dirPath);
             }
 
-            String newFileName = DateTime.Now.ToString("yyyyMMddHHmmss_ffff", DateTimeFormatInfo.InvariantInfo) + fileExt;
-            String filePath = dirPath + newFileName;
+            //String newFileName = DateTime.Now.ToString("yyyyMMddHHmmss_ffff", DateTimeFormatInfo.InvariantInfo) + fileExt;
+            //String filePath = dirPath + newFileName;
+            String filePath = dirPath + fileName;
+            var index = 2;
+            var originalFileName = Path.GetFileNameWithoutExtension(fileName);
+            while (File.Exists(filePath))
+            {
+                fileName = originalFileName + string.Format("({0})", index) + fileExt;
+                filePath = dirPath + fileName;
+                index++;
+            }
 
             imgFile.SaveAs(filePath);
 
-            String fileUrl = saveUrl + newFileName;
+            //String fileUrl = saveUrl + newFileName;
+            String fileUrl = saveUrl + fileName;
+
+            var addId = 0;
+            //添加商户图片
+            if (dirName == "image")
+            {
+                //TODO:暂时这么添加 图片名称及图片描述 这个后面再根据需求定怎么赋初值 后面应该加上图片类型！（上传）
+                var sm = new SourceMaterial();
+                sm.SellerId = CurrentUser.Id;
+                sm.Title = Path.GetFileNameWithoutExtension(fileName);
+                sm.Url = fileUrl;
+                sm.Description = Path.GetFileNameWithoutExtension(fileName);
+                sm.CreateTime = DateTime.Now;
+                addId = SourceMaterialHelper.Create(sm);
+            }
+
 
             Hashtable hash = new Hashtable();
             hash["error"] = 0;
             hash["url"] = fileUrl;
+            hash["id"] = addId;
             context.Response.AddHeader("Content-Type", "text/html; charset=UTF-8");
             context.Response.Write(JsonMapper.ToJson(hash));
             context.Response.End();

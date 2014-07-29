@@ -58,14 +58,14 @@
 							<img alt="User" src="http://placehold.it/128x128" />
 						</div>
 						<div class="article-post">
-							<span class="post-title">${title}</span>
+							<span class="post-title">${v.title}</span>
 							<p class="post-desc">
-								${description}
+								${v.description}
 							</p>
 							<p class="post-meta">
-								<span class="pull-left">浏览：<span class="text-error">${views}</span> 
-								评论：<span class="text-error">${commentnum}</span>条</span> 
-								发布时间：<span class="text-error">${createtime.Format("yyyy-MM-dd HH:mm:ss")}</span> 
+								<span class="pull-left">浏览：<span class="text-error">${v.views}</span> 
+								评论：<span class="text-error">${v.commentnum}</span>条</span> 
+								发布时间：<span class="text-error">${v.createtime.Format("yyyy-MM-dd HH:mm:ss")}</span> 
 							</p>
 							<div class="post-action">
 								<div class="checker"><span><input type="checkbox" name="radios"></span></div>

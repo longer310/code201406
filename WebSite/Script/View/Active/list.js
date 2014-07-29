@@ -85,7 +85,7 @@
             mpage.activityCurrentPage = p;
             $("#j-btn-selectAll").data("checked", false).html('<i class="icon-check icon-white"></i> 全选');
             //console.log(json);
-            $("#j-activity-list").html($("#j-tmpl-activity-listitem").tmpl(json));
+            $("#j-activity-list").html($("#j-tmpl-activity-listitem").tmpl(json.result));
             ue.pager({
                 //target : $(".list_pager"),//放置分页的元素
                 pagerTarget: $("#j-activity-pagination ul"),

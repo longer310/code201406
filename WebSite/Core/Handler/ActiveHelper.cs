@@ -34,6 +34,7 @@ namespace Backstage.Core
                         a.Summary = reader["Summary"].ToString();
                         a.CreateTime = (DateTime)reader["CreateTime"];
                         a.Views = (int)reader["Views"];
+                        a.Commentnum = (int)reader["Commentnum"];
                     }
                 }
             }
@@ -81,6 +82,7 @@ namespace Backstage.Core
                         a.Summary = reader["Summary"].ToString();
                         a.CreateTime = (DateTime)reader["CreateTime"];
                         a.Views = (int)reader["Views"];
+                        a.Commentnum = (int)reader["Commentnum"];
                         results.Results.Add(a);
                     }
 
@@ -144,6 +146,7 @@ namespace Backstage.Core
                         a.CreateTime = (DateTime)reader["CreateTime"];
                         a.CoverImgUrl = reader["CoverImgUrl"].ToString();
                         a.Views = (int)reader["Views"];
+                        a.Commentnum = (int)reader["Commentnum"];
                         results.Add(a);
                     }
                 }

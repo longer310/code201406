@@ -75,7 +75,7 @@
             }
         };
         $.ajax({
-            url: "../../Handler/Backstage/ActiveHandler.ashx?action=getlist&sellerid=" + sellerid + "&start=" + p + "&limit=" + 6,
+            url: "../../Handler/Backstage/ActiveHandler.ashx?action=getlist&sellerid=" + sellerid + "&start=" + (p-1) + "&limit=" + 6,
             type: "get",
             dataType: "json"
             //context: document.body

@@ -52,7 +52,7 @@
     <!--活动列表模版-->
     <script type="text/jquery-tmpl-x" id="j-tmpl-activity-listitem">
         	{{each(i, v) list}}
-	        	<li class="item" data-id="1">
+	        	<li class="item" data-id="${v.id}">
 					<div class="item-in">
 						<div class="article-thumb">
 							<img alt="User" src="http://placehold.it/128x128" />
@@ -65,7 +65,7 @@
 							<p class="post-meta">
 								<span class="pull-left">浏览：<span class="text-error">${v.views}</span> 
 								评论：<span class="text-error">${v.commentnum}</span>条</span> 
-								发布时间：<span class="text-error">${v.createtime.Format("yyyy-MM-dd HH:mm:ss")}</span> 
+								发布时间：<span class="text-error">${v.createtime}</span> 
 							</p>
 							<div class="post-action">
 								<div class="checker"><span><input type="checkbox" name="radios"></span></div>

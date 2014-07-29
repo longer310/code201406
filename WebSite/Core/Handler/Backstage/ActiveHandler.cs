@@ -63,7 +63,7 @@ namespace Backstage.Core.Handler.Backstage
             int size = GetInt("limit");
             int sid = GetInt("sellerid");
 
-            var data = ActiveHelper.GetPagings(sid, index, size);
+            var data = ActiveHelper.GetPagings(sid, index * size, size);
             JsonTransfer jt = new JsonTransfer();
             jt.AddSuccessParam();
             jt.Add("data", data);

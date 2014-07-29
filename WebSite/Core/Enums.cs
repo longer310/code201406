@@ -253,7 +253,7 @@ namespace Backstage.Core
     }
 
     /// <summary>
-    /// 素材库图片类型 1、图片墙，2、活动，3、产品
+    /// 素材库图片类型 1、图片墙，2、活动，3、产品，4、头像
     /// </summary>
     public enum ImageType
     {
@@ -273,5 +273,9 @@ namespace Backstage.Core
         /// 产品
         /// </summary>
         Goods = 3,
+        /// <summary>
+        /// 头像
+        /// </summary>
+        Logo = 4
     }
 }

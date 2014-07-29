@@ -23,5 +23,6 @@ namespace Backstage.Core.Entity
 
         public DateTime CreateTime { get; set; }
 
+        public ImageType ImageType { get; set; }
     }
 }

@@ -14,7 +14,7 @@ namespace Backstage.Core
     {
         public static SourceMaterial GetItem(int id)
         {
-            var sm = new SourceMaterial();
+            SourceMaterial sm = null;
             string commandText = @"select * from material where id = ?id";
             List<MySqlParameter> parameters = new List<MySqlParameter>();
             parameters.Add(new MySqlParameter("?id", id));
@@ -26,6 +26,7 @@ namespace Backstage.Core
                     MySqlDataReader reader = MySqlHelper.ExecuteReader(conn, CommandType.Text, commandText, parameters.ToArray());
                     while (reader.Read())
                     {
+                        sm = new SourceMaterial();
                         sm.Id = reader.GetInt32(0);
                         sm.Url = reader["Url"].ToString();
                         sm.Title = reader["Title"].ToString();
@@ -34,6 +35,7 @@ namespace Backstage.Core
                         sm.Commentnum = (int)reader["Commentnum"];
                         sm.SellerId = (int)reader["SellerId"];
                         sm.CreateTime = (DateTime)reader["CreateTime"];
+                        sm.ImageType = (ImageType)reader["ImageType"];
                     }
                 }
 
@@ -75,6 +77,7 @@ namespace Backstage.Core
                         sm.Commentnum = (int)reader["Commentnum"];
                         sm.SellerId = (int)reader["SellerId"];
                         sm.CreateTime = (DateTime)reader["CreateTime"];
+                        sm.ImageType = (ImageType)reader["ImageType"];
                         results.Results.Add(sm);
                     }
 
@@ -129,6 +132,7 @@ namespace Backstage.Core
                         sm.Commentnum = (int)reader["Commentnum"];
                         sm.SellerId = (int)reader["SellerId"];
                         sm.CreateTime = (DateTime)reader["CreateTime"];
+                        sm.ImageType = (ImageType)reader["ImageType"];
                         results.Add(sm);
                     }
                 }
@@ -175,6 +179,7 @@ namespace Backstage.Core
                         sm.Commentnum = (int)reader["Commentnum"];
                         sm.SellerId = (int)reader["SellerId"];
                         sm.CreateTime = (DateTime)reader["CreateTime"];
+                        sm.ImageType = (ImageType)reader["ImageType"];
                         results.Add(sm);
                     }
                 }
@@ -197,7 +202,8 @@ namespace Backstage.Core
         	                                Views, 
         	                                Commentnum,
         	                                SellerId,
-        	                                CreateTime
+        	                                CreateTime,
+        	                                ImageType
         	                                )
         	                                VALUES
         	                                ( 
@@ -207,7 +213,8 @@ namespace Backstage.Core
         	                                ?Views, 
         	                                ?Commentnum,
         	                                ?SellerId,
-        	                                ?CreateTime
+        	                                ?CreateTime,
+        	                                ?ImageType
         	                                )";
 
             List<MySqlParameter> parameters = new List<MySqlParameter>();
@@ -218,7 +225,7 @@ namespace Backstage.Core
             parameters.Add(new MySqlParameter("?Commentnum", sm.Commentnum));
             parameters.Add(new MySqlParameter("?SellerId", sm.SellerId));
             parameters.Add(new MySqlParameter("?CreateTime", sm.CreateTime));
-
+            parameters.Add(new MySqlParameter("?ImageType", sm.ImageType));
             MySqlHelper.ExecuteNonQuery(connectionString, CommandType.Text, commandText, parameters.ToArray());
 
             var id = 0;
@@ -247,7 +254,8 @@ namespace Backstage.Core
                                         Views = ?Views,
                                         Commentnum = ?Commentnum,
                                         SellerId = ?SellerId,
-                                        CreateTime = ?CreateTime
+                                        CreateTime = ?CreateTime,
+                                        ImageType = ?ImageType
                                     WHERE
                                         Id = ?Id";
 
@@ -260,7 +268,7 @@ namespace Backstage.Core
             parameters.Add(new MySqlParameter("?Commentnum", sm.Commentnum));
             parameters.Add(new MySqlParameter("?SellerId", sm.SellerId));
             parameters.Add(new MySqlParameter("?CreateTime", sm.CreateTime));
-
+            parameters.Add(new MySqlParameter("?ImageType", sm.ImageType));
 
             MySqlHelper.ExecuteNonQuery(GlobalConfig.DbConn, CommandType.Text, commandText, parameters.ToArray());
 

@@ -26,78 +26,24 @@ namespace Backstage.Core.Handler.Backstage
                     GetList(); break;
                 case "getitem":
                     GetItem(); break;
-                //case "updatedata":
-                //    UpdateData(); break;
-                //case "deldata":
-                //    DelData(); break;
+                case "updatedata":
+                    UpdateData(); break;
+                case "deldata":
+                    DelData(); break;
                 default: break;
             }
         }
 
-        private void ActiveCommentList()
+        private void DelData()
         {
-            int aid = GetInt("newid");
-            int index = GetInt("start");
-            int size = GetInt("limit");
-            var active = ActiveHelper.GetItem(aid);
-            var cms = CommentHelper.GetPagings(active.SellerId, CommentType.Avtive, aid, index, size);
-            var users = AccountHelper.GetUserList(cms.Results.Select(c => c.UserId).ToList());
-            var data = new CommentsForApis();
-            foreach (var cm in cms.Results)
-            {
-                var user = users.FirstOrDefault(u => u.Id == cm.UserId);
-                if (user == null)
-                    throw new ArgumentNullException(string.Format("userId:{0}", cm.UserId));
-                var result = new ComentsForApi
-                {
-                    Avatar = user.Avatar,
-                    UserName = user.UserName,
-                    Sex = (int)user.Sex,
-                    Dateline = cm.CreateTime.GetUnixTime(),
-                    Message = cm.Content
-                };
-                data.Comments.Add(result);
-            }
-            data.Commentnum = cms.TotalCount;
-            JsonTransfer jt = new JsonTransfer();
-            jt.AddSuccessParam();
-            jt.Add("data", data);
-            Response.Write(DesEncrypt(jt).ToLower());
-            Response.End();
+            throw new NotImplementedException();
         }
 
-        private void ActiveComment()
+        private void UpdateData()
         {
-            int aid = GetInt("newid");
-            int uid = GetInt("uid");
-            string msg = GetString("message");
-            var active = ActiveHelper.GetItem(aid);
-            Comment c = new Comment();
-            c.SellerId = active.SellerId;
-            c.TypeId = active.Id;
-            c.UserId = uid;
-            c.Content = msg;
-            c.Type = CommentType.Avtive;
-            //冗余两个字段
-            c.Img = active.CoverImgUrl;
-            c.Title = active.Title;
-
-            try
-            {
-                CommentHelper.Create(c);
-                active.Commentnum += 1;
-                ActiveHelper.Update(active);
-            }
-            catch
-            {
-                ReturnErrorMsg("fail");
-                throw;
-            }
-            JsonTransfer jt = new JsonTransfer();
-            jt.AddSuccessParam();
-            Response.Write(DesEncrypt(jt).ToLower());
-            Response.End();
+            throw new NotImplementedException();
         }
+
 
         private void GetItem()
         {

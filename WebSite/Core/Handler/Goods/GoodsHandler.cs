@@ -43,12 +43,12 @@ namespace Backstage.Handler
                     GetGoodsList(); break;
                 case "delGoodsList":
                     DelGoodsList(); break;
-                case "addGoods":
-                    AddGoods(); break;
-                case "updateGoods":
-                    UpdateGoods(); break;
+                case "savegoods":
+                    SaveGoods(); break;
                 case "saveGoodsList":
                     SaveGoodsList(); break;
+                case "getgoods":
+                    GetGoods(); break;
                 #endregion
 
                 default: break;
@@ -235,6 +235,7 @@ namespace Backstage.Handler
                 default: break;
             }
             var goodsresult = GoodsHelper.GetGoodsList(CurrentUser.Id, wheresql, shoppingcartql, start * limit, limit, 1);
+
             var jt = new JsonTransfer();
             jt.Add("list", goodsresult.Results);
             jt.Add("totalcount", goodsresult.TotalCount);
@@ -255,7 +256,7 @@ namespace Backstage.Handler
                 ReturnErrorMsg("参数有误");
                 return;
             }
-            var wheresql = string.Format(" and a.Id in({0})", gids);
+            var wheresql = string.Format(" and Id in({0})", gids);
             var goodsresult = GoodsHelper.GetGoodsList(CurrentUser.Id, wheresql);
             if (goodsresult.Results.Count != gidList.Count)
             {
@@ -269,68 +270,76 @@ namespace Backstage.Handler
         }
 
         /// <summary>
-        /// 新增产品
+        /// 获取商品详情
         /// </summary>
-        public void AddGoods()
+        public void GetGoods()
         {
-            var title = GetString("title");
-            var imgIds = GetString("imgIds");
-            var logo = GetInt("logo");
-            var nowPrice = GetFloat("nowPrice");
-            var originalPrice = GetFloat("originalPrice");
-            var tags = GetString("tags");
-            var cid = GetInt("cid");
-            var content = GetString("content");
+            var gid = GetInt("gid");
+            var goods = GoodsHelper.GetGoods(gid);
+            if (goods == null)
+            {
+                ReturnErrorMsg("不存在该商品");
+                return;
+            }
+            if (goods.SellerId != CurrentUser.Id)
+            {
+                ReturnErrorMsg("无权访问此商品");
+                return;
+            }
 
-            var goods = new Goods();
-            goods.Title = title;
-            goods.ImgIdList = Utility.GetListint(imgIds);
-            goods.Logo = logo;
-            goods.Nowprice = nowPrice;
-            goods.OriginalPrice = originalPrice;
-            goods.Tag = tags;
-            goods.Cid = cid;
-            goods.Content = content;
-            if (GoodsHelper.SaveGoods(goods))
-                ReturnCorrectMsg("添加成功");
-            else
-                ReturnErrorMsg("添加失败");
+            goods.InitThumbnails();
+
+            //返回
+            ReturnCorrectData(goods);
         }
 
         /// <summary>
-        /// 编辑产品
+        /// 新增产品
         /// </summary>
-        public void UpdateGoods()
+        public void SaveGoods()
         {
             var id = GetInt("id");
             var title = GetString("title");
-            var imgIds = GetString("imgIds");
-            var logo = GetInt("logo");
+            var imgUrls = GetString("imgUrls");
+            var logoUrl = GetString("logoUrl");
             var nowPrice = GetFloat("nowPrice");
             var originalPrice = GetFloat("originalPrice");
             var tags = GetString("tags");
             var cid = GetInt("cid");
             var content = GetString("content");
+            var isHot = GetInt("isHot");
+            var isRecommend = GetInt("isRecommend");
 
-            var goods = GoodsHelper.GetGoods(id);
-            if (goods.SellerId != CurrentUser.Id)
+            var goods = new Goods();
+            if (id > 0)
             {
-                ReturnErrorMsg("没有权限修改改该商户产品");
-                return;
+                goods = GoodsHelper.GetGoods(id);
+                if (goods.SellerId != CurrentUser.Id)
+                {
+                    ReturnErrorMsg("没有权限修改改该商户产品");
+                    return;
+                }
             }
             goods.Title = title;
-            goods.ImgIdList = Utility.GetListint(imgIds);
-            goods.Logo = logo;
+            goods.ImageUrlList = Utility.GetListstring(imgUrls);
+            goods.LogoUrl = logoUrl;
             goods.Nowprice = nowPrice;
             goods.OriginalPrice = originalPrice;
-            goods.Tag = tags;
+            goods.TagList = Utility.GetListstring(tags);
             goods.Cid = cid;
             goods.Content = content;
-            if (GoodsHelper.SaveGoods(goods))
-                ReturnCorrectMsg("添加成功");
+            goods.IsHot = isHot;
+            goods.IsRecommend = isRecommend;
+            goods.SellerId = CurrentUser.Id;
+            var num = GoodsHelper.SaveGoods(goods);
+            if (num > 0)
+                if (id > 0) ReturnCorrectMsg("编辑成功");
+                else ReturnCorrectMsg(num.ToString());
             else
-                ReturnErrorMsg("添加失败");
+                if (id > 0) ReturnErrorMsg("添加失败");
+                else ReturnErrorMsg("编辑失败");
         }
+
         [Serializable]
         public class ChangeGoods
         {

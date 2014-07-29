@@ -48,7 +48,7 @@
                     <a href="<%=DomainUrl %>/View/Goods/List.aspx"><i class="icon icon-tint"></i><span>产品管理</span><span class="label">3</span></a>
                     <ul>
                         <li class="sidebar_goodslist"><a href="<%=DomainUrl %>/View/Goods/List.aspx">产品列表</a></li>
-                        <li class="sidebar_goodsadd"><a href="<%=DomainUrl %>/View/Goods/Add.aspx">新增产品</a></li>
+                        <li class="sidebar_goodsadd"><a href="<%=DomainUrl %>/View/Goods/Item.aspx">新增产品</a></li>
                         <li class="sidebar_categories"><a href="#">分类管理</a></li>
                     </ul>
                 </li>

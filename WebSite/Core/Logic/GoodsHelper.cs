@@ -29,7 +29,7 @@ namespace Backstage.Core.Logic
             result.Results = new List<Goods>();
             if (ordersql == "") ordersql = " order by CreateTime desc ";
             string limitsql = limit != 0 ? " LIMIT ?start,?limit" : string.Empty;
-            var cmdText = @"select a.*,m.Url from Goods as a left join material m on a.Logo=m.Id where a.SellerId=?SellerId " + wheresql + ordersql + limitsql;
+            var cmdText = @"select * from Goods where SellerId=?SellerId " + wheresql + ordersql + limitsql;
 
             List<MySqlParameter> parameters = new List<MySqlParameter>();
             if (!string.IsNullOrEmpty(limitsql))
@@ -49,8 +49,8 @@ namespace Backstage.Core.Logic
                         Goods goods = new Goods();
                         goods.Id = reader.GetInt32(0);
                         goods.SellerId = (int)reader["SellerId"];
-                        goods.Logo = (int)reader["Logo"];
-                        goods.ImgIdList = Utility.GetListint(reader["ImgIds"].ToString());
+                        //goods.Logo = (int)reader["Logo"];
+                        //goods.ImgIdList = Utility.GetListint(reader["ImgIds"].ToString());
                         goods.Sales = (int)reader["Sales"];
                         goods.Title = reader["Title"].ToString();
                         goods.Cid = (int)reader["Cid"];
@@ -60,9 +60,10 @@ namespace Backstage.Core.Logic
                         goods.CreateTime = (DateTime)reader["CreateTime"];
                         goods.FavCount = (int)reader["FavCount"];
                         goods.ShareCount = (int)reader["ShareCount"];
-                        goods.Tag = reader["Tag"].ToString();
+                        goods.TagList = Utility.GetListstring(reader["Tag"].ToString());
                         goods.Content = reader["Content"].ToString();
-                        goods.LogoUrl = reader["Url"].ToString();
+                        goods.LogoUrl = reader["LogoUrl"].ToString();
+                        goods.ImageUrlList = Utility.GetListstring(reader["ImagesUrl"].ToString());
                         goods.CommentCount = (int)reader["CommentCount"];
                         goods.BrowseCount = (int)reader["BrowseCount"];
                         goods.IsHot = (int)reader["IsHot"];
@@ -119,8 +120,8 @@ namespace Backstage.Core.Logic
                             Goods goods = new Goods();
                             goods.Id = reader.GetInt32(0);
                             goods.SellerId = (int)reader["SellerId"];
-                            goods.Logo = (int)reader["Logo"];
-                            goods.ImgIdList = Utility.GetListint(reader["ImgIds"].ToString());
+                            //goods.Logo = (int)reader["Logo"];
+                            //goods.ImgIdList = Utility.GetListint(reader["ImgIds"].ToString());
                             goods.Sales = (int)reader["Sales"];
                             goods.Title = reader["Title"].ToString();
                             goods.Cid = (int)reader["Cid"];
@@ -130,9 +131,10 @@ namespace Backstage.Core.Logic
                             goods.CreateTime = (DateTime)reader["CreateTime"];
                             goods.FavCount = (int)reader["FavCount"];
                             goods.ShareCount = (int)reader["ShareCount"];
-                            goods.Tag = reader["Tag"].ToString();
+                            goods.TagList = Utility.GetListstring(reader["Tag"].ToString());
                             goods.Content = reader["Content"].ToString();
-                            goods.LogoUrl = reader["Url"].ToString();
+                            goods.LogoUrl = reader["LogoUrl"].ToString();
+                            goods.ImageUrlList = Utility.GetListstring(reader["ImagesUrl"].ToString());
                             goods.CommentCount = (int)reader["CommentCount"];
                             goods.BrowseCount = (int)reader["BrowseCount"];
                             goods.IsHot = (int)reader["IsHot"];
@@ -150,11 +152,11 @@ namespace Backstage.Core.Logic
         }
 
         /// <summary>
-        /// 保存商品 如果id为0 则添加新纪录
+        /// 保存商品 如果id为0 则添加新纪录 返回id
         /// </summary>
         /// <param name="goods"></param>
         /// <returns></returns>
-        public static bool SaveGoods(Goods goods)
+        public static int SaveGoods(Goods goods)
         {
             var cmdText = string.Empty;
             List<MySqlParameter> parameters = new List<MySqlParameter>();
@@ -162,8 +164,8 @@ namespace Backstage.Core.Logic
             {
                 cmdText = @"UPDATE Goods SET
                                         SellerId        = ?SellerId,
-                                        ImgIds          = ?ImgIds,
-                                        Logo            = ?Logo,
+                                        ImagesUrl          = ?ImagesUrl,
+                                        LogoUrl            = ?LogoUrl,
                                         Sales           = ?Sales,
                                         Title           = ?Title,
                                         Cid             = ?Cid,
@@ -183,8 +185,8 @@ namespace Backstage.Core.Logic
                                         Id = ?Id";
                 parameters.Add(new MySqlParameter("?Id", goods.Id));
                 parameters.Add(new MySqlParameter("?SellerId", goods.SellerId));
-                parameters.Add(new MySqlParameter("?ImgIds", Utility.GetString(goods.ImgIdList)));
-                parameters.Add(new MySqlParameter("?Logo", goods.Logo));
+                parameters.Add(new MySqlParameter("?ImagesUrl", Utility.GetString(goods.ImageUrlList)));
+                parameters.Add(new MySqlParameter("?LogoUrl", goods.LogoUrl));
                 parameters.Add(new MySqlParameter("?Sales", goods.Sales));
                 parameters.Add(new MySqlParameter("?Title", goods.Title));
                 parameters.Add(new MySqlParameter("?Cid", goods.Cid));
@@ -194,7 +196,7 @@ namespace Backstage.Core.Logic
                 parameters.Add(new MySqlParameter("?CreateTime", goods.CreateTime));
                 parameters.Add(new MySqlParameter("?FavCount", goods.FavCount));
                 parameters.Add(new MySqlParameter("?ShareCount", goods.ShareCount));
-                parameters.Add(new MySqlParameter("?Tag", goods.Tag));
+                parameters.Add(new MySqlParameter("?Tag", Utility.GetString(goods.TagList)));
                 parameters.Add(new MySqlParameter("?Content", goods.Content));
                 parameters.Add(new MySqlParameter("?IsRecommend", goods.IsRecommend));
                 parameters.Add(new MySqlParameter("?IsHot", goods.IsHot));
@@ -206,8 +208,8 @@ namespace Backstage.Core.Logic
                 cmdText = @"insert into Goods
                                         (
                                         SellerId      ,
-                                        ImgIds        ,
-                                        Logo          ,
+                                        ImagesUrl        ,
+                                        LogoUrl          ,
                                         Sales         ,
                                         Title         ,
                                         Cid           ,
@@ -227,8 +229,8 @@ namespace Backstage.Core.Logic
                                         values
                                         (
                                         ?SellerId      ,
-                                        ?ImgIds        ,
-                                        ?Logo          ,
+                                        ?ImagesUrl        ,
+                                        ?LogoUrl          ,
                                         ?Sales         ,
                                         ?Title         ,
                                         ?Cid           ,
@@ -246,8 +248,8 @@ namespace Backstage.Core.Logic
                                         ?IsHot         
                                         )";
                 parameters.Add(new MySqlParameter("?SellerId", goods.SellerId));
-                parameters.Add(new MySqlParameter("?ImgIds", Utility.GetString(goods.ImgIdList)));
-                parameters.Add(new MySqlParameter("?Logo", goods.Logo));
+                parameters.Add(new MySqlParameter("?ImagesUrl", Utility.GetString(goods.ImageUrlList)));
+                parameters.Add(new MySqlParameter("?LogoUrl", goods.LogoUrl));
                 parameters.Add(new MySqlParameter("?Sales", goods.Sales));
                 parameters.Add(new MySqlParameter("?Title", goods.Title));
                 parameters.Add(new MySqlParameter("?Cid", goods.Cid));
@@ -257,7 +259,7 @@ namespace Backstage.Core.Logic
                 parameters.Add(new MySqlParameter("?CreateTime", goods.CreateTime));
                 parameters.Add(new MySqlParameter("?FavCount", goods.FavCount));
                 parameters.Add(new MySqlParameter("?ShareCount", goods.ShareCount));
-                parameters.Add(new MySqlParameter("?Tag", goods.Tag));
+                parameters.Add(new MySqlParameter("?Tag", Utility.GetString(goods.TagList)));
                 parameters.Add(new MySqlParameter("?Content", goods.Content));
                 parameters.Add(new MySqlParameter("?IsHot", goods.IsHot));
                 parameters.Add(new MySqlParameter("?IsRecommend", goods.IsRecommend));
@@ -267,13 +269,29 @@ namespace Backstage.Core.Logic
             try
             {
                 var num = MySqlHelper.ExecuteNonQuery(Utility._gameDbConn, CommandType.Text, cmdText, parameters.ToArray());
-                return num > 0;
+                if (goods.Id == 0)
+                {//插入 获得新id
+
+                    using (var conn = Utility.ObtainConn(Utility._gameDbConn))
+                    {
+                        cmdText = @"select @@identity";
+                        var reader = MySqlHelper.ExecuteReader(conn, CommandType.Text, cmdText);
+                        if (reader.HasRows)
+                        {
+                            if (reader.Read())
+                            {
+                                num = reader.GetInt32(0);
+                            }
+                        }
+                    }
+                }
+                return num;
             }
             catch (System.Exception ex)
             {
                 throw;
             }
-            return false;
+            return 0;
         }
 
         /// <summary>
@@ -289,8 +307,8 @@ namespace Backstage.Core.Logic
             {
                 var tempcmdText = @"UPDATE Goods SET
                                         SellerId        = ?SellerId,
-                                        ImgIds          = ?ImgIds,
-                                        Logo            = ?Logo,
+                                        ImagesUrl          = ?ImagesUrl,
+                                        LogoUrl            = ?LogoUrl,
                                         Sales           = ?Sales,
                                         Title           = ?Title,
                                         Cid             = ?Cid,
@@ -313,8 +331,8 @@ namespace Backstage.Core.Logic
                 cmdText += tempcmdText;
                 parameters.Add(new MySqlParameter(newStr + "Id", goods.Id));
                 parameters.Add(new MySqlParameter(newStr + "SellerId", goods.SellerId));
-                parameters.Add(new MySqlParameter(newStr + "ImgIds", Utility.GetString(goods.ImgIdList)));
-                parameters.Add(new MySqlParameter(newStr + "Logo", goods.Logo));
+                parameters.Add(new MySqlParameter(newStr + "?ImagesUrl", Utility.GetString(goods.ImageUrlList)));
+                parameters.Add(new MySqlParameter(newStr + "?LogoUrl", goods.LogoUrl));
                 parameters.Add(new MySqlParameter(newStr + "Sales", goods.Sales));
                 parameters.Add(new MySqlParameter(newStr + "Title", goods.Title));
                 parameters.Add(new MySqlParameter(newStr + "Cid", goods.Cid));
@@ -324,7 +342,7 @@ namespace Backstage.Core.Logic
                 parameters.Add(new MySqlParameter(newStr + "CreateTime", goods.CreateTime));
                 parameters.Add(new MySqlParameter(newStr + "FavCount", goods.FavCount));
                 parameters.Add(new MySqlParameter(newStr + "ShareCount", goods.ShareCount));
-                parameters.Add(new MySqlParameter(newStr + "Tag", goods.Tag));
+                parameters.Add(new MySqlParameter(newStr + "Tag", Utility.GetString(goods.TagList)));
                 parameters.Add(new MySqlParameter(newStr + "Content", goods.Content));
                 parameters.Add(new MySqlParameter(newStr + "IsRecommend", goods.IsRecommend));
                 parameters.Add(new MySqlParameter(newStr + "IsHot", goods.IsHot));
@@ -336,6 +354,7 @@ namespace Backstage.Core.Logic
             {
                 var num = MySqlHelper.ExecuteNonQuery(Utility._gameDbConn, CommandType.Text, cmdText, parameters.ToArray());
                 return num > 0;
+
             }
             catch (System.Exception ex)
             {
@@ -357,7 +376,7 @@ namespace Backstage.Core.Logic
             int index = 0;
             foreach (var goodsId in goodsIds)
             {
-                cmdText += string.Format("Update Goods Set Sales=Sales+{0} Where Id={1}", goodsNums[index], goodsId);
+                cmdText += string.Format("Update Goods Set Sales=Sales+{0} Where Id={1};", goodsNums[index], goodsId);
                 index++;
             }
             cmdText += "commit;";

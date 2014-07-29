@@ -115,6 +115,13 @@ namespace Backstage.Core
             Response.Write(jt.ToJson());
             Response.End();
         }
+        public void ReturnCorrectData(object data)
+        {
+            JsonTransfer jt = new JsonTransfer();
+            jt.Add("data", data);
+            Response.Write(jt.ToJson());
+            Response.End();
+        }
         public int GetInt(string paramName, int defaultVale)
         {
             var p1 = Request.Form[paramName];

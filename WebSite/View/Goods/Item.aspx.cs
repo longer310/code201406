@@ -8,7 +8,7 @@ using Backstage.Core;
 
 namespace Backstage.View.Goods
 {
-    public partial class List : BasePage
+    public partial class Item : BasePage
     {
         protected void Page_Load(object sender, EventArgs e)
         {

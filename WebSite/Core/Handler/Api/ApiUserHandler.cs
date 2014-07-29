@@ -1181,7 +1181,7 @@ namespace Backstage.Handler
             data.num = favorite.GidList.Count;
             if (gidList.Count > 0)
             {
-                var wheresql = string.Format(" and a.Id in({0})", Utility.GetString(gidList));
+                var wheresql = string.Format(" and Id in({0})", Utility.GetString(gidList));
                 var goodslist = GoodsHelper.GetGoodsList(user.SellerId, wheresql).Results;
                 foreach (var goods in goodslist)
                 {

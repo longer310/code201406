@@ -248,7 +248,7 @@ namespace Backstage.Handler
             string wheresql = string.Empty;
             string shoppingcartql = "";
             if (cid > 0) wheresql += string.Format(" and Cid={0}", cid);
-            if (!string.IsNullOrEmpty(keyword)) wheresql += string.Format(" and a.Title like'%{0}%'", keyword);
+            if (!string.IsNullOrEmpty(keyword)) wheresql += string.Format(" and Title like'%{0}%'", keyword);
             switch (order)
             {
                 case 1:
@@ -352,18 +352,19 @@ namespace Backstage.Handler
             }
             int cid = goods.Cid;
             var gcategories = GoodsCategoriesHelper.GetGoodsCategories(cid);
-            string wheresql = Utility.GetWhereSql(goods.ImgIdList);
-            var piclist = SourceMaterialHelper.GetList(0, 0, wheresql, "");
+            //string wheresql = Utility.GetWhereSql(goods.ImgIdList);
+            //var piclist = SourceMaterialHelper.GetList(0, 0, wheresql, "");
             //var user = AccountHelper.GetCurUser();
             Favorite favorite = null;
             if (uid > 0)
                 favorite = FavoriteHelper.GetFavorite(uid);
             var data = new GoodsDetailItem();
 
-            foreach (var sourceMaterial in piclist)
-            {
-                data.images.Add(sourceMaterial.Url);
-            }
+            //foreach (var sourceMaterial in piclist)
+            //{
+            //    data.images.Add(sourceMaterial.Url);
+            //}
+            data.images = goods.ImageUrlList;
             data.gid = gid;
             data.title = goods.Title;
             data.nowprice = goods.Nowprice;
@@ -678,7 +679,7 @@ namespace Backstage.Handler
             var wheresql = string.Format(" where UserId = {0} ", uid);
             var list = ShoppingCartHelper.GetShoppingCartList(wheresql).Results;
             if (list.Count > 0)
-                wheresql = string.Format(" and a.Id in({0}) ",
+                wheresql = string.Format(" and Id in({0}) ",
                     Utility.GetString(list.Select(o => o.Gid).Distinct().ToList()));
             else wheresql = string.Empty;
             var glist = GoodsHelper.GetGoodsList(user.SellerId, wheresql).Results;
@@ -737,7 +738,7 @@ namespace Backstage.Handler
                 ReturnErrorMsg("参数错误");
                 return;
             }
-            var goodslist = GoodsHelper.GetGoodsList(sellerId, string.Format(" and a.Id in({0}) ", gids)).Results;
+            var goodslist = GoodsHelper.GetGoodsList(sellerId, string.Format(" and Id in({0}) ", gids)).Results;
             var orders = new Orders();
             orders.UserId = uid;
             foreach (var goods in goodslist)
@@ -970,24 +971,26 @@ namespace Backstage.Handler
             orders.LinkMan = linkman;
             orders.Mobile = phone;
             orders.CouponId = couponid;
-            //获取优惠券优惠的价格
-            var coupon = CouponHelper.GetCoupon(orders.CouponId, uid, user.SellerId);
-            if (coupon == null)
-            {
-                ReturnErrorMsg("未找到相应的优惠券或优惠券已被使用了");
-                return;
-            }
-            bool ifdiscount = true;
-            var gidlist = orders.GidList;
-            foreach (var i in gidlist)
-            {
-                if (coupon.GoodsIds.Contains(i))
-                    ifdiscount = false;
-            }
             float discount = 0;
-            if (ifdiscount)
-            {
-                discount = (float)(coupon.Extcredit * 1.0) / 100;
+            if (orders.CouponId > 0)
+            {//获取优惠券优惠的价格
+                var coupon = CouponHelper.GetCoupon(orders.CouponId, uid, user.SellerId);
+                if (coupon == null)
+                {
+                    ReturnErrorMsg("未找到相应的优惠券或优惠券已被使用了");
+                    return;
+                }
+                bool ifdiscount = true;
+                var gidlist = orders.GidList;
+                foreach (var i in gidlist)
+                {
+                    if (coupon.GoodsIds.Contains(i))
+                        ifdiscount = false;
+                }
+                if (ifdiscount)
+                {
+                    discount = (float)(coupon.Extcredit * 1.0) / 100;
+                }
             }
             orders.TotalPrice -= discount;
             orders.CtotalPrice = discount;

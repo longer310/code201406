@@ -147,10 +147,11 @@ namespace Backstage.Handler
 
         public static string GetTypeName(HttpContext context)
         {
-            var typeName = "/goods";
+            var typeName = "";
             ImageType type = (ImageType)Convert.ToInt32(context.Request.QueryString["type"]);
             switch (type)
             {
+                case ImageType.All: typeName = ""; break;
                 case ImageType.Goods: typeName = "/goods"; break;
                 default: break;
             }

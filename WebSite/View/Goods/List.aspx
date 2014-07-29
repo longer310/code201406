@@ -86,7 +86,7 @@
 					</div>
 
 					<div class="pull-right">
-						<a class="btn btn-primary btn-mini" href=""><i class="icon-pencil icon-white"></i> 编辑</a>
+						<a class="btn btn-primary btn-mini" href="<%=DomainUrl %>/view/goods/item.aspx?id=${v.Id}"><i class="icon-pencil icon-white"></i> 编辑</a>
 						<a class="btn btn-danger btn-mini j-btn-del" href="javascript:void(0);" onclick="MPage.delSingleGoods(${v.Id})"><i class="icon-remove icon-white"></i> 删除</a>
 					</div>
 				</td>

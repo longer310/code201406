@@ -10,6 +10,6 @@
 namespace Backstage.View.Goods {
     
     
-    public partial class Add {
+    public partial class Item {
     }
 }

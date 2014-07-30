@@ -1,7 +1,7 @@
 ﻿var MPage = {
     init: function () {
         var mpage = this;
-       
+
         mpage.getActivityList(1);
 
         //绑定全选
@@ -31,11 +31,20 @@
                     title: "删除确认提示",
                     content: "您确定要删除当前选择的所有数据吗？",
                     confirm: function () {
-                        //执行确认回调
-                        alert('执行确认回调');
+                        $.ajax({
+                            url: "../../Handler/Backstage/ActiveHandler.ashx?action=delete&ids=" + ids,
+                            type: "get",
+                            dataType: "json"
+                            //context: document.body
+                        }).success(function (data) {
+                            alert("删除成功");
+                            window.setTimeout(function () {
+                                window.location.reload();
+                            }, 2000);
+                        });
 
                         //删除成功后刷新本页
-                        mpage.getActivityList(mpage.activityCurrentPage);
+                        //mpage.getActivityList(mpage.activityCurrentPage);
                     },
                     cancel: function () {
                         //执行取消回调
@@ -75,7 +84,7 @@
             }
         };
         $.ajax({
-            url: "../../Handler/Backstage/ActiveHandler.ashx?action=getlist&sellerid=" + sellerid + "&start=" + (p-1) + "&limit=" + 6,
+            url: "../../Handler/Backstage/ActiveHandler.ashx?action=getlist&sellerid=" + sellerid + "&start=" + (p - 1) + "&limit=" + 6,
             type: "get",
             dataType: "json"
             //context: document.body
@@ -102,7 +111,7 @@
                 tip: '<li class="page-info"><b class="text-info">@{nowPage}</b>/@{pageCount}页 共<b class="text-info">@{count}</b>条记录</li>',
                 now: p,//当前页
                 maxPage: 5,//显示的最多页数
-                per: 10,//每页显示几个
+                per: 6,//每页显示几个
                 count: data.data.totalcount,
                 onchange: function (page) {//切换页数回调函数
                     mpage.getActivityList(page);
@@ -119,13 +128,22 @@
                     content: "您确定要删除当前活动？",
                     confirm: function () {
                         //执行确认回调
-                        alert('执行确认回调');
-
+                        $.ajax({
+                            url: "../../Handler/Backstage/ActiveHandler.ashx?action=delete&ids=" + id,
+                            type: "get",
+                            dataType: "json"
+                            //context: document.body
+                        }).success(function (data) {
+                            alert("删除成功");
+                            window.setTimeout(function () {
+                                window.location.reload();
+                            }, 2000);
+                        });
                         $item.remove();
                     },
                     cancel: function () {
                         //执行取消回调
-                        alert('执行取消回调');
+                        //alert('执行取消回调');
                     }
                 });
                 return false;
@@ -133,7 +151,7 @@
             //window.location.href = "View/Index.aspx";
         });
         //$.getJSON("", { p: p}， function(json){
-        
+
         //});
     }
 }

@@ -15,7 +15,7 @@
     </asp:ContentPlaceHolder>
 </head>
 <body>
-    <form id="form1" runat="server">
+    
         <div id="header">
             <h1><a href="#">APP 商户管理系统</a></h1>
         </div>
@@ -112,7 +112,7 @@
                 <p>网络文化经营许可证：文网文[2010]040号|增值电信业务经营许可证：浙B2-20080224-1|信息网络传播视听节目许可证：1109364号 </p>
             </div>
         </div>
-    </form>
+
     <script type="text/javascript">
         var page = {
             hander: "<%=DomainUrl %>/Handler/LoginHandler.ashx?action=",

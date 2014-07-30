@@ -55,7 +55,7 @@
 	        	<li class="item" data-id="${v.id}">
 					<div class="item-in">
 						<div class="article-thumb">
-							<img alt="User" src="http://placehold.it/128x128" />
+							<img alt="User" src="${v.imgurl}" />
 						</div>
 						<div class="article-post">
 							<span class="post-title">${v.title}</span>

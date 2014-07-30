@@ -162,7 +162,83 @@ namespace Backstage.Core
 
         internal static void Update(Active active)
         {
-            //throw new NotImplementedException();
+            string commandText = @"UPDATE active SET
+                                        SellerId = ?SellerId,
+                                        CoverImgId = ?CoverImgId,
+                                        CoverImgUrl = ?CoverImgUrl,
+                                        Title = ?Title,
+                                        Summary = ?Summary,
+                                        Description = ?Description,
+                                        Commentnum = ?Commentnum,
+                                        CreateTime = ?CreateTime,
+                                        Views = ?Views,
+                                    WHERE
+                                        Id = ?Id";
+
+            List<MySqlParameter> parameters = new List<MySqlParameter>();
+            parameters.Add(new MySqlParameter("?Id", active.Id));
+            parameters.Add(new MySqlParameter("?SellerId", active.SellerId));
+            parameters.Add(new MySqlParameter("?CoverImgId", active.CoverImgId));
+            parameters.Add(new MySqlParameter("?CoverImgUrl", active.CoverImgUrl));
+            parameters.Add(new MySqlParameter("?Title", active.Title));
+            parameters.Add(new MySqlParameter("?Summary", active.Summary));
+            parameters.Add(new MySqlParameter("?Description", active.Description));
+            parameters.Add(new MySqlParameter("?Commentnum", active.Commentnum));
+            parameters.Add(new MySqlParameter("?CreateTime", active.CreateTime));
+            parameters.Add(new MySqlParameter("?Views", active.Views));
+
+            MySqlHelper.ExecuteNonQuery(GlobalConfig.DbConn, CommandType.Text, commandText, parameters.ToArray());
+        }
+
+        public static void Create(Active active)
+        {
+            string connectionString = GlobalConfig.DbConn;
+            string commandText = @"INSERT INTO material 
+        	                                ( 
+        	                                SellerId, 
+        	                                CoverImgId,
+        	                                CoverImgUrl,
+        	                                Title, 
+        	                                Summary,
+        	                                Description,
+        	                                Commentnum,
+        	                                CreateTime,
+        	                                Views
+        	                                )
+        	                                VALUES
+        	                                ( 
+        	                                ?SellerId, 
+        	                                ?CoverImgId,
+        	                                ?CoverImgUrl,
+        	                                ?Title, 
+        	                                ?Summary,
+        	                                ?Description,
+        	                                ?Commentnum,
+        	                                ?CreateTime,
+        	                                ?Views
+        	                                )";
+
+            List<MySqlParameter> parameters = new List<MySqlParameter>();
+            parameters.Add(new MySqlParameter("?SellerId", active.SellerId));
+            parameters.Add(new MySqlParameter("?CoverImgId", active.CoverImgId));
+            parameters.Add(new MySqlParameter("?CoverImgUrl", active.CoverImgUrl));
+            parameters.Add(new MySqlParameter("?Title", active.Title));
+            parameters.Add(new MySqlParameter("?Summary", active.Summary));
+            parameters.Add(new MySqlParameter("?Description", active.Description));
+            parameters.Add(new MySqlParameter("?Commentnum", active.Commentnum));
+            parameters.Add(new MySqlParameter("?CreateTime", active.CreateTime));
+            parameters.Add(new MySqlParameter("?Views", active.Views));
+            MySqlHelper.ExecuteNonQuery(connectionString, CommandType.Text, commandText, parameters.ToArray());
+        }
+
+
+        internal static void Delete(int id)
+        {
+            string commandText = @"DELETE FROM active WHERE Id = ?Id";
+            List<MySqlParameter> parameters = new List<MySqlParameter>();
+            parameters.Add(new MySqlParameter("?Id", id));
+
+            MySqlHelper.ExecuteNonQuery(GlobalConfig.DbConn, CommandType.Text, commandText, parameters.ToArray());
         }
     }
 }

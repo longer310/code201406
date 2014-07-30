@@ -11,5 +11,10 @@ namespace Backstage.Model
 
         public int TotalCount { get; set; }
 
+
+        public PagResults()
+        {
+            Results = new List<T>();
+        }
     }
 }

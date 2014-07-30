@@ -42,15 +42,15 @@
 						<li><a href="activity_add.html">新增活动</a></li>
 					</ul>
 				</li>
-				<li class="submenu active open">
+				<li class="submenu">
 					<a href="#"><i class="icon icon-tint"></i> <span>产品管理</span><span class="label">3</span></a>
 					<ul>
-						<li class="active"><a href="goods_list.html">产品列表</a></li>
+						<li><a href="goods_list.html">产品列表</a></li>
 						<li><a href="goods_add.html">新增产品</a></li>
 						<li><a href="categroy.html">分类管理</a></li>
 					</ul>
 				</li>
-				<li><a href="order.html"><i class="icon icon-shopping-cart"></i> <span>订单管理</span></a></li>
+				<li class="active open"><a href="order.html"><i class="icon icon-shopping-cart"></i> <span>订单管理</span></a></li>
 				<li class="submenu">
 					<a href="#"><i class="icon icon-picture"></i> <span>图片墙管理</span> <span class="label">2</span></a>
 					<ul>
@@ -100,41 +100,40 @@
 					<span class="icon">
 						<i class="icon-gift"></i>
 					</span>
-					<h5>商品列表</h5>
+					<h5>订单列表</h5>
 					<div class="buttons">
-						<a href="#" class="btn btn-primary btn-mini" id="j-btn-saveAll"><i class="icon-ok icon-white"></i> 保存</a>
-						<a href="#" class="btn btn-danger btn-mini" id="j-btn-delSelected"><i class="icon-remove icon-white"></i> 删除</a>
+						<a href="#" class="btn btn-success btn-mini" id="j-btn-saveAll"><i class="icon-ok icon-white"></i> 已发货</a>
 					</div>
 				</div>
 				<div class="widget-content">
-					<ul class="nav nav-tabs" id="j-goods-tab">
-						<li class="active">
-							<a href="#">所有商品</a>
-						</li>
-						<li><a href="#">推荐商品</a></li>
-						<li><a href="#">热销商品</a></li>
+					<ul class="nav nav-tabs" id="j-order-tab">
+						<li><a href="#">所有订单</a></li>
+						<li><a href="#">待发货订单</a></li>
+						<li><a href="#">已发货订单</a></li>
+						<li><a href="#">已付款订单</a></li>
+						<li><a href="#">已完成订单</a></li>
 					</ul>
 					<table class="table table-bordered table-striped with-check">
 						<thead>
 							<tr>
 								<th><input type="checkbox" id="j-btn-selectAll" name="title-table-checkbox" /></th>
-								<th>编号</th>
-								<th>图片</th>
-								<th>名称</th>
-								<th>现价</th>
-								<th>原价</th>
-								<th>已售</th>
-								<th>评论/浏览</th>
+								<th>订单号</th>
+								<th>会员账号</th>
+								<th>商品数量</th>
+								<th>订单金额</th>
+								<th>订单时间</th>
+								<th>订单状态</th>
+								<th style="display:none;" id="j-goods-order-type">订单类型</th>
 								<th>操作</th>
 							</tr>
 						</thead>
-						<tbody id="j-goods-list">
+						<tbody id="j-order-list">
 						</tbody>
 					</table>
 				</div>
 
 				<div class="widget-footer">
-					<div class="pagination alternate" id="j-goods-pagination">
+					<div class="pagination alternate" id="j-order-pagination">
 						<ul class="page-main">
 							<li class="disabled"><a href="#">首页</a></li>
 							<li class="disabled"><a href="#">上一页</a></li>
@@ -169,99 +168,76 @@
         <!--页面js-->
         <script src="../public/js/ue.pager.js"></script>
 
-        <script type="text/jquery-tmpl-x" id="j-tmpl-goods-listitem">
+        <script type="text/jquery-tmpl-x" id="j-tmpl-order-listitem">
         	{{each(i, v) list}}
 	        	<tr data-gid="1">
 					<td><input type="checkbox" class="j-select" /></td>
-					<td style="width:30px;">1</td>
-					<td style="width:45px;"><img src="http://placehold.it/45x45"></td>
-					<td>水煮活鱼水煮活鱼水煮活鱼</td>
-					<td style="width:104px;"><input type="text" class="input-small j-price" value="34" ></td>
-					<td style="width:104px;"><input type="text" class="input-small j-preprice" value="43" ></td>
-					<td>56</td>
-					<td>12 / 123</td>
-					<td style="width:200px;">
-						<div class="pull-left" style="height:45px;">
-							<label class="checkbox"><input type="checkbox" class="j-isrecommend"> 推荐</label>
-							<label class="checkbox"><input type="checkbox" checked="checked" class="j-ishot"> 热销</label>
-						</div>
-
+					<td >20140619111111</td>
+					<td>1234567890123</td>
+					<td>7</td>
+					<td><b class="text-error">￥234</b></td>
+					<td>2014-06-19 16:21</td>
+					<td><b class="text-error j-order-status">已付款</b></td>
+					
+					<td style="display:{{if UINFO.shop_type == 1}}block{{else}}none{{/if}}">送餐</td>
+					
+					<td style="width:130px;">
 						<div class="pull-right">
-							<a class="btn btn-primary btn-mini" href="goods_edit.html?id=111"><i class="icon-pencil icon-white"></i> 编辑</a>
-							<a class="btn btn-danger btn-mini j-btn-del" href=""><i class="icon-remove icon-white"></i> 删除</a>
+							<a class="btn btn-success btn-mini j-btn-reach" href="javascript:;"><i class="icon-ok icon-white"></i> 已发货</a>
+							<a class="btn btn-primary btn-mini" href="order_detail.html?id=111"><i class="icon-pencil icon-white"></i> 查看</a>
 						</div>
 					</td>
 				</tr>
 			{{/each}}
+        </script>
+
+        <script type="text/javascript">
+        	//用户的基础信息
+        	var UINFO = {
+        		uid : 1111,
+        		uname : "2222",
+        		shop_type : 1//商家类型 为餐饮
+        	}
         </script>
         <script type="text/javascript">
         	var MPage = {
         		init : function(){
         			var mpage = this;
 
-        			mpage.getGoodsList(1, 0);
 
+        			var route = Route.parse(document.location.href, Route.SEARCH);
+        			page = parseInt(route.param.page) || 1;
+        			type = parseInt(route.param.type) || 0;
+        			mpage.getOrderList(page, type);
+
+        			if(UINFO.shop_type == 1){
+        				$("#j-goods-order-type").show();
+        			}
         			//绑定tab
-        			$('#j-goods-tab a').click(function (e) {
+        			$('#j-order-tab a').click(function (e) {
         				var type = $(this).parent().index();
 						$(this).tab('show');
-						mpage.getGoodsList(1, type);
+						document.location.href = "?page=1&type=" + type;
+						//mpage.getOrderList(1, type);
 						return false
 					});
+
+        			$('#j-order-tab li').eq(type).addClass("active");
 
         			//绑定全选
         			$("#j-btn-selectAll").bind("change", function(){
         				if($(this).attr("checked")){
-        					$("#j-goods-list .j-select:checkbox").attr("checked", "checked");
+        					$("#j-order-list .j-select:checkbox").attr("checked", "checked");
         				} else {
-        					$("#j-goods-list .j-select:checkbox").removeAttr("checked");
+        					$("#j-order-list .j-select:checkbox").removeAttr("checked");
         				}
         				
         				return false;
         			});
 
-        			//绑定批量删除
-        			$("#j-btn-delSelected").bind("click", function(){
-        				var $checked = $("#j-goods-list .j-select:checked");
-
-        				var ids = [];
-        				$checked.each(function(){
-        					ids.push( $(this).parents("tr").attr("data-gid") );
-        				});
-
-        				if(ids.length > 0){
-        					Common.confirm({
-        						title : "删除确认提示",
-        						content : "您确定要删除当前选择的所有数据吗？",
-        						confirm : function(){
-        							//执行确认回调
-        							alert('执行确认回调');
-
-        							//删除成功后刷新本页
-        							mpage.getGoodsList(mpage.goodsCurrentPage, mpage.goodsCurrentType);
-        						},
-        						cancel : function(){
-        							//执行取消回调
-        							alert('执行取消回调');
-        						}
-        					});
-        				} else {
-        					Common.alert({
-        						title : "提示",
-        						content : "请至少选择一项",
-        						confirm : function(){
-        							//执行确认回调
-        							alert('执行确认回调');
-        						}
-        					});
-        				}
-
-        				return false;
-        			});
-
-        			//绑定批量保存
+        			//绑定批量设置已发货
         			$("#j-btn-saveAll").bind("click", function(){
-        				var $checked = $("#j-goods-list .j-select:checked");
+        				var $checked = $("#j-order-list .j-select:checked");
 
         				var data_save = [];
 
@@ -269,11 +245,7 @@
         					var $item = $(this).parents("tr");
         					data_save.push(
         					{
-        						id : $item.attr("data-gid"),
-        						price : $item.find(".j-price").val(),
-        						preprice : $item.find(".j-preprice").val(),
-        						isrecommend : $item.find(".j-isrecommend").attr("checked") ? 1 : 0,
-        						ishot : $item.find(".j-ishot").attr("checked") ? 1 : 0
+        						id : $item.attr("data-gid")
         					});
         				});
 
@@ -286,7 +258,11 @@
         						confirm : function(){
         							//执行确认回调
         							alert('执行确认回调');
-
+        							$checked.each(function(){
+        								var $item = $(this).parents("tr");
+        								$item.find(".j-order-status").html('已发货');
+        								$item.find(".j-btn-reach").remove();
+        							});
         						},
         						cancel : function(){
         							//执行取消回调
@@ -310,12 +286,11 @@
 
         		//p 页码
         		//type tab 类型
-    		    getGoodsList : function (p, type){
+    		    getOrderList : function (p, type){
     		    	var mpage = this;
 
 					//$.getJSON("", { p: p, type : type}， function(json){
-						mpage.goodsCurrentPage = p;
-						mpage.goodsCurrentType = type;
+						
 						$("#j-btn-selectAll").removeAttr("checked");
 						var json = {
 							code : 0,
@@ -325,7 +300,8 @@
 								list : [
 									{},
 									{},
-									{},
+									{
+									},
 									{},
 									{},
 									{}
@@ -333,11 +309,11 @@
 							}
 						};
 						
-						$("#j-goods-list").html( $("#j-tmpl-goods-listitem").tmpl(json.result) );
+						$("#j-order-list").html( $("#j-tmpl-order-listitem").tmpl(json.result) );
 
 						ue.pager({
 							//target : $(".list_pager"),//放置分页的元素
-							pagerTarget : $("#j-goods-pagination ul"),
+							pagerTarget : $("#j-order-pagination ul"),
 							first : '<li><a href="#">首页</a></li>',
 							firstDisabled : '<li class="disabled"><a href="#">首页</a></li>',
 							last : '<li><a href="#">末页</a></li>',
@@ -354,23 +330,26 @@
 							per : 6,//每页显示几个
 							count : json.result.count,
 							onchange : function(page){//切换页数回调函数
-								mpage.getGoodsList(page, type);
+								//mpage.getOrderList(page, type);
+								document.location.href = "?page=" + page + "&type=" + type;
 							}
 						});
 
-						//绑定单个删除
-	        			$("#j-goods-list .j-btn-del").bind("click", function(){
+						//绑定单个设置已发货
+	        			$("#j-order-list .j-btn-reach").bind("click", function(){
 	        				var $item = $(this).parents("tr");
 	        				var id = $item.attr("data-gid");
+	        				var $btn = $(this);
 
 	        				Common.confirm({
-        						title : "删除确认提示",
-        						content : "您确定要删除当前活动？",
+        						title : "订单修改提示",
+        						content : "您确定要将该订单的状态修改为已发货？",
         						confirm : function(){
         							//执行确认回调
         							alert('执行确认回调');
 
-        							$item.remove();
+        							$item.find(".j-order-status").html('已发货');
+        							$btn.remove();
         						},
         						cancel : function(){
         							//执行取消回调

@@ -115,3 +115,110 @@ var Common = {
 		});
 	}
 }
+
+var Route = {
+    SEARCH : 1,
+    HASH : 2,
+    FILENAME : 4,
+    ALL : 7,
+
+    parse : function (url) {
+        var _this = this;
+        var a =  document.createElement('a');
+
+        a.href = url;
+
+        var route = {
+            hostname : a.hostname,
+            host : a.host,
+            hash : a.hash.replace("#", ""),
+            search : a.search.replace("?", ""),
+            pathname : a.pathname,
+            url : a.href,
+            protocol : a.protocol,
+            file : (a.pathname.split('/').reverse())[0],
+            port : a.port,
+            origin : a.origin
+        };
+
+        if (arguments.length == 2){
+            route.param = _this.split(route, arguments[1]);
+        }
+        
+        return route;
+    },
+
+    split : function (route, pattern){
+        var _this = this;
+        var pattern = pattern || _this.SEARCH,
+            param = {}, 
+            i, arg,
+            args;
+
+        if (pattern & _this.FILENAME){
+            args = route.file.split(/[\-\.]/gi);
+
+            //去掉第一个页面名称和最后一个文件后缀名称
+            args.shift();
+            args.pop();
+
+            for (var i = 0; i < args.length / 2; i++){
+                param[args[2 * i]] = args[2 * i + 1];
+            }
+        }
+
+        if (pattern & _this.SEARCH){
+            param = _this.splitKeyValue(route.search);
+        }
+
+        if (pattern & _this.HASH){
+            param = _this.splitKeyValue(route.hash.replace("?", ''));
+        } 
+
+        return param;
+    },
+
+    splitKeyValue : function(search, gap, equal){
+        var arg, args, param = {},
+            gap = gap || '&',
+            equal = equal || '=';
+
+        args = search.split(gap);
+        for (var i = 0; i < args.length; i++){
+            arg = args[i].split(equal);
+            if (arg.length == 2){
+                param[arg[0]] = arg[1] || "";
+            }
+        }
+
+        return param;
+    },
+
+    format : function(url, param, filter){
+        var _this = this,
+            param_arr = [],
+            filter = filter || [],
+            pre_param = {},
+            p;
+
+        var base_url, search, url_arr;
+        url_arr = url.split("?");
+        base_url = url_arr[0] || '';
+        search = url_arr[1] || '';
+
+        pre_param = _this.splitKeyValue(search);
+
+        for (p in param){
+            if(filter.indexOf(p) >= 0 ) continue;
+            pre_param[p] = param[p];
+        }
+
+        for (p in pre_param){
+            if (!!pre_param[p]){
+                param_arr.push(p + '=' + pre_param[p]);
+            }
+        }
+
+        return base_url + (param_arr.length > 0 ? '?' + param_arr.join('&') : '')
+    }
+}

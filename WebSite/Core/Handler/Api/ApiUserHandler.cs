@@ -464,7 +464,7 @@ namespace Backstage.Handler
             /// <summary>
             /// 微信开发者 appid
             /// </summary>
-            public int appid { get; set; }
+            public string appid { get; set; }
             /// <summary>
             /// 微信开发者 app密码
             /// </summary>

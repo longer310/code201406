@@ -37,7 +37,7 @@ namespace Backstage.Core.Entity
         /// <summary>
         /// 微信开发者 appid
         /// </summary>
-        public int AppId { get; set; }
+        public string AppId { get; set; }
         /// <summary>
         /// 微信开发者 app密码
         /// </summary>

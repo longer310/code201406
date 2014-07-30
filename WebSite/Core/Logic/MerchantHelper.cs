@@ -35,7 +35,7 @@ namespace Backstage.Core.Logic
                             merchant.Phone          = reader["Phone"].ToString();
                             merchant.Description    = reader["Description"].ToString();
                             merchant.Mapurl         = reader["Mapurl"].ToString();
-                            merchant.AppId          = (int)reader["AppId"];
+                            merchant.AppId          = reader["AppId"].ToString();
                             merchant.AppSecret      = reader["AppSecret"].ToString();
                             merchant.AccessToken    = reader["AccessToken"].ToString();
                             merchant.AccessExpire   = (DateTime)reader["AccessExpire"];

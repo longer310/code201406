@@ -168,8 +168,17 @@
 
                     }
 
-                    console.log(save_data);
-                    alert('提交数据')
+                    $.ajax({
+                        url: "../../Handler/Backstage/ActiveHandler.ashx?action=add&title=" + save_data.title + "&ticket_id=" + save_data.ticket_id + "&thumbnail=" + save_data.thumbnail + "&content=" + save_data.content,
+                        type: "get",
+                        dataType: "json"
+                        //context: document.body
+                    }).success(function (data) {
+                        alert("添加成功");
+                        window.setTimeout(function () {
+                            window.location.reload();
+                        }, 2000);
+                    });
                     return false;
                 });
 

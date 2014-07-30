@@ -24,6 +24,16 @@ namespace Backstage.Core.Entity
         /// </summary>
         public int SellerId { get; set; }
 
+        /// <summary>
+        /// 分类图片地址
+        /// </summary>
+        public string ImageUrl { get; set; }
+
+        /// <summary>
+        /// 该类下产品个数
+        /// </summary>
+        public int Count { get; set; }
+
         public GoodsCategories()
         {
             Name = "";

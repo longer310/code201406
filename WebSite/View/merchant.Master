@@ -49,7 +49,7 @@
                     <ul>
                         <li class="sidebar_goodslist"><a href="<%=DomainUrl %>/View/Goods/List.aspx">产品列表</a></li>
                         <li class="sidebar_goodsadd"><a href="<%=DomainUrl %>/View/Goods/Item.aspx">新增产品</a></li>
-                        <li class="sidebar_categories"><a href="#">分类管理</a></li>
+                        <li class="sidebar_categories"><a href="<%=DomainUrl %>/View/Goods/Categroy.aspx">分类管理</a></li>
                     </ul>
                 </li>
                 <li><a href="#"><i class="icon icon-shopping-cart"></i><span>订单管理</span></a></li>

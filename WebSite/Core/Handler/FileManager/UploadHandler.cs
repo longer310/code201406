@@ -96,6 +96,7 @@ namespace Backstage.Handler
 
             //String newFileName = DateTime.Now.ToString("yyyyMMddHHmmss_ffff", DateTimeFormatInfo.InvariantInfo) + fileExt;
             //String filePath = dirPath + newFileName;
+            fileName = fileName.Replace(',', '.');//防止图片名称中存在，分隔符
             String filePath = dirPath + fileName;
             var index = 2;
             var originalFileName = Path.GetFileNameWithoutExtension(fileName);

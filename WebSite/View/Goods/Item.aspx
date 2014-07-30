@@ -95,7 +95,7 @@
 	{{each(i, v) thumbnails}}
 	    <li class="span">
 			<span class="thumbnail">
-				<img src="${v.Url}" style="max-width:45px;min-width:45px;max-height:45px;min-height:45px;"  alt="" class="j-goods-thumbnail">
+				<img src="${v.Url}" style="max-width:45px;min-width:45px;max-height:45px;min-height:45px;" alt="" class="j-goods-thumbnail">
 			</span>
 			<div class="clearfix" style="margin-top:5px;">
 				<label class="radio pull-left"><input type="radio" name="islogo" class="j-goods-islogo" {{if v.IsLogo}}checked="checked"{{/if}}> 设为logo</label>

@@ -20,11 +20,6 @@ namespace Backstage.Handler
             base.ProcessRequest(HttpContext.Current);
             switch (Action)
             {
-                #region 上传图片
-                case "uploadPic":
-                    UploadPic(); break;
-                #endregion
-
                 #region 产品分类管理
                 case "getGoodsCategoriesList":
                     GetGoodsCategoriesList(); break;
@@ -32,8 +27,8 @@ namespace Backstage.Handler
                     AddGoodsCategories(); break;
                 case "delGoodsCategoriesList":
                     DelGoodsCategoriesList(); break;
-                case "modifyNameGoodsCategories":
-                    ModifyNameGoodsCategories(); break;
+                case "saveGoodsCategoriesList":
+                    SaveGoodsCategoriesList(); break;
                 case "modifyIndexGoodsCategories":
                     ModifyIndexGoodsCategories(); break;
                 #endregion
@@ -54,13 +49,6 @@ namespace Backstage.Handler
                 default: break;
             }
         }
-        #region 上传图片
-        private void UploadPic()
-        {
-            var localUrl = GetString("localUrl");
-
-        }
-        #endregion
 
         #region 产品分类管理
         /// <summary>
@@ -83,6 +71,7 @@ namespace Backstage.Handler
         private void AddGoodsCategories()
         {
             var name = GetString("name");
+            var imageUrl = GetString("imageUrl");
             //var index = GetInt("index");
 
             var maxIndex = GoodsCategoriesHelper.GetMaxIndex(CurrentUser.Id);
@@ -91,6 +80,7 @@ namespace Backstage.Handler
             goodsCategories.Name = name;
             goodsCategories.SellerId = CurrentUser.Id;
             goodsCategories.Index = index;
+            goodsCategories.ImageUrl = imageUrl;
             if (GoodsCategoriesHelper.SaveGoodsCategories(goodsCategories))
                 ReturnCorrectMsg("添加成功");
             else
@@ -121,34 +111,61 @@ namespace Backstage.Handler
                 ReturnErrorMsg("删除失败");
         }
 
-        /// <summary>
-        /// 修改商品分类名称
-        /// </summary>
-        private void ModifyNameGoodsCategories()
+        [Serializable]
+        public class ChangeGoodsCategories
         {
-            int id = GetInt("id");
-            string name = GetString("name");
-            if (id <= 0 || string.IsNullOrEmpty(name))
+            [XmlElement("Id")]
+            public int Id { get; set; }
+            [XmlElement("Index")]
+            public int Index { get; set; }
+            [XmlElement("Name")]
+            public string Name { get; set; }
+            [XmlElement("ImageUrl")]
+            public string ImageUrl { get; set; }
+        }
+        /// <summary>
+        /// 修改商品列表
+        /// </summary>
+        private void SaveGoodsCategoriesList()
+        {
+            string data_save = GetString("data_save");
+            if (string.IsNullOrEmpty(data_save))
             {
-                ReturnErrorMsg("参数错误");
+                ReturnErrorMsg("没有选择需要保存的商品分类");
                 return;
             }
-            var goodsCategories = GoodsCategoriesHelper.GetGoodsCategories(id);
-            if (goodsCategories == null)
+
+            var json = new JavaScriptSerializer();
+            var list = json.Deserialize(data_save, typeof(List<ChangeGoodsCategories>)) as List<ChangeGoodsCategories>;
+            if (list == null)
             {
-                ReturnErrorMsg("不存在该id的分类");
+                ReturnErrorMsg("没有选择需要保存的商品分类");
                 return;
             }
-            if (goodsCategories.SellerId != CurrentUser.Id)
+            var saveList = new List<GoodsCategories>();
+            foreach (var changeGoodsCategoriese in list)
             {
-                ReturnErrorMsg("没有权限修改该商户分类");
-                return;
+                var goodsCategories = GoodsCategoriesHelper.GetGoodsCategories(changeGoodsCategoriese.Id);
+                if (goodsCategories == null || goodsCategories.SellerId != CurrentUser.Id)
+                {
+                    ReturnErrorMsg("没有权限修改商户分类或者商户分类不存在");
+                    return;
+                }
+                goodsCategories.Index = changeGoodsCategoriese.Index;
+                goodsCategories.Name = changeGoodsCategoriese.Name;
+                goodsCategories.ImageUrl = changeGoodsCategoriese.ImageUrl;
+
+                saveList.Add(goodsCategories);
             }
-            goodsCategories.Name = name;
-            if (GoodsCategoriesHelper.SaveGoodsCategories(goodsCategories))
-                ReturnCorrectMsg("修改成功");
-            else
-                ReturnErrorMsg("修改失败");
+            if (saveList.Count > 0)
+            {
+                if (GoodsCategoriesHelper.SaveGoodsCategoriesList(saveList))
+                {
+                    ReturnCorrectMsg("保存成功");
+                    return;
+                }
+            }
+            ReturnCorrectMsg("保存失败");
         }
 
         /// <summary>
@@ -350,9 +367,9 @@ namespace Backstage.Handler
             [XmlElement("OriginalPrice")]
             public float OriginalPrice { get; set; }
             [XmlElement("IsRecommend")]
-            public int IsRecommend { get; set; }//传大于1的值
+            public int IsRecommend { get; set; }
             [XmlElement("IsHot")]
-            public int IsHot { get; set; }//传大于1的值
+            public int IsHot { get; set; }
         }
         /// <summary>
         /// 一键保存产品列表

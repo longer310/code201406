@@ -50,6 +50,8 @@ namespace Backstage.Core.Logic
                         goodsCategories.Index = (int)reader["Index"];
                         goodsCategories.Name = reader["Name"].ToString();
                         goodsCategories.SellerId = (int)reader["SellerId"];
+                        goodsCategories.Count = (int)reader["Count"];
+                        goodsCategories.ImageUrl = reader["ImageUrl"].ToString();
 
                         result.Results.Add(goodsCategories);
                     }
@@ -102,6 +104,9 @@ namespace Backstage.Core.Logic
                             GoodsCategories goodsCategories = new GoodsCategories();
                             goodsCategories.Id = reader.GetInt32(0);
                             goodsCategories.Name = reader["Name"].ToString();
+                            goodsCategories.SellerId = (int)reader["SellerId"];
+                            goodsCategories.Count = (int)reader["Count"];
+                            goodsCategories.ImageUrl = reader["ImageUrl"].ToString();
                             return goodsCategories;
                         }
                     }
@@ -156,30 +161,40 @@ namespace Backstage.Core.Logic
             {
                 cmdText = @"update GoodsCategories set 
                                                    Index=?Index,
-                                                   Name =?Name,
+                                                   Name =?Name ,
+                                                   Count =?Count ,
+                                                   ImageUrl =?ImageUrl 
                                                    where 
                                                    Id=?Id";
                 parameters.Add(new MySqlParameter("?Id", goodsCategories.Id));
                 parameters.Add(new MySqlParameter("?Index", goodsCategories.Index));
                 parameters.Add(new MySqlParameter("?Name", goodsCategories.Name));
+                parameters.Add(new MySqlParameter("?Count", goodsCategories.Count));
+                parameters.Add(new MySqlParameter("?ImageUrl", goodsCategories.ImageUrl));
             }
             else
             {
                 cmdText = @"insert into GoodsCategories
                                                    (
-                                                   Index,
+                                                   `Index`,
                                                    Name,
-                                                   SellerId
+                                                   SellerId,
+                                                   Count,
+                                                   ImageUrl
                                                    ) 
                                                    values 
                                                    (
                                                    ?Index,
                                                    ?Name,
-                                                   ?SellerId
+                                                   ?SellerId,
+                                                   ?Count,
+                                                   ?ImageUrl
                                                    )";
                 parameters.Add(new MySqlParameter("?Index", goodsCategories.Index));
                 parameters.Add(new MySqlParameter("?Name", goodsCategories.Name));
                 parameters.Add(new MySqlParameter("?SellerId", goodsCategories.SellerId));
+                parameters.Add(new MySqlParameter("?Count", goodsCategories.Count));
+                parameters.Add(new MySqlParameter("?ImageUrl", goodsCategories.ImageUrl));
             }
             try
             {
@@ -205,26 +220,26 @@ namespace Backstage.Core.Logic
             cmdText = "begin;";
             foreach (var goodsCategories in goodsCategoriesList)
             {
-                if (goodsCategories.Id > 0)
-                {
-                    cmdText += string.Format("update GoodsCategories set Index={0},Name ='{1}' where Id={2};", goodsCategories.Index, goodsCategories.Name, goodsCategories.Id);
-                    //parameters.Add(new MySqlParameter("?Id", goodsCategories.Id));
-                    //parameters.Add(new MySqlParameter("?Index", goodsCategories.Index));
-                    //parameters.Add(new MySqlParameter("?Name", goodsCategories.Name));
-                }
-                else
-                {
-                    cmdText += string.Format("insert into GoodsCategories(Index,Name,SellerId) values ({0},{1},{2});", goodsCategories.Index, goodsCategories.Name, goodsCategories.SellerId);
-                    //parameters.Add(new MySqlParameter("?Index", goodsCategories.Index));
-                    //parameters.Add(new MySqlParameter("?Name", goodsCategories.Name));
-                    //parameters.Add(new MySqlParameter("?SellerId", goodsCategories.SellerId));
-                }
+                var tempcmdText = @"UPDATE goodscategories SET
+                                        `Index`        = ?Index,
+                                        ImageUrl          = ?ImageUrl,
+                                        Name            = ?Name
+                                    WHERE
+                                        Id = ?Id;";
+                string newStr = string.Format("?{0}", goodsCategories.Id);
+                tempcmdText = tempcmdText.Replace("?", newStr);
+                cmdText += tempcmdText;
+                parameters.Add(new MySqlParameter(newStr + "Id", goodsCategories.Id));
+                parameters.Add(new MySqlParameter(newStr + "Index", goodsCategories.Index));
+                parameters.Add(new MySqlParameter(newStr + "ImageUrl", goodsCategories.ImageUrl));
+                parameters.Add(new MySqlParameter(newStr + "Name", goodsCategories.Name));
             }
             cmdText += "commit;";
             try
             {
-                var num = MySqlHelper.ExecuteNonQuery(Utility._gameDbConn, CommandType.Text, cmdText);
+                var num = MySqlHelper.ExecuteNonQuery(Utility._gameDbConn, CommandType.Text, cmdText, parameters.ToArray());
                 return num > 0;
+
             }
             catch (System.Exception ex)
             {

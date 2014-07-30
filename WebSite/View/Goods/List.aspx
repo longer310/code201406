@@ -273,12 +273,13 @@
 
             //删除单个商品 id:商品id
             delSingleGoods: function (id) {
+                var mpage = this;
                 Common.confirm({
                     title: "删除确认提示",
                     content: Str.format("您确定要删除编号为{0}的商品？", id),
                     confirm: function () {
                         //执行确认回调
-                        delGoods(id);
+                        mpage.delGoods(id);
                     }
                 });
             },
@@ -288,8 +289,12 @@
                 var mpage = this;
                 $.post(mpage.hander + "delGoodsList", { gids: ids }, function (data) {
                     if (!data.error) {
-                        //删除成功后刷新本页
+                        //删除成功后刷新本页 TODO:提示弹窗toast
                         mpage.getGoodsList(mpage.start, mpage.type);
+                        Common.alert({
+                            title: "提示",
+                            content: data.success
+                        });
                     } else {
                         Common.alert({
                             title: "错误提示",
@@ -304,8 +309,12 @@
                 var mpage = this;
                 $.post(mpage.hander + "saveGoodsList", { data_save: JSON.stringify(data_save) }, function (data) {
                     if (!data.error) {
-                        //提示弹窗toast
+                        //TODO:提示弹窗toast
                         mpage.getGoodsList(mpage.start, mpage.type);
+                        Common.alert({
+                            title: "提示",
+                            content: data.success
+                        });
                     } else {
                         Common.alert({
                             title: "错误提示",

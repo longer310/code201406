@@ -331,8 +331,8 @@ namespace Backstage.Core.Logic
                 cmdText += tempcmdText;
                 parameters.Add(new MySqlParameter(newStr + "Id", goods.Id));
                 parameters.Add(new MySqlParameter(newStr + "SellerId", goods.SellerId));
-                parameters.Add(new MySqlParameter(newStr + "?ImagesUrl", Utility.GetString(goods.ImageUrlList)));
-                parameters.Add(new MySqlParameter(newStr + "?LogoUrl", goods.LogoUrl));
+                parameters.Add(new MySqlParameter(newStr + "ImagesUrl", Utility.GetString(goods.ImageUrlList)));
+                parameters.Add(new MySqlParameter(newStr + "LogoUrl", goods.LogoUrl));
                 parameters.Add(new MySqlParameter(newStr + "Sales", goods.Sales));
                 parameters.Add(new MySqlParameter(newStr + "Title", goods.Title));
                 parameters.Add(new MySqlParameter(newStr + "Cid", goods.Cid));

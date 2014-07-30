@@ -77,24 +77,31 @@
 <script type="text/javascript" src="<%=DomainUrl %>/Script/kindeditor/lang/zh_CN.js"></script>
     
 <script type="text/jquery-tmpl-x" id="j-tmpl-goods-listitem">
-    {{each(i, v) list}}
-	    <tr data-cid="${v.Id}">
-			<td><input type="checkbox" class="j-select" /></td>
-			<td style="width:90px;">
-				<a class="btn btn-mini {{if i == 0}}disabled{{/if}} j-categroy-up" href="javascript:;"><i class="icon icon-arrow-up"></i></a>
-				<span class="j-categroy-index">${v.Index}</span>
-				<a class="btn btn-mini {{if i == list.length - 1}}disabled{{/if}} j-categroy-down" href="javascript:;"><i class="icon icon-arrow-down"></i></a>
-			</td>
-			<td style="width:280px;"><img src="${v.ImageUrl}" class="j-categroy-thumbnail" style="margin-right:10px;width:90px;height:45px;"><a class="btn btn-info btn-mini j-btn-imageUpload" href="javascript:;"><i class="icon-folder-open icon-white"></i> 本地上传</a>
-						<a class="btn btn-success btn-mini j-btn-imageManager" href="javascript:;"><i class="icon-picture icon-white"></i> 素材库选择</a></td>
-			<td><input type="text" value="${v.Name}" class="j-categroy-title"></td>
-			<td>${v.Count}</td>
-			<td style="width:140px;">
-				<a class="btn btn-primary btn-mini" href="<%=DomainUrl %>/view/goods/list.aspx"><i class="icon-pencil icon-white"></i> 管理商品</a>
-				<a class="btn btn-danger btn-mini j-btn-del" href="javascript:void(0);"><i class="icon-remove icon-white"></i> 删除</a>
-			</td>
-		</tr>
-	{{/each}}
+    {{if list.length > 0}}
+        {{each(i, v) list}}
+	        <tr data-cid="${v.Id}">
+			    <td><input type="checkbox" class="j-select" /></td>
+			    <td style="width:90px;">
+				    <a class="btn btn-mini {{if i == 0}}disabled{{/if}} j-categroy-up" href="javascript:;"><i class="icon icon-arrow-up"></i></a>
+				    <span class="j-categroy-index">${v.Index}</span>
+				    <a class="btn btn-mini {{if i == list.length - 1}}disabled{{/if}} j-categroy-down" href="javascript:;"><i class="icon icon-arrow-down"></i></a>
+			    </td>
+			    <td style="width:280px;"><img src="${v.ImageUrl}" class="j-categroy-thumbnail" style="margin-right:10px;width:90px;height:45px;"><a class="btn btn-info btn-mini j-btn-imageUpload" href="javascript:;"><i class="icon-folder-open icon-white"></i> 本地上传</a>
+						    <a class="btn btn-success btn-mini j-btn-imageManager" href="javascript:;"><i class="icon-picture icon-white"></i> 素材库选择</a></td>
+			    <td><input type="text" value="${v.Name}" class="j-categroy-title"></td>
+			    <td>${v.Count}</td>
+			    <td style="width:140px;">
+				    <a class="btn btn-primary btn-mini" href="<%=DomainUrl %>/view/goods/list.aspx"><i class="icon-pencil icon-white"></i> 管理商品</a>
+				    <a class="btn btn-danger btn-mini j-btn-del" href="javascript:void(0);"><i class="icon-remove icon-white"></i> 删除</a>
+			    </td>
+		    </tr>
+	    {{/each}}
+    {{else}}
+        <tr>
+            <td colspan="5" align="center">暂无无商品分类</td>
+        </tr>
+    {{/if}}
+
 </script>
 
 <script type="text/javascript">

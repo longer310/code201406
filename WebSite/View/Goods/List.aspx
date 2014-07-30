@@ -69,29 +69,29 @@
     <!--推荐和热销 如果选择 加上 active 的class-->
     <script type="text/jquery-tmpl-x" id="j-tmpl-goods-listitem">
         {{if list.length > 0}}
-        {{each(i, v) list}}
-	        <tr data-gid="${v.Id}">
-				<td><input type="checkbox" class="j-select"/></td>
-				<td style="width:30px;">${v.Id}</td>
-                <td style="width:45px;"><img style="max-width:45px;min-width:45px;max-height:45px;min-height:45px;" src="${v.LogoUrl}"></td>
-				<td>${v.Title}</td>
-				<td style="width:104px;"><input type="text" class="input-small j-price" value="${v.Nowprice}" ></td>
-				<td style="width:104px;"><input type="text" class="input-small j-preprice" value="${v.OriginalPrice}" ></td>
-				<td>${v.Sales}</td>
-				<td>${v.CommentCount} / ${v.BrowseCount}</td>
-				<td style="width:200px;">
-					<div class="pull-left" style="height:45px;">
-						<label class="checkbox"><input type="checkbox" {{if v.IsRecommend>0}} checked="checked" {{/if}}  class="j-isrecommend"> 推荐</label>
-						<label class="checkbox"><input type="checkbox" {{if v.IsHot>0}} checked="checked" {{/if}} class="j-ishot"> 热销</label>
-					</div>
+            {{each(i, v) list}}
+	            <tr data-gid="${v.Id}">
+				    <td><input type="checkbox" class="j-select"/></td>
+				    <td style="width:30px;">${v.Id}</td>
+                    <td style="width:45px;"><img style="max-width:45px;min-width:45px;max-height:45px;min-height:45px;" src="${v.LogoUrl}"></td>
+				    <td>${v.Title}</td>
+				    <td style="width:104px;"><input type="text" class="input-small j-price" value="${v.Nowprice}" ></td>
+				    <td style="width:104px;"><input type="text" class="input-small j-preprice" value="${v.OriginalPrice}" ></td>
+				    <td>${v.Sales}</td>
+				    <td>${v.CommentCount} / ${v.BrowseCount}</td>
+				    <td style="width:200px;">
+					    <div class="pull-left" style="height:45px;">
+						    <label class="checkbox"><input type="checkbox" {{if v.IsRecommend>0}} checked="checked" {{/if}}  class="j-isrecommend"> 推荐</label>
+						    <label class="checkbox"><input type="checkbox" {{if v.IsHot>0}} checked="checked" {{/if}} class="j-ishot"> 热销</label>
+					    </div>
 
-					<div class="pull-right">
-						<a class="btn btn-primary btn-mini" href="<%=DomainUrl %>/view/goods/item.aspx?id=${v.Id}"><i class="icon-pencil icon-white"></i> 编辑</a>
-						<a class="btn btn-danger btn-mini j-btn-del" href="javascript:void(0);" onclick="MPage.delSingleGoods(${v.Id})"><i class="icon-remove icon-white"></i> 删除</a>
-					</div>
-				</td>
-			</tr>
-		{{/each}}
+					    <div class="pull-right">
+						    <a class="btn btn-primary btn-mini" href="<%=DomainUrl %>/view/goods/item.aspx?id=${v.Id}"><i class="icon-pencil icon-white"></i> 编辑</a>
+						    <a class="btn btn-danger btn-mini j-btn-del" href="javascript:void(0);" onclick="MPage.delSingleGoods(${v.Id})"><i class="icon-remove icon-white"></i> 删除</a>
+					    </div>
+				    </td>
+			    </tr>
+		    {{/each}}
         {{else}}
             <tr>
                 <td colspan="8" align="center">此条件下无商品</td>

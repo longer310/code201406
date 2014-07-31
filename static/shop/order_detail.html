@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+	<!-- container-fluid -->
+	<head>
+		<title>Unicorn Admin</title>
+		<meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <!--公用样式-->
+		<link rel="stylesheet" href="../public/css/bootstrap.min.css" />
+		<link rel="stylesheet" href="../public/css/bootstrap-responsive.min.css" />
+		<link rel="stylesheet" href="../public/css/unicorn.main.css" />
+		<link rel="stylesheet" href="../public/css/unicorn.grey.css" />
+	</head>
+	<body>
+		
+		
+		<div id="header">
+			<h1><a href="./dashboard.html">APP 商户管理系统</a></h1>		
+		</div>
+		
+		<div id="hotline" class="muted">服务热线：400-800-8888</div>
+
+		<div id="user-nav" class="navbar navbar-inverse">
+			<dl class="user-info">
+				<dt class="muted">福建省宁德米克中式餐饮</dt>
+				<dd><span class="muted">用户名：</span><b class="text-error">80222222</b></dd>
+				<dd><span class="muted">可提现金额：</span><b class="text-error">￥3088.00</b></dd>
+			</dl>
+            <ul class="nav btn-group">
+                <li class="btn btn-inverse"><a title="" href="#"><i class="icon icon-share"></i> <span class="text">提现</span></a></li>
+                <li class="btn btn-inverse"><a title="" href="login.html"><i class="icon icon-off"></i> <span class="text">退出登陆</span></a></li>
+            </ul>
+        </div>
+            
+		<div id="sidebar">
+			<ul>
+				<li><a href="index.html"><i class="icon icon-home"></i> <span>首页</span></a></li>
+				<li class="submenu">
+					<a href="#"><i class="icon icon-gift"></i> <span>活动管理</span> <span class="label">2</span></a>
+					<ul>
+						<li><a href="activity_list.html">活动列表</a></li>
+						<li><a href="activity_add.html">新增活动</a></li>
+					</ul>
+				</li>
+				<li class="submenu">
+					<a href="#"><i class="icon icon-tint"></i> <span>产品管理</span><span class="label">3</span></a>
+					<ul>
+						<li><a href="goods_list.html">产品列表</a></li>
+						<li><a href="goods_add.html">新增产品</a></li>
+						<li><a href="categroy.html">分类管理</a></li>
+					</ul>
+				</li>
+				<li class="active open"><a href="order.html"><i class="icon icon-shopping-cart"></i> <span>订单管理</span></a></li>
+				<li class="submenu">
+					<a href="#"><i class="icon icon-picture"></i> <span>图片墙管理</span> <span class="label">2</span></a>
+					<ul>
+						<li><a href="image_list.html">图片墙列表</a></li>
+						<li><a href="image_add.html">新增图片墙</a></li>
+					</ul>
+				</li>
+				<li><a href="user.html"><i class="icon icon-user"></i> <span>会员管理</span></a></li>
+				<li><a href="comment.html"><i class="icon icon-comment"></i> <span>留言管理</span></a></li>
+				<li class="submenu">
+					<a href="#"><i class="icon icon-tags"></i> <span>电子券管理</span> <span class="label">2</span></a>
+					<ul>
+						<li><a href="ticket_list.html">电子券列表</a></li>
+						<li><a href="ticket_add.html">新增电子券</a></li>
+					</ul>
+				</li>
+				<li>
+					<a href="ad.html"><i class="icon icon-bullhorn"></i> <span>广告设置</span></a>
+				</li>
+				<li class="submenu">
+					<a href="#"><i class="icon icon-hdd"></i> <span>数据库统计</span> <span class="label">4</span></a>
+					<ul>
+						<li><a href="pv.html">访问量统计</a></li>
+						<li><a href="sale.html">销量统计</a></li>
+						<li><a href="charge.html">充值量统计</a></li>
+						<li><a href="backup.html">数据备份导出</a></li>
+					</ul>
+				</li>
+				<li class="submenu">
+					<a href="#"><i class="icon icon-cog"></i> <span>系统设置</span> <span class="label">6</span></a>
+					<ul>
+						<li><a href="change_pw.html">登录设置</a></li>
+						<li><a href="profile.html">资料设置</a></li>
+						<li><a href="message.html">推送服务</a></li>
+						<li><a href="rule.html">规则设置</a></li>
+						<li><a href="resource.html">素材库管理</a></li>
+						<li><a href="cash.html">提现管理</a></li>
+					</ul>
+				</li>
+			</ul>
+		</div>
+		
+		<div id="content">
+
+			<div class="widget-box" >
+				<div class="widget-title">
+					<span class="icon">
+						<i class="icon-shopping-cart"></i>
+					</span>
+					<h5>订单详情</h5>
+				</div>
+				<div class="widget-content">
+
+					<div class="row-fluid">
+						<div class="span6" id="j-orderDetail-info">
+							
+						</div>
+						<div class="span6" id="j-orderDetail-user">
+						</div>
+					</div>
+
+					
+
+					<div class="progress" style="height:30px; line-height:30px;" id="j-orderDetail-status">
+						
+					</div>
+
+					<table class="table table-bordered table-striped">
+						<thead>
+							<tr>
+								<th>图片</th>
+								<th>名称</th>
+								<th>单价</th>
+								<th>数量</th>
+								<th>小计</th>
+							</tr>
+						</thead>
+						<tbody id="j-orderDetail-list">
+						</tbody>
+						<tfoot>
+							<tr>
+								<td colspan="5" id="j-orderDetail-footer"></td>
+							</tr>
+						</tfoot>
+					</table>
+				</div>
+
+				<div class="widget-footer clearfix">
+					<div class="pull-right" style="padding:20px 0;">
+						<a class="btn btn-primary" href="javascript:window.history.back();"><i class="icon-ok icon-white"></i> 返回</a>
+					</div>
+				</div>
+			</div>
+
+			<div id="footer">
+				<p>关于淘宝合作伙伴营销中心廉正举报联系客服开放平台诚征英才联系我们网站地图法律声明© 2003-2014 Taobao.com 版权所有</p>
+				<p>网络文化经营许可证：文网文[2010]040号|增值电信业务经营许可证：浙B2-20080224-1|信息网络传播视听节目许可证：1109364号 </p>
+			</div>
+		</div>
+		
+		<!--公用js-->
+        <script src="../public/js/jquery.min.js"></script>
+        <script src="../public/js/jquery.ui.custom.js"></script>
+        <script src="../public/js/bootstrap.min.js"></script>
+        <script src="../public/js/unicorn.js"></script>
+        <script src="../public/js/jquery.tmpl.min.js"></script>
+        <script src="../public/js/common.js"></script>
+
+        <!--页面js-->
+
+        <script type="text/javascript">
+        	//用户的基础信息
+        	var UINFO = {
+        		uid : 1111,
+        		uname : "2222",
+        		shop_type : 1//商家类型 为餐饮
+        	}
+        </script>
+
+        <script type="text/jquery-tmpl-x" id="j-tmpl-orderDetail-listitem">
+        	{{each(i, v) list}}
+	        	<tr data-gid="1">
+					<td style="width:100px;"><img src="http://placehold.it/100x45"></td>
+					<td>铁板牛肉</td>
+					<td class="muted" style="width:80px;"><b class="text-error">58</b>元</td>
+					<td class="muted" style="width:40px;"><b class="text-error">2</b>份</td>
+					<td class="muted" style="width:100px;"><b class="text-error">116</b>元</td>
+				</tr>
+			{{/each}}
+        </script>
+
+        <script type="text/jquery-tmpl-x" id="j-tmpl-orderDetail-info">
+        	<dl class="dl-horizontal muted">
+				<dt>订单号</dt>
+				<dd class="text-info">20140619111111</dd>
+				<dt>订单类型</dt>
+				<dd class="text-info">送餐</dd>
+				<dt>订单状态</dt>
+				<dd class="text-info">待发货 <a class="btn btn-success btn-mini" id="j-btn-orderDetail-reach" href="javascript:;" data-gid="1"><i class="icon-ok icon-white"></i> 已发货</a></dd>
+				<dt>下单时间</dt>
+				<dd class="text-info">2014-06-19 16:21</dd>
+			</dl>
+        </script>
+
+        <script type="text/jquery-tmpl-x" id="j-tmpl-orderDetail-user">
+			<dl class="dl-horizontal muted">
+				<dt>收货地址</dt>
+				<dd class="text-info">2014-06-19 16:21</dd>
+				<dt>联系方式</dt>
+				<dd class="text-info">15809785671</dd>
+				<dt>联系人</dt>
+				<dd class="text-info">某莫某</dd>
+			</dl>
+        </script>
+
+        <script type="text/jquery-tmpl-x" id="j-tmpl-orderDetail-status">
+        	<div class="bar bar-success" style="width: 25%;">已付款</div>
+			<div class="bar bar-info" style="width: 25%;">待发货</div>
+			<div class="bar bar-info" style="width: 25%;">已发货</div>
+			<div class="bar bar-info" style="width: 25%;">已完成</div>
+		</script>
+
+        <script type="text/jquery-tmpl-x" id="j-tmpl-orderDetail-footer">
+        	<div class="muted pull-right text-right">
+				<p><span class="label label-info">合计</span> <b class="text-error ">232</b>元</p>
+				<p><b class="text-error">+</b> <span class="label label-info">配送费</span> <b class="text-error">5</b>元</p>
+				<p><b class="text-error">-</b> <span class="label label-success">满100减20元电子券</span> <b class="text-error">20</b>元</p> 
+				<p><b class="text-error">=</b> <span class="label label-info">实际付款</span> <b class="text-error">217</b>元</p>
+			</div>
+
+			<blockquote>
+				<p>给我使劲加辣椒</p>
+				<small>用户备注</small>
+			</blockquote>
+		</script>
+
+        <script type="text/javascript">
+        	var MPage = {
+        		init : function(){
+        			var mpage = this;
+
+        			mpage.getOrderDetail();
+        		},
+
+        		//p 页码
+        		//type tab 类型
+    		    getOrderDetail : function (){
+    		    	var mpage = this;
+
+					//$.getJSON("", { }， function(json){
+						
+						var json = {
+							code : 0,
+							msg : "", 
+							result : {
+								count : 59,
+								user : {
+
+								},
+
+								info : {
+
+								},
+
+								//电子券
+								ticket : [
+									{
+										title : "满100减20元电子券",
+										price : 20
+									}
+								],
+								//配送费
+								delivery_fee : 5,
+
+								list : [
+									{},
+									{},
+									{},
+									{},
+									{},
+									{}
+								]
+							}
+						};
+						
+						$("#j-orderDetail-list").html( $("#j-tmpl-orderDetail-listitem").tmpl(json.result) );
+						$("#j-orderDetail-info").html( $("#j-tmpl-orderDetail-info").tmpl(json.result) );
+						$("#j-orderDetail-user").html( $("#j-tmpl-orderDetail-user").tmpl(json.result) );
+						$("#j-orderDetail-status").html( $("#j-tmpl-orderDetail-status").tmpl(json.result) );
+						$("#j-orderDetail-footer").html( $("#j-tmpl-orderDetail-footer").tmpl(json.result) );
+
+						$("#j-btn-orderDetail-reach").bind("click", function(){
+	        				var $btn = $(this);
+	        				var id = $btn.attr("data-gid");
+	        				
+	        				Common.confirm({
+        						title : "订单修改提示",
+        						content : "您确定要将该订单的状态修改为已发货？",
+        						confirm : function(){
+        							//执行确认回调
+        							alert('执行确认回调');
+
+        							$("#j-orderDetail-status").find(".bar").eq(0).removeClass("bar-success").addClass("bar-info").end().eq(1).removeClass("bar-info").addClass("bar-success");
+        							$btn.remove();
+        						},
+        						cancel : function(){
+        							//执行取消回调
+        							alert('执行取消回调');
+        						}
+        					});
+	        				return false;
+	        			});
+				}
+    		}
+
+    		$(function(){
+    			MPage.init();
+    		});
+    		
+        </script>
+	</body>
+</html>

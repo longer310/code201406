@@ -117,7 +117,7 @@ namespace Backstage.Core.Handler
             {
                 var data = new
                 {
-                    expir = item.Expiry
+                    expir = item.Expiry.GetUnixTime()
                 };
 
                 jt.AddSuccessParam();

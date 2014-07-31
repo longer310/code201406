@@ -122,7 +122,7 @@ var Route = {
     FILENAME: 4,
     ALL: 7,
 
-    parse: function(url) {
+    parse: function (url) {
         var _this = this;
         var a = document.createElement('a');
 
@@ -148,7 +148,7 @@ var Route = {
         return route;
     },
 
-    split: function(route, pattern) {
+    split: function (route, pattern) {
         var _this = this;
         var pattern = pattern || _this.SEARCH,
             param = {},
@@ -178,7 +178,7 @@ var Route = {
         return param;
     },
 
-    splitKeyValue: function(search, gap, equal) {
+    splitKeyValue: function (search, gap, equal) {
         var arg, args, param = {},
             gap = gap || '&',
             equal = equal || '=';
@@ -194,7 +194,7 @@ var Route = {
         return param;
     },
 
-    format: function(url, param, filter) {
+    format: function (url, param, filter) {
         var _this = this,
             param_arr = [],
             filter = filter || [],

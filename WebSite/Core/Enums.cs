@@ -88,9 +88,14 @@ namespace Backstage.Core
         Shop = 0,
 
         /// <summary>
-        /// 送餐
+        /// 待送餐
         /// </summary>
-        Delivery = 1,
+        WaitDelivery = 1,
+
+        /// <summary>
+        /// 已送餐
+        /// </summary>
+        Deliveryed = 2,
     }
 
     public enum OrderStatus
@@ -107,16 +112,49 @@ namespace Backstage.Core
         /// 已付款
         /// </summary>
         Pay = 2,
+
+
         /// <summary>
         /// 已完结（到店吃或者已送餐）
         /// </summary>
-        End = 3,
+        End = 10,
 
 
         /// <summary>
         /// 取消订单
         /// </summary>
         Cancel = -1,
+    }
+
+    /// <summary>
+    /// 页面请求订单状态
+    /// </summary>
+    public enum ReqOrderStatus
+    {
+        /// <summary>
+        /// 所有
+        /// </summary>
+        All = 0,
+        /// <summary>
+        /// 未付款
+        /// </summary>
+        NoPay = 1,
+        /// <summary>
+        /// 已付款
+        /// </summary>
+        Pay = 2,
+        /// <summary>
+        /// 待发货
+        /// </summary>
+        WaitDeliverGoods = 3,
+        /// <summary>
+        /// 已发货
+        /// </summary>
+        DeliverGoodsed = 4,
+        /// <summary>
+        /// 已完结（用户完结或者倒计时到了完结）
+        /// </summary>
+        End = 5,
     }
 
     /// <summary>

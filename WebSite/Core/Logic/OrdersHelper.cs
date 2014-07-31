@@ -4,17 +4,18 @@ using System.Data;
 using System.Linq;
 using System.Web;
 using Backstage.Core.Entity;
+using Backstage.Model;
 using MySql.Data.MySqlClient;
 
 namespace Backstage.Core.Logic
 {
     public static class OrdersHelper
     {
-        public static List<Orders> GetOrdersList(out int totalnum, string wheresql = "",
+        public static PagResults<Orders> GetOrdersList(string wheresql = "",
             string ordersql = "", int start = 0, int limit = 0, int gettotal = 1)
         {
-            totalnum = 0;
-            List<Orders> list = new List<Orders>();
+            var result = new PagResults<Orders>();
+            result.Results = new List<Orders>();
             if (ordersql == "") ordersql = " order by CreateTime desc ";
             string limitsql = limit != 0 ? " LIMIT ?start,?limit" : string.Empty;
             var cmdText = @"select * from Orders " + wheresql + ordersql + limitsql;
@@ -60,7 +61,7 @@ namespace Backstage.Core.Logic
                         orders.SellerId = (int)reader["SellerId"];
                         orders.Ccontent = reader["Ccontent"].ToString();
 
-                        list.Add(orders);
+                        result.Results.Add(orders);
                     }
 
                     //一个函数有两次连接数据库 先把连接断开 然后重连
@@ -76,7 +77,7 @@ namespace Backstage.Core.Logic
                         {
                             if (reader.Read())
                             {
-                                totalnum = reader.GetInt32(0);
+                                result.TotalCount = reader.GetInt32(0);
                             }
                         }
                     }
@@ -86,7 +87,7 @@ namespace Backstage.Core.Logic
             {
                 throw;
             }
-            return list;
+            return result;
         }
 
         public static Orders GetOrders(int id, int uid = 0)

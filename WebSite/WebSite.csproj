@@ -584,6 +584,7 @@
     <Compile Include="Core\Handler\Backstage\SourceMaterialHandler.cs" />
     <Compile Include="Core\Handler\FileManager\FileManagerHandler.cs" />
     <Compile Include="Core\Handler\FileManager\UploadHandler.cs" />
+    <Compile Include="Core\Handler\Orders\OrdersHandler.cs" />
     <Compile Include="Core\Handler\Goods\GoodsHandler.cs" />
     <Compile Include="Core\Logic\ShareLogHelper.cs" />
     <Compile Include="Core\MyCache.cs" />
@@ -748,6 +749,7 @@
     <Content Include="Handler\Backstage\CouponHandler.ashx" />
     <Content Include="Handler\Backstage\SourceMaterialHandler.ashx" />
     <Content Include="Handler\Backstage\CommentHandler.ashx" />
+    <Content Include="Handler\Orders\OrdersHandler.ashx" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

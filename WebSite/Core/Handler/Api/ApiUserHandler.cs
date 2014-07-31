@@ -837,11 +837,10 @@ namespace Backstage.Handler
 
             if (!CheckUserByIdAndSellerId(uid, sellerid)) return;
 
-            int totalnum;
             string wheresql = string.Format(" where Status > 0 and UserId={0} and SellerId={1} ", uid, sellerid);
-            var orderslist = OrdersHelper.GetOrdersList(out totalnum, wheresql, "", start * limit, limit, 0);
+            var orderslist = OrdersHelper.GetOrdersList(wheresql, "", start * limit, limit, 0);
             var data = new OrdersListData();
-            foreach (var orderse in orderslist)
+            foreach (var orderse in orderslist.Results)
             {
                 data.orderslist.Add(new ApiGoodsHandler.OrderDetailData(orderse));
             }

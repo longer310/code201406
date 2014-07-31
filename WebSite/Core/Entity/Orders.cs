@@ -137,5 +137,24 @@ namespace Backstage.Core.Entity
             CreateTime = DateTime.Now;
             OrderTime = DateTime.Now;
         }
+
+        public ReqOrderStatus GetReqStatus()
+        {
+            if(OrderType == OrderType.WaitDelivery)
+                return ReqOrderStatus.WaitDeliverGoods;
+            else if (OrderType == OrderType.Deliveryed)
+                return ReqOrderStatus.DeliverGoodsed;
+            else if (Status == OrderStatus.Pay)
+                return ReqOrderStatus.Pay;
+            else if (Status == OrderStatus.End)
+                return ReqOrderStatus.End;
+            else
+            {
+                if(Status < OrderStatus.Pay)
+                    return ReqOrderStatus.NoPay;
+                else
+                    return ReqOrderStatus.Pay;
+            }
+        }
     }
 }

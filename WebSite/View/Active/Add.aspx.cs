@@ -10,9 +10,12 @@ namespace Backstage.View.Active
 {
     public partial class Add : BasePage
     {
+        public string sellerId;
+
         protected void Page_Load(object sender, EventArgs e)
         {
 
+            sellerId = Request.QueryString["sellerId"].ToString();
         }
     }
 }

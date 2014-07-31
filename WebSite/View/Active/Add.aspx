@@ -99,11 +99,12 @@
     <!--电子券列表模版-->
     <script type="text/jquery-tmpl-x" id="j-tmpl-ticket-listitem">
         	{{each(i, v) list}}
-	        	<li data-id="1"><a href="#">电子券名称电子券名称电子券名称电子券名称电子券名称</a></li>
+	        	<li data-id="${v.Id}"><a href="#">${v.Title}</a></li>
 			{{/each}}
         </script>
 
     <script type="text/javascript">
+        var sellerId = '<%=sellerId%>';
         var MPage = {
             init: function () {
                 var mpage = this;
@@ -164,19 +165,20 @@
                         title: $.trim($("#j-activity-title").val()),
                         ticket_id: $("#j-btn-ticket-selected").attr("data-id"),
                         thumbnail: $('#j-img-placehold').attr("src"),
-                        content: text_editor.html()
+                        content: text_editor.html(),
+                        sellerid: sellerId
                     }
-
                     $.ajax({
-                        url: "../../Handler/Backstage/ActiveHandler.ashx?action=add&title=" + save_data.title + "&ticket_id=" + save_data.ticket_id + "&thumbnail=" + save_data.thumbnail + "&content=" + save_data.content,
-                        type: "get",
+                        url: "../../Handler/Backstage/ActiveHandler.ashx?action=create",
+                        data: save_data,
+                        type: "POST",
                         dataType: "json"
                         //context: document.body
                     }).success(function (data) {
                         alert("添加成功");
-                        window.setTimeout(function () {
-                            window.location.reload();
-                        }, 2000);
+                        //window.setTimeout(function () {
+                        //    window.location.reload();
+                        //}, 2000);
                     });
                     return false;
                 });
@@ -211,40 +213,48 @@
                     }
                 };
 
-                $("#j-ticket-list").html($("#j-tmpl-ticket-listitem").tmpl(json.result));
+                $.ajax({
+                    url: "../../Handler/Backstage/CouponHandler.ashx?action=getlist&sellerid=" + sellerId + "&start=" + (p - 1) + "&limit=" + 6,
+                    type: "get",
+                    dataType: "json"
+                    //context: document.body
+                }).success(function (data) {
+                    json.result.count = data.data.TotalCount;
+                    json.result.list = data.data.Results;
+                    $("#j-ticket-list").html($("#j-tmpl-ticket-listitem").tmpl(json.result));
 
-                $("#j-ticket-list li").bind("click", function () {
-                    var gid = $(this).attr("data-id"),
-                        title = $(this).text();
+                    $("#j-ticket-list li").bind("click", function () {
+                        var gid = $(this).attr("data-id"),
+                            title = $(this).text();
 
-                    $("#j-btn-ticket-selected").attr("data-id", gid).val(title);
-                    $('#j-ticket-selectModal').modal('hide');
-                    return false;
+                        $("#j-btn-ticket-selected").attr("data-id", gid).val(title);
+                        $('#j-ticket-selectModal').modal('hide');
+                        return false;
+                    });
+
+                    ue.pager({
+                        //target : $(".list_pager"),//放置分页的元素
+                        pagerTarget: $("#j-ticket-pagination ul"),
+                        first: '<li><a href="#">首页</a></li>',
+                        firstDisabled: '<li class="disabled"><a href="#">首页</a></li>',
+                        last: '<li><a href="#">末页</a></li>',
+                        lastDisabled: '<li class="disabled"><a href="#">末页</a></li>',
+                        prev: '<li><a href="#">上一页</a></li>',
+                        prevDisabled: '<li class="disabled"><a href="#">上一页</a></li>',
+                        next: '<li><a href="#">下一页</a></li>',
+                        nextDisabled: '<li class="disabled"><a href="#">下一页</a></li>',
+                        current: '<li class="active"><a href="#">@{page}</a></li>',
+                        page: '<li><a href="#">@{page}</a></li>',
+                        tip: '<li class="page-info"><b class="text-info">@{nowPage}</b>/@{pageCount}页 共<b class="text-info">@{count}</b>条记录</li>',
+                        now: p,//当前页
+                        maxPage: 5,//显示的最多页数
+                        per: 6,//每页显示几个
+                        count: json.result.count,
+                        onchange: function (page) {//切换页数回调函数
+                            mpage.getTicketList(page);
+                        }
+                    })
                 });
-
-                ue.pager({
-                    //target : $(".list_pager"),//放置分页的元素
-                    pagerTarget: $("#j-ticket-pagination ul"),
-                    first: '<li><a href="#">首页</a></li>',
-                    firstDisabled: '<li class="disabled"><a href="#">首页</a></li>',
-                    last: '<li><a href="#">末页</a></li>',
-                    lastDisabled: '<li class="disabled"><a href="#">末页</a></li>',
-                    prev: '<li><a href="#">上一页</a></li>',
-                    prevDisabled: '<li class="disabled"><a href="#">上一页</a></li>',
-                    next: '<li><a href="#">下一页</a></li>',
-                    nextDisabled: '<li class="disabled"><a href="#">下一页</a></li>',
-                    current: '<li class="active"><a href="#">@{page}</a></li>',
-                    page: '<li><a href="#">@{page}</a></li>',
-                    tip: '<li class="page-info"><b class="text-info">@{nowPage}</b>/@{pageCount}页 共<b class="text-info">@{count}</b>条记录</li>',
-                    now: p,//当前页
-                    maxPage: 5,//显示的最多页数
-                    per: 6,//每页显示几个
-                    count: json.result.count,
-                    onchange: function (page) {//切换页数回调函数
-                        mpage.getTicketList(page);
-                    }
-                })
-                //});
 
             }
         }

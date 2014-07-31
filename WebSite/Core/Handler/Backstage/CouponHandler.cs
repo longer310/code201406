@@ -171,26 +171,34 @@ namespace Backstage.Core.Handler.Backstage
             int size = GetInt("limit");
             int sid = GetInt("sellerid");
 
-            var results = CouponHelper.GetPagings(sid, index, size);
-            var data = new List<object>();
-            foreach (var r in results.Results)
+            var results = CouponHelper.GetPagings(sid, index * size, size);
+            var data = new PagResults<object>();
+            data.TotalCount = results.TotalCount;
+            foreach (var item in results.Results)
             {
-                var d = new
+                var o = new
                 {
-                    couponid = r.Id,
-                    title = r.Title,
-                    img = r.ImgUrl,
-                    extcredit = r.Extcredit,
-                    expiry = r.Expiry.GetUnixTime(),
-                    description = r.Description
+                    Id = item.Id,
+                    ImgId = item.ImgId,
+                    ImgUrl = item.ImgUrl,
+                    SellerId = item.SellerId,
+                    Status = item.Status,
+                    Summary = item.Summary,
+                    Title = item.Title,
+                    Commentnum = item.Commentnum,
+                    Description = item.Description,
+                    DiscountMoney = item.DiscountMoney,
+                    Expiry = item.Expiry.ToString("yyyy-MM-dd HH:mm:ss"),
+                    Extcredit = item.Extcredit,
+                    FullMoney = item.FullMoney
                 };
-                data.Add(d);
+                data.Results.Add(o);
             }
 
             JsonTransfer jt = new JsonTransfer();
             jt.AddSuccessParam();
             jt.Add("data", data);
-            Response.Write(DesEncrypt(jt).ToLower());
+            Response.Write(DesEncrypt(jt));
             Response.End();
         }
     }

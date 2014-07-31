@@ -26,7 +26,7 @@ namespace Backstage.Core.Handler.Backstage
                     GetList(); break;
                 case "getitem":
                     GetItem(); break;
-                case "updatedata":
+                case "update":
                     UpdateData(); break;
                 case "delete":
                     Delete(); break;
@@ -40,14 +40,11 @@ namespace Backstage.Core.Handler.Backstage
         {
             var active = new Active();
             active.SellerId = GetInt("SellerId");
-            active.Summary = GetString("Summary");
+            active.CouponId = GetInt("ticket_id");
             active.Title = GetString("Title");
-            active.Views = GetInt("Views");
-            active.Commentnum = GetInt("Commentnum");
-            active.CoverImgId = GetInt("CoverImgId");
-            active.CoverImgUrl = GetString("CoverImgUrl");
-            active.Description = GetString("Description");
-
+            active.CoverImgUrl = GetString("thumbnail");
+            active.Description = GetString("content");
+            active.Summary = active.Description.Length > 20 ? active.Description.Substring(0, 20) : active.Description;
             ActiveHelper.Create(active);
         }
 
@@ -62,16 +59,14 @@ namespace Backstage.Core.Handler.Backstage
 
         private void UpdateData()
         {
-            var active = new Active();
-            active.Id = GetInt("id");
-            active.SellerId = GetInt("SellerId");
-            active.Summary = GetString("Summary");
+            var id = GetInt("id");
+
+            var active = ActiveHelper.GetItem(id);
+            active.CouponId = GetInt("ticket_id");
             active.Title = GetString("Title");
-            active.Views = GetInt("Views");
-            active.Commentnum = GetInt("Commentnum");
-            active.CoverImgId = GetInt("CoverImgId");
-            active.CoverImgUrl = GetString("CoverImgUrl");
-            active.Description = GetString("Description");
+            active.CoverImgUrl = GetString("thumbnail");
+            active.Description = GetString("content");
+            active.Summary = active.Description.Length > 20 ? active.Description.Substring(0, 20) : active.Description;
 
             ActiveHelper.Update(active);
         }
@@ -79,9 +74,24 @@ namespace Backstage.Core.Handler.Backstage
 
         private void GetItem()
         {
-            int aid = GetInt("newid");
-            var data = ActiveHelper.GetItem(aid);
-
+            int aid = GetInt("id");
+            var item = ActiveHelper.GetItem(aid);
+            var coupon = CouponHelper.GetItem(item.CouponId);
+            var data = new
+            {
+                Id = item.Id,
+                SellerId = item.SellerId,
+                CouponId = item.CouponId,
+                CouponTitle = coupon.Title,
+                Summary = item.Summary,
+                Title = item.Title,
+                Views = item.Views,
+                Commentnum = item.Commentnum,
+                ImgId = item.CoverImgId,
+                ImgUrl = item.CoverImgUrl == "" ? "http://placehold.it/128x128" : item.CoverImgUrl,
+                CreateTime = item.CreateTime.ToString("yyyy-MM-dd HH:mm:ss"),
+                Description = item.Description
+            };
             JsonTransfer jt = new JsonTransfer();
             jt.AddSuccessParam();
             jt.Add("data", data);
@@ -122,7 +132,7 @@ namespace Backstage.Core.Handler.Backstage
             Response.Write(DesEncrypt(jt).ToLower());
             Response.End();
         }
-        
+
         public bool IsReusable
         {
             get

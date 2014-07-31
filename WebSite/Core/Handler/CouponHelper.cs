@@ -60,7 +60,7 @@ namespace Backstage.Core.Handler
         {
             var results = new PagResults<Coupon>();
             results.Results = new List<Coupon>();
-            string limitsql = start != 0 ? " LIMIT ?start,?limit" : string.Empty;
+            string limitsql = limit != 0 ? " LIMIT ?start,?limit" : string.Empty;
             if (order == "") order = " order by Expiry desc ";
             string commandText = @"select * from coupon where sellerId = ?sellerId " + order + limitsql;
 

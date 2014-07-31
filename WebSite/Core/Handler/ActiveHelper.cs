@@ -27,11 +27,14 @@ namespace Backstage.Core
                     while (reader.Read())
                     {
                         a = new Active();
-                        a.Id = reader.GetInt32(0);
+                        a.Id = (int)reader["Id"];
                         a.SellerId = (int)reader["SellerId"];
+                        a.CouponId = (int)reader["CouponId"];
                         a.CoverImgId = (int)reader["CoverImgId"];
+                        a.CoverImgUrl = reader["CoverImgUrl"].ToString();
                         a.Title = reader["Title"].ToString();
                         a.Summary = reader["Summary"].ToString();
+                        a.Description = reader["Description"].ToString();
                         a.CreateTime = (DateTime)reader["CreateTime"];
                         a.Views = (int)reader["Views"];
                         a.Commentnum = (int)reader["Commentnum"];
@@ -76,10 +79,12 @@ namespace Backstage.Core
                         Active a = new Active();
                         a.Id = (int)reader["Id"];
                         a.SellerId = (int)reader["SellerId"];
+                        a.CouponId = (int)reader["CouponId"];
                         a.CoverImgId = (int)reader["CoverImgId"];
                         a.CoverImgUrl = reader["CoverImgUrl"].ToString();
                         a.Title = reader["Title"].ToString();
                         a.Summary = reader["Summary"].ToString();
+                        a.Description = reader["Description"].ToString();
                         a.CreateTime = (DateTime)reader["CreateTime"];
                         a.Views = (int)reader["Views"];
                         a.Commentnum = (int)reader["Commentnum"];
@@ -140,11 +145,13 @@ namespace Backstage.Core
                         Active a = new Active();
                         a.Id = (int)reader["Id"];
                         a.SellerId = (int)reader["SellerId"];
+                        a.CouponId = (int)reader["CouponId"];
                         a.CoverImgId = (int)reader["CoverImgId"];
+                        a.CoverImgUrl = reader["CoverImgUrl"].ToString();
                         a.Title = reader["Title"].ToString();
                         a.Summary = reader["Summary"].ToString();
+                        a.Description = reader["Description"].ToString();
                         a.CreateTime = (DateTime)reader["CreateTime"];
-                        a.CoverImgUrl = reader["CoverImgUrl"].ToString();
                         a.Views = (int)reader["Views"];
                         a.Commentnum = (int)reader["Commentnum"];
                         results.Add(a);
@@ -164,6 +171,7 @@ namespace Backstage.Core
         {
             string commandText = @"UPDATE active SET
                                         SellerId = ?SellerId,
+                                        CouponId = ?CouponId,
                                         CoverImgId = ?CoverImgId,
                                         CoverImgUrl = ?CoverImgUrl,
                                         Title = ?Title,
@@ -178,6 +186,7 @@ namespace Backstage.Core
             List<MySqlParameter> parameters = new List<MySqlParameter>();
             parameters.Add(new MySqlParameter("?Id", active.Id));
             parameters.Add(new MySqlParameter("?SellerId", active.SellerId));
+            parameters.Add(new MySqlParameter("?CouponId", active.CouponId));
             parameters.Add(new MySqlParameter("?CoverImgId", active.CoverImgId));
             parameters.Add(new MySqlParameter("?CoverImgUrl", active.CoverImgUrl));
             parameters.Add(new MySqlParameter("?Title", active.Title));
@@ -193,9 +202,10 @@ namespace Backstage.Core
         public static void Create(Active active)
         {
             string connectionString = GlobalConfig.DbConn;
-            string commandText = @"INSERT INTO material 
+            string commandText = @"INSERT INTO active 
         	                                ( 
         	                                SellerId, 
+        	                                CouponId,
         	                                CoverImgId,
         	                                CoverImgUrl,
         	                                Title, 
@@ -208,6 +218,7 @@ namespace Backstage.Core
         	                                VALUES
         	                                ( 
         	                                ?SellerId, 
+        	                                ?CouponId, 
         	                                ?CoverImgId,
         	                                ?CoverImgUrl,
         	                                ?Title, 
@@ -220,6 +231,7 @@ namespace Backstage.Core
 
             List<MySqlParameter> parameters = new List<MySqlParameter>();
             parameters.Add(new MySqlParameter("?SellerId", active.SellerId));
+            parameters.Add(new MySqlParameter("?CouponId", active.CouponId));
             parameters.Add(new MySqlParameter("?CoverImgId", active.CoverImgId));
             parameters.Add(new MySqlParameter("?CoverImgUrl", active.CoverImgUrl));
             parameters.Add(new MySqlParameter("?Title", active.Title));

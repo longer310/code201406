@@ -17,6 +17,11 @@ namespace Backstage.Core.Entity
 
         public int CoverImgId { get; set; }
 
+        /// <summary>
+        /// 优惠券
+        /// </summary>
+        public int CouponId { get; set; }
+
         public string CoverImgUrl { get; set; }
 
         public string Title { get; set; }

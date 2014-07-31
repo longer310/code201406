@@ -192,7 +192,7 @@ namespace Backstage.Core.Handler
             int size = GetInt("limit");
             int sid = GetInt("sellerid");
 
-            var results = CouponHelper.GetPagings(sid, index, size);
+            var results = CouponHelper.GetPagings(sid, index * size, size);
             var data = new List<object>();
             foreach (var r in results.Results)
             {

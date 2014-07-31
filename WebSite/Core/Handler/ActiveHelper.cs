@@ -171,7 +171,7 @@ namespace Backstage.Core
                                         Description = ?Description,
                                         Commentnum = ?Commentnum,
                                         CreateTime = ?CreateTime,
-                                        Views = ?Views,
+                                        Views = ?Views
                                     WHERE
                                         Id = ?Id";
 

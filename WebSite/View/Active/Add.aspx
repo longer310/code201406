@@ -165,7 +165,6 @@
                         ticket_id: $("#j-btn-ticket-selected").attr("data-id"),
                         thumbnail: $('#j-img-placehold').attr("src"),
                         content: text_editor.html()
-
                     }
 
                     $.ajax({

@@ -52,7 +52,7 @@
                         <li class="sidebar_categories"><a href="<%=DomainUrl %>/View/Goods/Categroy.aspx">分类管理</a></li>
                     </ul>
                 </li>
-                <li><a href="#"><i class="icon icon-shopping-cart"></i><span>订单管理</span></a></li>
+                <li class="sidebar_orders"><a href="<%=DomainUrl %>/View/Orders/List.aspx"><i class="icon icon-shopping-cart"></i><span>订单管理</span></a></li>
                 <li class="submenu">
                     <a href="#"><i class="icon icon-picture"></i><span>图片墙管理</span> <span class="label">2</span></a>
                     <ul>

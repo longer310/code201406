@@ -34,7 +34,7 @@ namespace Backstage.Core.Handler
             parameters.Add(new MySqlParameter("?SellerId", user_wifi.SellerId));
             parameters.Add(new MySqlParameter("?Pwd", user_wifi.Pwd));
             parameters.Add(new MySqlParameter("?UserId", user_wifi.UserId));
-            parameters.Add(new MySqlParameter("?Expiry", user_wifi.UserId));
+            parameters.Add(new MySqlParameter("?Expiry", user_wifi.Expiry));
 
 
             MySqlHelper.ExecuteNonQuery(connectionString, CommandType.Text, commandText, parameters.ToArray());

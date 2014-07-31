@@ -158,12 +158,14 @@ namespace Backstage.Core.Handler
             var data = new
             {
                 pwd = pwd,
-                expir = user_wifi.Expiry
+                expir = user_wifi.Expiry.GetUnixTime()
             };
-            JsonTransfer jt = new JsonTransfer();
-            jt.AddSuccessParam();
-            Response.Write(DesEncrypt(jt).ToLower());
-            Response.End();
+            //JsonTransfer jt = new JsonTransfer();
+            //jt.AddSuccessParam();
+            //Response.Write(DesEncrypt(jt).ToLower());
+            //Response.End();
+            //返回信息
+            ReturnCorrectData(data);
         }
 
 

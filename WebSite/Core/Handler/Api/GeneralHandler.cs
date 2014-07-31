@@ -113,7 +113,7 @@ namespace Backstage.Core.Handler
             };
             var item = GeneralHelper.GetUserWifiItem(userId, sellerId);
             JsonTransfer jt = new JsonTransfer();
-            if (item.Pwd == Utility.MD5_Encrypt(item.Pwd))
+            if (item.Pwd == item.Pwd)
             {
                 var data = new
                 {
@@ -141,7 +141,7 @@ namespace Backstage.Core.Handler
             var pwd = random.Next(100000, 999999).ToString();
             var user_wifi = new UserWifi()
             {
-                Pwd = Utility.MD5_Encrypt(pwd),
+                Pwd = pwd,
                 SellerId = sellerId,
                 UserId = userId,
                 Expiry = DateTime.Now.AddDays(1)
@@ -157,7 +157,7 @@ namespace Backstage.Core.Handler
 
             var data = new
             {
-                pwd = pwd,
+                pwd = user_wifi.Pwd,
                 expir = user_wifi.Expiry.GetUnixTime()
             };
             //JsonTransfer jt = new JsonTransfer();

@@ -217,8 +217,8 @@
         			$('#j-order-tab a').click(function (e) {
         				var type = $(this).parent().index();
 						$(this).tab('show');
-						document.location.href = "?page=1&type=" + type;
-						//mpage.getOrderList(1, type);
+						//document.location.href = "?page=1&type=" + type;
+						mpage.getOrderList(1, type);
 						return false
 					});
 
@@ -330,8 +330,8 @@
 							per : 6,//每页显示几个
 							count : json.result.count,
 							onchange : function(page){//切换页数回调函数
-								//mpage.getOrderList(page, type);
-								document.location.href = "?page=" + page + "&type=" + type;
+								mpage.getOrderList(page, type);
+								//document.location.href = "?page=" + page + "&type=" + type;
 							}
 						});
 

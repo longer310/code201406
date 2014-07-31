@@ -534,6 +534,7 @@
     <Content Include="Script\View\unicorn.login.js" />
     <Content Include="Test.html" />
     <Content Include="View\Active\Add.aspx" />
+    <Content Include="View\Active\Edit.aspx" />
     <Content Include="View\Active\List.aspx" />
     <Content Include="View\Goods\Item.aspx" />
     <Content Include="View\Goods\Categroy.aspx" />
@@ -647,6 +648,13 @@
     </Compile>
     <Compile Include="View\Active\Add.aspx.designer.cs">
       <DependentUpon>Add.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="View\Active\Edit.aspx.cs">
+      <DependentUpon>Edit.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="View\Active\Edit.aspx.designer.cs">
+      <DependentUpon>Edit.aspx</DependentUpon>
     </Compile>
     <Compile Include="View\Active\List.aspx.cs">
       <DependentUpon>List.aspx</DependentUpon>

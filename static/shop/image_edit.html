@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+	<!-- container-fluid -->
+	<head>
+		<title>Unicorn Admin</title>
+		<meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <!--公用样式-->
+		<link rel="stylesheet" href="../public/css/bootstrap.min.css" />
+		<link rel="stylesheet" href="../public/css/bootstrap-responsive.min.css" />	
+		<link rel="stylesheet" href="../public/css/unicorn.main.css" />
+		<link rel="stylesheet" href="../public/css/unicorn.grey.css" />
+		<!--页面样式-->
+		<link href="../public/kindeditor/themes/default/default.css" type="text/css" rel="stylesheet">
+	</head>
+	<body>
+		<div id="header">
+			<h1><a href="./dashboard.html">APP 商户管理系统</a></h1>		
+		</div>
+		
+		<div id="hotline" class="muted">服务热线：400-800-8888</div>
+
+		<div id="user-nav" class="navbar navbar-inverse">
+			<dl class="user-info">
+				<dt class="muted">福建省宁德米克中式餐饮</dt>
+				<dd><span class="muted">用户名：</span><b class="text-error">80222222</b></dd>
+				<dd><span class="muted">可提现金额：</span><b class="text-error">￥3088.00</b></dd>
+			</dl>
+            <ul class="nav btn-group">
+                <li class="btn btn-inverse"><a title="" href="#"><i class="icon icon-share"></i> <span class="text">提现</span></a></li>
+                <li class="btn btn-inverse"><a title="" href="login.html"><i class="icon icon-off"></i> <span class="text">退出登陆</span></a></li>
+            </ul>
+        </div>
+            
+		<div id="sidebar">
+			<ul>
+				<li><a href="index.html"><i class="icon icon-home"></i> <span>首页</span></a></li>
+				<li class="submenu">
+					<a href="#"><i class="icon icon-gift"></i> <span>活动管理</span> <span class="label">2</span></a>
+					<ul>
+						<li><a href="activity_list.html">活动列表</a></li>
+						<li><a href="activity_add.html">新增活动</a></li>
+					</ul>
+				</li>
+				<li class="submenu">
+					<a href="#"><i class="icon icon-tint"></i> <span>产品管理</span><span class="label">3</span></a>
+					<ul>
+						<li><a href="goods_list.html">产品列表</a></li>
+						<li><a href="goods_add.html">新增产品</a></li>
+						<li><a href="categroy.html">分类管理</a></li>
+					</ul>
+				</li>
+				<li><a href="order.html"><i class="icon icon-shopping-cart"></i> <span>订单管理</span></a></li>
+				<li class="submenu active open">
+					<a href="#"><i class="icon icon-picture"></i> <span>图片墙管理</span> <span class="label">2</span></a>
+					<ul>
+						<li><a href="image_list.html">图片墙列表</a></li>
+						<li class="active"><a href="image_add.html">新增图片墙</a></li>
+					</ul>
+				</li>
+				<li><a href="user.html"><i class="icon icon-user"></i> <span>会员管理</span></a></li>
+				<li><a href="comment.html"><i class="icon icon-comment"></i> <span>留言管理</span></a></li>
+				<li class="submenu">
+					<a href="#"><i class="icon icon-tags"></i> <span>电子券管理</span> <span class="label">2</span></a>
+					<ul>
+						<li><a href="ticket_list.html">电子券列表</a></li>
+						<li><a href="ticket_add.html">新增电子券</a></li>
+					</ul>
+				</li>
+				<li>
+					<a href="ad.html"><i class="icon icon-bullhorn"></i> <span>广告设置</span></a>
+				</li>
+				<li class="submenu">
+					<a href="#"><i class="icon icon-hdd"></i> <span>数据库统计</span> <span class="label">4</span></a>
+					<ul>
+						<li><a href="pv.html">访问量统计</a></li>
+						<li><a href="sale.html">销量统计</a></li>
+						<li><a href="charge.html">充值量统计</a></li>
+						<li><a href="backup.html">数据备份导出</a></li>
+					</ul>
+				</li>
+				<li class="submenu">
+					<a href="#"><i class="icon icon-cog"></i> <span>系统设置</span> <span class="label">6</span></a>
+					<ul>
+						<li><a href="change_pw.html">登录设置</a></li>
+						<li><a href="profile.html">资料设置</a></li>
+						<li><a href="message.html">推送服务</a></li>
+						<li><a href="rule.html">规则设置</a></li>
+						<li><a href="resource.html">素材库管理</a></li>
+						<li><a href="cash.html">提现管理</a></li>
+					</ul>
+				</li>
+			</ul>
+		</div>
+		
+		<div id="content">
+
+			<div class="widget-box" >
+				<div class="widget-title">
+					<span class="icon">
+						<i class="icon-picture"></i>
+					</span>
+					<h5>修改图片墙</h5>
+				</div>
+				<div class="widget-content">
+					<form action="#" method="get" class="form-horizontal" id="j-image-addForm" />
+						<div class="control-group">
+							<label class="control-label">名称</label>
+							<div class="controls">
+								<input type="text" id="j-image-title" />
+							</div>
+						</div>
+
+						<div class="control-group">
+							<label class="control-label">图片</label>
+							<div class="controls">
+								
+								<a class="btn btn-info" href="javascript:;" id="j-btn-imageUpload"><i class="icon-folder-open icon-white"></i> 本地上传</a>
+								<a class="btn btn-success" href="javascript:;" id="j-btn-imageManager"><i class="icon-picture icon-white"></i> 素材库选择</a>
+								<span class="help-inline">上传过的图片可以直接从素材库选择</span>
+								<ul class="thumbnails" id="j-image-thumbnails" style="display:none;margin-top:10px;">
+									</ul>
+							</div>
+						</div>
+
+						<div class="control-group">
+							<label class="control-label">内容</label>
+							<div class="controls">
+								<textarea name="content" style="height:400px;visibility:hidden;"></textarea>
+							</div>
+						</div>
+						<div class="form-actions">
+							<button type="reset" class="btn"><i class="icon-refresh"></i> 清除重置</button>
+							<button type="submit" class="btn btn-primary"><i class="icon-ok icon-white"></i> 完成保存</button>
+						</div>
+					</form>
+				</div>
+			</div>
+
+			<div id="footer">
+				<p>关于淘宝合作伙伴营销中心廉正举报联系客服开放平台诚征英才联系我们网站地图法律声明© 2003-2014 Taobao.com 版权所有</p>
+				<p>网络文化经营许可证：文网文[2010]040号|增值电信业务经营许可证：浙B2-20080224-1|信息网络传播视听节目许可证：1109364号 </p>
+			</div>
+		</div>
+		
+		<!--公用js-->
+        <script src="../public/js/jquery.min.js"></script>
+        <script src="../public/js/jquery.ui.custom.js"></script>
+        <script src="../public/js/bootstrap.min.js"></script>
+        <script src="../public/js/unicorn.js"></script>
+        <script src="../public/js/jquery.tmpl.min.js"></script>
+        <script src="../public/js/common.js"></script>
+
+        <!--页面js-->
+        <script src="../public/js/ue.pager.js"></script>
+
+        <script charset="utf-8" src="../public/kindeditor/kindeditor-min.js"></script>
+		<script charset="utf-8" src="../public/kindeditor/lang/zh_CN.js"></script>
+
+		<!--图片缩略图模版-->
+		<script type="text/jquery-tmpl-x" id="j-tmpl-image-thumbnail">
+			{{each(i, v) thumbnails}}
+	        	<li class="span">
+					<span class="thumbnail">
+						<img src="${v.url}" alt="" class="j-image-thumbnail">
+					</span>
+					<div class="clearfix" style="margin-top:5px;">
+						<label class="radio pull-left"><input type="radio" name="islogo" class="j-image-islogo" {{if v.islogo}}checked="checked"{{/if}}> 设为logo</label>
+						<a title="删除图片" href="javascript:;" class="pull-right j-btn-delThumbnail"><i class="icon-remove"></i></a>
+					</div>
+				</li>
+			{{/each}}
+        </script>
+
+        <script type="text/javascript">
+        	var MPage = {
+        		init : function(){
+        			var mpage = this;
+
+        			var text_editor,
+        				image_editor;
+
+					KindEditor.ready(function(K) {
+						//文本编辑器
+						mpage.text_editor = text_editor = K.create('textarea[name="content"]', {
+							uploadJson : '../public/kindeditor/php/upload_json.php',
+							allowFileManager : true
+						});
+
+						//图片上传编辑
+						mpage.image_editor = image_editor = K.editor({
+							uploadJson : '../public/kindeditor/php/upload_json.php',
+							fileManagerJson : '../public/kindeditor/php/file_manager_json.php'
+						});
+						
+						//图片上传绑定
+						K('#j-btn-imageManager').click(function() {
+							image_editor.loadPlugin('filemanager', function() {
+								image_editor.plugin.filemanagerDialog({
+									viewType : 'VIEW',
+									dirName : 'image',
+									clickFn : function(url, title) {
+										mpage.addThumbnail([{
+											url : url,
+											islogo : 0
+										}]);
+										image_editor.hideDialog();
+									}
+								});
+							});
+						});
+
+						//从资料库选择图片
+						K('#j-btn-imageUpload').click(function() {
+							image_editor.loadPlugin('image', function() {
+								image_editor.plugin.imageDialog({
+									showRemote : false,
+									imageUrl : K('#j-img-placehold').attr("src"),
+									clickFn : function(url, title, width, height, border, align) {
+										mpage.addThumbnail([{
+											url : url,
+											islogo : 0
+										}]);
+										image_editor.hideDialog();
+									}
+								});
+							});
+						});
+
+						//解析url中的id
+						var image_id = /\?id=(\d+)/.test(document.location.href);
+						if(image_id){
+							mpage.getImageDetail(image_id);
+						} else {
+							alert("该图片墙不存在");
+							window.history.back();
+						}
+					});
+
+					$("#j-image-thumbnails").delegate(".j-btn-delThumbnail", "click", function(){
+						$(this).parents("li").remove();
+						if( $("#j-image-thumbnails li").length == 0){
+							$("#j-image-thumbnails").hide();
+						}
+						return false;
+					});
+
+					//绑定提交表单
+					$("#j-image-addForm").bind("submit", function(){
+
+						var thumbnails = [];
+
+						//获取所有的产品图片
+						$("#j-image-thumbnails li").each(function(){
+							var $item = $(this);
+
+							thumbnails.push({
+								url : $item.find(".j-image-thumbnail").attr("src"),
+								islogo : $item.find(".j-image-islogo").attr("checked") ? 1 : 0
+							});
+						});
+
+						var save_data = {
+							title : $.trim($("#j-image-title").val()),
+							thumbnail : thumbnails,
+							content : text_editor.html()
+
+						}
+
+						console.log(save_data);
+						alert('提交数据')
+						return false;
+					});
+
+					//绑定重置表单
+					$("#j-image-addForm").bind("reset", function(){
+	    				mpage.setEditFormData();
+						return false;
+					});
+        		},
+
+        		getImageDetail : function(image_id){
+        			var mpage = this;
+
+        			//$.getJSON("", { id: image_id}， function(json){
+        				var json = {
+        					code : 0,
+							msg : "", 
+							result : {
+								title : "活动主题",
+								thumbnails : [
+									{
+										islogo : 1,
+										url : "/public/kindeditor/attached/image/20140723/20140723161001_48669.jpg"
+									},{
+										islogo : 0,
+										url : "/public/kindeditor/attached/image/20140723/20140723161001_48669.jpg"
+									},{
+										islogo : 0,
+										url : "/public/kindeditor/attached/image/20140723/20140723161001_48669.jpg"
+									},{
+										islogo : 0,
+										url : "/public/kindeditor/attached/image/20140723/20140723161001_48669.jpg"
+									}
+								],
+								content : "活动简介活动简介"
+							}
+        				}
+
+        				mpage.detailData = json.result;
+        				mpage.setEditFormData();
+        				
+        				
+        			//});
+        		},
+
+        		setEditFormData : function(){
+        			var mpage = this,
+        				detail = mpage.detailData;
+
+        			$("#j-image-title").val(detail.title);
+    				$("#j-image-thumbnails").html("").hide();
+        			mpage.addThumbnail(detail.thumbnails);
+    				mpage.text_editor.html(detail.content);
+        		},
+
+				addThumbnail : function(thumbnails){
+					$("#j-image-thumbnails").append( $("#j-tmpl-image-thumbnail").tmpl({
+						thumbnails : thumbnails
+					})).show();
+				}
+    		}
+
+    		$(function(){
+    			MPage.init();
+    		});
+    		
+        </script>
+	</body>
+</html>

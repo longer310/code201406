@@ -154,3 +154,30 @@ body {
 	margin-left: 10px;
 }
 
+.list-4col .list-in{
+	margin-bottom: 10px;
+}
+
+.list-4col .item{
+	width:25%;
+}
+
+.list-2col .item-in{
+	border:1px solid #e3e3e3;
+	padding: 0 10px 10px;
+}
+
+.list-2col .item-in:hover{
+	background: #e3e3e3;
+}
+
+.list-4col .article-thumb{
+	float: none;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.list-4col .post-action .checker{
+	float: left;
+}
+

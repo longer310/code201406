@@ -7,9 +7,9 @@
 // </自动生成>
 //------------------------------------------------------------------------------
 
-namespace WebSite.View.SourceMaterial {
+namespace Backstage.View.SourceMaterial {
     
     
-    public partial class ManagerList {
+    public partial class List {
     }
 }

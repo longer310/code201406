@@ -541,7 +541,7 @@
     <Content Include="View\Index.aspx" />
     <Content Include="View\Orders\Detail.aspx" />
     <Content Include="View\Orders\List.aspx" />
-    <Content Include="View\SourceMaterial\ManagerList.aspx" />
+    <Content Include="View\SourceMaterial\List.aspx" />
     <Content Include="View\UCenter\ManagerList.aspx" />
     <Content Include="View\Goods\List.aspx" />
     <Content Include="Web.config">
@@ -707,12 +707,12 @@
     <Compile Include="View\Orders\List.aspx.designer.cs">
       <DependentUpon>List.aspx</DependentUpon>
     </Compile>
-    <Compile Include="View\SourceMaterial\ManagerList.aspx.cs">
-      <DependentUpon>ManagerList.aspx</DependentUpon>
+    <Compile Include="View\SourceMaterial\List.aspx.cs">
+      <DependentUpon>List.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="View\SourceMaterial\ManagerList.aspx.designer.cs">
-      <DependentUpon>ManagerList.aspx</DependentUpon>
+    <Compile Include="View\SourceMaterial\List.aspx.designer.cs">
+      <DependentUpon>List.aspx</DependentUpon>
     </Compile>
     <Compile Include="View\UCenter\ManagerList.aspx.cs">
       <DependentUpon>ManagerList.aspx</DependentUpon>

@@ -5,14 +5,16 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
-namespace WebSite.View.SourceMaterial
+namespace Backstage.View.SourceMaterial
 {
-    public partial class ManagerList : System.Web.UI.Page
+    public partial class List : System.Web.UI.Page
     {
+        public string SellerId = "";
+
         protected void Page_Load(object sender, EventArgs e)
         {
-            this.Title = "素材管理";
-            
+            SellerId = Request.QueryString["sellerid"].ToString();
+
         }
     }
 }

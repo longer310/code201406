@@ -20,16 +20,36 @@ namespace Backstage.Core.Handler
                     GetList(); break;
                 case "getitem":
                     GetItem(); break;
-                case "couponcomment":
-                    CouponComment(); break;
-                case "couponcommentlist":
-                    Couponcommentlist(); break;
-                case "usercoupon":
-                    UserCoupon(); break;
+                case "add":
+                    Add();break;
+                case "update":
+                    Update();break;
+                case "delete":
+                    Delete();break;
                 //case "deldata":
                 //    DelData(); break;
                 default: break;
             }
+        }
+
+        private void Delete()
+        {
+            var id = GetInt("id");
+            
+            throw new NotImplementedException();
+        }
+
+        private void Update()
+        {
+
+            throw new NotImplementedException();
+        }
+
+        private void Add()
+        {
+            
+
+            throw new NotImplementedException();
         }
 
         private void UserCoupon()

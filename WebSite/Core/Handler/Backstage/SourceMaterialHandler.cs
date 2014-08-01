@@ -69,7 +69,7 @@ namespace Backstage.Core.Handler.Backstage
             int pageSize = GetInt("limit");
             int sellerId = GetInt("sellerid");
 
-            PagResults<SourceMaterial> data = SourceMaterialHelper.GetPaging(pageIndex, pageSize, sellerId);
+            PagResults<SourceMaterial> data = SourceMaterialHelper.GetPaging(pageIndex * pageSize, pageSize, sellerId);
 
             JsonTransfer jt = new JsonTransfer();
             jt.AddSuccessParam();

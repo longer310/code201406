@@ -243,16 +243,10 @@
                         $.post(mpage.hander + "saveGoodsCategoriesList", { data_save: JSON.stringify(data_save) }, function (data) {
                             if (!data.error) {
                                 //TODO:提示弹窗toast
-                                Common.alert({
-                                    title: "提示",
-                                    content: data.success
-                                });
+                                Common.tip({ type: "success", content: data.success });
                                 mpage.getCategroyList();
                             } else {
-                                Common.alert({
-                                    title: "错误提示",
-                                    content: data.error
-                                });
+                                Common.tip({ type: "error", content: data.error });
                             }
                         }, "JSON");
                     }
@@ -273,17 +267,9 @@
             $.post(mpage.hander + "addGoodsCategories", { name: name, imageUrl: imageUrl }, function (data) {
                 if (!data.error) {
                     mpage.getCategroyList();
-                    Common.alert({
-                        title: "提示",
-                        content: data.success
-                    });
+                    Common.tip({ type: "success", content: data.success });
                 } else {
-                    Common.alert({
-                        title: "提示",
-                        content: data.error,
-                        confirm: function () {
-                        }
-                    });
+                    Common.tip({ type: "error", content: data.error });
                 }
             }, "JSON");
         },
@@ -378,12 +364,7 @@
                     });
 
                 } else {
-                    Common.alert({
-                        title: "提示",
-                        content: data.error,
-                        confirm: function () {
-                        }
-                    });
+                    Common.tip({ type: "error", content: data.error });
                 }
             }, "JSON");
         },
@@ -407,16 +388,10 @@
             $.post(mpage.hander + "delGoodsCategoriesList", { ids: cids }, function (data) {
                 if (!data.error) {
                     //删除成功后刷新本页 TODO:提示弹窗toast
-                    Common.alert({
-                        title: "提示",
-                        content: data.success
-                    });
+                    Common.tip({ type: "success", content: data.success });
                     mpage.getCategroyList();
                 } else {
-                    Common.alert({
-                        title: "错误提示",
-                        content: data.error
-                    });
+                    Common.tip({ type: "error", content: data.error });
                 }
             }, "JSON");
         }

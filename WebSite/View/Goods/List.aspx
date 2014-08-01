@@ -213,12 +213,13 @@
                         $("#j-goods-list").html($("#j-tmpl-goods-listitem").tmpl(data));
                         mpage.showPager(data.totalcount);
                     } else {
-                        Common.alert({
-                            title: "提示",
-                            content: data.error,
-                            confirm: function () {
-                            }
-                        });
+                        Common.tip({ type: "error", content: data.error });
+                        //Common.alert({
+                        //    title: "提示",
+                        //    content: data.error,
+                        //    confirm: function () {
+                        //    }
+                        //});
                     }
                 }, "JSON");
 
@@ -291,15 +292,13 @@
                     if (!data.error) {
                         //删除成功后刷新本页 TODO:提示弹窗toast
                         mpage.getGoodsList(mpage.start, mpage.type);
-                        Common.alert({
-                            title: "提示",
-                            content: data.success
-                        });
+                        Common.tip({ type: "success", content: data.success });
+                        //Common.alert({
+                        //    title: "提示",
+                        //    content: data.success
+                        //});
                     } else {
-                        Common.alert({
-                            title: "错误提示",
-                            content: data.error
-                        });
+                        Common.tip({ type: "error", content: data.error });
                     }
                 }, "JSON");
             },
@@ -311,15 +310,17 @@
                     if (!data.error) {
                         //TODO:提示弹窗toast
                         mpage.getGoodsList(mpage.start, mpage.type);
-                        Common.alert({
-                            title: "提示",
-                            content: data.success
-                        });
+                        Common.tip({ type: "success", content: data.success });
+                        //Common.alert({
+                        //    title: "提示",
+                        //    content: data.success
+                        //});
                     } else {
-                        Common.alert({
-                            title: "错误提示",
-                            content: data.error
-                        });
+                        Common.tip({ type: "error", content: data.error });
+                        //Common.alert({
+                        //    title: "错误提示",
+                        //    content: data.error
+                        //});
                     }
                 }, "JSON");
             },

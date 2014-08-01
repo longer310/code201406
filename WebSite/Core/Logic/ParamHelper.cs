@@ -123,6 +123,9 @@ namespace Backstage.Core.Logic
             /// </summary>
             public int FreeSendPrice { get; set; }
         }
+        /// <summary>
+        /// 商户配置信息
+        /// </summary>
         public static MerchantCfg MerchantCfgData
         {
             get

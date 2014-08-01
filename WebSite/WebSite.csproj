@@ -539,6 +539,7 @@
     <Content Include="View\Goods\Item.aspx" />
     <Content Include="View\Goods\Categroy.aspx" />
     <Content Include="View\Index.aspx" />
+    <Content Include="View\Orders\Detail.aspx" />
     <Content Include="View\Orders\List.aspx" />
     <Content Include="View\SourceMaterial\ManagerList.aspx" />
     <Content Include="View\UCenter\ManagerList.aspx" />
@@ -691,6 +692,13 @@
     </Compile>
     <Compile Include="View\merchant.Master.designer.cs">
       <DependentUpon>merchant.Master</DependentUpon>
+    </Compile>
+    <Compile Include="View\Orders\Detail.aspx.cs">
+      <DependentUpon>Detail.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="View\Orders\Detail.aspx.designer.cs">
+      <DependentUpon>Detail.aspx</DependentUpon>
     </Compile>
     <Compile Include="View\Orders\List.aspx.cs">
       <DependentUpon>List.aspx</DependentUpon>

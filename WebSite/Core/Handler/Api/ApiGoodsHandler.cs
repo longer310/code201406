@@ -990,6 +990,7 @@ namespace Backstage.Handler
                 if (ifdiscount)
                 {
                     discount = (float)(coupon.Extcredit * 1.0) / 100;
+                    orders.Ccontent = string.Format("满{0}减{1}元电子券", coupon.FullMoney, coupon.DiscountMoney);
                 }
             }
             orders.TotalPrice -= discount;

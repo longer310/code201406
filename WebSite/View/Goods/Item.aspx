@@ -184,7 +184,7 @@
                     var goods_id = /\?id=(\d+)/.test(document.location.href);
                     if (goods_id) {
                         $(".widget-title").find("h5").html("编辑商品");
-                        mpage.gid = mpage.getQueryString("id");
+                        mpage.gid = Str.getQueryString("id");
                         mpage.getGoodsDetail();
                     } else {
                         mpage.gid = 0;
@@ -231,12 +231,6 @@
                 //    mpage.setGoodsFormData();
                 //    return false;
                 //});
-            },
-
-            getQueryString: function (name) {
-                var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
-                var r = window.location.search.substr(1).match(reg);
-                if (r != null) return unescape(r[2]); return null;
             },
 
             saveGoods: function () {
@@ -287,28 +281,16 @@
                 }, function (data) {
                     if (!data.error) {
                         if (mpage.gid > 0) {
-                            Common.alert({
-                                title: "提示",
-                                content: "保存成功"
-                            });
+                            Common.tip({ type: "success", content: "保存成功" });
                         } else {
                             mpage.gid = data.success;//新增商品赋值
-                            Common.alert({
-                                title: "提示",
-                                content: "新增成功"
-                            });
+                            Common.tip({ type: "success", content: "新增成功" });
                         }
                     } else {
                         if (mpage.gid > 0) {
-                            Common.alert({
-                                title: "提示",
-                                content: "保存失败"
-                            });
+                            Common.tip({ type: "error", content: "保存失败" });
                         } else {
-                            Common.alert({
-                                title: "提示",
-                                content: "新增失败"
-                            });
+                            Common.tip({ type: "error", content: "新增失败" });
                         }
                     }
                 }, "JSON");
@@ -322,10 +304,7 @@
                         mpage.goodsDetailData = data.data;
                         mpage.setGoodsFormData();
                     } else {
-                        Common.alert({
-                            title: "错误提示",
-                            content: data.error
-                        });
+                        Common.tip({ type: "error", content: data.error });
                     }
                 }, "JSON");
             },

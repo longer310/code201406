@@ -97,7 +97,7 @@
                         {{if v.Type > 0}}
 							<a class="btn btn-success btn-mini j-btn-reach" href="javascript:;"><i class="icon-ok icon-white"></i> 已发货</a>
                         {{/if}}
-							<a class="btn btn-primary btn-mini" href="order_detail.html?id=111"><i class="icon-pencil icon-white"></i> 查看</a>
+							<a class="btn btn-primary btn-mini" href="<%=DomainUrl %>/view/orders/detail.aspx?id=${v.Id}"><i class="icon-pencil icon-white"></i> 查看</a>
 						</div>
 					</td>
 				</tr>
@@ -274,26 +274,6 @@
                             });
                         }
                     }, "JSON");
-                    //var json = {
-                    //    code: 0,
-                    //    msg: "",
-                    //    result: {
-                    //        count: 59,
-                    //        list: [
-                    //            {},
-                    //            {},
-                    //            {
-                    //            },
-                    //            {},
-                    //            {},
-                    //            {}
-                    //        ]
-                    //    }
-                    //};
-
-                    
-
-                    //});
 
                 }
             }

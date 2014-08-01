@@ -23,6 +23,8 @@ namespace Backstage.Handler
                 #region 订单列表
                 case "getOrdersList":
                     GetOrdersList(); break;
+                case "getOrdersDetail":
+                    GetOrdersDetail(); break;
                 #endregion
 
                 default: break;
@@ -100,6 +102,117 @@ namespace Backstage.Handler
             Response.End();
         }
 
+        public class OrdersDetailData
+        {
+            public int Id { get; set; }
+            public int Type { get; set; }
+            public int Status { get; set; }
+            public string CreateTime { get; set; }
+            /// <summary>
+            /// 送货地址
+            /// </summary>
+            public string Address { get; set; }
+            /// <summary>
+            /// 联系人
+            /// </summary>
+            public string LinkMan { get; set; }
+            /// <summary>
+            /// 联系方式
+            /// </summary>
+            public string Mobile { get; set; }
+            /// <summary>
+            /// 电子券优惠价格
+            /// </summary>
+            public float CtotalPrice { get; set; }
+            /// <summary>
+            /// 电子券描述
+            /// </summary>
+            public string Ccontent { get; set; }
+            /// <summary>
+            /// 备注
+            /// </summary>
+            public string Remark { get; set; }
+            /// <summary>
+            /// 最后总价
+            /// </summary>
+            public float TotalPrice { get; set; }
+            /// <summary>
+            /// 商品总价
+            /// </summary>
+            public float StotalPrice { get; set; }
+            public float SendPrice { get; set; }
+
+            public List<OrdersGoodsItem> list { get; set; }
+
+            public OrdersDetailData()
+            {
+                list = new List<OrdersGoodsItem>();
+            }
+        }
+
+        public class OrdersGoodsItem
+        {
+            public string ImgUrl { get; set; }
+            public string Title { get; set; }
+            public float NowPrice { get; set; }
+            public int Num { get; set; }
+            public float TotalPrice { get; set; }
+        }
+        /// <summary>
+        /// 获取订单详情
+        /// </summary>
+        public void GetOrdersDetail()
+        {
+            var orderid = GetInt("orderid");
+            var orders = OrdersHelper.GetOrders(orderid);
+            if (orders == null)
+            {
+                ReturnCorrectMsg("订单不存在");
+                return;
+            }
+            if (orders.SellerId != CurrentUser.Id)
+            {
+                ReturnCorrectMsg("无权访问订单");
+                return;
+            }
+            if (orders.GidList.Count != orders.ImgList.Count || orders.ImgList.Count != orders.TitleList.Count || orders.TitleList.Count != orders.NumList.Count || orders.NumList.Count != orders.NowPriceList.Count)
+            {
+                ReturnCorrectMsg("订单数据出错");
+                return;
+            }
+            var data = new OrdersDetailData();
+            data.Id = orders.Id;
+            data.CreateTime = orders.CreateTime.ToString("yyyy-M-d HH:mm:ss");
+            data.Status = (int)orders.GetReqStatus();
+            data.Type = (int)orders.OrderType;
+            data.Address = orders.Address;
+            data.LinkMan = orders.LinkMan;
+            data.Mobile = orders.Mobile;
+            data.CtotalPrice = orders.CtotalPrice;
+            data.Ccontent = orders.Ccontent;
+            data.Remark = orders.Remark;
+            data.TotalPrice = orders.TotalPrice;
+            data.StotalPrice = orders.StotalPrice;
+            data.SendPrice = ParamHelper.MerchantCfgData.SendPrice;
+
+            var i = 0;
+            foreach (var url in orders.ImgList)
+            {
+                var item = new OrdersGoodsItem();
+                item.ImgUrl = url;
+                item.Title = orders.TitleList[i];
+                item.NowPrice = orders.NowPriceList[i];
+                item.Num = orders.NumList[i];
+                item.TotalPrice = item.NowPrice * item.Num;
+
+                data.list.Add(item);
+            }
+
+            var jt = new JsonTransfer();
+            jt.Add("data", data);
+            Response.Write(jt.ToJson());
+            Response.End();
+        }
         #endregion
     }
 }

@@ -37,7 +37,7 @@ namespace Backstage.Handler
                 case "addgoodscomment"://发表产品评论 2.4
                     AddGoodsComment();
                     break;
-                case "favgoods"://收藏商品 2.5
+                case "favgoods"://收藏/取消收藏商品 2.5
                     FavGoods();
                     break;
                 case "sharegoods"://分享商品 2.6
@@ -513,28 +513,51 @@ namespace Backstage.Handler
         }
         #endregion
 
-        #region 商品收藏 2.5
+        #region 收藏/取消收藏商品 2.5
         public void FavGoods()
         {
             int uid = GetInt("uid");
             int gid = GetInt("gid");
+            int isfav = GetInt("isfav");//0:取消收藏，1:收藏，其他参数一律报错！
+
+            if (isfav != 0 && isfav != 1)
+            {
+                ReturnErrorMsg("传参出错");
+                return;
+            }
 
             var goods = GoodsHelper.GetGoods(gid);
-            goods.FavCount++;
             var favorite = FavoriteHelper.GetFavorite(uid);
-            if (favorite.GidList.Contains(gid))
+            if (isfav == 0 && !favorite.GidList.Contains(gid))
+            {
+                ReturnErrorMsg("没有收藏过该商品");
+                return;
+            }
+            if (isfav == 1 && favorite.GidList.Contains(gid))
             {
                 ReturnErrorMsg("已收藏过该商品");
                 return;
             }
-            favorite.GidList.Add(gid);
+            if (isfav == 0)
+            {//取消收藏
+                goods.FavCount--;
+                favorite.GidList.Remove(gid);
+            }
+            else if (isfav == 1)
+            {//收藏
+                goods.FavCount++;
+                favorite.GidList.Add(gid);
+            }
 
             //保存商品
             GoodsHelper.SaveGoods(goods);
             //保存收藏
             FavoriteHelper.SaveFavorite(favorite);
             //返回
-            ReturnCorrectMsg("收藏成功");
+            if (isfav == 0)
+                ReturnCorrectMsg("取消收藏成功");
+            else if (isfav == 1)
+                ReturnCorrectMsg("收藏成功");
         }
         #endregion
 

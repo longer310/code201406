@@ -1328,3 +1328,18 @@ ul.inline>li,ol.inline>li{
 .text-left{text-align:left !important; }
 .text-right{text-align:right!important;}
 .text-center{text-align:center!important;}
+
+.fixed-modal{
+	position: absolute;
+	border: 1px solid #ccc;
+	width: 100%;
+	z-index: 999;
+	background: #fff;
+}
+
+.fixed-modal .pagination{
+	margin: 0;
+}
+.select2-container{
+	width: 80%;
+}

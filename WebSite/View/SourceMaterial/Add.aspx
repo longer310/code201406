@@ -48,10 +48,10 @@
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="Footer" runat="server">
     <!--页面js-->
-    <script src="../public/js/ue.pager.js"></script>
+    <script src="../../script//js/ue.pager.js"></script>
 
-    <script charset="utf-8" src="../public/kindeditor/kindeditor-min.js"></script>
-    <script charset="utf-8" src="../public/kindeditor/lang/zh_CN.js"></script>
+    <script charset="utf-8" src="../../script//kindeditor/kindeditor-min.js"></script>
+    <script charset="utf-8" src="../../script//kindeditor/lang/zh_CN.js"></script>
 
     <!--图片缩略图模版-->
     <script type="text/jquery-tmpl-x" id="j-tmpl-image-thumbnail">
@@ -154,7 +154,18 @@
                             content: text_editor.html()
 
                         }
-
+                        $.ajax({
+                            url: "../../Handler/Backstage/SourceMaterialHandler.ashx?action=add",
+                            data: save_data,
+                            type: "POST",
+                            dataType: "json"
+                            //context: document.body
+                        }).success(function (data) {
+                            alert("添加成功");
+                            //window.setTimeout(function () {
+                            //    window.location.reload();
+                            //}, 2000);
+                        });
                         console.log(save_data);
                         alert('提交数据')
                         return false;

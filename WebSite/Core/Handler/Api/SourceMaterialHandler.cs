@@ -157,11 +157,25 @@ namespace Backstage.Core.Handler
             int index = GetInt("start");
             int size = GetInt("limit");
             if (pid == 0)
+            {
                 ReturnErrorMsg("请传入正确的pid");
+                return;
+            }
             SourceMaterial sm = SourceMaterialHelper.GetItem(pid);
-            var cms = CommentHelper.GetPagings(sm.SellerId, CommentType.Img, pid, index, size);
-            var users = AccountHelper.GetUserList(cms.Results.Select(c => c.UserId).ToList());
+            var cms = CommentHelper.GetPagings(sm.SellerId, CommentType.Img, pid, index * size, size);
             var data = new CommentsForApis();
+            data.Commentnum = cms.TotalCount;
+            JsonTransfer jt = new JsonTransfer();
+            if (cms.TotalCount < 1)
+            {
+                jt.AddSuccessParam();
+                jt.Add("data", data);
+                Response.Write(DesEncrypt(jt).ToLower());
+                Response.End();
+                return;
+            }
+            var users = AccountHelper.GetUserList(cms.Results.Select(c => c.UserId).ToList());
+            
             foreach (var cm in cms.Results)
             {
                 var user = users.FirstOrDefault(u => u.Id == cm.UserId);
@@ -177,9 +191,7 @@ namespace Backstage.Core.Handler
                 };
                 data.Comments.Add(result);
             }
-            data.Commentnum = cms.TotalCount;
-
-            JsonTransfer jt = new JsonTransfer();
+            
             jt.AddSuccessParam();
             jt.Add("data", data);
             Response.Write(DesEncrypt(jt).ToLower());

@@ -49,7 +49,7 @@ namespace Backstage.Core.Logic
         /// <returns></returns>
         public static AccountBinding GetAccountBindingByIdentity(string userIdentity)
         {
-            var cmdText = string.Format("select * from AccountBinding where UserIdentity='{0}' limit 1;", userIdentity);
+            var cmdText = string.Format("select * from AccountBinding where UserIdentity='{0}' limit 0,1;", userIdentity);
             try
             {
                 using (var conn = Utility.ObtainConn(Utility._gameDbConn))

@@ -20,6 +20,12 @@ namespace Backstage.Core.Handler
                     GetList(); break;
                 case "getitem":
                     GetItem(); break;
+                case "usercoupon":
+                    UserCoupon();break;
+                case "couponcommentlist":
+                    Couponcommentlist();break;
+                case "couponcomment":
+                    CouponComment(); break;
                 case "add":
                     Add();break;
                 case "update":

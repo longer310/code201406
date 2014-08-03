@@ -47,7 +47,7 @@
             </div>
             <div class="form-actions">
                 <button type="reset" class="btn"><i class="icon-refresh"></i>清除重置</button>
-                <button type="submit" class="btn btn-primary"><i class="icon-ok icon-white"></i>完成保存</button>
+                <button type="input" class="btn btn-primary"><i class="icon-ok icon-white"></i>完成保存</button>
             </div>
             </form>
 			
@@ -115,14 +115,14 @@
                 KindEditor.ready(function (K) {
                     //文本编辑器
                     mpage.text_editor = text_editor = K.create('textarea[name="content"]', {
-                        uploadJson: '../../script//kindeditor/php/upload_json.php',
+                        uploadJson: '../../script/kindeditor/php/upload_json.php',
                         allowFileManager: true
                     });
 
                     //图片上传编辑
                     image_editor = K.editor({
-                        uploadJson: '../../script//kindeditor/php/upload_json.php',
-                        fileManagerJson: '../../script//kindeditor/php/file_manager_json.php'
+                        uploadJson: '../../script/kindeditor/php/upload_json.php',
+                        fileManagerJson: '../../script/kindeditor/php/file_manager_json.php'
                     });
 
                     //图片上传绑定
@@ -169,7 +169,7 @@
                     $('#j-ticket-selectModal').modal('show');
                 });
 
-                $("#j-activity-editForm").bind("submit", function () {
+                $("#j-activity-editForm").bind("click", function () {
                     //已经加载到数据
                     if (mpage.activityDetailData) {
                         var save_data = {

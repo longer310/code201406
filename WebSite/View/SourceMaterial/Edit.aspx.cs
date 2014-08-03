@@ -10,9 +10,12 @@ namespace Backstage.View.SourceMaterial
 {
     public partial class Edit : BasePage
     {
+        public string SellerId;
+        public string Id;
         protected void Page_Load(object sender, EventArgs e)
         {
-
+            SellerId = Request.QueryString["sellerid"].ToString();
+            Id = Request.QueryString["id"].ToString();
         }
     }
 }

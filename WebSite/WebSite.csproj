@@ -536,6 +536,9 @@
     <Content Include="View\Active\Add.aspx" />
     <Content Include="View\Active\Edit.aspx" />
     <Content Include="View\Active\List.aspx" />
+    <Content Include="View\Coupon\Add.aspx" />
+    <Content Include="View\Coupon\Edit.aspx" />
+    <Content Include="View\Coupon\List.aspx" />
     <Content Include="View\Goods\Item.aspx" />
     <Content Include="View\Goods\Categroy.aspx" />
     <Content Include="View\Index.aspx" />
@@ -665,6 +668,27 @@
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="View\Active\List.aspx.designer.cs">
+      <DependentUpon>List.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="View\Coupon\Add.aspx.cs">
+      <DependentUpon>Add.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="View\Coupon\Add.aspx.designer.cs">
+      <DependentUpon>Add.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="View\Coupon\Edit.aspx.cs">
+      <DependentUpon>Edit.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="View\Coupon\Edit.aspx.designer.cs">
+      <DependentUpon>Edit.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="View\Coupon\List.aspx.cs">
+      <DependentUpon>List.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="View\Coupon\List.aspx.designer.cs">
       <DependentUpon>List.aspx</DependentUpon>
     </Compile>
     <Compile Include="View\Goods\Item.aspx.cs">

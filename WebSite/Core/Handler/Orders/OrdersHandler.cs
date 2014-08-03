@@ -25,8 +25,9 @@ namespace Backstage.Handler
                     GetOrdersList(); break;
                 case "getOrdersDetail":
                     GetOrdersDetail(); break;
+                case "setOrdersDelivered":
+                    SetOrdersDelivered(); break;
                 #endregion
-
                 default: break;
             }
         }
@@ -167,17 +168,17 @@ namespace Backstage.Handler
             var orders = OrdersHelper.GetOrders(orderid);
             if (orders == null)
             {
-                ReturnCorrectMsg("订单不存在");
+                ReturnErrorMsg("订单不存在");
                 return;
             }
             if (orders.SellerId != CurrentUser.Id)
             {
-                ReturnCorrectMsg("无权访问订单");
+                ReturnErrorMsg("无权访问订单");
                 return;
             }
             if (orders.GidList.Count != orders.ImgList.Count || orders.ImgList.Count != orders.TitleList.Count || orders.TitleList.Count != orders.NumList.Count || orders.NumList.Count != orders.NowPriceList.Count)
             {
-                ReturnCorrectMsg("订单数据出错");
+                ReturnErrorMsg("订单数据出错");
                 return;
             }
             var data = new OrdersDetailData();
@@ -212,6 +213,47 @@ namespace Backstage.Handler
             jt.Add("data", data);
             Response.Write(jt.ToJson());
             Response.End();
+        }
+
+        /// <summary>
+        /// 设置订单已发送
+        /// </summary>
+        public void SetOrdersDelivered()
+        {
+            var orderids = GetString("ids");
+            var orderidList = Utility.GetListint(orderids);
+            if (orderidList.Count == 0)
+            {
+                ReturnErrorMsg("需传订单id");
+                return;
+            }
+            var wheresql = Utility.GetWhereSql(orderidList);
+            var ordersList = OrdersHelper.GetOrdersList(wheresql);
+            if (ordersList == null || orderidList.Count() != ordersList.Results.Count)
+            {
+                ReturnErrorMsg("订单不存在");
+                return;
+            }
+            if (ordersList.Results.Any(o => o.OrderType == OrderType.Shop))
+            {
+                ReturnErrorMsg("订单为到店类型无需送餐");
+                return;
+            }
+            if (ordersList.Results.Any(o => o.OrderType == OrderType.Deliveryed))
+            {
+                ReturnErrorMsg("订单状态原本即为已送餐");
+                return;
+            }
+            if (ordersList.Results.Any(o => o.SellerId != CurrentUser.Id))
+            {
+                ReturnErrorMsg("无权操作该订单");
+                return;
+            }
+
+            if(OrdersHelper.SetOrdersListDelivered(orderidList))
+                ReturnCorrectMsg("设置成功");
+            else
+                ReturnErrorMsg("设置失败");
         }
         #endregion
     }

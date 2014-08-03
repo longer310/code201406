@@ -67,7 +67,7 @@
 
     <script type="text/jquery-tmpl-x" id="j-tmpl-orderDetail-listitem">
         	{{each(i, v) list}}
-	        	<tr data-gid="1">
+	        	<tr data-oid="1">
 					<td style="width:100px;"><img src="${v.ImgUrl}"></td>
 					<td>${v.Title}</td>
 					<td class="muted" style="width:80px;"><b class="text-error">${v.NowPrice}</b>元</td>
@@ -90,7 +90,7 @@
                     {{if Status == 1}}未付款
                     {{else Status == 2}}已付款
                     {{else Status == 3}}待发货
-                    <a class="btn btn-success btn-mini" id="j-btn-orderDetail-reach" href="javascript:;" data-gid="1"><i class="icon-ok icon-white"></i> 已发货</a>
+                    <a class="btn btn-success btn-mini" id="j-btn-orderDetail-reach" href="javascript:;" data-oid="1"><i class="icon-ok icon-white"></i> 已发货</a>
                     {{else Status == 4}}已发货
                     {{else}}已完结
                     {{/if}}
@@ -145,107 +145,82 @@
     <script type="text/javascript">
         var MPage = {
             hander: "<%=DomainUrl %>/Handler/Orders/OrdersHandler.ashx?action=",
-                init: function () {
-                    var mpage = this;
+            init: function () {
+                var mpage = this;
 
-                    //去掉之前选中打开的项 选中产品列表
-                    $("#sidebar li").removeClass("active open");
-                    $("#sidebar .sidebar_orders").addClass("active open");
+                //去掉之前选中打开的项 选中产品列表
+                $("#sidebar li").removeClass("active open");
+                $("#sidebar .sidebar_orders").addClass("active open");
 
-                    var orderid = Str.getQueryString("id");
-                    if (orderid == null) {
-                        Common.tip({ type: "error", content: "不存在此订单" });
-                        return false;
-                    } else {
-                        mpage.getOrderDetail(orderid);
-                    }
-                },
+                var orderid = Str.getQueryString("id");
+                if (orderid == null) {
+                    Common.tip({ type: "error", content: "不存在此订单" });
+                    return false;
+                } else {
+                    mpage.getOrderDetail(orderid);
+                }
+            },
 
-                //p 页码
-                //type tab 类型
-                getOrderDetail: function (orderid) {
-                    var mpage = this;
-                    $.post(mpage.hander + "getOrdersDetail", { orderid: orderid }, function (data) {
-                        if (!data.error) {
-                            $("#j-orderDetail-list").html($("#j-tmpl-orderDetail-listitem").tmpl(data.data));
-                            $("#j-orderDetail-info").html($("#j-tmpl-orderDetail-info").tmpl(data.data));
-                            $("#j-orderDetail-user").html($("#j-tmpl-orderDetail-user").tmpl(data.data));
-                            $("#j-orderDetail-status").html($("#j-tmpl-orderDetail-status").tmpl(data.data));
-                            $("#j-orderDetail-footer").html($("#j-tmpl-orderDetail-footer").tmpl(data.data));
+            //p 页码
+            //type tab 类型
+            getOrderDetail: function (orderid) {
+                var mpage = this;
+                $.post(mpage.hander + "getOrdersDetail", { orderid: orderid }, function (data) {
+                    if (!data.error) {
+                        $("#j-orderDetail-list").html($("#j-tmpl-orderDetail-listitem").tmpl(data.data));
+                        $("#j-orderDetail-info").html($("#j-tmpl-orderDetail-info").tmpl(data.data));
+                        $("#j-orderDetail-user").html($("#j-tmpl-orderDetail-user").tmpl(data.data));
+                        $("#j-orderDetail-status").html($("#j-tmpl-orderDetail-status").tmpl(data.data));
+                        $("#j-orderDetail-footer").html($("#j-tmpl-orderDetail-footer").tmpl(data.data));
 
-                            $("#j-btn-orderDetail-reach").bind("click", function () {
-                                var $btn = $(this);
-                                var id = $btn.attr("data-gid");
+                        $("#j-btn-orderDetail-reach").bind("click", function () {
+                            var $btn = $(this);
+                            var id = $btn.attr("data-oid");
 
-                                Common.confirm({
-                                    title: "订单修改提示",
-                                    content: "您确定要将该订单的状态修改为已发货？",
-                                    confirm: function () {
-                                        //执行确认回调
-                                        alert('执行确认回调');
-
-                                        $("#j-orderDetail-status").find(".bar").eq(0).removeClass("bar-success").addClass("bar-info").end().eq(1).removeClass("bar-info").addClass("bar-success");
-                                        $btn.remove();
-                                    },
-                                    cancel: function () {
-                                        //执行取消回调
-                                        alert('执行取消回调');
-                                    }
-                                });
-                                return false;
-                            });
-                        } else {
-                            Common.alert({
-                                title: "提示",
-                                content: data.error,
+                            Common.confirm({
+                                title: "订单修改提示",
+                                content: "您确定要将该订单的状态修改为已发货？",
                                 confirm: function () {
+                                    //执行确认回调
+                                    mpage.SetOrderDelivered(id);
+                                    
+                                },
+                                cancel: function () {
+                                    //执行取消回调
+                                    alert('执行取消回调');
                                 }
                             });
-                        }
-                    }, "JSON");
-                    //$.getJSON("", { }， function(json){
+                            return false;
+                        });
+                    } else {
+                        Common.alert({
+                            title: "提示",
+                            content: data.error,
+                            confirm: function () {
+                            }
+                        });
+                    }
+                }, "JSON");
+            },
 
-                    //var json = {
-                    //    code: 0,
-                    //    msg: "",
-                    //    result: {
-                    //        count: 59,
-                    //        user: {
+            //设置订单状态为已发送
+            SetOrderDelivered: function (id) {
+                var mpage = this;
+                $.post(mpage.hander + "setOrdersDelivered", { ids: id }, function (data) {
+                    if (!data.error) {
+                        Common.tip({ type: "success", content: data.success });
+                        $("#j-orderDetail-status").find(".bar").eq(0).removeClass("bar-success").addClass("bar-info").end().eq(1).removeClass("bar-info").addClass("bar-success");
+                        $("#j-btn-orderDetail-reach").remove();
+                    } else {
+                        Common.tip({ type: "error", content: data.error });
+                    }
+                }, "JSON");
+            },
+        };
 
-                    //        },
-
-                    //        info: {
-
-                    //        },
-
-                    //        //电子券
-                    //        ticket: [
-                    //            {
-                    //                title: "满100减20元电子券",
-                    //                price: 20
-                    //            }
-                    //        ],
-                    //        //配送费
-                    //        delivery_fee: 5,
-
-                    //        list: [
-                    //            {},
-                    //            {},
-                    //            {},
-                    //            {},
-                    //            {},
-                    //            {}
-                    //        ]
-                    //    }
-                    //};
-
-                    
-                }
-            }
-
-            $(function () {
-                MPage.init();
-            });
+        $(function () {
+            MPage.init();
+        });
 
         </script>
 </asp:Content>

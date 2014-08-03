@@ -314,5 +314,40 @@ namespace Backstage.Core.Logic
                 throw;
             }
         }
+
+        /// <summary>
+        /// 设置订单为已送餐
+        /// </summary>
+        /// <param name="ordersidList"></param>
+        /// <returns></returns>
+        public static bool SetOrdersListDelivered(List<int> ordersidList)
+        {
+            List<MySqlParameter> parameters = new List<MySqlParameter>();
+            var cmdText = "begin;";
+            foreach (var id in ordersidList)
+            {
+                var tempcmdText = @"UPDATE Orders SET
+                                        OrderType        = ?OrderType
+                                    WHERE
+                                        Id = ?Id;";
+                string newStr = string.Format("?{0}", id);
+                tempcmdText = tempcmdText.Replace("?", newStr);
+                cmdText += tempcmdText;
+                parameters.Add(new MySqlParameter(newStr + "OrderType", (int)OrderType.Deliveryed));
+                parameters.Add(new MySqlParameter(newStr + "Id", id));
+            }
+            cmdText += "commit;";
+            try
+            {
+                var num = MySqlHelper.ExecuteNonQuery(Utility._gameDbConn, CommandType.Text, cmdText, parameters.ToArray());
+                return num > 0;
+
+            }
+            catch (System.Exception ex)
+            {
+                throw;
+            }
+            return false;
+        }
     }
 }

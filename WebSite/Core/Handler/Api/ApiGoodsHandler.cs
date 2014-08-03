@@ -756,12 +756,17 @@ namespace Backstage.Handler
 
             var gidlist = Utility.GetListint(gids);
             var numlist = Utility.GetListint(nums);
-            if (gidlist.Count != numlist.Count)
+            if (gidlist.Count != numlist.Count || gidlist.Count == 0)
             {
                 ReturnErrorMsg("参数错误");
                 return;
             }
             var goodslist = GoodsHelper.GetGoodsList(sellerId, string.Format(" and Id in({0}) ", gids)).Results;
+            if (goodslist.Count == 0)
+            {
+                ReturnErrorMsg("找不到添加的商品");
+                return;
+            }
             var orders = new Orders();
             orders.UserId = uid;
             foreach (var goods in goodslist)

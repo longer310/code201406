@@ -20,14 +20,17 @@
             </div>
 
             <div class="control-group">
-                <label class="control-label">图片</label>
+                <label class="control-label">活动图片</label>
                 <div class="controls">
 
                     <a class="btn btn-info" href="javascript:;" id="j-btn-imageUpload"><i class="icon-folder-open icon-white"></i>本地上传</a>
                     <a class="btn btn-success" href="javascript:;" id="j-btn-imageManager"><i class="icon-picture icon-white"></i>素材库选择</a>
                     <span class="help-inline">上传过的图片可以直接从素材库选择</span>
-                    <ul class="thumbnails" id="j-image-thumbnails" style="display: none; margin-top: 10px;">
-                    </ul>
+                    <div class="clearfix" style="margin-top: 10px;">
+                        <span class="thumbnail pull-left">
+                            <img src="http://placehold.it/128x128" alt="" id="j-img-placehold">
+                        </span>
+                    </div>
                 </div>
             </div>
 
@@ -55,7 +58,7 @@
 
     <!--图片缩略图模版-->
     <script type="text/jquery-tmpl-x" id="j-tmpl-image-thumbnail">
-			{{each(i, v) thumbnails}}
+            {{each(i, v) thumbnails}}
 	        	<li class="span">
 					<span class="thumbnail">
 						<img src="${v.url}" alt="" class="j-image-thumbnail">
@@ -79,117 +82,92 @@
 
                 KindEditor.ready(function (K) {
                     //文本编辑器
-                        mpage.text_editor = text_editor = K.create('textarea[name="content"]', {
+                    mpage.text_editor = text_editor = K.create('textarea[name="content"]', {
                         uploadJson: '<%=DomainUrl %>/Handler/FileManager/UploadHandler.ashx?type=3',
-                            allowFileManager: true
-                        });
+                        allowFileManager: true
+                    });
 
-                        //图片上传编辑
-                        mpage.image_editor = image_editor = K.editor({
-                            uploadJson: '<%=DomainUrl %>/Handler/FileManager/UploadHandler.ashx?type=3',
-                                fileManagerJson: '<%=DomainUrl %>/Handler/FileManager/FileManagerHandler.ashx?type=3',
-                            });
+                    //图片上传编辑
+                    mpage.image_editor = image_editor = K.editor({
+                        uploadJson: '<%=DomainUrl %>/Handler/FileManager/UploadHandler.ashx?type=3',
+                        fileManagerJson: '<%=DomainUrl %>/Handler/FileManager/FileManagerHandler.ashx?type=3',
+                    });
 
-                        //图片上传绑定
-                        K('#j-btn-imageManager').click(function () {
-                            image_editor.loadPlugin('filemanager', function () {
-                                image_editor.plugin.filemanagerDialog({
-                                    viewType: 'VIEW',
-                                    dirName: 'image',
-                                    clickFn: function (url, title) {
-                                        mpage.addThumbnail([{
-                                            url: url,
-                                            islogo: 0
-                                        }]);
-                                        image_editor.hideDialog();
-                                    }
-                                });
-                            });
-                        });
-
-                        //从资料库选择图片
-                        K('#j-btn-imageUpload').click(function () {
-                            image_editor.loadPlugin('image', function () {
-                                image_editor.plugin.imageDialog({
-                                    showRemote: false,
-                                    imageUrl: K('#j-img-placehold').attr("src"),
-                                    clickFn: function (url, title, width, height, border, align) {
-                                        mpage.addThumbnail([{
-                                            url: url,
-                                            islogo: 0
-                                        }]);
-                                        image_editor.hideDialog();
-                                    }
-                                });
+                    //图片上传绑定
+                    K('#j-btn-imageManager').click(function () {
+                        image_editor.loadPlugin('filemanager', function () {
+                            image_editor.plugin.filemanagerDialog({
+                                viewType: 'VIEW',
+                                dirName: 'image',
+                                clickFn: function (url, title) {
+                                    K('#j-img-placehold').attr("src", url);
+                                    image_editor.hideDialog();
+                                }
                             });
                         });
                     });
 
-                    $("#j-image-thumbnails").delegate(".j-btn-delThumbnail", "click", function () {
-                        $(this).parents("li").remove();
-                        if ($("#j-image-thumbnails li").length == 0) {
-                            $("#j-image-thumbnails").hide();
-                        }
-                        return false;
-                    });
-
-                    //绑定提交表单
-                    $("#j-image-addForm").bind("submit", function () {
-
-                        var thumbnails = [];
-
-                        //获取所有的产品图片
-                        $("#j-image-thumbnails li").each(function () {
-                            var $item = $(this);
-
-                            thumbnails.push({
-                                url: $item.find(".j-image-thumbnail").attr("src"),
-                                islogo: $item.find(".j-image-islogo").attr("checked") ? 1 : 0
+                    //从资料库选择图片
+                    K('#j-btn-imageUpload').click(function () {
+                        image_editor.loadPlugin('image', function () {
+                            image_editor.plugin.imageDialog({
+                                showRemote: false,
+                                imageUrl: K('#j-img-placehold').attr("src"),
+                                clickFn: function (url, title, width, height, border, align) {
+                                    K('#j-img-placehold').attr("src", url);
+                                    image_editor.hideDialog();
+                                }
                             });
                         });
-
-                        var save_data = {
-                            title: $.trim($("#j-image-title").val()),
-                            thumbnail: thumbnails,
-                            content: text_editor.html()
-
-                        }
-                        $.ajax({
-                            url: "../../Handler/Backstage/SourceMaterialHandler.ashx?action=add",
-                            data: save_data,
-                            type: "POST",
-                            dataType: "json"
-                            //context: document.body
-                        }).success(function (data) {
-                            alert("添加成功");
-                            //window.setTimeout(function () {
-                            //    window.location.reload();
-                            //}, 2000);
-                        });
-                        console.log(save_data);
-                        alert('提交数据')
-                        return false;
                     });
-
-                    //绑定重置表单
-                    $("#j-image-addForm").bind("reset", function () {
-                        $("#j-image-title").val('');
-                        $("#j-image-thumbnails").html('').hide();
-                        mpage.text_editor.html('');
-                        return false;
-                    });
-                },
-
-                addThumbnail: function (thumbnails) {
-                    $("#j-image-thumbnails").append($("#j-tmpl-image-thumbnail").tmpl({
-                        thumbnails: thumbnails
-                    })).show();
-                }
-            }
-
-                $(function () {
-                    MPage.init();
                 });
+
+
+                $("#j-image-thumbnails").delegate(".j-btn-delThumbnail", "click", function () {
+                    $(this).parents("li").remove();
+                    if ($("#j-image-thumbnails li").length == 0) {
+                        $("#j-image-thumbnails").hide();
+                    }
+                    return false;
+                });
+
+                //绑定提交表单
+                $("#j-image-addForm").bind("submit", function () {
+
+                    var save_data = {
+                        title: $.trim($("#j-image-title").val()),
+                        thumbnail: $('#j-img-placehold').attr("src"),
+                        content: text_editor.html()
+                    }
+
+                    $.ajax({
+                        url: "../../Handler/Backstage/SourceMaterialHandler.ashx?action=add&sellerid=" + sellerId,
+                        data: save_data,
+                        type: "POST",
+                        dataType: "json"
+                        //context: document.body
+                    }).success(function (data) {
+                        alert("添加成功");
+                        window.setTimeout(function () {
+                            window.location.reload();
+                        }, 2000);
+                    });
+                    return false;
+                });
+
+                //绑定重置表单
+                $("#j-image-addForm").bind("reset", function () {
+                    $("#j-image-title").val('');
+                    $('#j-img-placehold').attr("src", 'http://placehold.it/128x128');
+                    mpage.text_editor.html('');
+                    return false;
+                });
+            }
+        }
+
+        $(function () {
+            MPage.init();
+        });
 
         </script>
 </asp:Content>

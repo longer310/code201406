@@ -39,11 +39,12 @@ namespace Backstage.Core.Handler.Backstage
         private void Add()
         {
             var sm = new SourceMaterial();
-            sm.SellerId = GetInt("sellid");
+            sm.SellerId = GetInt("sellerid");
             sm.Title = GetString("title");
-            sm.Url = GetString("url");
-            sm.Description = GetString("description");
+            sm.Url = GetString("thumbnail");
+            sm.Description = GetString("content");
             sm.CreateTime = DateTime.Now;
+            sm.ImageType = ImageType.Img;
             SourceMaterialHelper.Create(sm);
         }
 
@@ -52,8 +53,8 @@ namespace Backstage.Core.Handler.Backstage
             var id = GetInt("id");
             var sm = SourceMaterialHelper.GetItem(id);
             sm.Title = GetString("title");
-            sm.Url = GetString("url");
-            sm.Description = GetString("description");
+            sm.Url = GetString("thumbnail");
+            sm.Description = GetString("content");
             SourceMaterialHelper.Update(sm);
         }
 

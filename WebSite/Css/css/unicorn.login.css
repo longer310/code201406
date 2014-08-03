@@ -77,11 +77,11 @@ body {
     display:none;
 }
 
-#loginbox #recoverform .form-actions {
-    margin-top: 47px;
+#loginbox form#recoverform .form-actions {
+    margin-top: 27px;
 }
 
-#loginbox #recoverform .control-group {
+#loginbox form#recoverform .control-group {
 	margin: 23px 0;
 }
 

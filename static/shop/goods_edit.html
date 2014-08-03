@@ -275,7 +275,8 @@
 						});
 
 						//解析url中的id
-						var goods_id = /\?id=(\d+)/.test(document.location.href);
+						/\?id=(\d+)/.test(document.location.href);
+						var goods_id = RegExp.$1;
 						if(goods_id){
 							mpage.getGoodsDetail(goods_id);
 						} else {

@@ -65,8 +65,8 @@
 				<li class="submenu active open">
 					<a href="#"><i class="icon icon-tags"></i> <span>电子券管理</span> <span class="label">2</span></a>
 					<ul>
-						<li><a href="ticket_list.html">电子券列表</a></li>
-						<li class="active"><a href="ticket_add.html">新增电子券</a></li>
+						<li class="active"><a href="ticket_list.html">电子券列表</a></li>
+						<li><a href="ticket_add.html">新增电子券</a></li>
 					</ul>
 				</li>
 				<li>
@@ -275,6 +275,16 @@
 								});
 							});
 						});
+
+						//解析url中的id
+						/\?id=(\d+)/.test(document.location.href);
+						var ticket_id = RegExp.$1;
+						if(ticket_id){
+							mpage.getTicketDetail(ticket_id);
+						} else {
+							alert("该电子券不存在");
+							window.history.back();
+						}
 					});
 					
 					$('.j-datepicker').datepicker();
@@ -335,16 +345,70 @@
 
 					//绑定重置表单
 					$("#j-ticket-addForm").bind("reset", function(){
-						$("#j-ticket-title").val('');
-	    				$("#j-ticket-date_forever").removeAttr("checked");
-	    				$('#j-img-placehold').attr("src", 'http://placehold.it/128x128');
-	    				$("#j-ticket-score").val('');
-						$("#j-ticket-total").val('');
-						$("#j-ticket-discount").val('');
-						$("#j-goods-selected").html("");
-	    				mpage.text_editor.html('');
+						mpage.setFormData();
 						return false;
 					});
+        		},
+
+        		getTicketDetail : function(ticket_id){
+        			var mpage = this;
+
+        			//$.getJSON("", { id: ticket_id}， function(json){
+        				var json = {
+        					code : 0,
+							msg : "", 
+							result : {
+								title : '电子券名称',
+								expire_date : -1,
+								thumbnail : 'http://placehold.it/128x128',
+								score : 50,
+								total : 100,
+								discount : 20,
+								goods_selected : [
+									{
+										id : 1,
+										title : "商品"
+									},
+									{
+										id : 2,
+										title : "商品"
+									},
+									{
+										id : 3,
+										title : "商品"
+									}
+								],
+								content : 'asfasfsadfas'
+							}
+        				}
+
+        				mpage.detailData = json.result;
+        				mpage.setFormData();
+        			//});
+        		},
+
+        		setFormData : function(){
+        			var mpage = this,
+        				detail = mpage.detailData;
+
+        			$("#j-ticket-title").val(detail.title);
+
+        			if(detail.expire_date == -1){
+        				$("#j-ticket-date_forever").attr("checked", "checked");
+        				$("#j-ticket-expire_date").attr("disabled", "disabled");
+        			} else {
+        				$("#j-ticket-expire_date").removeAttr("checked");
+        				$("#j-ticket-date_forever").removeAttr("disabled", "disabled").val(detail.expire_date);
+        			}
+    				
+    				$('#j-img-placehold').attr("src", 'http://placehold.it/128x128');
+    				$("#j-ticket-score").val(detail.score);
+					$("#j-ticket-total").val(detail.total);
+					$("#j-ticket-discount").val(detail.discount);
+					$("#j-goods-selected").html( $("#j-tmpl-goods-selecteditem").tmpl({
+						goods_selected : detail.goods_selected	
+					}) );
+    				mpage.text_editor.html(detail.content);
         		},
 
         		getGoodsList : function (p){

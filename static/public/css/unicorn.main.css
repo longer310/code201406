@@ -1343,3 +1343,26 @@ ul.inline>li,ol.inline>li{
 .select2-container{
 	width: 80%;
 }
+
+.user-detail dl{
+	margin: 0;
+}
+.user-detail dt,
+.user-detail dd{
+	line-height: 30px;
+	margin-bottom: 10px;
+}
+
+.user-detail .text-input{
+	margin-bottom: 0;
+}
+
+.user-detail select{
+	margin-bottom: 0;
+	width: auto;
+}
+
+.user-detail table th{
+	vertical-align: middle;
+
+}

@@ -26,7 +26,7 @@ namespace Backstage.Handler
             }
         }
 
-        
+
         private void GetManagerList()
         {
             JsonTransfer jt = new JsonTransfer();
@@ -40,13 +40,12 @@ namespace Backstage.Handler
 
             int pageIndex = GetInt("pageIndex");
             int pageSize = GetInt("pageSize");
-            int totalnum;
-            var list = AccountHelper.GetUserList(out totalnum, " where (RoleType = 2 or RoleType = 3) ", "",
-                pageIndex * pageSize, pageSize);
+            var result = AccountHelper.GetUserList(" where (RoleType = 2 or RoleType = 3) ", "",
+                pageIndex * pageSize, pageSize, 1);
 
-            jt.Add("list", list);
-            jt.Add("count", totalnum);
-            jt.Add("curcount", list.Count);
+            jt.Add("list", result.Results);
+            jt.Add("count", result.TotalCount);
+            jt.Add("curcount", result.TotalCount);
             Response.Write(jt.ToJson());
         }
 

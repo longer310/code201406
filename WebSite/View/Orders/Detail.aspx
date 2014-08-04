@@ -144,7 +144,7 @@
         Common.tip({type : "error", content :"asfdsadf"})--%>
     <script type="text/javascript">
         var MPage = {
-            hander: "<%=DomainUrl %>/Handler/Orders/OrdersHandler.ashx?action=",
+            hander: "<%=DomainUrl %>/Handler/Merchant/OrdersHandler.ashx?action=",
             init: function () {
                 var mpage = this;
 

@@ -60,7 +60,7 @@
                         <li><a href="#">新增图片墙</a></li>
                     </ul>
                 </li>
-                <li><a href="#"><i class="icon icon-user"></i><span>会员管理</span></a></li>
+                <li class="sidebar_user"><a href="<%=DomainUrl %>/View/User/User.aspx"><i class="icon icon-user"></i><span>会员管理</span></a></li>
                 <li><a href="#"><i class="icon icon-comment"></i><span>留言管理</span></a></li>
                 <li class="submenu">
                     <a href="#"><i class="icon icon-tags"></i><span>电子券管理</span> <span class="label">2</span></a>

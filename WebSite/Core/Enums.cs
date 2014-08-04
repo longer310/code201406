@@ -31,7 +31,7 @@ namespace Backstage.Core
         Merchant = 10,
 
         /// <summary>
-        /// 用户
+        /// 普通用户
         /// </summary>
         User = 20,
 

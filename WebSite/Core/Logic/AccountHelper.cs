@@ -11,17 +11,18 @@ using System.Text;
 using System.Web;
 using System.Web.Security;
 using Backstage.Core.Entity;
+using Backstage.Model;
 using MySql.Data.MySqlClient;
 
 namespace Backstage.Core
 {
     public static class AccountHelper
     {
-        public static List<Account> GetUserList(out int totalnum, string wheresql = "", string ordersql = ""
-            , int start = 0, int limit = 0)
+        public static PagResults<Account> GetUserList(string wheresql = "", string ordersql = ""
+            , int start = 0, int limit = 0, int isgetcount = 0)
         {
-            totalnum = 0;
-            List<Account> list = new List<Account>();
+            var result = new PagResults<Account>();
+            result.Results = new List<Account>();
             if (ordersql == "") ordersql = " order by CreateTime desc";
             string limitsql = limit != 0 ? " LIMIT ?start,?limit" : String.Empty;
             var cmdText = @"select * from account " + wheresql + ordersql + limitsql;
@@ -56,22 +57,33 @@ namespace Backstage.Core
                         user.CreateTime = (DateTime)reader["CreateTime"];
                         user.Integral = (int)reader["Integral"];
                         user.LinkMan = reader["LinkMan"].ToString();
+                        user.Discount = (float)reader["Discount"];
+                        user.TotalRecharge = (float)reader["TotalRecharge"];
+                        user.TotalConsume = (float)reader["TotalConsume"];
+                        user.Status = (int)reader["Status"];
+                        user.TotalLoginCount = (int)reader["TotalLoginCount"];
+                        user.TotalOrdersCount = (int)reader["TotalOrdersCount"];
+                        user.RegisterTime = (DateTime)reader["RegisterTime"];
+                        user.LastLoginTime = (DateTime)reader["LastLoginTime"];
 
-                        list.Add(user);
+                        result.Results.Add(user);
                     }
 
-                    //一个函数有两次连接数据库 先把连接断开 然后重连
-                    conn.Close();
-                    conn.Dispose();
-                    conn.Open();
-
-                    cmdText = @"select count(*) from account " + wheresql;
-                    reader = MySqlHelper.ExecuteReader(conn, CommandType.Text, cmdText);
-                    if (reader.HasRows)
+                    if (isgetcount == 1)
                     {
-                        if (reader.Read())
+                        //一个函数有两次连接数据库 先把连接断开 然后重连
+                        conn.Close();
+                        conn.Dispose();
+                        conn.Open();
+
+                        cmdText = @"select count(*) from account " + wheresql;
+                        reader = MySqlHelper.ExecuteReader(conn, CommandType.Text, cmdText);
+                        if (reader.HasRows)
                         {
-                            totalnum = reader.GetInt32(0);
+                            if (reader.Read())
+                            {
+                                result.TotalCount = reader.GetInt32(0);
+                            }
                         }
                     }
                 }
@@ -80,7 +92,7 @@ namespace Backstage.Core
             {
                 throw;
             }
-            return list;
+            return result;
         }
 
         public static IList<Account> GetUserList(IList<int> uids)
@@ -116,6 +128,14 @@ namespace Backstage.Core
                         user.CreateTime = (DateTime)reader["CreateTime"];
                         user.Integral = (int)reader["Integral"];
                         user.LinkMan = reader["LinkMan"].ToString();
+                        user.Discount = (float)reader["Discount"];
+                        user.TotalRecharge = (float)reader["TotalRecharge"];
+                        user.TotalConsume = (float)reader["TotalConsume"];
+                        user.Status = (int)reader["Status"];
+                        user.TotalLoginCount = (int)reader["TotalLoginCount"];
+                        user.TotalOrdersCount = (int)reader["TotalOrdersCount"];
+                        user.RegisterTime = (DateTime)reader["RegisterTime"];
+                        user.LastLoginTime = (DateTime)reader["LastLoginTime"];
 
                         list.Add(user);
                     }
@@ -153,6 +173,14 @@ namespace Backstage.Core
                                         Money             = ?Money,
                                         Integral             = ?Integral,
                                         CreateTime      = ?CreateTime
+                                        RegisterTime          = ?RegisterTime    
+                                        Status                = ?Status          
+                                        Discount              = ?Discount        
+                                        TotalRecharge         = ?TotalRecharge   
+                                        TotalConsume          = ?TotalConsume    
+                                        TotalLoginCount       = ?TotalLoginCount 
+                                        TotalOrdersCount      = ?TotalOrdersCount
+                                        LastLoginTime         = ?LastLoginTime   
                                     WHERE
                                         Id = ?Id";
                 parameters.Add(new MySqlParameter("?Id", account.Id));
@@ -169,6 +197,14 @@ namespace Backstage.Core
                 parameters.Add(new MySqlParameter("?Integral", account.Integral));
                 parameters.Add(new MySqlParameter("?LinkMan", account.LinkMan));
                 parameters.Add(new MySqlParameter("?SellerId", account.SellerId));
+                parameters.Add(new MySqlParameter("?RegisterTime", account.RegisterTime));
+                parameters.Add(new MySqlParameter("?Status", account.Status));
+                parameters.Add(new MySqlParameter("?Discount", account.Discount));
+                parameters.Add(new MySqlParameter("?TotalRecharge", account.TotalRecharge));
+                parameters.Add(new MySqlParameter("?TotalConsume", account.TotalConsume));
+                parameters.Add(new MySqlParameter("?TotalLoginCount", account.TotalLoginCount));
+                parameters.Add(new MySqlParameter("?TotalOrdersCount", account.TotalOrdersCount));
+                parameters.Add(new MySqlParameter("?LastLoginTime", account.LastLoginTime));
             }
             else
             {
@@ -186,6 +222,14 @@ namespace Backstage.Core
                                         Money        ,
                                         Integral        ,
                                         LinkMan        ,
+                                        RegisterTime           ,
+                                        Status                 ,
+                                        Discount               ,
+                                        TotalRecharge          ,
+                                        TotalConsume           ,
+                                        TotalLoginCount        ,
+                                        TotalOrdersCount       ,
+                                        LastLoginTime          ,
                                         CreateTime 
                                         ) 
                                         values
@@ -202,6 +246,14 @@ namespace Backstage.Core
                                         ?Money       ,
                                         ?Integral       ,
                                         ?LinkMan       ,
+                                        ?RegisterTime           ,
+                                        ?Status                 ,
+                                        ?Discount               ,
+                                        ?TotalRecharge          ,
+                                        ?TotalConsume           ,
+                                        ?TotalLoginCount        ,
+                                        ?TotalOrdersCount       ,
+                                        ?LastLoginTime          ,
                                         ?CreateTime
                                         )";
                 parameters.Add(new MySqlParameter("?UserName", account.UserName));
@@ -217,6 +269,14 @@ namespace Backstage.Core
                 parameters.Add(new MySqlParameter("?SellerId", account.SellerId));
                 parameters.Add(new MySqlParameter("?Integral", account.Integral));
                 parameters.Add(new MySqlParameter("?LinkMan", account.LinkMan));
+                parameters.Add(new MySqlParameter("?RegisterTime", account.RegisterTime));
+                parameters.Add(new MySqlParameter("?Status", account.Status));
+                parameters.Add(new MySqlParameter("?Discount", account.Discount));
+                parameters.Add(new MySqlParameter("?TotalRecharge", account.TotalRecharge));
+                parameters.Add(new MySqlParameter("?TotalConsume", account.TotalConsume));
+                parameters.Add(new MySqlParameter("?TotalLoginCount", account.TotalLoginCount));
+                parameters.Add(new MySqlParameter("?TotalOrdersCount", account.TotalOrdersCount));
+                parameters.Add(new MySqlParameter("?LastLoginTime", account.LastLoginTime));
             }
 
             try
@@ -286,6 +346,14 @@ namespace Backstage.Core
                             user.CreateTime = (DateTime)reader["CreateTime"];
                             user.Integral = (int)reader["Integral"];
                             user.LinkMan = reader["LinkMan"].ToString();
+                            user.Discount = (float)reader["Discount"];
+                            user.TotalRecharge = (float)reader["TotalRecharge"];
+                            user.TotalConsume = (float)reader["TotalConsume"];
+                            user.Status = (int)reader["Status"];
+                            user.TotalLoginCount = (int)reader["TotalLoginCount"];
+                            user.TotalOrdersCount = (int)reader["TotalOrdersCount"];
+                            user.RegisterTime = (DateTime)reader["RegisterTime"];
+                            user.LastLoginTime = (DateTime)reader["LastLoginTime"];
                             return user;
                         }
                     }
@@ -325,6 +393,14 @@ namespace Backstage.Core
                             user.CreateTime = (DateTime)reader["CreateTime"];
                             user.Integral = (int)reader["Integral"];
                             user.LinkMan = reader["LinkMan"].ToString();
+                            user.Discount = (float)reader["Discount"];
+                            user.TotalRecharge = (float)reader["TotalRecharge"];
+                            user.TotalConsume = (float)reader["TotalConsume"];
+                            user.Status = (int)reader["Status"];
+                            user.TotalLoginCount = (int)reader["TotalLoginCount"];
+                            user.TotalOrdersCount = (int)reader["TotalOrdersCount"];
+                            user.RegisterTime = (DateTime)reader["RegisterTime"];
+                            user.LastLoginTime = (DateTime)reader["LastLoginTime"];
                             return user;
                         }
                     }
@@ -364,6 +440,14 @@ namespace Backstage.Core
                             user.CreateTime = (DateTime)reader["CreateTime"];
                             user.Integral = (int)reader["Integral"];
                             user.LinkMan = reader["LinkMan"].ToString();
+                            user.Discount = (float)reader["Discount"];
+                            user.TotalRecharge = (float)reader["TotalRecharge"];
+                            user.TotalConsume = (float)reader["TotalConsume"];
+                            user.Status = (int)reader["Status"];
+                            user.TotalLoginCount = (int)reader["TotalLoginCount"];
+                            user.TotalOrdersCount = (int)reader["TotalOrdersCount"];
+                            user.RegisterTime = (DateTime)reader["RegisterTime"];
+                            user.LastLoginTime = (DateTime)reader["LastLoginTime"];
                             return user;
                         }
                     }
@@ -406,6 +490,14 @@ namespace Backstage.Core
                             user.CreateTime = (DateTime)reader["CreateTime"];
                             user.Integral = (int)reader["Integral"];
                             user.LinkMan = reader["LinkMan"].ToString();
+                            user.Discount = (float)reader["Discount"];
+                            user.TotalRecharge = (float)reader["TotalRecharge"];
+                            user.TotalConsume = (float)reader["TotalConsume"];
+                            user.Status = (int)reader["Status"];
+                            user.TotalLoginCount = (int)reader["TotalLoginCount"];
+                            user.TotalOrdersCount = (int)reader["TotalOrdersCount"];
+                            user.RegisterTime = (DateTime)reader["RegisterTime"];
+                            user.LastLoginTime = (DateTime)reader["LastLoginTime"];
                             return user;
                         }
                     }

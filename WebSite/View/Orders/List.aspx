@@ -121,7 +121,7 @@
         </script>
     <script type="text/javascript">
         var MPage = {
-            hander: "<%=DomainUrl %>/Handler/Orders/OrdersHandler.ashx?action=",
+            hander: "<%=DomainUrl %>/Handler/Merchant/OrdersHandler.ashx?action=",
             maxpage: 5,     //最多显示的页数
             start: 0,       //页码
             limit: 3,       //一页条数

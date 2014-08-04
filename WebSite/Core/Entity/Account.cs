@@ -62,6 +62,38 @@ namespace Backstage.Core.Entity
         /// 昵称
         /// </summary>
         public string NickName { get; set; }
+        /// <summary>
+        /// 注册时间
+        /// </summary>
+        public DateTime RegisterTime { get; set; }
+        /// <summary>
+        /// 最后一次登录时间
+        /// </summary>
+        public DateTime LastLoginTime { get; set; }
+        /// <summary>
+        /// 可享受的折扣
+        /// </summary>
+        public float Discount { get; set; }
+        /// <summary>
+        /// 总充值
+        /// </summary>
+        public float TotalRecharge { get; set; }
+        /// <summary>
+        /// 总消费
+        /// </summary>
+        public float TotalConsume { get; set; }
+        /// <summary>
+        /// 状态 0：正常 -1：已删除
+        /// </summary>
+        public int Status { get; set; }
+        /// <summary>
+        /// 总登录次数
+        /// </summary>
+        public int TotalLoginCount { get; set; }
+        /// <summary>
+        /// 总订单数
+        /// </summary>
+        public int TotalOrdersCount { get; set; }
 
         public Account()
         {

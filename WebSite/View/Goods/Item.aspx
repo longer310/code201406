@@ -120,7 +120,7 @@
 
     <script type="text/javascript">
         var MPage = {
-            hander: "<%=DomainUrl %>/Handler/Goods/GoodsHandler.ashx?action=",
+            hander: "<%=DomainUrl %>/Handler/Merchant/GoodsHandler.ashx?action=",
             gid: 0,
             init: function () {
                 var mpage = this;

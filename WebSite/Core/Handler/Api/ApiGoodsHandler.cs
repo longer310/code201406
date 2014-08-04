@@ -432,7 +432,7 @@ namespace Backstage.Handler
             var commentResult = CommentHelper.GetPagings(sellerId, CommentType.Goods, gid, start * limit, limit);
             var commentlist = commentResult.Results;
             string wheresql = Utility.GetWhereSql(commentlist.Select(o => o.UserId).ToList());
-            var userlist = AccountHelper.GetUserList(out utotalcount, wheresql, "", start * limit, limit);
+            var userlist = AccountHelper.GetUserList( wheresql, "", start * limit, limit).Results;
 
             var data = new CommentResponse();
             data.commentnum = totalcount;

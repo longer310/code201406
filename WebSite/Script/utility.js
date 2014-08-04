@@ -165,6 +165,7 @@ String.prototype.ToDate = function () {
     var date = new Date(parseInt(this.replace("/Date(", "").replace(")/", ""), 10));
     return date;
 }
+
 Date.prototype.Format = function (format) {
     /*
     * eg:format="YYYY-MM-dd hh:mm:ss";

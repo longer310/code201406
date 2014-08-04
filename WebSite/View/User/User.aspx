@@ -57,7 +57,7 @@
         	{{each(i, v) list}}
 	        	<tr data-gid="1">
 					<td><input type="checkbox" class="j-select" /></td>
-					<td>${v.RegisterTime.ToDate()}</td>
+					<td>${v.RegisterTime.ToDate().Format("yyyy-MM-dd hh:mm:ss")}</td>
 					<td>${v.UserName}</td>
 					<td>${v.NickName}</td>
 					<td>
@@ -74,9 +74,9 @@
 					<td>￥<b class="text-error">${v.Money}</b></td>
 					<td><b class="text-success">${v.Integral}</b>分</td>
 					<td>￥<b class="text-error">${v.TotalConsume}</b></td>
-					<td>${v.LastLoginTime.ToDate()}</td>
+					<td>${v.LastLoginTime.ToDate().Format("yyyy-MM-dd hh:mm:ss")}</td>
 					<td style="width:120px;">
-						<a class="btn btn-primary btn-mini" href="goods_edit.html?id=111"><i class="icon-pencil icon-white"></i> 编辑</a>
+						<a class="btn btn-primary btn-mini" href="<%=DomainUrl %>/view/user/edit.aspx?id=${v.Id}"><i class="icon-pencil icon-white"></i> 编辑</a>
 						<a class="btn btn-danger btn-mini j-btn-del" href=""><i class="icon-remove icon-white"></i> 删除</a>
 					</td>
 				</tr>

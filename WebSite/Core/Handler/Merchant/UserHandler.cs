@@ -23,6 +23,8 @@ namespace Backstage.Handler
                 #region 会员列表
                 case "getUserList":
                     GetUserList(); break;
+                case "getUserDetail":
+                    GetUserDetail(); break;
                 #endregion
                 default: break;
             }
@@ -118,57 +120,25 @@ namespace Backstage.Handler
             public float TotalPrice { get; set; }
         }
         /// <summary>
-        /// 获取订单详情
+        /// 获取用户详情
         /// </summary>
-        public void GetOrdersDetail()
+        public void GetUserDetail()
         {
-            var orderid = GetInt("orderid");
-            var orders = OrdersHelper.GetOrders(orderid);
-            if (orders == null)
+            var userid = GetInt("userid");
+            var user = AccountHelper.GetUser(userid);
+            if (user == null)
             {
-                ReturnErrorMsg("订单不存在");
+                ReturnErrorMsg("用户不存在");
                 return;
             }
-            if (orders.SellerId != CurrentUser.Id)
+            if (user.SellerId == 0 && CurrentUser.RoleType > RoleType.SecondManage)
             {
-                ReturnErrorMsg("无权访问订单");
+                ReturnErrorMsg("无权访问该商户");
                 return;
             }
-            if (orders.GidList.Count != orders.ImgList.Count || orders.ImgList.Count != orders.TitleList.Count || orders.TitleList.Count != orders.NumList.Count || orders.NumList.Count != orders.NowPriceList.Count)
-            {
-                ReturnErrorMsg("订单数据出错");
-                return;
-            }
-            var data = new OrdersDetailData();
-            data.Id = orders.Id;
-            data.CreateTime = orders.CreateTime.ToString("yyyy-M-d HH:mm:ss");
-            data.Status = (int)orders.GetReqStatus();
-            data.Type = (int)orders.OrderType;
-            data.Address = orders.Address;
-            data.LinkMan = orders.LinkMan;
-            data.Mobile = orders.Mobile;
-            data.CtotalPrice = orders.CtotalPrice;
-            data.Ccontent = orders.Ccontent;
-            data.Remark = orders.Remark;
-            data.TotalPrice = orders.TotalPrice;
-            data.StotalPrice = orders.StotalPrice;
-            data.SendPrice = ParamHelper.MerchantCfgData.SendPrice;
-
-            var i = 0;
-            foreach (var url in orders.ImgList)
-            {
-                var item = new OrdersGoodsItem();
-                item.ImgUrl = url;
-                item.Title = orders.TitleList[i];
-                item.NowPrice = orders.NowPriceList[i];
-                item.Num = orders.NumList[i];
-                item.TotalPrice = item.NowPrice * item.Num;
-
-                data.list.Add(item);
-            }
-
+            
             var jt = new JsonTransfer();
-            jt.Add("data", data);
+            jt.Add("data", user);
             Response.Write(jt.ToJson());
             Response.End();
         }

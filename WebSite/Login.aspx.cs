@@ -13,8 +13,7 @@ namespace Backstage
         protected void Page_Load(object sender, EventArgs e)
         {
             if (CurrentUser != null)
-                Redirect("Index.aspx");
-
+                RedirectLoginedBackPage();
         }
     }
 }

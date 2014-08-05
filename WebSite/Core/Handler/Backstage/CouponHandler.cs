@@ -180,7 +180,7 @@ namespace Backstage.Core.Handler.Backstage
                 {
                     Id = item.Id,
                     ImgId = item.ImgId,
-                    ImgUrl = item.ImgUrl,
+                    ImgUrl = item.ImgUrl == "" ? "http://placehold.it/180x90" : item.ImgUrl,
                     SellerId = item.SellerId,
                     Status = item.Status,
                     Summary = item.Summary,
@@ -190,7 +190,9 @@ namespace Backstage.Core.Handler.Backstage
                     DiscountMoney = item.DiscountMoney,
                     Expiry = item.Expiry.ToString("yyyy-MM-dd HH:mm:ss"),
                     Extcredit = item.Extcredit,
-                    FullMoney = item.FullMoney
+                    FullMoney = item.FullMoney,
+                    DownloadTimes = item.DownloadTimes,
+                    UserTimes = item.UsedTimes
                 };
                 data.Results.Add(o);
             }
@@ -198,7 +200,7 @@ namespace Backstage.Core.Handler.Backstage
             JsonTransfer jt = new JsonTransfer();
             jt.AddSuccessParam();
             jt.Add("data", data);
-            Response.Write(DesEncrypt(jt));
+            Response.Write(DesEncrypt(jt).ToLower());
             Response.End();
         }
     }

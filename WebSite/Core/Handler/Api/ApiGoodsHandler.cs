@@ -432,7 +432,7 @@ namespace Backstage.Handler
             var commentResult = CommentHelper.GetPagings(sellerId, CommentType.Goods, gid, start * limit, limit);
             var commentlist = commentResult.Results;
             string wheresql = Utility.GetWhereSql(commentlist.Select(o => o.UserId).ToList());
-            var userlist = AccountHelper.GetUserList( wheresql, "", start * limit, limit).Results;
+            var userlist = AccountHelper.GetUserList(wheresql, "", start * limit, limit).Results;
 
             var data = new CommentResponse();
             data.commentnum = totalcount;
@@ -1020,6 +1020,9 @@ namespace Backstage.Handler
                     discount = (float)(coupon.Extcredit * 1.0) / 100;
                     orders.Ccontent = string.Format("满{0}减{1}元电子券", coupon.FullMoney, coupon.DiscountMoney);
                 }
+                coupon.UsedTimes++;
+                CouponHelper.Update(coupon);
+                CouponHelper.UpdateUserCouponStatus(couponid, 1); //更新优惠券已使用
             }
             orders.TotalPrice -= discount;
             orders.CtotalPrice = discount;
@@ -1029,7 +1032,6 @@ namespace Backstage.Handler
             orders.Status = OrderStatus.Update;
 
             OrdersHelper.SaveOrders(orders);
-            CouponHelper.UpdateCouponStatus(couponid, 1); //更新优惠券已使用
 
             ReturnCorrectMsg("更新成功");
         }
@@ -1109,7 +1111,7 @@ namespace Backstage.Handler
             }
             else if (orders.Status == OrderStatus.Cancel)
             {//取消订单——返回优惠券
-                CouponHelper.UpdateCouponStatus(orders.CouponId, 0); //更新优惠券未使用
+                CouponHelper.UpdateUserCouponStatus(orders.CouponId, 0); //更新优惠券未使用
             }
 
             OrdersHelper.SaveOrders(orders);

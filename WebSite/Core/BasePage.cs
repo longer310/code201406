@@ -65,6 +65,20 @@ namespace Backstage.Core
                 Redirect(Utility._loginUrl + "?rtn=" + HttpUtility.UrlEncode(url));
         }
 
+        public void RedirectLoginedBackPage()
+        { 
+            HttpContext context = HttpContext.Current;
+            string url = context.Request.QueryString["rtn"].ToString();
+            if (url.Length > 0)
+            {
+                Redirect(url);
+            }
+            else {
+                Redirect("Index.aspx");
+            }
+            
+        }
+
         /// <summary>
         /// 得到原始的URL地址，如果经过Intelligencia.UrlRewriter，则返回地址栏里的URL
         /// </summary>

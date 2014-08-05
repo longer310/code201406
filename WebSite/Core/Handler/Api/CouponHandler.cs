@@ -21,17 +21,17 @@ namespace Backstage.Core.Handler
                 case "getitem":
                     GetItem(); break;
                 case "usercoupon":
-                    UserCoupon();break;
+                    UserCoupon(); break;
                 case "couponcommentlist":
-                    Couponcommentlist();break;
+                    Couponcommentlist(); break;
                 case "couponcomment":
                     CouponComment(); break;
                 case "add":
-                    Add();break;
+                    Add(); break;
                 case "update":
-                    Update();break;
+                    Update(); break;
                 case "delete":
-                    Delete();break;
+                    Delete(); break;
                 //case "deldata":
                 //    DelData(); break;
                 default: break;
@@ -41,7 +41,7 @@ namespace Backstage.Core.Handler
         private void Delete()
         {
             var id = GetInt("id");
-            
+
             throw new NotImplementedException();
         }
 
@@ -53,7 +53,7 @@ namespace Backstage.Core.Handler
 
         private void Add()
         {
-            
+
 
             throw new NotImplementedException();
         }
@@ -67,6 +67,9 @@ namespace Backstage.Core.Handler
             JsonTransfer jt = new JsonTransfer();
             try
             {
+                var coupon = CouponHelper.GetItem(cid);
+                if (coupon == null)
+                    ReturnCorrectMsg(string.Format("优惠券不存在cid:", cid));
                 var userCoupon = new UserCoupon()
                 {
                     CouponId = cid,
@@ -77,12 +80,14 @@ namespace Backstage.Core.Handler
                 if (old != null && old.Id != 0)
                 {
                     jt.Add("status", 0);
-                    jt.Add("message", "用户已经使用过该优惠券");
+                    jt.Add("message", "用户已经领取过该优惠券");
                     Response.Write(DesEncrypt(jt).ToLower());
                     Response.End();
                     return;
                 }
                 CouponHelper.CreateUserCoupon(userCoupon);
+                coupon.DownloadTimes++;
+                CouponHelper.Update(coupon);
             }
             catch
             {

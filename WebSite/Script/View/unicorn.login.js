@@ -106,7 +106,7 @@ $(document).ready(function () {
             dataType: "json"
             //context: document.body
         }).success(function () {
-            window.location.href = "View/Index.aspx";
+            window.location.reload();
         });
         //console.log(1);
     }

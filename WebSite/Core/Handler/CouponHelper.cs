@@ -37,6 +37,8 @@ namespace Backstage.Core.Handler
                         c.GoodsIds = Utility.GetListint(reader["GoodsIds"].ToString());
                         c.Commentnum = (int)reader["Commentnum"];
                         c.SellerId = (int)reader["SellerId"];
+                        c.DownloadTimes = (int)reader["DownloadTimes"];
+                        c.UsedTimes = (int)reader["UsedTimes"];
                     }
                 }
             }
@@ -89,6 +91,8 @@ namespace Backstage.Core.Handler
                         c.GoodsIds = Utility.GetListint(reader["GoodsIds"].ToString());
                         c.Commentnum = (int)reader["Commentnum"];
                         c.SellerId = (int)reader["SellerId"];
+                        c.DownloadTimes = (int)reader["DownloadTimes"];
+                        c.UsedTimes = (int)reader["UsedTimes"];
                         results.Results.Add(c);
                     }
 
@@ -155,6 +159,8 @@ namespace Backstage.Core.Handler
                         c.GoodsIds = Utility.GetListint(reader["GoodsIds"].ToString());
                         c.Commentnum = (int)reader["Commentnum"];
                         c.SellerId = (int)reader["SellerId"];
+                        c.DownloadTimes = (int)reader["DownloadTimes"];
+                        c.UsedTimes = (int)reader["UsedTimes"];
                         results.Add(c);
                     }
                 }
@@ -180,7 +186,9 @@ namespace Backstage.Core.Handler
                                         FullMoney = ?FullMoney,
                                         DiscountMoney = ?DiscountMoney,
                                         GoodsIds = ?GoodsIds,
-                                        Commentnum = ?Commentnum
+                                        Commentnum = ?Commentnum,
+                                        DownloadTimes = ?DownloadTimes,
+                                        UsedTimes = ?UsedTimes
                                     WHERE
                                         Id = ?Id";
 
@@ -196,6 +204,9 @@ namespace Backstage.Core.Handler
             parameters.Add(new MySqlParameter("?DiscountMoney", coupon.FullMoney));
             parameters.Add(new MySqlParameter("?GoodsIds", Utility.GetString(coupon.GoodsIds.ToList())));
             parameters.Add(new MySqlParameter("?Commentnum", coupon.Commentnum));
+            parameters.Add(new MySqlParameter("?DownloadTimes", coupon.DownloadTimes));
+            parameters.Add(new MySqlParameter("?UsedTimes", coupon.UsedTimes));
+
 
             MySqlHelper.ExecuteNonQuery(GlobalConfig.DbConn, CommandType.Text, commandText, parameters.ToArray());
 
@@ -458,7 +469,7 @@ namespace Backstage.Core.Handler
         }
 
 
-        public static bool UpdateCouponStatus(int id, int status)
+        public static bool UpdateUserCouponStatus(int id, int status)
         {
             if (id == 0) return false;
             string commandText = @"UPDATE usercoupon SET

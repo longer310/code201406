@@ -117,10 +117,10 @@ namespace Backstage.Core.Entity
         ///// 订单完成可以得到的积分
         ///// </summary>
         //public int Extcredit { get; set; }
-        ///// <summary>
-        ///// 商品总价
-        ///// </summary>
-        //public float SendPrice { get; set; }
+        /// <summary>
+        /// 所打折扣
+        /// </summary>
+        public float Discount { get; set; }
 
         public Orders()
         {

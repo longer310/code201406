@@ -4,6 +4,7 @@ using System.Data;
 using System.Linq;
 using System.Web;
 using Backstage.Core.Entity;
+using Backstage.Handler;
 using Backstage.Model;
 using MySql.Data.MySqlClient;
 
@@ -233,6 +234,42 @@ namespace Backstage.Core.Logic
                 parameters.Add(new MySqlParameter(newStr + "Index", goodsCategories.Index));
                 parameters.Add(new MySqlParameter(newStr + "ImageUrl", goodsCategories.ImageUrl));
                 parameters.Add(new MySqlParameter(newStr + "Name", goodsCategories.Name));
+            }
+            cmdText += "commit;";
+            try
+            {
+                var num = MySqlHelper.ExecuteNonQuery(Utility._gameDbConn, CommandType.Text, cmdText, parameters.ToArray());
+                return num > 0;
+
+            }
+            catch (System.Exception ex)
+            {
+                throw;
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// 更改分类产品个数——事物处理
+        /// </summary>
+        /// <param name="data"></param>
+        /// <returns></returns>
+        public static bool UpdateGoodsCategoriesCount(List<GoodsHandler.GoodsCategoriesCountItem> data)
+        {
+            var cmdText = string.Empty;
+            List<MySqlParameter> parameters = new List<MySqlParameter>();
+            cmdText = "begin;";
+            foreach (var changeitem in data)
+            {
+                var tempcmdText = @"UPDATE goodscategories SET
+                                        `Count`        = `Count` + (?Count)
+                                    WHERE
+                                        Id = ?Id;";
+                string newStr = string.Format("?{0}", changeitem.Id);
+                tempcmdText = tempcmdText.Replace("?", newStr);
+                cmdText += tempcmdText;
+                parameters.Add(new MySqlParameter(newStr + "Id", changeitem.Id));
+                parameters.Add(new MySqlParameter(newStr + "Count", changeitem.Change));
             }
             cmdText += "commit;";
             try

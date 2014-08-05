@@ -21,7 +21,8 @@
 
                 <div class="form-actions">
                     <a href="javascript:history.back();" class="btn">返回</a>
-                    <button type="submit" class="btn btn-primary">保存修改</button>
+                    <%--<button type="submit" class="btn btn-primary">保存修改</button>--%>
+                    <a href="javascript:void(0);" id="save" class="btn btn-primary"><i class="icon-ok icon-white"></i>保存修改</a>
                 </div>
             </form>
         </div>
@@ -64,8 +65,8 @@
                         <td><span class="text-info"><input type="text" value="${Discount}" class="text-input" style="width:30px;" id="j-user-discount"> 折</span></td>
                         <th>会员类型：</th>
                         <td><select id="j-user-type">
-                        	<option value="1">普通会员</option>
-                        	<option value="2">高级会员</option>
+                        	<option {{if RoleType%10==0}}selected="selected"{{/if}} value="0">普通会员</option>
+                        	<option {{if RoleType%10==1}}selected="selected"{{/if}} value="1">高级会员</option>
                         </select></td>
 					</dl></td>
                     </tr>
@@ -121,15 +122,20 @@
             <div class="control-group">
 				<label class="control-label">用户备注</label>
 				<div class="controls">
-					<textarea>${NickName}</textarea>
+					<textarea id="j_user_remark">${Remark}</textarea>
 				</div>
 			</div>
         </script>
     <script type="text/javascript">
         var MPage = {
             hander: "<%=DomainUrl %>/Handler/Merchant/UserHandler.ashx?action=",
-            init: function() {
+            uid: 0,
+            init: function () {
                 var mpage = this;
+
+                //去掉之前选中打开的项 选中产品列表
+                $("#sidebar li").removeClass("active open");
+                $("#sidebar .sidebar_user").addClass("active open");
 
                 //解析url中的id
                 /\?id=(\d+)/.test(document.location.href);
@@ -140,11 +146,16 @@
                     alert("该用户不存在");
                     window.history.back();
                 }
+
+                $("#save").bind("click", function () {
+                    mpage.saveUser();
+                });
             },
 
-            getUserDetail: function(userid) {
+            getUserDetail: function (userid) {
                 var mpage = this;
-                $.post(mpage.hander + "getUserDetail", { userid: userid }, function(data) {
+                mpage.uid = userid;
+                $.post(mpage.hander + "getUserDetail", { userid: userid }, function (data) {
                     if (!data.error) {
                         $("#j-user-detail").html($("#j-tmpl-user-detail").tmpl(data.data));
                     } else {
@@ -157,12 +168,33 @@
                         //});
                     }
                 }, "JSON");
+            },
+
+            saveUser: function () {
+                var mpage = this;
+                var discount = $("#j-user-discount").val();
+                var remark = $("#j_user_remark").val();
+                var roletype = $("#j-user-type").find("option:selected").val();
+                $.post(mpage.hander + "saveUser", { uid: mpage.uid, discount: discount, remark: remark, roletype: roletype },
+                    function (data) {
+                        if (!data.error) {
+                            Common.tip({ type: "success", content: data.success });
+                        } else {
+                            Common.tip({ type: "error", content: data.error });
+                            //Common.alert({
+                            //    title: "提示",
+                            //    content: data.error,
+                            //    confirm: function () {
+                            //    }
+                            //});
+                        }
+                    }, "JSON");
             }
         };
 
-            $(function () {
-                MPage.init();
-            });
+        $(function () {
+            MPage.init();
+        });
 
         </script>
 </asp:Content>

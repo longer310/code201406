@@ -31,14 +31,34 @@ namespace Backstage.Core
         Merchant = 10,
 
         /// <summary>
-        /// 普通用户
+        /// 普通会员
         /// </summary>
         User = 20,
 
         /// <summary>
-        /// 第三方用户
+        /// 高级会员
+        /// </summary>
+        User1 = 21,
+
+        /// <summary>
+        /// 超级会员
+        /// </summary>
+        User2 = 22,
+
+        /// <summary>
+        /// 第三方会员
         /// </summary>
         ThirdUser = 30,
+
+        /// <summary>
+        /// 第三方高级会员
+        /// </summary>
+        ThirdUser1 = 31,
+
+        /// <summary>
+        /// 第三方超级会员
+        /// </summary>
+        ThirdUser2 = 32,
     }
 
     /// <summary>

@@ -787,7 +787,7 @@ namespace Backstage.Handler
                 orders.Mobile = user.Phone;
                 orders.Address = user.Address;
             }
-            orders.TotalPrice = orders.StotalPrice;
+            orders.TotalPrice = (float)(orders.StotalPrice * 1.0 * user.Discount / 10);//打折！
             orders.SellerId = sellerId;
 
             var orderid = OrdersHelper.SaveOrders(orders);
@@ -829,7 +829,7 @@ namespace Backstage.Handler
             public string mobile { get; set; }
             public string linkman { get; set; }
             public int pid { get; set; }
-
+            public float discount { get; set; }
             public List<OrderGoddsItem> goodslist { get; set; }
 
             public OrderDetailData()
@@ -881,6 +881,7 @@ namespace Backstage.Handler
                 mobile = orders.Mobile;
                 linkman = orders.LinkMan;
                 pid = orders.Pid;
+                discount = orders.Discount;
             }
         }
         public class OrderGoddsItem
@@ -1017,7 +1018,9 @@ namespace Backstage.Handler
                 }
                 if (ifdiscount)
                 {
-                    discount = (float)(coupon.Extcredit * 1.0) / 100;
+                    //discount = (float)(coupon.Extcredit * 1.0) / 100;
+                    if (orders.TotalPrice > coupon.FullMoney)
+                        discount = coupon.DiscountMoney;
                     orders.Ccontent = string.Format("满{0}减{1}元电子券", coupon.FullMoney, coupon.DiscountMoney);
                 }
                 coupon.UsedTimes++;
@@ -1044,6 +1047,13 @@ namespace Backstage.Handler
             var orderId = GetInt("orderid");
             var status = GetInt("status");
 
+            var user = AccountHelper.GetUser(uid);
+            if (user == null)
+            {
+                ReturnErrorMsg(string.Format("不存在Id={0}的用户", uid));
+                return;
+            }
+
             var orders = OrdersHelper.GetOrders(orderId, uid);
 
             if (orders == null || (status > 0 && ((int)orders.Status + 1) != status))
@@ -1057,14 +1067,8 @@ namespace Backstage.Handler
                 return;
             }
             orders.Status = (OrderStatus)status;
-            var user = AccountHelper.GetUser(uid);
-            if (user == null)
-            {
-                ReturnErrorMsg(string.Format("不存在Id={0}的用户", uid));
-                return;
-            }
 
-            ExtcreditLog log = new ExtcreditLog();
+            var log = new ExtcreditLog();
             if (orders.Status == OrderStatus.Pay)
             {
                 if (orders.Pid == 1)
@@ -1075,6 +1079,8 @@ namespace Backstage.Handler
                         return;
                     }
                     user.Money -= orders.TotalPrice;
+                    user.TotalConsume -= orders.TotalPrice;
+                    user.TotalOrdersCount++;//完成付款的订单数
                 }
 
                 var payMent = new Payment();
@@ -1088,7 +1094,7 @@ namespace Backstage.Handler
                 chargeLog.SellerId = orders.SellerId;
                 chargeLog.OrderId = orders.Id.ToString();
                 chargeLog.PayName = payMent.Id == 0 ? "账户余额" : payMent.Name;
-                //记录充值记录
+                //记录消费记录
                 ChargeLogHelper.AddChargeLog(chargeLog);
 
                 //积分获得

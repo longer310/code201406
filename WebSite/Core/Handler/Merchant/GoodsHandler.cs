@@ -259,7 +259,11 @@ namespace Backstage.Handler
             Response.Write(jt.ToJson());
             Response.End();
         }
-
+        public class GoodsCategoriesCountItem
+        {
+            public int Id { get; set; }
+            public int Change { get; set; }
+        }
         /// <summary>
         /// 删除产品列表
         /// </summary>
@@ -280,7 +284,19 @@ namespace Backstage.Handler
                 ReturnErrorMsg("没有权限删除其他商户产品或产品不存在");
                 return;
             }
-            if (GoodsHelper.DelGoodsList(CurrentUser.Id, gids))
+            var data = new List<GoodsCategoriesCountItem>();
+            foreach (var goods in goodsresult.Results)
+            {
+                var item = data.FirstOrDefault(o => o.Id == goods.Cid);
+                if (item == null)
+                    data.Add(new GoodsCategoriesCountItem() { Id = goods.Cid, Change = -1 });
+                else
+                    item.Change--;
+            }
+            bool ur = true;
+            if (data.Count > 0)
+                ur = GoodsCategoriesHelper.UpdateGoodsCategoriesCount(data);
+            if (ur && GoodsHelper.DelGoodsList(CurrentUser.Id, gids))
                 ReturnCorrectMsg("删除成功");
             else
                 ReturnErrorMsg("删除失败");
@@ -343,6 +359,13 @@ namespace Backstage.Handler
             goods.Nowprice = nowPrice;
             goods.OriginalPrice = originalPrice;
             goods.TagList = Utility.GetListstring(tags);
+            if (goods.Cid != cid)
+            {//改变产品分类的商品个数 统计
+                var data = new List<GoodsCategoriesCountItem>();
+                if (goods.Cid > 0) data.Add(new GoodsCategoriesCountItem() { Id = goods.Cid, Change = -1 });
+                data.Add(new GoodsCategoriesCountItem() { Id = cid, Change = 1 });
+                GoodsCategoriesHelper.UpdateGoodsCategoriesCount(data);
+            }
             goods.Cid = cid;
             goods.Content = content;
             goods.IsHot = isHot;

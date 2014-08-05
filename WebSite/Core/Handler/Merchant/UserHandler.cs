@@ -8,6 +8,7 @@ using System.Xml.Serialization;
 using Backstage.Core;
 using Backstage.Core.Entity;
 using Backstage.Core.Logic;
+using Backstage.View.User;
 
 namespace Backstage.Handler
 {
@@ -25,6 +26,10 @@ namespace Backstage.Handler
                     GetUserList(); break;
                 case "getUserDetail":
                     GetUserDetail(); break;
+                case "delUserList":
+                    DelUserList(); break;
+                case "saveUser":
+                    SaveUser(); break;
                 #endregion
                 default: break;
             }
@@ -63,62 +68,6 @@ namespace Backstage.Handler
             Response.End();
         }
 
-        public class OrdersDetailData
-        {
-            public int Id { get; set; }
-            public int Type { get; set; }
-            public int Status { get; set; }
-            public string CreateTime { get; set; }
-            /// <summary>
-            /// 送货地址
-            /// </summary>
-            public string Address { get; set; }
-            /// <summary>
-            /// 联系人
-            /// </summary>
-            public string LinkMan { get; set; }
-            /// <summary>
-            /// 联系方式
-            /// </summary>
-            public string Mobile { get; set; }
-            /// <summary>
-            /// 电子券优惠价格
-            /// </summary>
-            public float CtotalPrice { get; set; }
-            /// <summary>
-            /// 电子券描述
-            /// </summary>
-            public string Ccontent { get; set; }
-            /// <summary>
-            /// 备注
-            /// </summary>
-            public string Remark { get; set; }
-            /// <summary>
-            /// 最后总价
-            /// </summary>
-            public float TotalPrice { get; set; }
-            /// <summary>
-            /// 商品总价
-            /// </summary>
-            public float StotalPrice { get; set; }
-            public float SendPrice { get; set; }
-
-            public List<OrdersGoodsItem> list { get; set; }
-
-            public OrdersDetailData()
-            {
-                list = new List<OrdersGoodsItem>();
-            }
-        }
-
-        public class OrdersGoodsItem
-        {
-            public string ImgUrl { get; set; }
-            public string Title { get; set; }
-            public float NowPrice { get; set; }
-            public int Num { get; set; }
-            public float TotalPrice { get; set; }
-        }
         /// <summary>
         /// 获取用户详情
         /// </summary>
@@ -136,7 +85,7 @@ namespace Backstage.Handler
                 ReturnErrorMsg("无权访问该商户");
                 return;
             }
-            
+
             var jt = new JsonTransfer();
             jt.Add("data", user);
             Response.Write(jt.ToJson());
@@ -144,44 +93,60 @@ namespace Backstage.Handler
         }
 
         /// <summary>
-        /// 设置订单已发送
+        /// 删除会员列表
         /// </summary>
-        public void SetOrdersDelivered()
+        public void DelUserList()
         {
-            var orderids = GetString("ids");
-            var orderidList = Utility.GetListint(orderids);
-            if (orderidList.Count == 0)
+            var userids = GetString("ids");
+            var useridList = Utility.GetListint(userids);
+            if (useridList.Count == 0)
             {
-                ReturnErrorMsg("需传订单id");
+                ReturnErrorMsg("需传用户id");
                 return;
             }
-            var wheresql = Utility.GetWhereSql(orderidList);
-            var ordersList = OrdersHelper.GetOrdersList(wheresql);
-            if (ordersList == null || orderidList.Count() != ordersList.Results.Count)
+            var wheresql = Utility.GetWhereSql(useridList);
+            var userList = AccountHelper.GetUserList(wheresql);
+            if (userList == null || useridList.Count() != userList.Results.Count)
             {
-                ReturnErrorMsg("订单不存在");
+                ReturnErrorMsg("会员不存在");
                 return;
             }
-            if (ordersList.Results.Any(o => o.OrderType == OrderType.Shop))
+            if (userList.Results.Any(o => o.Status < 0))
             {
-                ReturnErrorMsg("订单为到店类型无需送餐");
-                return;
-            }
-            if (ordersList.Results.Any(o => o.OrderType == OrderType.Deliveryed))
-            {
-                ReturnErrorMsg("订单状态原本即为已送餐");
-                return;
-            }
-            if (ordersList.Results.Any(o => o.SellerId != CurrentUser.Id))
-            {
-                ReturnErrorMsg("无权操作该订单");
+                ReturnErrorMsg("已有会员已删除");
                 return;
             }
 
-            if (OrdersHelper.SetOrdersListDelivered(orderidList))
-                ReturnCorrectMsg("设置成功");
+            if (AccountHelper.DelUserList(useridList))
+                ReturnCorrectMsg("删除成功");
             else
-                ReturnErrorMsg("设置失败");
+                ReturnErrorMsg("删除失败");
+        }
+
+        /// <summary>
+        /// 保存会员
+        /// </summary>
+        public void SaveUser()
+        {
+            var uid = GetInt("uid");
+            var discount = GetFloat("discount");
+            var roletype = GetInt("roletype");
+            var remark = GetString("remark");
+            var user = AccountHelper.GetUser(uid);
+            if (user == null)
+            {
+                ReturnErrorMsg(string.Format("不存在Id={0}的用户", uid));
+                return;
+            }
+
+            user.Discount = discount;
+            user.RoleType = (RoleType)((int)(user.RoleType) / 10 * 10 + roletype);
+            user.Remark = remark;
+
+            if (AccountHelper.UpdateUser(user) > 0)
+                ReturnCorrectMsg("保存成功");
+            else
+                ReturnErrorMsg("保存失败");
         }
         #endregion
     }

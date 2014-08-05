@@ -238,6 +238,11 @@ namespace Backstage.Handler
             data.sex = (int)user.Sex;
             data.nickname = user.NickName;
 
+            //修改登录次数
+            user.TotalLoginCount++;
+            user.LastLoginTime = DateTime.Now;
+            AccountHelper.UpdateUser(user);
+
             //返回信息
             ReturnCorrectData(data);
         }
@@ -296,6 +301,11 @@ namespace Backstage.Handler
             data.sex = (int)user.Sex;
             data.nickname = user.NickName;
 
+            //修改登录次数
+            user.TotalLoginCount++;
+            user.LastLoginTime = DateTime.Now;
+            AccountHelper.UpdateUser(user);
+
             //返回信息
             ReturnCorrectData(data);
         }
@@ -346,6 +356,7 @@ namespace Backstage.Handler
             user.Integral += log.Extcredit;
 
             user.Money += money;
+            user.TotalRecharge += money;
             //保存用户信息
             AccountHelper.UpdateUser(user);
 

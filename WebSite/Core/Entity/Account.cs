@@ -94,6 +94,10 @@ namespace Backstage.Core.Entity
         /// 总订单数
         /// </summary>
         public int TotalOrdersCount { get; set; }
+        /// <summary>
+        /// 会员备注
+        /// </summary>
+        public string Remark { get; set; }
 
         public Account()
         {
@@ -103,6 +107,7 @@ namespace Backstage.Core.Entity
             if (string.IsNullOrEmpty(LinkMan)) LinkMan = "";
             if (string.IsNullOrEmpty(NickName)) NickName = "";
             CreateTime = DateTime.Now;
+            Discount = 10;//默认不打折
         }
     }
 }

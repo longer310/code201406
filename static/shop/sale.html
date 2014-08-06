@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+	<!-- container-fluid -->
+	<head>
+		<title>Unicorn Admin</title>
+		<meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <!--公用样式-->
+		<link rel="stylesheet" href="../public/css/bootstrap.min.css" />
+		<link rel="stylesheet" href="../public/css/bootstrap-responsive.min.css" />
+		<link rel="stylesheet" href="../public/css/unicorn.main.css" />
+		<link rel="stylesheet" href="../public/css/unicorn.grey.css" />
+	</head>
+	<body>
+		
+		
+		<div id="header">
+			<h1><a href="./dashboard.html">APP 商户管理系统</a></h1>		
+		</div>
+		
+		<div id="hotline" class="muted">服务热线：400-800-8888</div>
+
+		<div id="user-nav" class="navbar navbar-inverse">
+			<dl class="user-info">
+				<dt class="muted">福建省宁德米克中式餐饮</dt>
+				<dd><span class="muted">用户名：</span><b class="text-error">80222222</b></dd>
+				<dd><span class="muted">可提现金额：</span><b class="text-error">￥3088.00</b></dd>
+			</dl>
+            <ul class="nav btn-group">
+                <li class="btn btn-inverse"><a title="" href="#"><i class="icon icon-share"></i> <span class="text">提现</span></a></li>
+                <li class="btn btn-inverse"><a title="" href="login.html"><i class="icon icon-off"></i> <span class="text">退出登陆</span></a></li>
+            </ul>
+        </div>
+            
+		<div id="sidebar">
+			<ul>
+				<li><a href="index.html"><i class="icon icon-home"></i> <span>首页</span></a></li>
+				<li class="submenu">
+					<a href="#"><i class="icon icon-gift"></i> <span>活动管理</span> <span class="label">2</span></a>
+					<ul>
+						<li><a href="activity_list.html">活动列表</a></li>
+						<li><a href="activity_add.html">新增活动</a></li>
+					</ul>
+				</li>
+				<li class="submenu">
+					<a href="#"><i class="icon icon-tint"></i> <span>产品管理</span><span class="label">3</span></a>
+					<ul>
+						<li><a href="goods_list.html">产品列表</a></li>
+						<li><a href="goods_add.html">新增产品</a></li>
+						<li><a href="categroy.html">分类管理</a></li>
+					</ul>
+				</li>
+				<li><a href="order.html"><i class="icon icon-shopping-cart"></i> <span>订单管理</span></a></li>
+				<li class="submenu">
+					<a href="#"><i class="icon icon-picture"></i> <span>图片墙管理</span> <span class="label">2</span></a>
+					<ul>
+						<li><a href="image_list.html">图片墙列表</a></li>
+						<li><a href="image_add.html">新增图片墙</a></li>
+					</ul>
+				</li>
+				<li><a href="user.html"><i class="icon icon-user"></i> <span>会员管理</span></a></li>
+				<li><a href="comment.html"><i class="icon icon-comment"></i> <span>留言管理</span></a></li>
+				<li class="submenu">
+					<a href="#"><i class="icon icon-tags"></i> <span>电子券管理</span> <span class="label">2</span></a>
+					<ul>
+						<li><a href="ticket_list.html">电子券列表</a></li>
+						<li><a href="ticket_add.html">新增电子券</a></li>
+					</ul>
+				</li>
+				<li>
+					<a href="ad.html"><i class="icon icon-bullhorn"></i> <span>广告设置</span></a>
+				</li>
+				<li class="submenu active open">
+					<a href="#"><i class="icon icon-hdd"></i> <span>数据库统计</span> <span class="label">4</span></a>
+					<ul>
+						<li><a href="visit.html">访问量统计</a></li>
+						<li class="active"><a href="sale.html">销量统计</a></li>
+						<li><a href="charge.html">充值量统计</a></li>
+						<li><a href="backup.html">数据备份导出</a></li>
+					</ul>
+				</li>
+				<li class="submenu">
+					<a href="#"><i class="icon icon-cog"></i> <span>系统设置</span> <span class="label">6</span></a>
+					<ul>
+						<li><a href="change_pw.html">登录设置</a></li>
+						<li><a href="profile.html">资料设置</a></li>
+						<li><a href="message.html">推送服务</a></li>
+						<li><a href="rule.html">规则设置</a></li>
+						<li><a href="resource.html">素材库管理</a></li>
+						<li><a href="cash.html">提现管理</a></li>
+					</ul>
+				</li>
+			</ul>
+		</div>
+		
+		<div id="content">
+
+			<div class="widget-box" >
+				<div class="widget-title">
+					<span class="icon">
+						<i class="icon-hdd"></i>
+					</span>
+					<h5>销量统计</h5>
+				</div>
+				<div class="widget-content">
+					<ul class="nav nav-tabs" id="j-sale-tab">
+						<li class="active"><a href="#">日销量</a></li>
+						<li><a href="#">月销量</a></li>
+						<li><a href="#">季度销量</a></li>
+						<li><a href="#">年销量</a></li>
+					</ul>
+					<div><canvas id="canvas" height="150" width="600"></canvas></div>
+
+					<div style="text-align:center;">
+						<ul class="stat-boxes" id="j-sale-max_analysis">
+							
+						</ul>
+					</div>
+
+					<table class="table table-bordered table-striped">
+						<thead>
+							<tr>
+								<th>排名</th>
+								<th>商品分裂</th>
+								<th>商品名称</th>
+								<th>销量</th>
+								<th>占比</th>
+							</tr>
+						</thead>
+						<tbody id="j-sale-list">
+						</tbody>
+					</table>
+
+
+				</div>
+			</div>
+
+			<div id="footer">
+				<p>关于淘宝合作伙伴营销中心廉正举报联系客服开放平台诚征英才联系我们网站地图法律声明© 2003-2014 Taobao.com 版权所有</p>
+				<p>网络文化经营许可证：文网文[2010]040号|增值电信业务经营许可证：浙B2-20080224-1|信息网络传播视听节目许可证：1109364号 </p>
+			</div>
+		</div>
+		
+		<!--公用js-->
+        <script src="../public/js/jquery.min.js"></script>
+        <script src="../public/js/jquery.ui.custom.js"></script>
+        <script src="../public/js/bootstrap.min.js"></script>
+        <script src="../public/js/unicorn.js"></script>
+        <script src="../public/js/jquery.tmpl.min.js"></script>
+        <script src="../public/js/common.js"></script>
+
+        <!--页面js-->
+        <script src="../public/js/chart.js"></script>
+        <script src="../public/js/jquery.peity.min.js"></script>
+
+        <script type="text/jquery-tmpl-x" id="j-tmpl-sale-rankitem">
+        	{{each(i, v) list}}
+	        	<tr data-gid="1">
+					<td style="width:30px;">${i+1}</td>
+					<td style="width:150px;">商品页面</td>
+					<td style="width:200px;">商品列表页</td>
+					<td>56 <i class="icon-arrow-up icon-red"></i> <b class="text-error">-3</b></td>
+					<td>2.1 <i class="icon-arrow-down icon-green"></i> <b class="text-success">+.02</b></td>
+				</tr>
+			{{/each}}
+        </script>
+
+        <script type="text/jquery-tmpl-x" id="j-tmpl-sale-max_analysis">
+        	<li>
+				<div class="left peity_bar_all"><span>2,4,9,7,12,10,12,2,4,9,7,12,10,12,2,4,9,7,12,10,12,2,4,9,7,12,10,12</span>+20%</div>
+				<div class="right">
+					<strong>36094</strong>
+					总销售金额
+				</div>
+			</li>
+			<li>
+				<div class="left peity_bar_gn"><span>20,15,18,14,10,9,9,9</span>0%</div>
+				<div class="right">
+					<strong>1433</strong>
+					销售商品数量
+				</div>
+			</li>
+			<li>
+				<div class="left peity_bar_cn"><span>3,5,9,7,12,20,10</span>-50%</div>
+				<div class="right">
+					<strong>8650</strong>
+					消费人数
+				</div>
+			</li>
+			<li>
+				<div class="left peity_bar_on"><span>3,5,9,7,12,20,10</span>-50%</div>
+				<div class="right">
+					<strong>8650</strong>
+					订单数量
+				</div>
+			</li>
+        </script>
+        <script type="text/javascript">
+        	var MPage = {
+        		init : function(){
+        			var mpage = this;
+
+
+        			$('#j-sale-tab a').click(function (e) {
+        				var type = $(this).parent().index();
+						$(this).tab('show');
+						mpage.getDetail(type);
+						return false
+					});
+
+        			mpage.getDetail(1);
+	        	},
+
+	        	getDetail : function(){
+	        		var mpage = this;
+
+					//$.getJSON("", { type : type}， function(json){
+		        		var json = {
+							code : 0,
+							msg : "", 
+							result : {
+								list : [
+									{},
+									{},
+									{},
+									{},
+									{},
+									{},
+									{},
+									{},
+									{},
+									{}
+								]
+							}
+						};
+						
+						
+
+						//明细图表
+		        		var randomScalingFactor = function(){ return Math.round(Math.random()*50)};
+	        			var labels = [];
+	        			var data = [];
+
+	        			for(var i = 1; i <= 24; i++){
+	        				labels.push(i);
+	        				data.push(randomScalingFactor());
+	        			}
+
+						var lineChartData = {
+							labels : labels,
+							
+							datasets : [
+								{
+									label: "My First dataset",
+									fillColor : "rgba(220,220,220,0.2)",
+									strokeColor : "rgba(220,220,220,1)",
+									pointColor : "rgba(220,220,220,1)",
+									pointStrokeColor : "#fff",
+									pointHighlightFill : "#fff",
+									pointHighlightStroke : "rgba(220,220,220,1)",scaleSteps : 20,
+									data : data
+								}
+							]
+
+						}
+
+						var ctx = document.getElementById("canvas").getContext("2d");
+						window.myLine = new Chart(ctx).Line(lineChartData, {
+							responsive: true
+						});
+
+						//总计图表
+						$("#j-sale-max_analysis").html( $("#j-tmpl-sale-max_analysis").tmpl(json.result) );
+
+						$.fn.peity.defaults.bar = {
+							delimeter: ",",
+							height: 24,
+							max: null,
+							min: 0,
+							width: 50
+						};
+		
+						$(".peity_bar_all span").peity("bar", {
+							colour: "#459D1C"
+						});
+						$(".peity_bar_gn span").peity("bar", {
+							colour: "#BA1E20"
+						});	
+						$(".peity_bar_cn span").peity("bar", {
+							colour: "#090f7f"
+						});
+						$(".peity_bar_on span").peity("bar", {
+							colour: "#cec82e"
+						});
+
+						//排行
+						$("#j-sale-list").html( $("#j-tmpl-sale-rankitem").tmpl(json.result) );
+					//});
+	        	}
+    		}
+
+    		$(function(){
+    			MPage.init();
+    		});
+    		
+        </script>
+	</body>
+</html>

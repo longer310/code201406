@@ -521,7 +521,7 @@ a:hover {
     font-size: 12px;
     padding: 9px 10px 7px 0;
     text-align: center;
-    width: 70px;
+    width: 115px;
     color: #666666;
 }
 .stat-boxes .left span, .stat-boxes .right strong {
@@ -1313,8 +1313,16 @@ ul.inline>li,ol.inline>li{
 	display:inline-block;*display:inline;padding-right:5px;*zoom:1
 }
 
-.icon-gray{
-	background-image: url("../img/glyphicons-halflings-gray.png");
+.icon-grey{
+	background-image: url("../img/glyphicons-halflings-grey.png");
+}
+
+.icon-red{
+	background-image: url("../img/glyphicons-halflings-red.png");
+}
+
+.icon-green{
+	background-image: url("../img/glyphicons-halflings-green.png");
 }
 
 .alert{

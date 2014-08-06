@@ -73,7 +73,8 @@ namespace Backstage.Core.Handler
                 var userCoupon = new UserCoupon()
                 {
                     CouponId = cid,
-                    UserId = userId
+                    UserId = userId,
+                    Status = 0
                     //CreateTime = DateTime.Now
                 };
                 var old = CouponHelper.GetUserCoupon(userId, cid);
@@ -222,6 +223,7 @@ namespace Backstage.Core.Handler
             int index = GetInt("start");
             int size = GetInt("limit");
             int sid = GetInt("sellerid");
+            int type = GetInt("type");
 
             var results = CouponHelper.GetPagings(sid, index * size, size);
             var data = new List<object>();

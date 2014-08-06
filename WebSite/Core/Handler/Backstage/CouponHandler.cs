@@ -19,15 +19,26 @@ namespace Backstage.Core.Handler.Backstage
                     GetList(); break;
                 case "getitem":
                     GetItem(); break;
-                case "couponcomment":
-                    CouponComment(); break;
-                case "couponcommentlist":
-                    Couponcommentlist(); break;
-                case "usercoupon":
-                    UserCoupon(); break;
-                //case "deldata":
-                //    DelData(); break;
+                case "undershelf":
+                    UnderShelf(); break;
+                case "delete":
+                    Delete(); break;
                 default: break;
+            }
+        }
+
+        private void UnderShelf()
+        {
+            int ids = Utility.GetListint("ids");
+            
+        }
+
+        private void Delete()
+        {
+            var ids = Utility.GetListint("ids");
+            foreach (var id in ids)
+            {
+                CouponHelper.Delete(id);
             }
         }
 
@@ -170,8 +181,9 @@ namespace Backstage.Core.Handler.Backstage
             int index = GetInt("start");
             int size = GetInt("limit");
             int sid = GetInt("sellerid");
+            int type = GetInt("type");
 
-            var results = CouponHelper.GetPagings(sid, index * size, size);
+            var results = CouponHelper.GetPagings(sid, type, index * size, size);
             var data = new PagResults<object>();
             data.TotalCount = results.TotalCount;
             foreach (var item in results.Results)
@@ -182,7 +194,7 @@ namespace Backstage.Core.Handler.Backstage
                     ImgId = item.ImgId,
                     ImgUrl = item.ImgUrl == "" ? "http://placehold.it/180x90" : item.ImgUrl,
                     SellerId = item.SellerId,
-                    Status = item.Status,
+                    Status = item.Enabled,
                     Summary = item.Summary,
                     Title = item.Title,
                     Commentnum = item.Commentnum,

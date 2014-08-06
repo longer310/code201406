@@ -58,7 +58,12 @@ namespace Backstage.Core.Entity
         public int Commentnum { get; set; }
 
         /// <summary>
-        /// 是否使用 0：未使用 1：已使用 不属于该表 但查找我的优惠券时需要！
+        /// 是否使用 0：可以使用 1：已下架 不属于该表 但查找我的优惠券时需要！
+        /// </summary>
+        public int Enabled { get; set; }
+
+        /// <summary>
+        /// 不属于Coupon表的，为了userCoupon的前台方便使用
         /// </summary>
         public int Status { get; set; }
 

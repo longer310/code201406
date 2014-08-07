@@ -8,7 +8,7 @@ using System.Web.UI.WebControls;
 
 namespace Backstage.View.Active
 {
-    public partial class Edit : System.Web.UI.Page
+    public partial class Edit : BasePage
     {
         public string Id = "";
         public string SellerId = "";

@@ -29,7 +29,7 @@ namespace Backstage.Core.Handler.Backstage
 
         private void UnderShelf()
         {
-            int ids = Utility.GetListint("ids");
+            var ids = Utility.GetListint("ids");
             
         }
 

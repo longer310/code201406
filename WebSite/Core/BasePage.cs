@@ -68,7 +68,13 @@ namespace Backstage.Core
         public void RedirectLoginedBackPage()
         { 
             HttpContext context = HttpContext.Current;
-            string url = context.Request.QueryString["rtn"].ToString();
+            var rtn = context.Request.QueryString["rtn"];
+            if(rtn == null)
+            {
+                Redirect("Index.aspx");
+                return;                
+            }
+            string url = rtn.ToString();
             if (url.Length > 0)
             {
                 Redirect(url);

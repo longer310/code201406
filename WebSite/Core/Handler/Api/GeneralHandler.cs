@@ -102,18 +102,17 @@ namespace Backstage.Core.Handler
 
         private void Verificate_Wifi()
         {
-            int userId = GetInt("uid");
+            //int userId = GetInt("uid");
             int sellerId = GetInt("sellerid");
             string pwd = GetString("pwd");
             var user_wifi = new UserWifi()
             {
                 Pwd = pwd,
-                SellerId = sellerId,
-                UserId = userId
+                SellerId = sellerId
             };
-            var item = GeneralHelper.GetUserWifiItem(userId, sellerId);
+            var item = GeneralHelper.GetUserWifiItem(pwd, sellerId);
             JsonTransfer jt = new JsonTransfer();
-            if (item.Pwd == item.Pwd)
+            if (item != null)
             {
                 var data = new
                 {
@@ -147,7 +146,7 @@ namespace Backstage.Core.Handler
                 Expiry = DateTime.Now.AddDays(1)
             };
             var item = GeneralHelper.GetUserWifiItem(userId, sellerId);
-            if (item.Id == 0)
+            if (item == null)
                 GeneralHelper.GenerateWifi(user_wifi);
             else
             {

@@ -168,7 +168,7 @@
                                     mpage.getTicketList(mpage.currentPage, mpage.currentType);
                                 });
 
-                                
+
                             },
                             cancel: function () {
                                 //执行取消回调
@@ -193,30 +193,36 @@
                 $("#j-btn-pauseAll").bind("click", function () {
                     var $checked = $("#j-ticket-list .j-select:checked");
 
-                    var data_save = [];
+                    var ids = [];
 
                     $checked.each(function () {
                         var $item = $(this).parents("tr");
-                        data_save.push(
-                        {
-                            id: $item.attr("data-gid")
-                        });
+                        ids.push($item.attr("data-gid"));
                     });
 
-                    console.log(data_save);
+                    console.log(ids);
 
-                    if (data_save.length > 0) {
+                    if (ids.length > 0) {
                         Common.confirm({
                             title: "下架确认提示",
                             content: "您确定要下架当前所选择的电子券？",
                             confirm: function () {
                                 //执行确认回调
-                                alert('执行确认回调');
-
+                                alert('下架成功');
+                                $.ajax({
+                                    url: "../../Handler/Backstage/CouponHandler.ashx?action=negateshelf&ids=" + ids,
+                                    type: "Get",
+                                    dataType: "json"
+                                }).success(function (data) {
+                                    alert("下架成功");
+                                    if (type != 2)
+                                        //删除成功后刷新本页
+                                        $item.remove();
+                                });
                             },
                             cancel: function () {
                                 //执行取消回调
-                                alert('执行取消回调');
+                                //alert('执行取消回调');
                             }
                         });
                     } else {
@@ -312,7 +318,7 @@
                                     $item.remove();
                                 });
 
-                                
+
                             },
                             cancel: function () {
                                 //执行取消回调
@@ -328,18 +334,18 @@
                         var id = $item.attr("data-gid");
 
                         Common.confirm({
-                            title: "删除确认提示",
+                            title: "下架确认提示",
                             content: "您确定要下架当前电子券？",
                             confirm: function () {
                                 $.ajax({
-                                    url: "../../Handler/Backstage/CouponHandler.ashx?action=delete&ids=" + id,
+                                    url: "../../Handler/Backstage/CouponHandler.ashx?action=negateshelf&ids=" + id,
                                     type: "Get",
                                     dataType: "json"
                                 }).success(function (data) {
-                                    alert("删除成功");
-                                    if(type != )
-                                    //删除成功后刷新本页
-                                    $item.remove();
+                                    alert("下架成功");
+                                    if (type != 2)
+                                        //删除成功后刷新本页
+                                        $item.remove();
                                 });
                             },
                             cancel: function () {

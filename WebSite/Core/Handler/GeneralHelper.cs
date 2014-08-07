@@ -61,9 +61,41 @@ namespace Backstage.Core.Handler
         }
 
 
+        public static UserWifi GetUserWifiItem(string pwd, int sellerId)
+        {
+            UserWifi uw = null;
+            string commandText = @"select * from userwifi where pwd = ?pwd and sellerId = ?sellerId";
+            List<MySqlParameter> parameters = new List<MySqlParameter>();
+            parameters.Add(new MySqlParameter("?pwd", pwd));
+            parameters.Add(new MySqlParameter("?sellerId", sellerId));
+            try
+            {
+                using (var conn = Utility.ObtainConn(Utility._gameDbConn))
+                {
+                    //MySqlDataReader reader = MySqlHelper.ExecuteReader(GlobalConfig.DbConn, CommandType.Text, commandText, parameters.ToArray());
+                    MySqlDataReader reader = MySqlHelper.ExecuteReader(conn, CommandType.Text, commandText, parameters.ToArray());
+                    while (reader.Read())
+                    {
+                        uw = new UserWifi();
+                        uw.Id = reader.GetInt32(0);
+                        uw.SellerId = (int)reader["SellerId"];
+                        uw.Pwd = reader["Pwd"].ToString();
+                        uw.UserId = (int)reader["UserId"];
+                        uw.Expiry = (DateTime)reader["Expiry"];
+                    }
+                }
+
+            }
+            catch (System.Exception ex)
+            {
+                throw;
+            }
+            return uw;
+        }
+
         public static UserWifi GetUserWifiItem(int userId, int sellerId)
         {
-            var uw = new UserWifi();
+            UserWifi uw = null;
             string commandText = @"select * from userwifi where userId = ?userId and sellerId = ?sellerId";
             List<MySqlParameter> parameters = new List<MySqlParameter>();
             parameters.Add(new MySqlParameter("?userId", userId));
@@ -76,6 +108,7 @@ namespace Backstage.Core.Handler
                     MySqlDataReader reader = MySqlHelper.ExecuteReader(conn, CommandType.Text, commandText, parameters.ToArray());
                     while (reader.Read())
                     {
+                        uw = new UserWifi();
                         uw.Id = reader.GetInt32(0);
                         uw.SellerId = (int)reader["SellerId"];
                         uw.Pwd = reader["Pwd"].ToString();

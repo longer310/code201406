@@ -1,4 +1,5 @@
 ﻿using Backstage.Core.Entity;
+using Backstage.Core.Logic;
 using Backstage.Model;
 using System;
 using System.Collections.Generic;
@@ -19,18 +20,90 @@ namespace Backstage.Core.Handler.Backstage
                     GetList(); break;
                 case "getitem":
                     GetItem(); break;
-                case "undershelf":
-                    UnderShelf(); break;
+                case "negateshelf":
+                    NegateShelf(); break;
+                case "getgoods":
+                    GetGoods(); break;
                 case "delete":
                     Delete(); break;
+                case "create":
+                    Create(); break;
+                case "update":
+                    Update(); break;
                 default: break;
             }
         }
 
-        private void UnderShelf()
+        private void Update()
+        {
+            int id = GetInt("id");
+            var item = CouponHelper.GetItem(id);
+            item.Title = GetString("title");
+            var expiry = GetString("expire_date");
+            item.Expiry = expiry != "-1" ? GetTime("expire_date"): DateTime.Now.AddDays(1);
+            item.ImgUrl = GetString("thumbnail");
+            item.Extcredit = GetInt("score");
+            item.FullMoney = GetInt("total");
+            item.DiscountMoney = GetInt("discount");
+            item.Enabled = 1;
+            item.GoodsIds = Utility.GetListint(GetString("goods_selected"));
+            item.Description = GetString("content");
+            item.Summary = item.Description.Substring(0, 20);
+
+            CouponHelper.CreateCoupon(item);
+        }
+
+        private void Create()
+        {
+            var item = new Coupon();
+            item.Title = GetString("title");
+            var expiry = GetString("expire_date");
+            item.SellerId = GetInt("sellerid");
+            item.Expiry = expiry != "-1" ? GetTime("expire_date") : DateTime.Now.AddDays(1);
+            item.ImgUrl = GetString("thumbnail");
+            item.Extcredit = GetInt("score");
+            item.FullMoney = GetInt("total");
+            item.DiscountMoney = GetInt("discount");
+            item.Enabled = 1;
+            item.GoodsIds = Utility.GetListint(GetString("goods_selected"));
+            item.Description = GetString("content");
+            item.Summary = item.Description.Substring(0, 20);
+
+            CouponHelper.CreateCoupon(item);
+        }
+
+        private void GetGoods()
+        {
+            var sellerid = GetInt("sellerid");
+            var start = GetInt("start");
+            var limit = GetInt("limit");
+            var goods = GoodsHelper.GetGoodsList(sellerid, "", "", start * limit, limit);
+            var data = new PagResults<object>();
+            data.TotalCount = goods.TotalCount;
+            foreach (var item in goods.Results)
+            {
+                var o = new
+                {
+                    id = item.Id,
+                    title = item.Title
+                };
+            }
+            JsonTransfer jt = new JsonTransfer();
+            jt.Add("data", data);
+            Response.Write(DesEncrypt(jt).ToLower());
+            Response.End();
+
+        }
+
+        private void NegateShelf()
         {
             var ids = Utility.GetListint("ids");
-            
+            foreach (var id in ids)
+            {
+                var item = CouponHelper.GetItem(id);
+                item.Enabled = item.Enabled == 1 ? -1 : 1;
+                CouponHelper.Update(item);
+            }
         }
 
         private void Delete()

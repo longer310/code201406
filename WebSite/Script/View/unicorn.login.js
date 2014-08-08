@@ -88,7 +88,8 @@ $(document).ready(function () {
             type: "get",
             dataType: "json"
             //context: document.body
-        }).success(function () {
+        }).success(function (data) {
+            console.log(data);
             window.location.href = "View/Index.aspx";
         });
     }

@@ -24,6 +24,10 @@ namespace Backstage.Core.Handler.Backstage
             {
                 case "getlist":
                     GetList(); break;
+                case "update":
+                    Update(); break;
+                case "delete":
+                    Delete(); break;
                 //case "update":
                 //    Update(); break;
                 //case "deldata":
@@ -32,44 +36,55 @@ namespace Backstage.Core.Handler.Backstage
             }
         }
 
-        public PagResults<Comment> GetList()
+        private void Delete()
         {
-            //int pageIndex = GetInt("start");
-            //int pageSize = GetInt("limit");
+            var ids = Utility.GetListint(GetString("ids"));
+            foreach (var id in ids)
+            {
+                CommentHelper.Delete(id);
+            }
+        }
 
-            //var results = new PagResults<SourceMaterial>();
-            //int skipnum = pageSize * pageIndex;
-            //int totalnum = 0;
-            //var sql = string.Format("select * from comment where sellerId LIMIT {0},{1};", skipnum, pageSize);
-            //try
-            //{
-            //    MySqlDataReader reader = MySqlHelper.ExecuteReader(GlobalConfig.DbConn, sql);
-            //    while (reader.Read())
-            //    {
-            //        SourceMaterial sm = new SourceMaterial();
-            //        sm.Id = reader.GetInt32(0);
-            //        sm.Name = reader.GetString(1);
-            //        sm.Address = reader.GetString(2);
-            //        sm.Remark = reader.GetString(3);
-            //        results.Results.Add(sm);
-            //    }
+        private void Update()
+        {
+            var id = GetInt("id");
+            var item = CommentHelper.GetItem(id);
+            item.Title = GetString("title");
+            item.Content = GetString("content");
+            item.Feedback = GetString("feedback");
+            CommentHelper.Update(item);
+        }
 
-            //    sql = "select count(*) from material";
-            //    reader = MySqlHelper.ExecuteReader(GlobalConfig.DbConn, sql);
-            //    if (reader.HasRows)
-            //    {
-            //        if (reader.Read())
-            //        {
-            //            results.TotalCount = reader.GetInt32(0);
-            //        }
-            //    }
-            //}
-            //catch (System.Exception ex)
-            //{
-            //    throw;
-            //}
-            //return results;
-            throw new NotImplementedException();
+        public void GetList()
+        {
+            int sellerid = GetInt("sellerid");
+            int start = GetInt("start");
+            int limit = GetInt("limit");
+            var result = CommentHelper.GetPagings(sellerid, CommentType.All, 0, start * limit, limit);
+            var data = new PagResults<object>();
+            foreach (var item in result.Results)
+            {
+                var user = AccountHelper.GetUser(item.UserId);
+                var feedbackStauts = item.Feedback != null && item.Feedback.Length > 0;
+                var o = new
+                {
+                    Id = item.Id,
+                    Title = item.Title,
+                    Content = item.Content,
+                    Feedback = item.Feedback,
+                    FeedbackStatus = feedbackStauts ? "已回复" : "未回复",
+                    CreateTime = item.CreateTime.ToString("yyyy-MM-dd HH:mm:ss"),
+                    Type = EnumHelper.CommentTypeToName(item.Type),
+                    UserId = item.UserId,
+                    NickName = user.NickName
+                };
+            }
+            data.TotalCount = result.TotalCount;
+            JsonTransfer jt = new JsonTransfer();
+            jt.AddSuccessParam();
+            jt.Add("data", data);
+            Response.Write(DesEncrypt(jt).ToLower());
+            Response.End();
         }
 
         //        public static void Create()

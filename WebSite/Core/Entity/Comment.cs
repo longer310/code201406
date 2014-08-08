@@ -29,5 +29,10 @@ namespace Backstage.Core.Entity
         /// </summary>
         public string Title { get; set; }
 
+        /// <summary>
+        /// 评论回复
+        /// </summary>
+        public string Feedback { get; set; }
+
     }
 }

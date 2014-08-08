@@ -87,6 +87,26 @@ namespace Backstage.Core
         /// </summary>
         Coupons = 4
     }
+    public static class EnumHelper
+    {
+        public static string CommentTypeToName(CommentType type)
+        {
+            switch (type)
+            {
+                case CommentType.Avtive:
+                    return "活动";
+                case CommentType.Coupons:
+                    return "电子券";
+                case CommentType.Goods:
+                    return "商品";
+                case CommentType.Img:
+                    return "图片";
+                default: return "";
+            }
+        }
+
+    }
+
 
     public enum SexType
     {

@@ -12,9 +12,39 @@ namespace Backstage.Core
     public static class CommentHelper
     {
 
-        public static PagResults<Comment> GetList(int index, int size)
+        public static Comment GetItem(int id)
         {
-            throw new NotImplementedException();
+            Comment a = null;
+            string commandText = @"select * from comment where id = ?id";
+            List<MySqlParameter> parameters = new List<MySqlParameter>();
+            parameters.Add(new MySqlParameter("?id", id));
+            try
+            {
+                using (var conn = Utility.ObtainConn(Utility._gameDbConn))
+                {
+                    MySqlDataReader reader = MySqlHelper.ExecuteReader(conn, CommandType.Text,
+                        commandText, parameters.ToArray());
+                    while (reader.Read())
+                    {
+                        a = new Comment();
+                        a.Id = (int)reader["Id"];
+                        a.SellerId = (int)reader["SellerId"];
+                        a.Content = reader["Content"].ToString();
+                        a.CreateTime = (DateTime)reader["CreateTime"];
+                        a.Feedback = reader["Feedback"].ToString();
+                        a.Title = reader["Title"].ToString();
+                        a.Img = reader["Img"].ToString();
+                        a.Type = (CommentType)reader["Type"];
+                        a.TypeId = (int)reader["TypeId"];
+                        a.UserId = (int)reader["UserId"];
+                    }
+                }
+            }
+            catch (System.Exception ex)
+            {
+                throw;
+            }
+            return a;
         }
 
         /// <summary>
@@ -32,12 +62,21 @@ namespace Backstage.Core
             results.Results = new List<Comment>();
             int skipnum = index * size;
             int totalnum = 0;
-            string commandText = @"select * from comment where sellerId = ?sellerId and type = ?type and typeId = ?typeId LIMIT ?index,?size " + order;
+            string commandText = "";
+            if (type == CommentType.All)
+                commandText = @"select * from comment where sellerId = ?sellerId LIMIT ?index,?size " + order;
+            else
+                commandText = @"select * from comment where sellerId = ?sellerId and type = ?type and typeId = ?typeId LIMIT ?index,?size " + order;
+
+
 
             List<MySqlParameter> parameters = new List<MySqlParameter>();
             parameters.Add(new MySqlParameter("?sellerId", sellerId));
-            parameters.Add(new MySqlParameter("?type", (int)type));
-            parameters.Add(new MySqlParameter("?typeId", typeId));
+            if (type != CommentType.All)
+            {
+                parameters.Add(new MySqlParameter("?type", (int)type));
+                parameters.Add(new MySqlParameter("?typeId", typeId));
+            }
             parameters.Add(new MySqlParameter("?index", index));
             parameters.Add(new MySqlParameter("?size", size));
 
@@ -100,7 +139,8 @@ namespace Backstage.Core
             	                                Img,
             	                                Title,
             	                                UserId,
-            	                                CreateTime
+            	                                CreateTime,
+            	                                Feedback,
             	                                )
             	                                VALUES
             	                                (  
@@ -111,7 +151,8 @@ namespace Backstage.Core
             	                                ?Img,
             	                                ?Title,
             	                                ?UserId,
-            	                                ?CreateTime
+            	                                ?CreateTime,
+            	                                ?Feedback
             	                                )";
 
             List<MySqlParameter> parameters = new List<MySqlParameter>();
@@ -123,7 +164,39 @@ namespace Backstage.Core
             parameters.Add(new MySqlParameter("?Title", c.Title));
             parameters.Add(new MySqlParameter("?UserId", c.UserId));
             parameters.Add(new MySqlParameter("?CreateTime", DateTime.Now));
+            parameters.Add(new MySqlParameter("?Feedback", c.Feedback));
 
+
+            MySqlHelper.ExecuteNonQuery(connectionString, CommandType.Text, commandText, parameters.ToArray());
+        }
+
+        public static void Update(Comment c)
+        {
+            string commandText = @"UPDATE active SET
+                                        Type = ?Type,
+                                        TypeId = ?TypeId,
+                                        Content = ?Content,
+                                        Img = ?Img,
+                                        Title = ?Title,
+                                        UserId = ?UserId,
+                                        CreateTime = ?CreateTime,
+                                        Feedback = ?Feedback,
+                                    WHERE
+                                        Id = ?Id";
+
+            string connectionString = GlobalConfig.DbConn;
+
+            List<MySqlParameter> parameters = new List<MySqlParameter>();
+            parameters.Add(new MySqlParameter("?Id", c.Id));
+            parameters.Add(new MySqlParameter("?SellerId", c.SellerId));
+            parameters.Add(new MySqlParameter("?Type", c.Type));
+            parameters.Add(new MySqlParameter("?TypeId", c.TypeId));
+            parameters.Add(new MySqlParameter("?Content", c.Content));
+            parameters.Add(new MySqlParameter("?Img", c.Img));
+            parameters.Add(new MySqlParameter("?Title", c.Title));
+            parameters.Add(new MySqlParameter("?UserId", c.UserId));
+            parameters.Add(new MySqlParameter("?CreateTime", DateTime.Now));
+            parameters.Add(new MySqlParameter("?Feedback", c.Feedback));
             MySqlHelper.ExecuteNonQuery(connectionString, CommandType.Text, commandText, parameters.ToArray());
         }
 
@@ -243,6 +316,15 @@ namespace Backstage.Core
                 throw;
             }
             return list;
+        }
+
+        public static void Delete(int id)
+        {
+            string commandText = @"delete from comment where id=?id";
+
+            List<MySqlParameter> parameters = new List<MySqlParameter>();
+            parameters.Add(new MySqlParameter("?id", id));
+            MySqlHelper.ExecuteNonQuery(GlobalConfig.DbConn, CommandType.Text, commandText, parameters.ToArray());
         }
 
         /// <summary>

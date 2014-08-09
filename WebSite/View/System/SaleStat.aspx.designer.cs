@@ -10,6 +10,6 @@
 namespace Backstage.View.System {
     
     
-    public partial class ChargeStat {
+    public partial class SaleStat {
     }
 }

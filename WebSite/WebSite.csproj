@@ -549,10 +549,10 @@
     <Content Include="View\SourceMaterial\Edit.aspx" />
     <Content Include="View\SourceMaterial\List.aspx" />
     <Content Include="View\System\ChargeStat.aspx" />
+    <Content Include="View\System\SaleStat.aspx" />
     <Content Include="View\System\VisitStat.aspx" />
     <Content Include="View\UCenter\ManagerList.aspx" />
     <Content Include="View\Goods\List.aspx" />
-    <Content Include="View\User\Edit.aspx" />
     <Content Include="View\User\User.aspx" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
@@ -593,6 +593,7 @@
     <Compile Include="Core\Handler\Backstage\CommentHandler.cs" />
     <Compile Include="Core\Handler\Backstage\CouponHandler.cs" />
     <Compile Include="Core\Handler\Backstage\SourceMaterialHandler.cs" />
+    <Compile Include="Core\Handler\Backstage\SystemHandler.cs" />
     <Compile Include="Core\Handler\FileManager\FileManagerHandler.cs" />
     <Compile Include="Core\Handler\FileManager\UploadHandler.cs" />
     <Compile Include="Core\Handler\Merchant\OrdersHandler.cs" />
@@ -774,6 +775,13 @@
     <Compile Include="View\System\ChargeStat.aspx.designer.cs">
       <DependentUpon>ChargeStat.aspx</DependentUpon>
     </Compile>
+    <Compile Include="View\System\SaleStat.aspx.cs">
+      <DependentUpon>SaleStat.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="View\System\SaleStat.aspx.designer.cs">
+      <DependentUpon>SaleStat.aspx</DependentUpon>
+    </Compile>
     <Compile Include="View\System\VisitStat.aspx.cs">
       <DependentUpon>VisitStat.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -791,13 +799,6 @@
     </Compile>
     <Compile Include="View\Goods\List.aspx.designer.cs">
       <DependentUpon>List.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="View\User\Edit.aspx.cs">
-      <DependentUpon>Edit.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="View\User\Edit.aspx.designer.cs">
-      <DependentUpon>Edit.aspx</DependentUpon>
     </Compile>
     <Compile Include="View\User\User.aspx.cs">
       <DependentUpon>User.aspx</DependentUpon>
@@ -840,6 +841,7 @@
     <Content Include="Handler\Backstage\CommentHandler.ashx" />
     <Content Include="Handler\Merchant\OrdersHandler.ashx" />
     <Content Include="Handler\Merchant\UserHandler.ashx" />
+    <Content Include="Handler\Backstage\SystemHandler.ashx" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

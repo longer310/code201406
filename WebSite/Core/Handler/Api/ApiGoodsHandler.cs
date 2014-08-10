@@ -679,7 +679,7 @@ namespace Backstage.Handler
             public float totalprice { get; set; }
             public string img { get; set; }
             public string title { get; set; }
-            public string description { get; set; }
+            public string content { get; set; }
             public float nowprice { get; set; }
             public float originalprice { get; set; }
         }
@@ -720,7 +720,7 @@ namespace Backstage.Handler
                     item.nowprice = goods.Nowprice;
                     item.originalprice = goods.OriginalPrice;
                     item.title = goods.Title;
-                    item.description = goods.Content;
+                    item.content = goods.Content;
                     item.img = goods.LogoUrl;
 
                     item.totalprice = goods.Nowprice * shoppingCart.Num;

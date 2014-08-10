@@ -155,9 +155,9 @@ namespace Backstage.Handler
         }
         #endregion
 
-        #region 广告设置
+        #region 商户广告设置
         /// <summary>
-        /// 广告设置
+        /// 商户广告设置
         /// </summary>
         public void SaveAdCfg()
         {

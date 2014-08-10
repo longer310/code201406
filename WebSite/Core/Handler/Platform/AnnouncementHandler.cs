@@ -33,6 +33,7 @@ namespace Backstage.Handler
             }
         }
 
+        #region 公告
         /// <summary>
         /// 获取公告列表
         /// </summary>
@@ -85,5 +86,46 @@ namespace Backstage.Handler
             else
                 ReturnErrorMsg("新增失败");
         }
+        #endregion
+
+        #region 平台广告设置
+        /// <summary>
+        /// 平台广告设置
+        /// </summary>
+        public void SaveAdCfg()
+        {
+            var type = GetInt("type");
+            var imgs = GetString("imgs");
+            var staytime = GetInt("staytime");
+
+            if (type > 1 || string.IsNullOrEmpty(imgs) || staytime == 0)
+            {
+                ReturnErrorMsg("传参有误");
+                return;
+            }
+
+            var cfg = ParamHelper.MerchantCfgData;
+            if (type == 0)
+            {//登录页广告设置
+                cfg.LoginAdStayTime = staytime;
+                cfg.LoginAdUrl = imgs;
+            }
+            else
+            {//wifi广告
+                cfg.WifiAdStayTime = staytime;
+                var list = Utility.GetListstring(imgs);
+                if (list.Count == 0)
+                {
+                    ReturnErrorMsg("传参有误");
+                    return;
+                }
+                cfg.WifiAdUrlList = list;
+            }
+
+            ParamHelper.SaveParamvalue("MerchantCfg", cfg);
+
+            ReturnCorrectMsg("更改成功");
+        }
+        #endregion
     }
 }

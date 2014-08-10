@@ -532,6 +532,7 @@
     <Content Include="Script\View\SourceMaterial\managerlist.js" />
     <Content Include="Script\View\UCenter\ManagerList.js" />
     <Content Include="Script\View\unicorn.login.js" />
+    <Content Include="Test.csproj" />
     <Content Include="Test.html" />
     <Content Include="View\Active\Add.aspx" />
     <Content Include="View\Active\Edit.aspx" />
@@ -563,6 +564,7 @@
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Core\CryptHelper.cs" />
+    <Compile Include="Core\Entity\Announcement.cs" />
     <Compile Include="Core\Entity\ChargeLog.cs" />
     <Compile Include="Core\Entity\AccountBinding.cs" />
     <Compile Include="Core\Entity\ExtcreditLog.cs" />
@@ -599,6 +601,8 @@
     <Compile Include="Core\Handler\Merchant\OrdersHandler.cs" />
     <Compile Include="Core\Handler\Merchant\GoodsHandler.cs" />
     <Compile Include="Core\Handler\Merchant\UserHandler.cs" />
+    <Compile Include="Core\Handler\Platform\AnnouncementHandler.cs" />
+    <Compile Include="Core\Logic\AnnouncementHelper.cs" />
     <Compile Include="Core\Logic\ShareLogHelper.cs" />
     <Compile Include="Core\MyCache.cs" />
     <Compile Include="Core\Handler\ActiveHelper.cs" />
@@ -842,6 +846,7 @@
     <Content Include="Handler\Merchant\OrdersHandler.ashx" />
     <Content Include="Handler\Merchant\UserHandler.ashx" />
     <Content Include="Handler\Backstage\SystemHandler.ashx" />
+    <Content Include="Handler\Platform\AnnouncementHandler.ashx" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

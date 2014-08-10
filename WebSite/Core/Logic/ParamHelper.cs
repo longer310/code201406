@@ -35,6 +35,23 @@ namespace Backstage.Core.Logic
             }
             return "";
         }
+        public static string SaveParamvalue(string key, object o)
+        {
+            var data = JsonTransfer.SerializeObject(o);
+            var cmdText = string.Format("update Param set kvalue='{0}' where `Key`='{1}' limit 1;", data, key);
+            try
+            {
+                using (var conn = Utility.ObtainConn(Utility._gameDbConn))
+                {
+                    MySqlHelper.ExecuteNonQuery(conn, CommandType.Text, cmdText);
+                }
+            }
+            catch (System.Exception ex)
+            {
+                throw;
+            }
+            return "";
+        }
 
         #region 首页广告
         public class PageAd
@@ -55,7 +72,7 @@ namespace Backstage.Core.Logic
             /// <summary>
             /// 跳转到的URL
             /// </summary>
-            public string Url { get; set; } 
+            public string Url { get; set; }
         }
 
         public static PageAd PageAdData
@@ -93,7 +110,7 @@ namespace Backstage.Core.Logic
             /// <summary>
             /// 评论
             /// </summary>
-            public int Comment { get; set; } 
+            public int Comment { get; set; }
         }
         public static ExtcreditCfg ExtcreditCfgData
         {
@@ -112,6 +129,9 @@ namespace Backstage.Core.Logic
         #endregion
 
         #region 商户配置信息
+        /// <summary>
+        /// 商户配置信息
+        /// </summary>
         public class MerchantCfg
         {
             /// <summary>
@@ -122,6 +142,22 @@ namespace Backstage.Core.Logic
             /// 免送餐费的价格
             /// </summary>
             public int FreeSendPrice { get; set; }
+            /// <summary>
+            /// 登录页广告停留时间（秒）
+            /// </summary>
+            public int LoginAdStayTime { get; set; }
+            /// <summary>
+            /// 登录页广告图片地址
+            /// </summary>
+            public string LoginAdUrl { get; set; }
+            /// <summary>
+            /// wifi广告停留时间（秒）
+            /// </summary>
+            public int WifiAdStayTime { get; set; }
+            /// <summary>
+            /// wifi广告停图片地址列表
+            /// </summary>
+            public List<string> WifiAdUrlList { get; set; }
         }
         /// <summary>
         /// 商户配置信息

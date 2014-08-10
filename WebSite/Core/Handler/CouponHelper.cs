@@ -258,7 +258,7 @@ namespace Backstage.Core.Handler
                                         Commentnum = ?Commentnum,
                                         DownloadTimes = ?DownloadTimes,
                                         UsedTimes = ?UsedTimes,
-                                        Enabled = ?Enabled,
+                                        Enabled = ?Enabled
 
                                     WHERE
                                         Id = ?Id";

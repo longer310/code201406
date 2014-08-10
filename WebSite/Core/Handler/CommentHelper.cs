@@ -140,7 +140,7 @@ namespace Backstage.Core
             	                                Title,
             	                                UserId,
             	                                CreateTime,
-            	                                Feedback,
+            	                                Feedback
             	                                )
             	                                VALUES
             	                                (  
@@ -214,7 +214,7 @@ namespace Backstage.Core
         {
             var results = new PagResults<Comment>();
             results.Results = new List<Comment>();
-            var wheresql = type == CommentType.All ? string.Empty : "and Type = ?Type ";
+            var wheresql = (type == CommentType.All ? string.Empty : "and Type = ?Type ");
             var ordersql = " order by CreateTime desc ";
             var limitsql = start != 0 ? " LIMIT ?Start,?Limit" : string.Empty;
             string commandText = @"select * from comment where UserId = ?UserId and SellerId = ?SellerId  " + wheresql + ordersql + limitsql;

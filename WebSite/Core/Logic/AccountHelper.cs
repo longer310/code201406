@@ -233,6 +233,7 @@ namespace Backstage.Core
                                         TotalConsume           ,
                                         TotalLoginCount        ,
                                         TotalOrdersCount       ,
+                                        LastLoginTime          ,
                                         Remark          ,
                                         CreateTime 
                                         ) 

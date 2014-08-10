@@ -987,22 +987,22 @@ namespace Backstage.Handler
                 ReturnErrorMsg("不存在该充值类型");
                 return;
             }
-            if (orders.Status >= OrderStatus.Update)
+            if (orders.Status > OrderStatus.Update)
             {
                 ReturnErrorMsg("已更新订单信息");
                 return;
             }
 
-            orders.OrderTime = ordertime;
+            if (ordertime != default(DateTime)) orders.OrderTime = ordertime;
             orders.OrderType = (OrderType)ordertype;
-            orders.OrderPeople = orderpeople;
-            orders.Address = address;
-            orders.LinkMan = linkman;
-            orders.Mobile = phone;
-            orders.CouponId = couponid;
+            if (orderpeople != 0) orders.OrderPeople = orderpeople;
+            if (!string.IsNullOrEmpty(address)) orders.Address = address;
+            if (!string.IsNullOrEmpty(linkman)) orders.LinkMan = linkman;
+            if (!string.IsNullOrEmpty(phone)) orders.Mobile = phone;
             float discount = 0;
-            if (orders.CouponId > 0)
+            if (orders.CouponId == 0)
             {//获取优惠券优惠的价格
+                orders.CouponId = couponid;
                 var coupon = CouponHelper.GetCoupon(orders.CouponId, uid, user.SellerId);
                 if (coupon == null)
                 {
@@ -1026,17 +1026,22 @@ namespace Backstage.Handler
                 coupon.UsedTimes++;
                 CouponHelper.Update(coupon);
                 CouponHelper.UpdateUserCouponStatus(couponid, 1); //更新优惠券已使用
+
+                orders.TotalPrice -= discount;
+                orders.CtotalPrice = discount;
+                if (orders.TotalPrice < 0) orders.TotalPrice = 0;
             }
-            orders.TotalPrice -= discount;
-            orders.CtotalPrice = discount;
-            if (orders.TotalPrice < 0) orders.TotalPrice = 0;
             orders.Pid = pid;
-            orders.Remark = remark;
+            if (!string.IsNullOrEmpty(remark)) orders.Remark = remark;
             orders.Status = OrderStatus.Update;
 
             OrdersHelper.SaveOrders(orders);
 
-            ReturnCorrectMsg("更新成功");
+            var data = new OrderDetailData(orders);
+
+            //返回信息
+            ReturnCorrectData(data);
+            //ReturnCorrectMsg("更新成功");
         }
         #endregion
 

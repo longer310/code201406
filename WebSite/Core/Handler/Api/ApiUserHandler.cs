@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Security.Cryptography.X509Certificates;
 using System.Web;
+using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
 using Backstage.Core;
 using Backstage.Core.Entity;
@@ -76,7 +78,7 @@ namespace Backstage.Handler
                     GetModifyPhoneCode();
                     break;
                 case "modifyuserinfo"://会员资料提交 7.19
-                    ModifyUserInfo();
+                    ModifyUserInfo(context);
                     break;
                 case "getuserinfo"://获取会员信息 7.20
                     GetUserInfo();
@@ -995,7 +997,7 @@ namespace Backstage.Handler
         #endregion
 
         #region 会员资料提交 7.19
-        public void ModifyUserInfo()
+        public void ModifyUserInfo(HttpContext context)
         {
             var avatar = GetString("avatar");
             var nickname = GetString("nickname");
@@ -1017,7 +1019,13 @@ namespace Backstage.Handler
 
             if (!string.IsNullOrEmpty(avatar))
             {//保存头像
-                Utility.Base64StringToImage(avatar, string.Format("avatar{0}", uid));
+                var dirPath = context.Server.MapPath(string.Format("../../File/{0}/image/", uid));
+                if (!Directory.Exists(dirPath))
+                {
+                    Directory.CreateDirectory(dirPath);
+                }
+                Utility.Base64StringToImage(avatar, dirPath + "head");
+                user.Avatar = Utility._domainurl + "/File/" + uid + "/image/head.jpg";
             }
 
             user.Sex = (SexType)sex;
@@ -1246,15 +1254,18 @@ namespace Backstage.Handler
             var result = CouponHelper.GetOrderCouponList(uid, sellerid, gids);
             foreach (var coupon in result.Results)
             {
-                var item = new CouponItem();
-                item.id = coupon.Id;
-                item.title = coupon.Title;
-                item.description = coupon.Description;
-                item.img = coupon.ImgUrl;
-                item.expiry = coupon.Expiry.GetUnixTime();
-                item.sellerid = sellerid;
+                if (coupon.FullMoney <= orders.StotalPrice)
+                {
+                    var item = new CouponItem();
+                    item.id = coupon.Id;
+                    item.title = coupon.Title;
+                    item.description = coupon.Description;
+                    item.img = coupon.ImgUrl;
+                    item.expiry = coupon.Expiry.GetUnixTime();
+                    item.sellerid = sellerid;
 
-                data.couponlist.Add(item);
+                    data.couponlist.Add(item);
+                }
             }
 
             //返回数据

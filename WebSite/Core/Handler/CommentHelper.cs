@@ -216,7 +216,7 @@ namespace Backstage.Core
             results.Results = new List<Comment>();
             var wheresql = (type == CommentType.All ? string.Empty : "and Type = ?Type ");
             var ordersql = " order by CreateTime desc ";
-            var limitsql = start != 0 ? " LIMIT ?Start,?Limit" : string.Empty;
+            var limitsql = limit != 0 ? " LIMIT ?Start,?Limit" : string.Empty;
             string commandText = @"select * from comment where UserId = ?UserId and SellerId = ?SellerId  " + wheresql + ordersql + limitsql;
 
             List<MySqlParameter> parameters = new List<MySqlParameter>();

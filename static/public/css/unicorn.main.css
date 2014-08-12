@@ -1298,6 +1298,10 @@ form {
 	width: 90px;
 }
 
+.form-horizontal input.input-mini{
+	width: 30px;
+}
+
 .form-horizontal .form-actions {
 	margin-top: 0;
 	margin-bottom: 0;
@@ -1306,6 +1310,9 @@ form {
     color: #999999;
 }
 
+.inline{
+	display: inline !important;
+}
 ul.inline,ol.inline{
 	margin-left:0;list-style:none
 }
@@ -1373,4 +1380,12 @@ ul.inline>li,ol.inline>li{
 .user-detail table th{
 	vertical-align: middle;
 
+}
+
+.form-muticol .control-label{
+	width: auto;
+}
+
+.form-muticol .controls{
+	margin-left: 10px;
 }

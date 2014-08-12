@@ -564,6 +564,7 @@
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Core\CryptHelper.cs" />
+    <Compile Include="Core\Entity\MerchantType.cs" />
     <Compile Include="Core\Entity\Announcement.cs" />
     <Compile Include="Core\Entity\ChargeLog.cs" />
     <Compile Include="Core\Entity\AccountBinding.cs" />
@@ -602,6 +603,7 @@
     <Compile Include="Core\Handler\Merchant\GoodsHandler.cs" />
     <Compile Include="Core\Handler\Merchant\UserHandler.cs" />
     <Compile Include="Core\Handler\Platform\AnnouncementHandler.cs" />
+    <Compile Include="Core\Logic\MerchantTypeHelper.cs" />
     <Compile Include="Core\Logic\AnnouncementHelper.cs" />
     <Compile Include="Core\Logic\ShareLogHelper.cs" />
     <Compile Include="Core\MyCache.cs" />

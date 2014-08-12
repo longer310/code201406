@@ -175,8 +175,8 @@ namespace Backstage.Handler
                 data.slide.Add(new SlideItem() { img = l.img, title = l.title, type = l.type, typeid = l.typeid });
             }
 
-            ParamHelper.PageAd mpparam = ParamHelper.PageAdData;
-            data.ad = new AdItem() { img = mpparam.AdImgUrl, title = mpparam.Title, url = mpparam.Url };
+            var pcfg = ParamHelper.PlatformCfgData;
+            data.ad = new AdItem() { img = pcfg.PhoneAd.PicUrl,  url = pcfg.PhoneAd.JumpUrl };
 
             var glist = GoodsHelper.GetGoodsList(sellerid, " and IsHot = 1 ", "", 0, 8).Results;
             foreach (var gl in glist)

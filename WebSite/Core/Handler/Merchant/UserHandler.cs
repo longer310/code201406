@@ -31,7 +31,10 @@ namespace Backstage.Handler
                 case "saveUser":
                     SaveUser(); break;
                 #endregion
-                #region 广告设置
+
+                #region 商户广告设置
+                case "getAdCfg":
+                    GetAdCfg(); break;
                 case "saveAdCfg":
                     SaveAdCfg(); break;
                 #endregion
@@ -157,6 +160,18 @@ namespace Backstage.Handler
 
         #region 商户广告设置
         /// <summary>
+        /// 获取商户广告配置
+        /// </summary>
+        public void GetAdCfg()
+        {
+            var cfg = ParamHelper.MerchantCfgData;
+
+            var jt = new JsonTransfer();
+            jt.Add("data", cfg);
+            Response.Write(jt.ToJson());
+            Response.End();
+        }
+        /// <summary>
         /// 商户广告设置
         /// </summary>
         public void SaveAdCfg()
@@ -164,6 +179,7 @@ namespace Backstage.Handler
             var type = GetInt("type");
             var imgs = GetString("imgs");
             var staytime = GetInt("staytime");
+            var jumpurls = GetString("jumpurls");
 
             if (type > 1 || string.IsNullOrEmpty(imgs) || staytime == 0)
             {
@@ -181,12 +197,22 @@ namespace Backstage.Handler
             {//wifi广告
                 cfg.WifiAdStayTime = staytime;
                 var list = Utility.GetListstring(imgs);
-                if (list.Count == 0)
+                var jumplist = Utility.GetListstring(jumpurls);
+                if (list.Count == 0 || jumplist.Count == 0 || list.Count != jumplist.Count)
                 {
                     ReturnErrorMsg("传参有误");
                     return;
                 }
-                cfg.WifiAdUrlList = list;
+                cfg.WifiAds = new List<ParamHelper.PicJumpItem>();
+                var i = 0;
+                foreach (var str in list)
+                {
+                    var pitem = new ParamHelper.PicJumpItem();
+                    pitem.PicUrl = str;
+                    pitem.JumpUrl = jumplist[i];
+                    cfg.WifiAds.Add(pitem);
+                    i++;
+                }
             }
 
             ParamHelper.SaveParamvalue("MerchantCfg", cfg);

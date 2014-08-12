@@ -54,39 +54,43 @@ namespace Backstage.Core.Logic
         }
 
         #region 首页广告
-        public class PageAd
+        public class MerchantTypeItem
+        {
+            public int Id { get; set; }
+            public string Name { get; set; }
+        }
+        public class PlatformCfg
         {
             /// <summary>
-            /// 推送的广告图片id
+            /// 手机软件端广告
             /// </summary>
-            public int AdImgId { get; set; }
+            public PicJumpItem PhoneAd { get; set; }
             /// <summary>
-            /// URL
+            /// 商户首页右下角 单张广告图片显示的时间（秒）轮播
             /// </summary>
-            public string AdImgUrl { get; set; }
+            public int MerchantAdStayTime { get; set; }
             /// <summary>
-            /// 标题
+            /// 商户首页右下角广告列表
             /// </summary>
-            public string Title { get; set; }
-
+            public List<PicJumpItem> MerchantAds { get; set; }
             /// <summary>
-            /// 跳转到的URL
+            /// 商户类型名称列表
             /// </summary>
-            public string Url { get; set; }
+            public List<string> MerchantTypeList { get; set; }
         }
 
-        public static PageAd PageAdData
+        public static PlatformCfg PlatformCfgData
         {
             get
             {
-                var key = "PageAd";
+                var key = "PlatformCfg";
                 var obj = MyCache.Get(key);
                 if (obj == null)
                 {
-                    obj = JsonConvert.DeserializeObject<PageAd>(GetParamvalue(key));
+                    obj = JsonConvert.DeserializeObject<PlatformCfg>(GetParamvalue(key));
                     MyCache.Put(key, obj);
                 }
-                return (PageAd)obj;
+                return (PlatformCfg)obj;
             }
         }
         #endregion
@@ -129,8 +133,19 @@ namespace Backstage.Core.Logic
         #endregion
 
         #region 商户配置信息
+        public class PicJumpItem
+        {
+            /// <summary>
+            /// 图片本身url
+            /// </summary>
+            public string PicUrl { get; set; }
+            /// <summary>
+            /// 图片点击后跳转的页面url
+            /// </summary>
+            public string JumpUrl { get; set; }
+        }
         /// <summary>
-        /// 商户配置信息
+        /// 商户配置信息 
         /// </summary>
         public class MerchantCfg
         {
@@ -155,9 +170,9 @@ namespace Backstage.Core.Logic
             /// </summary>
             public int WifiAdStayTime { get; set; }
             /// <summary>
-            /// wifi广告停图片地址列表
+            /// wifi广告图片列表
             /// </summary>
-            public List<string> WifiAdUrlList { get; set; }
+            public List<PicJumpItem> WifiAds { get; set; }
         }
         /// <summary>
         /// 商户配置信息

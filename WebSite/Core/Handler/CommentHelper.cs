@@ -64,9 +64,9 @@ namespace Backstage.Core
             int totalnum = 0;
             string commandText = "";
             if (type == CommentType.All)
-                commandText = @"select * from comment where sellerId = ?sellerId LIMIT ?index,?size " + order;
+                commandText = @"select * from comment where sellerId = ?sellerId " + order + " LIMIT ?index,?size";
             else
-                commandText = @"select * from comment where sellerId = ?sellerId and type = ?type and typeId = ?typeId LIMIT ?index,?size " + order;
+                commandText = @"select * from comment where sellerId = ?sellerId and type = ?type and typeId = ?typeId " + order + " LIMIT ?index,?size";
 
 
 

@@ -162,11 +162,11 @@ namespace Backstage.Core.Handler
                 return;
             }
             SourceMaterial sm = SourceMaterialHelper.GetItem(pid);
-            var cms = CommentHelper.GetPagings(sm.SellerId, CommentType.Img, pid, index * size, size);
+            var cms = CommentHelper.GetPagings(sm.SellerId, CommentType.Img, pid, index * size, size,"order by CreateTime desc");
             var data = new CommentsForApis();
             data.Commentnum = cms.TotalCount;
             JsonTransfer jt = new JsonTransfer();
-            if (cms.TotalCount < 1)
+            if (cms.Results.Count < 1)
             {
                 jt.AddSuccessParam();
                 jt.Add("data", data);

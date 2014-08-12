@@ -58,7 +58,7 @@ namespace Backstage.Handler
         {
             JsonTransfer jt = new JsonTransfer();
             //角色为商户时 Id即为商户id 相当于用户的SellerId
-            var list = GoodsCategoriesHelper.GetList(CurrentUser.Id);
+            var list = GoodsCategoriesHelper.GetList(CurSellerId);
 
             jt.Add("list", list.Results);
             jt.Add("count", list.TotalCount);
@@ -74,11 +74,11 @@ namespace Backstage.Handler
             var imageUrl = GetString("imageUrl");
             //var index = GetInt("index");
 
-            var maxIndex = GoodsCategoriesHelper.GetMaxIndex(CurrentUser.Id);
+            var maxIndex = GoodsCategoriesHelper.GetMaxIndex(CurSellerId);
             var index = maxIndex + 1;
             var goodsCategories = new GoodsCategories();
             goodsCategories.Name = name;
-            goodsCategories.SellerId = CurrentUser.Id;
+            goodsCategories.SellerId = CurSellerId;
             goodsCategories.Index = index;
             goodsCategories.ImageUrl = imageUrl;
             if (GoodsCategoriesHelper.SaveGoodsCategories(goodsCategories))
@@ -99,13 +99,13 @@ namespace Backstage.Handler
                 ReturnErrorMsg("参数有误");
                 return;
             }
-            var goodsCategoriesList = GoodsCategoriesHelper.GetList(CurrentUser.Id, string.Format(" and Id in({0})", ids));
+            var goodsCategoriesList = GoodsCategoriesHelper.GetList(CurSellerId, string.Format(" and Id in({0})", ids));
             if (goodsCategoriesList.Results.Count != idList.Count)
             {
                 ReturnErrorMsg("没有权限删除其他商户分类或分类不存在");
                 return;
             }
-            if (GoodsCategoriesHelper.DeleteGoodsCategoriesList(CurrentUser.Id, ids))
+            if (GoodsCategoriesHelper.DeleteGoodsCategoriesList(CurSellerId, ids))
                 ReturnCorrectMsg("删除成功");
             else
                 ReturnErrorMsg("删除失败");
@@ -146,7 +146,7 @@ namespace Backstage.Handler
             foreach (var changeGoodsCategoriese in list)
             {
                 var goodsCategories = GoodsCategoriesHelper.GetGoodsCategories(changeGoodsCategoriese.Id);
-                if (goodsCategories == null || goodsCategories.SellerId != CurrentUser.Id)
+                if (goodsCategories == null || goodsCategories.SellerId != CurSellerId)
                 {
                     ReturnErrorMsg("没有权限修改商户分类或者商户分类不存在");
                     return;
@@ -189,7 +189,7 @@ namespace Backstage.Handler
                 ReturnErrorMsg("不存在该id的分类");
                 return;
             }
-            if (goodsCategoriesA.SellerId != CurrentUser.Id || goodsCategoriesB.SellerId != CurrentUser.Id)
+            if (goodsCategoriesA.SellerId != CurSellerId || goodsCategoriesB.SellerId != CurSellerId)
             {
                 ReturnErrorMsg("没有权限修改该商户分类");
                 return;
@@ -251,7 +251,7 @@ namespace Backstage.Handler
                     shoppingcartql += " order by Nowprice desc "; break;
                 default: break;
             }
-            var goodsresult = GoodsHelper.GetGoodsList(CurrentUser.Id, wheresql, shoppingcartql, start * limit, limit, 1);
+            var goodsresult = GoodsHelper.GetGoodsList(CurSellerId, wheresql, shoppingcartql, start * limit, limit, 1);
 
             var jt = new JsonTransfer();
             jt.Add("list", goodsresult.Results);
@@ -278,7 +278,7 @@ namespace Backstage.Handler
                 return;
             }
             var wheresql = string.Format(" and Id in({0})", gids);
-            var goodsresult = GoodsHelper.GetGoodsList(CurrentUser.Id, wheresql);
+            var goodsresult = GoodsHelper.GetGoodsList(CurSellerId, wheresql);
             if (goodsresult.Results.Count != gidList.Count)
             {
                 ReturnErrorMsg("没有权限删除其他商户产品或产品不存在");
@@ -296,7 +296,7 @@ namespace Backstage.Handler
             bool ur = true;
             if (data.Count > 0)
                 ur = GoodsCategoriesHelper.UpdateGoodsCategoriesCount(data);
-            if (ur && GoodsHelper.DelGoodsList(CurrentUser.Id, gids))
+            if (ur && GoodsHelper.DelGoodsList(CurSellerId, gids))
                 ReturnCorrectMsg("删除成功");
             else
                 ReturnErrorMsg("删除失败");
@@ -314,7 +314,7 @@ namespace Backstage.Handler
                 ReturnErrorMsg("不存在该商品");
                 return;
             }
-            if (goods.SellerId != CurrentUser.Id)
+            if (goods.SellerId != CurSellerId)
             {
                 ReturnErrorMsg("无权访问此商品");
                 return;
@@ -347,7 +347,7 @@ namespace Backstage.Handler
             if (id > 0)
             {
                 goods = GoodsHelper.GetGoods(id);
-                if (goods.SellerId != CurrentUser.Id)
+                if (goods.SellerId != CurSellerId)
                 {
                     ReturnErrorMsg("没有权限修改改该商户产品");
                     return;
@@ -370,7 +370,7 @@ namespace Backstage.Handler
             goods.Content = content;
             goods.IsHot = isHot;
             goods.IsRecommend = isRecommend;
-            goods.SellerId = CurrentUser.Id;
+            goods.SellerId = CurSellerId;
             var num = GoodsHelper.SaveGoods(goods);
             if (num > 0)
                 if (id > 0) ReturnCorrectMsg("编辑成功");
@@ -418,7 +418,7 @@ namespace Backstage.Handler
             foreach (var changeGoodse in list)
             {
                 var goods = GoodsHelper.GetGoods(changeGoodse.Id);
-                if (goods == null || goods.SellerId != CurrentUser.Id)
+                if (goods == null || goods.SellerId != CurSellerId)
                 {
                     ReturnErrorMsg("没有权限修改产品或者产品不存在");
                     return;

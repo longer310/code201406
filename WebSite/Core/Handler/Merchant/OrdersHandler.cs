@@ -171,7 +171,7 @@ namespace Backstage.Handler
                 ReturnErrorMsg("订单不存在");
                 return;
             }
-            if (orders.SellerId != CurrentUser.Id)
+            if (orders.SellerId != CurSellerId)
             {
                 ReturnErrorMsg("无权访问订单");
                 return;
@@ -244,7 +244,7 @@ namespace Backstage.Handler
                 ReturnErrorMsg("订单状态原本即为已送餐");
                 return;
             }
-            if (ordersList.Results.Any(o => o.SellerId != CurrentUser.Id))
+            if (ordersList.Results.Any(o => o.SellerId != CurSellerId))
             {
                 ReturnErrorMsg("无权操作该订单");
                 return;

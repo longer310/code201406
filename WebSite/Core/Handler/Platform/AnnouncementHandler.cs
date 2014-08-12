@@ -17,7 +17,7 @@ namespace Backstage.Handler
         public override void ProcessRequest(HttpContext context)
         {
             //FreeActions = ",saveGoodsList,";
-            RoleType = RoleType.Manage;//需商家管理权限 暂定权限管理
+            RoleType = RoleType.Manage;//需管理员权限 暂定权限管理
             base.ProcessRequest(HttpContext.Current);
             switch (Action)
             {

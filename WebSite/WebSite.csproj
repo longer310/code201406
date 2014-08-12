@@ -785,6 +785,7 @@
     </Compile>
     <Compile Include="View\System\SalePwdEdit.aspx.cs">
       <DependentUpon>SalePwdEdit.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="View\System\SalePwdEdit.aspx.designer.cs">
       <DependentUpon>SalePwdEdit.aspx</DependentUpon>
@@ -798,6 +799,7 @@
     </Compile>
     <Compile Include="View\System\SellerInFo.aspx.cs">
       <DependentUpon>SellerInFo.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="View\System\SellerInFo.aspx.designer.cs">
       <DependentUpon>SellerInFo.aspx</DependentUpon>

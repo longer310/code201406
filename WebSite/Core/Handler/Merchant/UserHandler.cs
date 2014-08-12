@@ -52,7 +52,7 @@ namespace Backstage.Handler
             int start = GetInt("start");
             int limit = GetInt("limit");
 
-            string wheresql = string.Format(" where SellerId = {0} and Status = 0", CurrentUser.Id);
+            string wheresql = string.Format(" where SellerId = {0} and Status = 0", CurSellerId);
             var result = AccountHelper.GetUserList(wheresql, "", start * limit, limit, 1);
             //var list = new List<OrdersItem>();
             //foreach (var item in result.Results)

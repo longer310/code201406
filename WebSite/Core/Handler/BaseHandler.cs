@@ -20,6 +20,7 @@ namespace Backstage.Core
         private string _action;
         private string _freeActions;
         private RoleType _roleType;
+        private int _curSellerId;
 
         public virtual void ProcessRequest(HttpContext context)
         {
@@ -32,8 +33,26 @@ namespace Backstage.Core
                 if (!string.IsNullOrEmpty(_freeActions) && _freeActions.IndexOf("," + Action + ",") > -1)
                 {
                     if (CurrentUser != null && _roleType < CurrentUser.RoleType)
-                    {
+                    {//判断当前登录用户 是否有访问的权限
                         Response.Write(new JsonTransfer().SetError("无权限"));
+                        Response.End();
+                    }
+
+                    _curSellerId = 0;
+                    if (CurrentUser != null)
+                    {
+                        if (_roleType == CurrentUser.RoleType && _roleType == RoleType.Merchant)
+                            _curSellerId = CurrentUser.Id;
+                        else //管理员
+                        {
+                            var sellerId = Request.QueryString["sellerid"];
+                            if (!string.IsNullOrEmpty(sellerId) && Utility.IsNum(sellerId))
+                                _curSellerId = Convert.ToInt32(sellerId);
+                        }
+                    }
+                    if (_curSellerId == 0)
+                    {
+                        Response.Write(new JsonTransfer().SetError("不存在该商户"));
                         Response.End();
                     }
                 }
@@ -79,6 +98,13 @@ namespace Backstage.Core
         {
             get { return _freeActions; }
             set { _freeActions = value; }
+        }
+        /// <summary>
+        /// 当前访问的商户id
+        /// </summary>
+        protected int CurSellerId
+        {
+            get { return _curSellerId; }
         }
         /// <summary>
         /// 设置访问权限

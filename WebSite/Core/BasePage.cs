@@ -5,11 +5,14 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using Backstage.Core.Entity;
+using Backstage.Core.Logic;
 
 namespace Backstage.Core
 {
     public class BasePage : Page
     {
+        public string SellerId = "";
+
         private Account _currentUser;
         private bool _isLogin;
 
@@ -55,7 +58,15 @@ namespace Backstage.Core
             if (!_isLogin)
             {
                 RedirectToLoginPage();
+                return;
             }
+            if (_currentUser.RoleType != RoleType.Manage || _currentUser.RoleType != RoleType.Merchant && _currentUser.RoleType != RoleType.SecondManage && _currentUser.RoleType != RoleType.SuperManage)
+            {
+                AccountHelper.SetLogOut();
+                throw new ArgumentException("对不起，你不是管理员");
+            }
+            SellerId = _currentUser.SellerId.ToString();
+
         }
 
         private void RedirectToLoginPage()

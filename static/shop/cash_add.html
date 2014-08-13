@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+	<!-- container-fluid -->
+	<head>
+		<title>Unicorn Admin</title>
+		<meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <!--公用样式-->
+		<link rel="stylesheet" href="../public/css/bootstrap.min.css" />
+		<link rel="stylesheet" href="../public/css/bootstrap-responsive.min.css" />
+		<link rel="stylesheet" href="../public/css/unicorn.main.css" />
+		<link rel="stylesheet" href="../public/css/unicorn.grey.css" />
+		<!--页面样式-->
+		<link href="../public/kindeditor/themes/default/default.css" type="text/css" rel="stylesheet">
+		<link href="../public/css/select2.css" type="text/css" rel="stylesheet">
+	</head>
+	<body>
+		
+		
+		<div id="header">
+			<h1><a href="./dashboard.html">APP 商户管理系统</a></h1>		
+		</div>
+		
+		<div id="hotline" class="muted">服务热线：400-800-8888</div>
+
+		<div id="user-nav" class="navbar navbar-inverse">
+			<dl class="user-info">
+				<dt class="muted">福建省宁德米克中式餐饮</dt>
+				<dd><span class="muted">用户名：</span><b class="text-error">80222222</b></dd>
+				<dd><span class="muted">可提现金额：</span><b class="text-error">￥3088.00</b></dd>
+			</dl>
+            <ul class="nav btn-group">
+                <li class="btn btn-inverse"><a title="" href="#"><i class="icon icon-share"></i> <span class="text">提现</span></a></li>
+                <li class="btn btn-inverse"><a title="" href="login.html"><i class="icon icon-off"></i> <span class="text">退出登陆</span></a></li>
+            </ul>
+        </div>
+            
+		<div id="sidebar">
+			<ul>
+				<li><a href="index.html"><i class="icon icon-home"></i> <span>首页</span></a></li>
+				<li class="submenu">
+					<a href="#"><i class="icon icon-gift"></i> <span>活动管理</span> <span class="label">2</span></a>
+					<ul>
+						<li><a href="activity_list.html">活动列表</a></li>
+						<li><a href="activity_add.html">新增活动</a></li>
+					</ul>
+				</li>
+				<li class="submenu">
+					<a href="#"><i class="icon icon-tint"></i> <span>产品管理</span><span class="label">3</span></a>
+					<ul>
+						<li><a href="goods_list.html">产品列表</a></li>
+						<li><a href="goods_add.html">新增产品</a></li>
+						<li><a href="categroy.html">分类管理</a></li>
+					</ul>
+				</li>
+				<li><a href="order.html"><i class="icon icon-shopping-cart"></i> <span>订单管理</span></a></li>
+				<li class="submenu">
+					<a href="#"><i class="icon icon-picture"></i> <span>图片墙管理</span> <span class="label">2</span></a>
+					<ul>
+						<li><a href="image_list.html">图片墙列表</a></li>
+						<li><a href="image_add.html">新增图片墙</a></li>
+					</ul>
+				</li>
+				<li><a href="user.html"><i class="icon icon-user"></i> <span>会员管理</span></a></li>
+				<li><a href="comment.html"><i class="icon icon-comment"></i> <span>留言管理</span></a></li>
+				<li class="submenu">
+					<a href="#"><i class="icon icon-tags"></i> <span>电子券管理</span> <span class="label">2</span></a>
+					<ul>
+						<li><a href="ticket_list.html">电子券列表</a></li>
+						<li><a href="ticket_add.html">新增电子券</a></li>
+					</ul>
+				</li>
+				<li><a href="ad.html"><i class="icon icon-bullhorn"></i> <span>广告设置</span></a></li>
+				<li class="submenu">
+					<a href="#"><i class="icon icon-hdd"></i> <span>数据库统计</span> <span class="label">4</span></a>
+					<ul>
+						<li><a href="pv.html">访问量统计</a></li>
+						<li><a href="sale.html">销量统计</a></li>
+						<li><a href="charge.html">充值量统计</a></li>
+						<li><a href="backup.html">数据备份导出</a></li>
+					</ul>
+				</li>
+				<li class="submenu active open">
+					<a href="#"><i class="icon icon-cog"></i> <span>系统设置</span> <span class="label">6</span></a>
+					<ul>
+						<li><a href="change_pw.html">登录设置</a></li>
+						<li><a href="profile.html">资料设置</a></li>
+						<li><a href="message.html">推送服务</a></li>
+						<li><a href="rule.html">规则设置</a></li>
+						<li><a href="resource.html">素材库管理</a></li>
+						<li class="active"><a href="cash.html">提现管理</a></li>
+					</ul>
+				</li>
+			</ul>
+		</div>
+		
+		<div id="content">
+			<div class="widget-box" >
+				<div class="widget-title">
+					<span class="icon">
+						<i class="icon-cog"></i>
+					</span>
+					<h5>提现</h5>
+				</div>
+				<div class="widget-content">
+					<div class="widget-box" >
+
+						<div class="widget-content">
+						
+							<form action="#" method="get" class="form-horizontal" id="j-activity-addForm" />
+								<div class="control-group control-group-text">
+									<label class="control-label">当前账户可提现金额</label>
+									<div class="controls">
+										￥3233.00
+									</div>
+								</div>
+
+								<div class="control-group control-group-text">
+									<label class="control-label">冻结金额</label>
+									<div class="controls">
+										￥3233.00
+									</div>
+								</div>
+
+								<div class="control-group control-group-text">
+									<label class="control-label">您的签约模式</label>
+									<div class="controls text-error">
+										模式B，所有提现将扣除5%的手续费
+									</div>
+								</div>
+
+								<div class="control-group">
+									<label class="control-label">提现金额</label>
+									<div class="controls">
+										<input type="text" id="j-realname" /> 元
+									</div>
+								</div>
+
+								<div class="control-group control-group-text">
+									<label class="control-label"></label>
+									<div class="controls text-error">
+										（注：体现周期为1个工作日，节假日不可到帐）
+									</div>
+								</div>
+
+								<div class="form-actions">
+									<button type="submit" class="btn btn-primary"><i class="icon-share-alt icon-white"></i> 确认提现</button>
+								</div>
+							</form>				
+							
+						</div>
+					</div>
+
+					<div class="widget-box" >
+						<div class="widget-title">
+							<h5>收款信息</h5>
+						</div>
+						<div class="widget-content">
+							<form action="#" method="get" class="form-horizontal" id="j-activity-addForm" />
+								<div class="control-group">
+									<label class="control-label">银行信息</label>
+									<div class="controls">
+										<select id="j-bank">
+											<option>中国银行</option>
+										</select>
+									</div>
+								</div>
+
+								<div class="control-group">
+									<label class="control-label">开户行</label>
+									<div class="controls">
+										<input type="text" id="j-bank_open" />
+									</div>
+								</div>
+
+								<div class="control-group">
+									<label class="control-label">银行卡号</label>
+									<div class="controls">
+										<input type="text" id="j-card" />
+									</div>
+								</div>
+
+								<div class="control-group">
+									<label class="control-label">开户名</label>
+									<div class="controls">
+										<input type="text" id="j-realname" />
+									</div>
+								</div>
+
+								<div class="form-actions">
+									<button type="submit" class="btn btn-primary"><i class="icon-ok icon-white"></i> 保存</button>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div id="footer">
+				<p>关于淘宝合作伙伴营销中心廉正举报联系客服开放平台诚征英才联系我们网站地图法律声明© 2003-2014 Taobao.com 版权所有</p>
+				<p>网络文化经营许可证：文网文[2010]040号|增值电信业务经营许可证：浙B2-20080224-1|信息网络传播视听节目许可证：1109364号 </p>
+			</div>
+		</div>
+		
+		<!--公用js-->
+        <script src="../public/js/jquery.min.js"></script>
+        <script src="../public/js/jquery.ui.custom.js"></script>
+        <script src="../public/js/bootstrap.min.js"></script>
+        <script src="../public/js/unicorn.js"></script>
+        <script src="../public/js/jquery.tmpl.min.js"></script>
+        <script src="../public/js/common.js"></script>
+
+        <!--页面js-->
+        <script src="../public/js/ue.pager.js"></script>
+      	
+      	<script type="text/jquery-x-tmpl" id="j-tmpl-level">
+      		{{each(i, v) list}}
+	      		<div class="control-group">
+					<div class="controls">
+						<label class="inline">级别${v.id}名称</label>
+						<input type="text" value="${v.name}" class="input-small j-level_name" />
+						<label class="inline" style="margin-left:20px;">享受折扣</label>
+						<input type="text" value="${v.discount}" class="input-mini j-level_discount" /> 折
+						<label class="inline j-level_condition_text" style="margin-left:20px;">{{if type == 0}}消费总额{{else type == 1}}充值总额{{else}}获得积分{{/if}}需</label>
+						<input type="text" value="${v.condition}" class="input-small j-level_condition" /> 元
+					</div>
+				</div>
+			{{/each}}
+      	</script>
+
+		<script>
+			var MPage = {
+        		init : function(){
+        			var mpage = this;
+
+        			
+					//绑定提交表单
+					$("#j-rule_form").bind("submit", function(){
+						
+
+						alert('提交数据');
+						return false;
+					});
+
+					mpage.initForm();
+        		},
+
+        		initForm : function(){
+        			var mpage = this;
+        		}
+    		}
+
+    		$(function(){
+    			MPage.init();
+    		});
+    		
+        </script>
+	</body>
+</html>

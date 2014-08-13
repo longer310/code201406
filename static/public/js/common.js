@@ -28,7 +28,7 @@ $(function(){
 			</div>\
 		</div>';
 
-	var tip_tip = '<div class="alert hide" id="j-tip">\
+	var tip_tip = '<div class="alert hide modal-tip" id="j-tip">\
 						<a class="close j-btn-close" href="javascript:;">×</a>\
 						<p class="j-content"></p>\
 					</div>';

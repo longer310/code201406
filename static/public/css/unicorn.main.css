@@ -1332,7 +1332,7 @@ ul.inline>li,ol.inline>li{
 	background-image: url("../img/glyphicons-halflings-green.png");
 }
 
-.alert{
+.modal-tip{
 	position: fixed;
 	width: 400px;
 	top: 50%;
@@ -1389,3 +1389,5 @@ ul.inline>li,ol.inline>li{
 .form-muticol .controls{
 	margin-left: 10px;
 }
+
+.control-group-text .control-label{padding-top: 10px;}

@@ -50,11 +50,11 @@ namespace Backstage.Core
                                 _curSellerId = Convert.ToInt32(sellerId);
                         }
                     }
-                    if (_curSellerId == 0)
-                    {
-                        Response.Write(new JsonTransfer().SetError("不存在该商户"));
-                        Response.End();
-                    }
+                    //if (_curSellerId == 0)
+                    //{
+                    //    Response.Write(new JsonTransfer().SetError("不存在该商户"));
+                    //    Response.End();
+                    //}
                 }
                 else
                 {

@@ -537,6 +537,7 @@
     <Content Include="View\Active\Add.aspx" />
     <Content Include="View\Active\Edit.aspx" />
     <Content Include="View\Active\List.aspx" />
+    <Content Include="View\Ad\Ad.aspx" />
     <Content Include="View\Comment\List.aspx" />
     <Content Include="View\Coupon\Add.aspx" />
     <Content Include="View\Coupon\Edit.aspx" />
@@ -684,6 +685,13 @@
     </Compile>
     <Compile Include="View\Active\List.aspx.designer.cs">
       <DependentUpon>List.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="View\Ad\Ad.aspx.cs">
+      <DependentUpon>Ad.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="View\Ad\Ad.aspx.designer.cs">
+      <DependentUpon>Ad.aspx</DependentUpon>
     </Compile>
     <Compile Include="View\Comment\List.aspx.cs">
       <DependentUpon>List.aspx</DependentUpon>

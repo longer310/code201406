@@ -69,8 +69,8 @@
                         <li><a href="#">新增电子券</a></li>
                     </ul>
                 </li>
-                <li>
-                    <a href="#"><i class="icon icon-bullhorn"></i><span>广告设置</span></a>
+                <li class="sidebar_ad">
+                    <a href="<%=DomainUrl %>/View/Ad/Ad.aspx"><i class="icon icon-bullhorn"></i><span>广告设置</span></a>
                 </li>
                 <li class="submenu">
                     <a href="#"><i class="icon icon-hdd"></i><span>数据库统计</span> <span class="label">4</span></a>

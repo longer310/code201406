@@ -60,13 +60,16 @@ namespace Backstage.Core
                 RedirectToLoginPage();
                 return;
             }
-            if (_currentUser.RoleType != RoleType.Manage || _currentUser.RoleType != RoleType.Merchant && _currentUser.RoleType != RoleType.SecondManage && _currentUser.RoleType != RoleType.SuperManage)
+            //if (_currentUser != null && (_currentUser.RoleType != RoleType.Manage || _currentUser.RoleType != RoleType.Merchant && _currentUser.RoleType != RoleType.SecondManage && _currentUser.RoleType != RoleType.SuperManage))
+            if(_currentUser != null && _currentUser.RoleType > RoleType.Merchant)
             {
                 AccountHelper.SetLogOut();
-                throw new ArgumentException("对不起，你不是管理员");
-            }
-            SellerId = _currentUser.SellerId.ToString();
+//                throw new ArgumentException("对不起，你不是管理员");
 
+                Response.Write(new JsonTransfer().SetError("对不起，你不是管理员或商户"));
+                Response.End();
+            }
+            if (_currentUser != null) SellerId = _currentUser.SellerId.ToString();
         }
 
         private void RedirectToLoginPage()
@@ -77,23 +80,24 @@ namespace Backstage.Core
         }
 
         public void RedirectLoginedBackPage()
-        { 
+        {
             HttpContext context = HttpContext.Current;
             var rtn = context.Request.QueryString["rtn"];
-            if(rtn == null)
+            if (rtn == null)
             {
                 Redirect("Index.aspx");
-                return;                
+                return;
             }
             string url = rtn.ToString();
             if (url.Length > 0)
             {
                 Redirect(url);
             }
-            else {
+            else
+            {
                 Redirect("Index.aspx");
             }
-            
+
         }
 
         /// <summary>

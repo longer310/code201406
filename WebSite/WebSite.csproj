@@ -575,6 +575,7 @@
     <Compile Include="Core\Entity\IntegralData.cs" />
     <Compile Include="Core\Entity\Merchant.cs" />
     <Compile Include="Core\Entity\Position.cs" />
+    <Compile Include="Core\Entity\UserLevel.cs" />
     <Compile Include="Core\Entity\UserPosition.cs" />
     <Compile Include="Core\Entity\UserWifi.cs" />
     <Compile Include="Core\Entity\VerificationCode.cs" />
@@ -606,6 +607,7 @@
     <Compile Include="Core\Handler\Merchant\GoodsHandler.cs" />
     <Compile Include="Core\Handler\Merchant\UserHandler.cs" />
     <Compile Include="Core\Handler\Platform\AnnouncementHandler.cs" />
+    <Compile Include="Core\Handler\SystemHelper.cs" />
     <Compile Include="Core\Logic\MerchantTypeHelper.cs" />
     <Compile Include="Core\Logic\AnnouncementHelper.cs" />
     <Compile Include="Core\Logic\ShareLogHelper.cs" />
@@ -963,7 +965,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>0</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:28379/</IISUrl>
+          <IISUrl>http://localhost:5530/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

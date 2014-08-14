@@ -521,7 +521,7 @@ a:hover {
     font-size: 12px;
     padding: 9px 10px 7px 0;
     text-align: center;
-    width: 70px;
+    width: 115px;
     color: #666666;
 }
 .stat-boxes .left span, .stat-boxes .right strong {
@@ -1298,6 +1298,10 @@ form {
 	width: 90px;
 }
 
+.form-horizontal input.input-mini{
+	width: 30px;
+}
+
 .form-horizontal .form-actions {
 	margin-top: 0;
 	margin-bottom: 0;
@@ -1306,6 +1310,9 @@ form {
     color: #999999;
 }
 
+.inline{
+	display: inline !important;
+}
 ul.inline,ol.inline{
 	margin-left:0;list-style:none
 }
@@ -1313,11 +1320,19 @@ ul.inline>li,ol.inline>li{
 	display:inline-block;*display:inline;padding-right:5px;*zoom:1
 }
 
-.icon-gray{
-	background-image: url("../img/glyphicons-halflings-gray.png");
+.icon-grey{
+	background-image: url("../img/glyphicons-halflings-grey.png");
 }
 
-.alert{
+.icon-red{
+	background-image: url("../img/glyphicons-halflings-red.png");
+}
+
+.icon-green{
+	background-image: url("../img/glyphicons-halflings-green.png");
+}
+
+.modal-tip{
 	position: fixed;
 	width: 400px;
 	top: 50%;
@@ -1366,3 +1381,13 @@ ul.inline>li,ol.inline>li{
 	vertical-align: middle;
 
 }
+
+.form-muticol .control-label{
+	width: auto;
+}
+
+.form-muticol .controls{
+	margin-left: 10px;
+}
+
+.control-group-text .control-label{padding-top: 10px;}

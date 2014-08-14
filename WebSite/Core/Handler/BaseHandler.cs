@@ -37,19 +37,6 @@ namespace Backstage.Core
                         Response.Write(new JsonTransfer().SetError("无权限"));
                         Response.End();
                     }
-
-                    _curSellerId = 0;
-                    if (CurrentUser != null)
-                    {
-                        if (_roleType == CurrentUser.RoleType && _roleType == RoleType.Merchant)
-                            _curSellerId = CurrentUser.Id;
-                        else //管理员
-                        {
-                            var sellerId = Request.QueryString["sellerid"];
-                            if (!string.IsNullOrEmpty(sellerId) && Utility.IsNum(sellerId))
-                                _curSellerId = Convert.ToInt32(sellerId);
-                        }
-                    }
                     //if (_curSellerId == 0)
                     //{
                     //    Response.Write(new JsonTransfer().SetError("不存在该商户"));
@@ -60,6 +47,19 @@ namespace Backstage.Core
                 {
                     Response.Write(new JsonTransfer().SetError("您还未登录或登录超时，请重新登录！"));
                     Response.End();
+                }
+            }
+
+            _curSellerId = 0;
+            if (CurrentUser != null)
+            {
+                if (_roleType == CurrentUser.RoleType && _roleType == RoleType.Merchant)
+                    _curSellerId = CurrentUser.Id;
+                else //管理员
+                {
+                    var sellerId = Request.QueryString["sellerid"];
+                    if (!string.IsNullOrEmpty(sellerId) && Utility.IsNum(sellerId))
+                        _curSellerId = Convert.ToInt32(sellerId);
                 }
             }
         }

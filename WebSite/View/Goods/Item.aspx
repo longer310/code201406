@@ -79,8 +79,8 @@
                 </div>
             </div>
             <div class="form-actions">
-                <a href="#" id="reset" class="btn"><i class="icon-refresh"></i>清除重置</a>
-                <a href="#"  id="save" class="btn btn-primary"><i class="icon-ok icon-white"></i>完成保存</a>
+                <a href="javascript:void(0);" id="reset" class="btn"><i class="icon-refresh"></i>清除重置</a>
+                <a href="javascript:void(0);"  id="save" class="btn btn-primary"><i class="icon-ok icon-white"></i>完成保存</a>
             </div>
         </div>
     </div>
@@ -281,16 +281,16 @@
                 }, function (data) {
                     if (!data.error) {
                         if (mpage.gid > 0) {
-                            Common.tip({ type: "success", content: "保存成功" });
+                            Common.tip({ type: "success", content: data.success });
                         } else {
                             mpage.gid = data.success;//新增商品赋值
-                            Common.tip({ type: "success", content: "新增成功" });
+                            Common.tip({ type: "success", content: data.success });
                         }
                     } else {
                         if (mpage.gid > 0) {
-                            Common.tip({ type: "error", content: "保存失败" });
+                            Common.tip({ type: "error", content: data.error });
                         } else {
-                            Common.tip({ type: "error", content: "新增失败" });
+                            Common.tip({ type: "error", content: data.error });
                         }
                     }
                 }, "JSON");

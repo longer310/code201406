@@ -13,7 +13,6 @@ namespace Backstage.Core.Handler
         public static IList<UserLevel> GetUserLevels(int sellerId)
         {
             var results = new List<UserLevel>();
-            int totalnum = 0;
             string commandText = @"select * from userlevel where sellerId = ?sellerId";
 
             List<MySqlParameter> parameters = new List<MySqlParameter>();
@@ -28,7 +27,7 @@ namespace Backstage.Core.Handler
                     {
                         UserLevel ul = new UserLevel();
                         ul.Id = reader.GetInt32(0);
-                        
+
                         ul.SellerId = (int)reader["SellerId"];
                         ul.CreateTime = (DateTime)reader["CreateTime"];
                         ul.Discount = (int)reader["Discount"];
@@ -99,7 +98,23 @@ namespace Backstage.Core.Handler
             MySqlHelper.ExecuteNonQuery(GlobalConfig.DbConn, CommandType.Text, commandText, parameters.ToArray());
         }
 
+        private static void DeleteUserLevel(int id)
+        {
+            string cmd = @"delete from userlevel where id = ?id";
+            List<MySqlParameter> parameters = new List<MySqlParameter>();
+            parameters.Add(new MySqlParameter("?Id", id));
+            MySqlHelper.ExecuteNonQuery(GlobalConfig.DbConn, CommandType.Text, cmd, parameters.ToArray());
+        }
 
-
+        internal static void UpdateUserLevels(IList<UserLevel> userlevels)
+        {
+            foreach (var ul in userlevels)
+            {
+                if (ul.Id != 0)
+                    UpdateUserLevel(ul);
+                else
+                    CreateUserLevel(ul);
+            }
+        }
     }
 }

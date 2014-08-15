@@ -551,7 +551,8 @@
     <Content Include="View\SourceMaterial\Edit.aspx" />
     <Content Include="View\SourceMaterial\List.aspx" />
     <Content Include="View\System\ChargeStat.aspx" />
-    <Content Include="View\System\SalePwdEdit.aspx" />
+    <Content Include="View\System\Rules.aspx" />
+    <Content Include="View\System\SellerPwdEdit.aspx" />
     <Content Include="View\System\SaleStat.aspx" />
     <Content Include="View\System\SellerInFo.aspx" />
     <Content Include="View\System\VisitStat.aspx" />
@@ -793,12 +794,19 @@
     <Compile Include="View\System\ChargeStat.aspx.designer.cs">
       <DependentUpon>ChargeStat.aspx</DependentUpon>
     </Compile>
-    <Compile Include="View\System\SalePwdEdit.aspx.cs">
-      <DependentUpon>SalePwdEdit.aspx</DependentUpon>
+    <Compile Include="View\System\Rules.aspx.cs">
+      <DependentUpon>Rules.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="View\System\SalePwdEdit.aspx.designer.cs">
-      <DependentUpon>SalePwdEdit.aspx</DependentUpon>
+    <Compile Include="View\System\Rules.aspx.designer.cs">
+      <DependentUpon>Rules.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="View\System\SellerPwdEdit.aspx.cs">
+      <DependentUpon>SellerPwdEdit.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="View\System\SellerPwdEdit.aspx.designer.cs">
+      <DependentUpon>SellerPwdEdit.aspx</DependentUpon>
     </Compile>
     <Compile Include="View\System\SaleStat.aspx.cs">
       <DependentUpon>SaleStat.aspx</DependentUpon>

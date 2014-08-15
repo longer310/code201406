@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/View/merchant.Master" AutoEventWireup="true" CodeBehind="SalePwdEdit.aspx.cs" Inherits="Backstage.View.System.SalePwdEdit" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/View/merchant.Master" AutoEventWireup="true" CodeBehind="SellerPwdEdit.aspx.cs" Inherits="Backstage.View.System.SalePwdEdit" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="Header" runat="server">
     <link href="../public/kindeditor/themes/default/default.css" type="text/css" rel="stylesheet">
 </asp:Content>

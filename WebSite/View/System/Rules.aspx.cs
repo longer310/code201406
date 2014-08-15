@@ -10,6 +10,8 @@ namespace Backstage.View.System
 {
     public partial class Rules : BasePage
     {
+
+
         protected void Page_Load(object sender, EventArgs e)
         {
 

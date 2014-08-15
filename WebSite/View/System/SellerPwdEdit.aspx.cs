@@ -8,7 +8,7 @@ using System.Web.UI.WebControls;
 
 namespace Backstage.View.System
 {
-    public partial class SalePwdEdit : BasePage
+    public partial class SellerPwdEdit : BasePage
     {
         protected void Page_Load(object sender, EventArgs e)
         {

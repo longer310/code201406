@@ -133,7 +133,8 @@
 			{{/each}}
       	</script>
 
-    <script>
+    <script type="text/javascript">
+        var sellerId = '<%=SellerId%>';
         var MPage = {
             init: function () {
                 var mpage = this;

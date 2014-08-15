@@ -66,5 +66,36 @@ namespace Backstage.Core.Entity
         public string PointX { get; set; }
 
         public string PointY { get; set; }
+
+        /// <summary>
+        /// 消费所获积分比例（每元）
+        /// </summary>
+        public int ReChargeIntegral { get; set; }
+
+        /// <summary>
+        /// 消费所获积分比例（每元）
+        /// </summary>
+        public int ConsumptionIntegral { get; set; }
+
+        /// <summary>
+        /// 评论所获积分比例（每条）
+        /// </summary>
+        public int CommentIntegral { get; set; }
+
+        /// <summary>
+        /// 分享所获积分比例（每条）
+        /// </summary>
+        public int ShareIntegral { get; set; }
+
+        /// <summary>
+        /// 运费
+        /// </summary>
+        public int Freight { get; set; }
+
+        /// <summary>
+        /// 满多少免运费
+        /// </summary>
+        public int NeedToFreeFreight { get; set; }
+
     }
 }

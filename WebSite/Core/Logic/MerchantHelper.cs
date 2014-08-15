@@ -42,8 +42,15 @@ namespace Backstage.Core.Logic
                             merchant.AndroidUrl     = reader["AndroidUrl"].ToString();
                             merchant.IosUrl         = reader["IosUrl"].ToString();
                             merchant.WxUrl          = reader["WxUrl"].ToString();
-                            merchant.PointX = reader["PointX"].ToString();
-                            merchant.PointY = reader["PointY"].ToString();
+                            merchant.PointX         = reader["PointX"].ToString();
+                            merchant.PointY         = reader["PointY"].ToString();
+                            merchant.ReChargeIntegral = (int)reader["ReChargeIntegral"];
+                            merchant.ConsumptionIntegral = (int)reader["ConsumptionIntegral"];
+                            merchant.CommentIntegral = (int)reader["CommentIntegral"];
+                            merchant.ShareIntegral = (int)reader["ShareIntegral"];
+                            merchant.Freight = (int)reader["Freight"];
+                            merchant.NeedToFreeFreight = (int)reader["NeedToFreeFreight"];
+
                             return merchant;
                         }
                     }
@@ -83,7 +90,14 @@ namespace Backstage.Core.Logic
                                         IosUrl         = ?IosUrl      ,
                                         WxUrl          = ?WxUrl       ,
                                         PointX         = ?PointX      ,
-                                        PointY         = ?PointY      
+                                        PointY         = ?PointY      ,
+                                        ReChargeIntegral        = ?ReChargeIntegral,
+                                        ConsumptionIntegral     = ?ConsumptionIntegral  ,
+                                        CommentIntegral         = ?CommentIntegral      ,
+                                        ShareIntegral           = ?ShareIntegral       ,
+                                        Freight                 = ?Freight      ,
+                                        NeedToFreeFreight       = ?NeedToFreeFreight      
+
                                     WHERE
                                         Id = ?Id";
                 parameters.Add(new MySqlParameter("?Name",merchant.Name));
@@ -102,6 +116,14 @@ namespace Backstage.Core.Logic
                 parameters.Add(new MySqlParameter("?Id",merchant.Id));
                 parameters.Add(new MySqlParameter("?PointX",merchant.PointX));
                 parameters.Add(new MySqlParameter("?PointY",merchant.PointY));
+
+                parameters.Add(new MySqlParameter("?ReChargeIntegral", merchant.ReChargeIntegral));
+                parameters.Add(new MySqlParameter("?ConsumptionIntegral", merchant.ConsumptionIntegral));
+                parameters.Add(new MySqlParameter("?CommentIntegral", merchant.CommentIntegral));
+                parameters.Add(new MySqlParameter("?ShareIntegral", merchant.ShareIntegral));
+                parameters.Add(new MySqlParameter("?Freight", merchant.Freight));
+                parameters.Add(new MySqlParameter("?NeedToFreeFreight", merchant.NeedToFreeFreight));
+
 
             }
             else
@@ -140,7 +162,14 @@ namespace Backstage.Core.Logic
                                         ?IosUrl       ,
                                         ?WxUrl        ,
                                         ?PointX       ,
-                                        ?PonitY   
+                                        ?PonitY       ,
+
+                                        ?ReChargeIntegral ,
+                                        ?ConsumptionIntegral   ,
+                                        ?CommentIntegral       ,
+                                        ?ShareIntegral        ,
+                                        ?Freight       ,
+                                        ?NeedToFreeFreight   
                                         )";
                 parameters.Add(new MySqlParameter("?Name",merchant.Name));
                 parameters.Add(new MySqlParameter("?Tname",merchant.Tname));
@@ -157,6 +186,13 @@ namespace Backstage.Core.Logic
                 parameters.Add(new MySqlParameter("?WxUrl",merchant.WxUrl));
                 parameters.Add(new MySqlParameter("?PointX",merchant.IosUrl));
                 parameters.Add(new MySqlParameter("?PonitY",merchant.WxUrl));
+
+                parameters.Add(new MySqlParameter("?ReChargeIntegral", merchant.ReChargeIntegral));
+                parameters.Add(new MySqlParameter("?ConsumptionIntegral", merchant.ConsumptionIntegral));
+                parameters.Add(new MySqlParameter("?CommentIntegral", merchant.CommentIntegral));
+                parameters.Add(new MySqlParameter("?ShareIntegral", merchant.ShareIntegral));
+                parameters.Add(new MySqlParameter("?Freight", merchant.Freight));
+                parameters.Add(new MySqlParameter("?NeedToFreeFreight", merchant.NeedToFreeFreight));
             }
             try
             {

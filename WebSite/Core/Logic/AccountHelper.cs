@@ -396,7 +396,7 @@ namespace Backstage.Core
 
         public static Account GetUser(int id)
         {
-            var sql = String.Format("select * from account where Id={0} limit 1;", id);
+            var sql = String.Format("select * from account where Id={0} and status=0 limit 1;", id);
             try
             {
                 using (var conn = Utility.ObtainConn(Utility._gameDbConn))

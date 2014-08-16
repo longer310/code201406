@@ -38,8 +38,8 @@ namespace Backstage.Core
         public static string _message = System.Configuration.ConfigurationManager.AppSettings["message"];//注册短信格式
         public static string _msg_url = System.Configuration.ConfigurationManager.AppSettings["msg_url"];//短信请求地址
         public static string _msg_getpwd = System.Configuration.ConfigurationManager.AppSettings["msg_getpwd"];//找回密码信息格式
-        public static string _msg_zh = System.Configuration.ConfigurationManager.AppSettings["msg_zh"];//账号名
-        public static string _msg_mm = System.Configuration.ConfigurationManager.AppSettings["msg_mm"];//密码
+        public static string _msg_account = System.Configuration.ConfigurationManager.AppSettings["msg_account"];//账号名
+        public static string _msg_password = System.Configuration.ConfigurationManager.AppSettings["msg_password"];//密码
         public static string _msg_sms_type = System.Configuration.ConfigurationManager.AppSettings["msg_sms_type"];//通道ID
         public static string _msg_opensend = System.Configuration.ConfigurationManager.AppSettings["msg_opensend"];//是否开启短信发送验证码
         public static string _userdefaulthead = System.Configuration.ConfigurationManager.AppSettings["userdefaulthead"];//用户默认头像
@@ -392,18 +392,21 @@ namespace Backstage.Core
         /// 发送短信
         /// </summary>
         /// <param name="code"></param>
-        /// <param name="phone"></param>
+        /// <param name="mobile"></param>
         /// <param name="message"></param>
-        public static void SendMsg(string code, string phone, string message)
+        public static void SendMsg(string code, string mobile, string message)
         {
-            string msg = string.Format(message, code);
+            string content = string.Format(message, code);
             Encoding encoding = Encoding.GetEncoding("UTF-8");
             IDictionary<string, string> parameters = new Dictionary<string, string>();
-            parameters.Add("zh", _msg_zh);
-            parameters.Add("mm", _msg_mm);
-            parameters.Add("hm", phone);
-            parameters.Add("nr", msg);
-            parameters.Add("sms_type", _msg_sms_type);
+            parameters.Add("action","send");            //固定send
+            parameters.Add("userid", "12");             //企业ID
+            parameters.Add("account", _msg_account);    //用户帐号
+            parameters.Add("password", _msg_password);  //用户账号对应的密码
+            parameters.Add("mobile", mobile);           //发信发送的目的号码.多个号码之间用半角逗号隔开
+            parameters.Add("content", content);         //短信的内容，内容需要UTF-8编码
+            parameters.Add("sendTime", "");             //为空立即发送，定时发送格式：2014-10-24 09:08:10
+            parameters.Add("extno", "");                //请先询问配置的通道是否支持扩展子号，如果不支持，请填空。子号只能为数字，且最多5位数。
             CreatePostHttpResponse(_msg_url, parameters, null, null, encoding, null);
         }
 

@@ -667,6 +667,7 @@ namespace Backstage.Handler
         {
             public float totalprice { get; set; }
             public List<ShoppingCartItem> shoppingcartlist { get; set; }
+            public int totalnum { get; set; }
             public ShoppingCartData()
             {
                 shoppingcartlist = new List<ShoppingCartItem>();
@@ -904,7 +905,7 @@ namespace Backstage.Handler
 
             if (orders == null)
             {
-                ReturnErrorMsg("参数出错");
+                ReturnErrorMsg("不存在该订单");
                 return;
             }
 

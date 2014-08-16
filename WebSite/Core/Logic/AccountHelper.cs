@@ -312,9 +312,15 @@ namespace Backstage.Core
             }
         }
 
+        /// <summary>
+        /// 删除用户 修改状态 （账户+绑定账户）
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public static int DelUser(int id)
         {
             var cmdText = String.Format("update account set status = -1 where Id={0}", id);
+            cmdText += String.Format("update AccountBinding set status = -1 where Id={0}", id);
 
             try
             {
@@ -326,13 +332,18 @@ namespace Backstage.Core
             }
         }
 
-
+        /// <summary>
+        /// 删除用户 修改状态 （账户+绑定账户）
+        /// </summary>
+        /// <param name="ids"></param>
+        /// <returns></returns>
         public static bool DelUserList(List<int> ids)
         {
             var cmdText = new StringBuilder("");
             foreach (var id in ids)
             {
                 cmdText = cmdText.AppendFormat("update account set status = -1 where Id={0};", id);
+                cmdText = cmdText.AppendFormat("update AccountBinding set status = -1 where Id={0};", id);
             }
             var cmdsql = cmdText.ToString();
             try

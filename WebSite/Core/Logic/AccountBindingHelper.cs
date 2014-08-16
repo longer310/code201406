@@ -17,7 +17,7 @@ namespace Backstage.Core.Logic
         /// <returns></returns>
         public static AccountBinding GetAccountBinding(int id)
         {
-            var cmdText = string.Format("select * from AccountBinding where Id={0} limit 1;", id);
+            var cmdText = string.Format("select * from AccountBinding where Id={0} and Status=0 limit 1;", id);
             try
             {
                 using (var conn = Utility.ObtainConn(Utility._gameDbConn))
@@ -49,7 +49,7 @@ namespace Backstage.Core.Logic
         /// <returns></returns>
         public static AccountBinding GetAccountBindingByIdentity(string userIdentity)
         {
-            var cmdText = string.Format("select * from AccountBinding where UserIdentity='{0}' limit 0,1;", userIdentity);
+            var cmdText = string.Format("select * from AccountBinding where UserIdentity='{0}' and Status=0 limit 0,1;", userIdentity);
             try
             {
                 using (var conn = Utility.ObtainConn(Utility._gameDbConn))

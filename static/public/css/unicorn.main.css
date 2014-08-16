@@ -744,7 +744,6 @@ a:hover {
 .site-stats li {
     background-color: #F5F5F5;
     border: 1px solid #DDDDDD;
-    cursor: pointer;
     margin: 0 0 10px;
     padding: 13px 20px 10px;
     position: relative;
@@ -1391,3 +1390,46 @@ ul.inline>li,ol.inline>li{
 }
 
 .control-group-text .control-label{padding-top: 10px;}
+
+.alert .alert-heading{
+	font-size: 14px;
+}
+
+
+.home-links{
+	overflow: hidden;
+	margin: 0;
+}
+
+.home-links li{
+	float: left;
+	list-style: none;
+	margin-right: 15px;
+	margin-bottom: 10px;
+}
+
+.home-links li a{
+	display: block;
+	padding: 10px;
+}
+.home-links li span{
+	margin-top: 5px;
+	display: block;
+}
+
+.nest-box{
+	margin: 0 0 15px;
+}
+
+.server_info{
+
+}
+
+.server_info li{
+	float: left;
+	width: 33.33%;
+	list-style: none;
+	line-height: 24px;
+	margin: 0;
+	padding: 5px 0;
+}

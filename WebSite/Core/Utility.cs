@@ -344,6 +344,21 @@ namespace Backstage.Core
 
         #region 图片字符串转换
         /// <summary>
+        /// 获取用户头像信息
+        /// </summary>
+        /// <returns></returns>
+        public static string GetAvatar(HttpContext context, int uid, string avatar)
+        {
+            var dirPath = context.Server.MapPath(string.Format("../../File/{0}/image/", uid));
+            if (!Directory.Exists(dirPath))
+            {
+                Directory.CreateDirectory(dirPath);
+            }
+            Utility.Base64StringToImage(avatar, dirPath + "head");
+            avatar = Utility._domainurl + "/File/" + uid + "/image/head.jpg";
+            return avatar;
+        }
+        /// <summary>
         /// /图片 转为    base64编码的文本  
         /// </summary>
         /// <param name="Imagefilename"></param>
@@ -399,7 +414,7 @@ namespace Backstage.Core
             string content = string.Format(message, code);
             Encoding encoding = Encoding.GetEncoding("UTF-8");
             IDictionary<string, string> parameters = new Dictionary<string, string>();
-            parameters.Add("action","send");            //固定send
+            parameters.Add("action", "send");            //固定send
             parameters.Add("userid", "12");             //企业ID
             parameters.Add("account", _msg_account);    //用户帐号
             parameters.Add("password", _msg_password);  //用户账号对应的密码

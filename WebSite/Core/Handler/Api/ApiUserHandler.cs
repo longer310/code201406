@@ -33,7 +33,7 @@ namespace Backstage.Handler
                     Login();
                     break;
                 case "thirdlogin"://第三方登录接口 7.4
-                    ThirdLogin();
+                    ThirdLogin(context);
                     break;
                 case "usercharge"://充值金额 7.5
                     UserCharge();
@@ -251,7 +251,7 @@ namespace Backstage.Handler
         #endregion
 
         #region 第三方登录 7.4
-        public void ThirdLogin()
+        public void ThirdLogin(HttpContext context)
         {
             var username = GetString("username");
             var sex = GetInt("sex");
@@ -267,8 +267,8 @@ namespace Backstage.Handler
                 userbinding = new AccountBinding();
                 user.UserName = username;
                 user.Pwd = "123456";
-                user.RoleType = RoleType.ThirdUser;
                 user.Avatar = avatar;
+                user.RoleType = RoleType.ThirdUser;
                 user.Sex = (SexType)sex;
                 user.SellerId = sellerid;
 
@@ -1019,13 +1019,14 @@ namespace Backstage.Handler
 
             if (!string.IsNullOrEmpty(avatar))
             {//保存头像
-                var dirPath = context.Server.MapPath(string.Format("../../File/{0}/image/", uid));
-                if (!Directory.Exists(dirPath))
-                {
-                    Directory.CreateDirectory(dirPath);
-                }
-                Utility.Base64StringToImage(avatar, dirPath + "head");
-                user.Avatar = Utility._domainurl + "/File/" + uid + "/image/head.jpg";
+                user.Avatar = Utility.GetAvatar(context, uid, avatar);
+                //var dirPath = context.Server.MapPath(string.Format("../../File/{0}/image/", uid));
+                //if (!Directory.Exists(dirPath))
+                //{
+                //    Directory.CreateDirectory(dirPath);
+                //}
+                //Utility.Base64StringToImage(avatar, dirPath + "head");
+                //user.Avatar = Utility._domainurl + "/File/" + uid + "/image/head.jpg";
             }
 
             user.Sex = (SexType)sex;

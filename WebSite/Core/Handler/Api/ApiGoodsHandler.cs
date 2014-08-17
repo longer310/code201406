@@ -714,6 +714,7 @@ namespace Backstage.Handler
                 var item = new ShoppingCartItem();
                 item.gid = shoppingCart.Gid;
                 item.num = shoppingCart.Num;
+                data.totalnum += item.num;
 
                 var goods = glist.FirstOrDefault(o => o.Id == shoppingCart.Gid);
                 if (goods != null)

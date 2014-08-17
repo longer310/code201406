@@ -129,7 +129,7 @@ namespace Backstage.Core.Handler
             results.Results = new List<Coupon>();
             string limitsql = limit != 0 ? " LIMIT ?start,?limit" : string.Empty;
             if (order == "") order = " order by Expiry desc ";
-            string typewhere = type != 0 ? string.Format(" and enabled={0}",type) : "";
+            string typewhere = type != 0 ? string.Format(" and enabled={0}", type) : "";
             string commandText = @"select * from coupon where sellerId = ?sellerId " + typewhere + order + limitsql;
 
             List<MySqlParameter> parameters = new List<MySqlParameter>();
@@ -330,14 +330,14 @@ namespace Backstage.Core.Handler
             	                                ?UserId, 
             	                                ?CouponId, 
             	                                ?CreateTime,
-            	                                ?Status,
+            	                                ?Status
             	                                )";
 
             List<MySqlParameter> parameters = new List<MySqlParameter>();
             parameters.Add(new MySqlParameter("?UserId", userCoupon.UserId));
             parameters.Add(new MySqlParameter("?CouponId", userCoupon.CouponId));
             parameters.Add(new MySqlParameter("?CreateTime", DateTime.Now));
-            parameters.Add(new MySqlParameter("?Status", DateTime.Now));
+            parameters.Add(new MySqlParameter("?Status", userCoupon.Status));//刚领取 未使用
 
             MySqlHelper.ExecuteNonQuery(connectionString, CommandType.Text, commandText, parameters.ToArray());
         }
@@ -399,7 +399,7 @@ namespace Backstage.Core.Handler
         internal static UserCoupon GetUserCoupon(int userId, int couponId)
         {
             var item = new UserCoupon();
-            string commandText = @"select * from usercoupon where userId = ?userId and couponId = ?couponId";
+            string commandText = @"select * from usercoupon where userId = ?userId and couponId = ?couponId;";
             List<MySqlParameter> parameters = new List<MySqlParameter>();
             parameters.Add(new MySqlParameter("?userId", userId));
             parameters.Add(new MySqlParameter("?couponId", couponId));

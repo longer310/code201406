@@ -60,30 +60,24 @@ namespace Backstage.Core.Handler
 
         private void UserCoupon()
         {
-            int cid = GetInt("couponid");
+            int couponid = GetInt("couponid");
             int userId = GetInt("uid");
-            int index = GetInt("start");
-            int size = GetInt("limit");
-            JsonTransfer jt = new JsonTransfer();
+
             try
             {
-                var coupon = CouponHelper.GetItem(cid);
+                var coupon = CouponHelper.GetItem(couponid);
                 if (coupon == null)
-                    ReturnCorrectMsg(string.Format("优惠券不存在cid:", cid));
+                    ReturnCorrectMsg(string.Format("优惠券不存在couponid:{0}", couponid));
                 var userCoupon = new UserCoupon()
                 {
-                    CouponId = cid,
+                    CouponId = couponid,
                     UserId = userId,
                     Status = 0
-                    //CreateTime = DateTime.Now
                 };
-                var old = CouponHelper.GetUserCoupon(userId, cid);
+                var old = CouponHelper.GetUserCoupon(userId, couponid);
                 if (old != null && old.Id != 0)
                 {
-                    jt.Add("status", 0);
-                    jt.Add("message", "用户已经领取过该优惠券");
-                    Response.Write(DesEncrypt(jt).ToLower());
-                    Response.End();
+                    ReturnErrorMsg("已领取过该优惠券");
                     return;
                 }
                 CouponHelper.CreateUserCoupon(userCoupon);
@@ -95,9 +89,7 @@ namespace Backstage.Core.Handler
                 throw;
             }
 
-            jt.AddSuccessParam();
-            Response.Write(DesEncrypt(jt).ToLower());
-            Response.End();
+            ReturnCorrectMsg("领取优惠券成功");
         }
 
         private void Couponcommentlist()

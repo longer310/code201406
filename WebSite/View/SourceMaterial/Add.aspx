@@ -53,8 +53,8 @@
     <!--页面js-->
     <script src="../../script//js/ue.pager.js"></script>
 
-    <script charset="utf-8" src="../../script//kindeditor/kindeditor-min.js"></script>
-    <script charset="utf-8" src="../../script//kindeditor/lang/zh_CN.js"></script>
+    <script charset="utf-8" src="../../script/kindeditor/kindeditor-min.js"></script>
+    <script charset="utf-8" src="../../script/kindeditor/lang/zh_CN.js"></script>
 
     <!--图片缩略图模版-->
     <script type="text/jquery-tmpl-x" id="j-tmpl-image-thumbnail">

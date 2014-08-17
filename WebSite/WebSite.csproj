@@ -538,6 +538,8 @@
     <Content Include="View\Active\Edit.aspx" />
     <Content Include="View\Active\List.aspx" />
     <Content Include="View\Ad\Ad.aspx" />
+    <Content Include="View\Cash\Add.aspx" />
+    <Content Include="View\Cash\List.aspx" />
     <Content Include="View\Comment\List.aspx" />
     <Content Include="View\Coupon\Add.aspx" />
     <Content Include="View\Coupon\Edit.aspx" />
@@ -570,6 +572,7 @@
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Core\CryptHelper.cs" />
+    <Compile Include="Core\Entity\ExtractMoney.cs" />
     <Compile Include="Core\Entity\MerchantType.cs" />
     <Compile Include="Core\Entity\Announcement.cs" />
     <Compile Include="Core\Entity\ChargeLog.cs" />
@@ -602,8 +605,10 @@
     <Compile Include="Core\Handler\Backstage\ActiveHandler.cs" />
     <Compile Include="Core\Handler\Backstage\CommentHandler.cs" />
     <Compile Include="Core\Handler\Backstage\CouponHandler.cs" />
+    <Compile Include="Core\Handler\Backstage\DevSystemHandler.cs" />
     <Compile Include="Core\Handler\Backstage\SourceMaterialHandler.cs" />
     <Compile Include="Core\Handler\Backstage\SystemHandler.cs" />
+    <Compile Include="Core\Handler\ExtractMoneyHelper.cs" />
     <Compile Include="Core\Handler\FileManager\FileManagerHandler.cs" />
     <Compile Include="Core\Handler\FileManager\UploadHandler.cs" />
     <Compile Include="Core\Handler\Merchant\OrdersHandler.cs" />
@@ -697,6 +702,20 @@
     </Compile>
     <Compile Include="View\Ad\Ad.aspx.designer.cs">
       <DependentUpon>Ad.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="View\Cash\Add.aspx.cs">
+      <DependentUpon>Add.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="View\Cash\Add.aspx.designer.cs">
+      <DependentUpon>Add.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="View\Cash\List.aspx.cs">
+      <DependentUpon>List.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="View\Cash\List.aspx.designer.cs">
+      <DependentUpon>List.aspx</DependentUpon>
     </Compile>
     <Compile Include="View\Comment\List.aspx.cs">
       <DependentUpon>List.aspx</DependentUpon>
@@ -907,6 +926,7 @@
     <Content Include="Handler\Backstage\SystemHandler.ashx" />
     <Content Include="Handler\Platform\AnnouncementHandler.ashx" />
     <Content Include="View\DevMaster.Master" />
+    <Content Include="Handler\Backstage\DevSystemHandler.ashx" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -1,5 +1,6 @@
 ﻿using Backstage.Core.Entity;
 using Backstage.Core.Logic;
+using Backstage.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,8 +30,74 @@ namespace Backstage.Core.Handler.Backstage
                     AddSystemMsg(); break;
                 case "getmsgs":  //获取商家推送信息
                     GetMsgs(); break;
+                case "getcashlist": //获取提现记录
+                    GetCashList(); break;
+                case "getcash": //提现
+                    GetCash(); break;
+                case "getannouncement":
+                    GetAnnouncement(); break;
                 default: break;
             }
+        }
+
+
+
+        private void GetCash()
+        {
+            var item = new ExtractMoney();
+            item.SellerId = GetInt("sellerid");
+            var seller = MerchantHelper.GetMerchant(item.SellerId);
+            //todo:减去余额
+            //if(seller)
+
+            item.Money = GetInt("money");
+            item.Bank = GetString("bank");
+            item.CardNumber = GetLong("cardnumber");
+            item.AccountName = GetString("accountname");
+            item.CreateTime = DateTime.Now;
+
+            ExtractMoneyHelper.Create(item);
+
+
+        }
+
+        private void GetCashList()
+        {
+            var sellerId = GetInt("sellerid");
+            var start = GetInt("start");
+            var limit = GetInt("limit");
+
+            var result = ExtractMoneyHelper.GetPagings(sellerId, start * limit, limit);
+            var data = new PagResults<object>();
+            data.TotalCount = result.TotalCount;
+            foreach (var item in result.Results.OrderByDescending(o => o.CreateTime))
+            {
+                var d = new
+                {
+                    Id = item.Id,
+                    CreateTime = item.CreateTime.ToString("yyyy-MM-dd HH:mm:ss"),
+                    Money = item.Money,
+                    Balance = item.Balance,
+                    Bank = item.Bank,
+                    CardNumber = item.CardNumber,
+                    SellerId = item.SellerId
+                };
+                data.Results.Add(d);
+            }
+
+            JsonTransfer jt = new JsonTransfer();
+            jt.Add("data", data);
+            Response.Write(DesEncrypt(jt));
+            Response.End();
+        }
+
+        private void GetAnnouncement()
+        {
+            var data = AnnouncementHelper.GetList();
+            JsonTransfer jt = new JsonTransfer();
+            jt.Add("data", data);
+            Response.Write(DesEncrypt(jt));
+            Response.End();
         }
 
         private void GetRules()
@@ -78,11 +145,11 @@ namespace Backstage.Core.Handler.Backstage
             throw new NotImplementedException();
         }
 
-        
+
 
         private void GetMsgs()
         {
-            
+
 
             throw new NotImplementedException();
         }
@@ -103,5 +170,5 @@ namespace Backstage.Core.Handler.Backstage
 
     }
 
-    
+
 }

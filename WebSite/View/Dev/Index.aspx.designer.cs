@@ -7,7 +7,7 @@
 // </自动生成>
 //------------------------------------------------------------------------------
 
-namespace Backstage.View.Dev {
+namespace WebSite.View.Dev {
     
     
     public partial class Index {

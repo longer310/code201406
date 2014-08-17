@@ -1,4 +1,5 @@
-﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="DevMaster.master.cs" Inherits="Backstage.View.DevMaster" %>
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="DevMaster.master.cs" Inherits="WebSite.View.DevMaster" %>
+
 
 <!DOCTYPE html>
 

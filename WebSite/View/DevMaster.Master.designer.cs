@@ -7,7 +7,7 @@
 // </自动生成>
 //------------------------------------------------------------------------------
 
-namespace Backstage.View {
+namespace WebSite.View {
     
     
     public partial class DevMaster {

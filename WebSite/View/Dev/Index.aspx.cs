@@ -1,14 +1,13 @@
-﻿using Backstage.Core;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
-namespace Backstage.View.Dev
+namespace WebSite.View.Dev
 {
-    public partial class Index : BasePage   
+    public partial class Index : System.Web.UI.Page
     {
         protected void Page_Load(object sender, EventArgs e)
         {

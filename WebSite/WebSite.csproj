@@ -542,6 +542,7 @@
     <Content Include="View\Coupon\Add.aspx" />
     <Content Include="View\Coupon\Edit.aspx" />
     <Content Include="View\Coupon\List.aspx" />
+    <Content Include="View\Dev\Index.aspx" />
     <Content Include="View\Goods\Item.aspx" />
     <Content Include="View\Goods\Categroy.aspx" />
     <Content Include="View\Index.aspx" />
@@ -725,6 +726,20 @@
     <Compile Include="View\Coupon\List.aspx.designer.cs">
       <DependentUpon>List.aspx</DependentUpon>
     </Compile>
+    <Compile Include="View\DevMaster.Master.cs">
+      <DependentUpon>DevMaster.Master</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="View\DevMaster.Master.designer.cs">
+      <DependentUpon>DevMaster.Master</DependentUpon>
+    </Compile>
+    <Compile Include="View\Dev\Index.aspx.cs">
+      <DependentUpon>Index.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="View\Dev\Index.aspx.designer.cs">
+      <DependentUpon>Index.aspx</DependentUpon>
+    </Compile>
     <Compile Include="View\Goods\Item.aspx.cs">
       <DependentUpon>Item.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -891,6 +906,7 @@
     <Content Include="Handler\Merchant\UserHandler.ashx" />
     <Content Include="Handler\Backstage\SystemHandler.ashx" />
     <Content Include="Handler\Platform\AnnouncementHandler.ashx" />
+    <Content Include="View\DevMaster.Master" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -1000,6 +1000,7 @@ namespace Backstage.Handler
         public void ModifyUserInfo(HttpContext context)
         {
             var avatar = GetString("avatar");
+            var username = GetString("username");
             var nickname = GetString("nickname");
             var uid = GetInt("uid");
             var sex = GetInt("sex");
@@ -1030,7 +1031,9 @@ namespace Backstage.Handler
             }
 
             user.Sex = (SexType)sex;
-            user.NickName = nickname;
+            user.UserName = username;
+            if (nickname != "")
+                user.NickName = nickname;
             AccountHelper.UpdateUser(user);
 
             //返回
@@ -1050,6 +1053,8 @@ namespace Backstage.Handler
             public int sellerid { get; set; }
             public int signin { get; set; }
             public int signintegral { get; set; }
+
+            public string nickname { get; set; }
         }
         public void GetUserInfo()
         {
@@ -1068,7 +1073,8 @@ namespace Backstage.Handler
                 return;
             }
             var data = new UserInfoData();
-            data.username = user.NickName;
+            data.username = user.UserName;
+            data.nickname = user.NickName;
             data.phone = user.Phone;
             data.avatar = user.Avatar;
             data.sex = (int)user.Sex;

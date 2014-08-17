@@ -56,7 +56,7 @@ namespace Backstage.Core
         /// <param name="size"></param>
         /// <param name="order">排序sql</param>
         /// <returns></returns>
-        public static PagResults<Comment> GetPagings(int sellerId, CommentType type, int typeId, int index, int size, string order = "")
+        public static PagResults<Comment> GetPagings(int sellerId, CommentType type, int typeId, int index, int size, string order = "order by CreateTime desc")
         {
             var results = new PagResults<Comment>();
             results.Results = new List<Comment>();

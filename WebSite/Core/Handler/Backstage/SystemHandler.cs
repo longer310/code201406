@@ -57,8 +57,6 @@ namespace Backstage.Core.Handler.Backstage
             item.CreateTime = DateTime.Now;
 
             ExtractMoneyHelper.Create(item);
-
-
         }
 
         private void GetCashList()

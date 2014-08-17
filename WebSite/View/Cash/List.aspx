@@ -44,12 +44,12 @@
         <script type="text/jquery-tmpl-x" id="j-tmpl-message-listitem">
         	{{each(i, v) list}}
 	        	<tr data-gid="1">
-					<td>2014-06-20 13:12:12</td>
-					<td>￥2222.00</td>
-					<td>￥2222.00</td>
-					<td>中国银行</td>
-					<td>6222************</td>
-					<td>处理中</td>
+					<td>${v.CreateTime}</td>
+					<td>￥${v.Money}</td>
+					<td>￥${v.Balance}</td>
+					<td>￥${v.Bank}</td>
+					<td>￥${v.CardNumber}</td>
+					<td>￥${v.Status}</td>
 				</tr>
 			{{/each}}
         </script>
@@ -106,6 +106,8 @@
                         }
                     };
 
+
+                    $.ajax()
 
                     $("#j-message-list").html($("#j-tmpl-message-listitem").tmpl(json.result));
 

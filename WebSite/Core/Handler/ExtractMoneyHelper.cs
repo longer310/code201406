@@ -34,6 +34,7 @@ namespace Backstage.Core.Handler
                         e.CreateTime = (DateTime)reader["CreateTime"];
                         e.Money = (int)reader["Money"];
                         e.AccountName = reader["AccountName"].ToString();
+                        e.Status = (int)reader["Status"];
                     }
                 }
             }
@@ -81,6 +82,8 @@ namespace Backstage.Core.Handler
                         e.CreateTime = (DateTime)reader["CreateTime"];
                         e.Money = (int)reader["Money"];
                         e.AccountName = reader["AccountName"].ToString();
+                        e.Status = (int)reader["Status"];
+
                         results.Results.Add(e);
                     }
 
@@ -109,7 +112,7 @@ namespace Backstage.Core.Handler
             }
             return results;
         }
-        public static void Create(ExtractMoney ExtractMoney)
+        public static void Create(ExtractMoney item)
         {
             string connectionString = GlobalConfig.DbConn;
             string commandText = @"INSERT INTO ExtractMoney 
@@ -120,7 +123,8 @@ namespace Backstage.Core.Handler
         	                                Balance,
         	                                Money,
         	                                CreateTime,
-        	                                AccountName
+        	                                AccountName,
+        	                                Status
         	                                )
         	                                VALUES
         	                                ( 
@@ -130,18 +134,49 @@ namespace Backstage.Core.Handler
         	                                ?Balance,
         	                                ?Money,
         	                                ?CreateTime,
-        	                                ?AccountName
+        	                                ?AccountName,
+        	                                ?Status
         	                                )";
 
             List<MySqlParameter> parameters = new List<MySqlParameter>();
-            parameters.Add(new MySqlParameter("?SellerId", ExtractMoney.SellerId));
-            parameters.Add(new MySqlParameter("?CardNumber", ExtractMoney.CardNumber));
-            parameters.Add(new MySqlParameter("?Bank", ExtractMoney.Bank));
-            parameters.Add(new MySqlParameter("?Balance", ExtractMoney.Balance));
-            parameters.Add(new MySqlParameter("?Money", ExtractMoney.Money));
-            parameters.Add(new MySqlParameter("?CreateTime", ExtractMoney.CreateTime));
-            parameters.Add(new MySqlParameter("?AccountName", ExtractMoney.AccountName));
+            parameters.Add(new MySqlParameter("?SellerId", item.SellerId));
+            parameters.Add(new MySqlParameter("?CardNumber", item.CardNumber));
+            parameters.Add(new MySqlParameter("?Bank", item.Bank));
+            parameters.Add(new MySqlParameter("?Balance", item.Balance));
+            parameters.Add(new MySqlParameter("?Money", item.Money));
+            parameters.Add(new MySqlParameter("?CreateTime", item.CreateTime));
+            parameters.Add(new MySqlParameter("?AccountName", item.AccountName));
+            parameters.Add(new MySqlParameter("?Status", item.AccountName));
+
             MySqlHelper.ExecuteNonQuery(connectionString, CommandType.Text, commandText, parameters.ToArray());
+        }
+
+        internal static void Update(ExtractMoney item)
+        {
+            string commandText = @"UPDATE ExtractMoney SET
+                                        SellerId = ?SellerId,
+                                        CardNumber = ?CardNumber,
+                                        Bank = ?Bank,
+                                        Balance = ?Balance,
+                                        Money = ?Money,
+                                        AccountName = ?AccountName,
+                                        CreateTime = ?CreateTime,
+                                        Status = ?Status
+                                    WHERE
+                                        Id = ?Id";
+
+            List<MySqlParameter> parameters = new List<MySqlParameter>();
+            parameters.Add(new MySqlParameter("?Id", item.Id));
+            parameters.Add(new MySqlParameter("?SellerId", item.SellerId));
+            parameters.Add(new MySqlParameter("?CardNumber", item.CardNumber));
+            parameters.Add(new MySqlParameter("?Bank", item.Bank));
+            parameters.Add(new MySqlParameter("?Balance", item.Balance));
+            parameters.Add(new MySqlParameter("?Money", item.Money));
+            parameters.Add(new MySqlParameter("?CreateTime", item.CreateTime));
+            parameters.Add(new MySqlParameter("?AccountName", item.AccountName));
+            parameters.Add(new MySqlParameter("?Status", item.AccountName));
+
+            MySqlHelper.ExecuteNonQuery(GlobalConfig.DbConn, CommandType.Text, commandText, parameters.ToArray());
         }
 
 

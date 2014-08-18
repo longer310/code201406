@@ -24,6 +24,7 @@ namespace WebSite.View
     {
         public string UserName { get; set; }
         public float Money { get; set; }
+
         protected void Page_Load(object sender, EventArgs e)
         {
             if (Merchant != null)

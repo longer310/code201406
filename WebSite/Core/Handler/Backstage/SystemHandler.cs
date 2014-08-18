@@ -32,17 +32,28 @@ namespace Backstage.Core.Handler.Backstage
                     GetMsgs(); break;
                 case "getcashlist": //获取提现记录
                     GetCashList(); break;
-                case "getcash": //提现
-                    GetCash(); break;
+                case "getseller":
+                    GetMerchant();break;
+                case "withdraw ": //提现
+                    Withdraw(); break;
                 case "getannouncement":
                     GetAnnouncement(); break;
                 default: break;
             }
         }
 
+        private void GetMerchant()
+        {
+            var sellerid = GetInt("sellerid");
+            var seller = MerchantHelper.GetMerchant(sellerid);
+            JsonTransfer jt = new JsonTransfer();
+            jt.Add("data", seller);
+            Response.Write(DesEncrypt(jt));
+            Response.End();
 
+        }
 
-        private void GetCash()
+        private void Withdraw()
         {
             var item = new ExtractMoney();
             item.SellerId = GetInt("sellerid");
@@ -57,6 +68,13 @@ namespace Backstage.Core.Handler.Backstage
             item.CreateTime = DateTime.Now;
 
             ExtractMoneyHelper.Create(item);
+        }
+
+
+
+        private void GetCash()
+        {
+            
         }
 
         private void GetCashList()

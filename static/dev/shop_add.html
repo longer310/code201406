@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+	<!-- container-fluid -->
+	<head>
+		<title>Unicorn Admin</title>
+		<meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <!--公用样式-->
+		<link rel="stylesheet" href="../public/css/bootstrap.min.css" />
+		<link rel="stylesheet" href="../public/css/bootstrap-responsive.min.css" />	
+		<link rel="stylesheet" href="../public/css/unicorn.main.css" />
+		<link rel="stylesheet" href="../public/css/unicorn.grey.css" />
+		<!--页面样式-->
+		<link href="../public/kindeditor/themes/default/default.css" type="text/css" rel="stylesheet">
+	</head>
+	<body>
+		<div id="header">
+			<h1><a href="./dashboard.html">APP 商户管理系统</a></h1>		
+		</div>
+		
+		<div id="hotline" class="muted">服务热线：400-800-8888</div>
+
+		<div id="user-nav" class="navbar navbar-inverse">
+			<dl class="user-info">
+				<dt class="muted">福建省宁德米克中式餐饮</dt>
+				<dd><span class="muted">用户名：</span><b class="text-error">80222222</b></dd>
+				<dd><span class="muted">可提现金额：</span><b class="text-error">￥3088.00</b></dd>
+			</dl>
+            <ul class="nav btn-group">
+                <li class="btn btn-inverse"><a title="" href="#"><i class="icon icon-share"></i> <span class="text">提现</span></a></li>
+                <li class="btn btn-inverse"><a title="" href="login.html"><i class="icon icon-off"></i> <span class="text">退出登陆</span></a></li>
+            </ul>
+        </div>
+            
+		<div id="sidebar">
+
+		</div>
+		
+		<div id="content">
+
+			<div class="widget-box" >
+				<div class="widget-title">
+					<span class="icon">
+						<i class="icon-gift"></i>
+					</span>
+					<h5>新增商户</h5>
+				</div>
+				<div class="widget-content">
+					<form action="#" method="post" class="form-horizontal" id="j-goods-addForm" />
+						<div class="widget-box" >
+							<div class="widget-content">
+								<div class="control-group">
+									<label class="control-label">商户名称</label>
+									<div class="controls">
+										<input type="text" id="j-shop-name" />
+									</div>
+								</div>
+								<div class="control-group">
+									<label class="control-label">登陆用户名</label>
+									<div class="controls">
+										<input type="text" id="j-login-name" />
+									</div>
+								</div>
+								<div class="control-group">
+									<label class="control-label">是否推荐</label>
+									<div class="controls">
+										<label class="checkbox"><input type="checkbox" id="j-isrecommend"> 推荐</label>
+									</div>
+								</div>
+
+								<div class="control-group">
+									<label class="control-label">商户logo</label>
+									<div class="controls">
+										
+										<a class="btn btn-info" href="javascript:;" id="j-btn-imageUpload"><i class="icon-folder-open icon-white"></i> 本地上传</a>
+										<a class="btn btn-success" href="javascript:;" id="j-btn-imageManager"><i class="icon-picture icon-white"></i> 素材库选择</a>
+										<span class="help-inline">上传过的图片可以直接从素材库选择</span>
+										<div class="clearfix" style="margin-top:10px;">
+											<span class="thumbnail pull-left">
+												<img src="http://placehold.it/128x128" alt="" id="j-img-placehold">
+											</span>
+										</div>
+									</div>
+								</div>
+
+								<div class="control-group">
+									<label class="control-label">商户类型</label>
+									<div class="controls">
+										<select id="j-categroy-list">
+											<option>餐饮超市分类1</option>
+											<option>餐饮超市分类2</option>
+											<option>餐饮超市分类3</option>
+											<option>餐饮超市分类4</option>
+											<option>餐饮超市分类5</option>
+										</select><span style="padding:0 20px;">所属</span><span class="text-warning">餐饮超市类</span>
+									</div>
+								</div>
+
+								<div class="control-group">
+									<label class="control-label">使用UI模版</label>
+									<div class="controls">
+										<select id="j-template-list">
+											<option>1</option>
+											<option>2</option>
+											<option>3</option>
+											<option>4</option>
+											<option>5</option>
+										</select>
+									</div>
+								</div>
+
+								<div class="control-group">
+									<label class="control-label">入驻日期</label>
+									<div class="controls">
+										<span class="static-text">2014-02-12</span>
+									</div>
+								</div>
+
+								<div class="control-group">
+									<label class="control-label">服务期至</label>
+									<div class="controls">
+										<span class="static-text">2014-02-12</span>
+										<a href="" class="btn btn-primary btn-mini"><i class="icon-plus icon-white"></i> 增加一年</a>
+									</div>
+								</div>
+
+								<div class="control-group">
+									<label class="control-label">易wifi和云打印</label>
+									<div class="controls">
+										<label class="checkbox"><input type="checkbox" id="j-is_wifi"> 是否使用【易wifi】</label>
+										<label class="checkbox"><input type="checkbox" id="j-is_print"> 是否使用【云打印】</label>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<div class="widget-box" >
+							<div class="widget-title">
+								<h5>基本资料</h5>
+							</div>
+							<div class="widget-content">
+
+								<div class="control-group">
+									<label class="control-label">联系电话</label>
+									<div class="controls">
+										<input type="text" id="j-profile-phone" />
+									</div>
+								</div>
+
+								<div class="control-group">
+									<label class="control-label">管理人联系电话</label>
+									<div class="controls">
+										<input type="text" id="j-profile-admin_phone" />
+									</div>
+								</div>
+
+								<div class="control-group">
+									<label class="control-label">联系地址</label>
+									<div class="controls">
+										<input type="text" id="j-profile-address" />
+									</div>
+								</div>
+
+					            <div class="control-group">
+									<label class="control-label">微信公众号</label>
+									<div class="controls">
+										<input type="text" id="j-profile-wechat_id" />
+									</div>
+								</div>
+
+								<div class="control-group">
+									<label class="control-label">服务QQ号</label>
+									<div class="controls">
+										<input type="text" id="j-profile-qq" />
+									</div>
+								</div>
+
+								<div class="control-group">
+									<label class="control-label">Email</label>
+									<div class="controls">
+										<input type="text" id="j-profile-email" />
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<div class="widget-box" >
+							<div class="widget-title">
+								<h5>类别名称</h5>
+							</div>
+							<div class="widget-content">
+
+								<div class="control-group">
+									<label class="control-label">活动咨询</label>
+									<div class="controls">
+										<input type="text" value="默认名称" />
+									</div>
+								</div>
+
+								<div class="control-group">
+									<label class="control-label">商品展示</label>
+									<div class="controls">
+										<input type="text" value="默认名称" />
+									</div>
+								</div>
+
+								<div class="control-group">
+									<label class="control-label">快速预约</label>
+									<div class="controls">
+										<input type="text" value="默认名称" />
+									</div>
+								</div>
+
+					            <div class="control-group">
+									<label class="control-label">图片墙</label>
+									<div class="controls">
+										<input type="text" value="默认名称" />
+									</div>
+								</div>
+
+								<div class="control-group">
+									<label class="control-label">包厢</label>
+									<div class="controls">
+										<input type="text"  value="默认名称" />
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<div class="form-actions">
+							<button type="reset" class="btn"><i class="icon-refresh"></i> 清除重置</button>
+							<button type="submit" class="btn btn-primary"><i class="icon-ok icon-white"></i> 完成保存</button>
+						</div>
+					</form>
+				</div>
+			</div>
+
+			<div id="footer">
+				<p>关于淘宝合作伙伴营销中心廉正举报联系客服开放平台诚征英才联系我们网站地图法律声明© 2003-2014 Taobao.com 版权所有</p>
+				<p>网络文化经营许可证：文网文[2010]040号|增值电信业务经营许可证：浙B2-20080224-1|信息网络传播视听节目许可证：1109364号 </p>
+			</div>
+		</div>
+		
+		<!--公用js-->
+        <script src="../public/js/jquery.min.js"></script>
+        <script src="../public/js/jquery.ui.custom.js"></script>
+        <script src="../public/js/bootstrap.min.js"></script>
+        <script src="../public/js/unicorn.js"></script>
+        <script src="../public/js/jquery.tmpl.min.js"></script>
+        <script src="../public/js/common.js"></script>
+
+        <!--页面js-->
+
+        <script charset="utf-8" src="../public/kindeditor/kindeditor-min.js"></script>
+		<script charset="utf-8" src="../public/kindeditor/lang/zh_CN.js"></script>
+
+        <!--分类下拉框模版-->
+        <script type="text/jquery-tmpl-x" id="j-tmpl-categroy-listitem">
+        	{{each(i, v) list}}
+        		<option value="${v.id}">${v.name}</option>
+        	{{/each}}
+        </script>
+
+        <script type="text/jquery-tmpl-x" id="j-tmpl-template-listitem">
+        	{{each(i, v) list}}
+        		<option value="${v.id}">${v.name}</option>
+        	{{/each}}
+        </script>
+
+        <script type="text/javascript">
+	        var Shop_SubCategory = [
+	    		{
+	    			id : 1,
+	    			name : "二级分类一"
+	    		},
+	    		{
+	    			id : 2,
+	    			name : "二级分类二"
+	    		},
+	    		{
+	    			id : 3,
+	    			name : "二级分类三"
+	    		},
+	    		{
+	    			id : 4,
+	    			name : "二级分类四"
+	    		}
+	    	];
+
+	    	var Template_List = [
+	    		{
+	    			id : 1,
+	    			name : "模版一"
+	    		},
+	    		{
+	    			id : 2,
+	    			name : "模版二"
+	    		},
+	    		{
+	    			id : 3,
+	    			name : "模版三"
+	    		},
+	    		{
+	    			id : 4,
+	    			name : "模版四"
+	    		}
+	    	];
+        </script>
+        <script type="text/javascript">
+        	var MPage = {
+        		init : function(){
+        			var mpage = this;
+
+        			var text_editor,
+        				image_editor;
+					KindEditor.ready(function(K) {
+						//文本编辑器
+						mpage.text_editor = text_editor = K.create('textarea[name="content"]', {
+							uploadJson : '../public/kindeditor/php/upload_json.php',
+							allowFileManager : true
+						});
+
+						//图片上传编辑
+						mpage.image_editor = image_editor = K.editor({
+							uploadJson : '../public/kindeditor/php/upload_json.php',
+							fileManagerJson : '../public/kindeditor/php/file_manager_json.php'
+						});
+						
+						//图片上传绑定
+						K('#j-btn-imageManager').click(function() {
+							image_editor.loadPlugin('filemanager', function() {
+								image_editor.plugin.filemanagerDialog({
+									viewType : 'VIEW',
+									dirName : 'image',
+									clickFn : function(url, title) {
+										K('#j-img-placehold').attr("src", url);
+										image_editor.hideDialog();
+									}
+								});
+							});
+						});
+
+						//从资料库选择图片
+						K('#j-btn-imageUpload').click(function() {
+							image_editor.loadPlugin('image', function() {
+								image_editor.plugin.imageDialog({
+									showRemote : false,
+									imageUrl : K('#j-img-placehold').attr("src"),
+									clickFn : function(url, title, width, height, border, align) {
+										K('#j-img-placehold').attr("src", url);
+										image_editor.hideDialog();
+									}
+								});
+							});
+						});
+					});
+
+					//提交表单
+					$("#j-goods-addForm").bind("submit", function(){
+						
+						return false;
+					});
+					
+					//重置表单
+					$("#j-goods-addForm").bind("reset", function(){
+						
+					});
+
+					mpage.showCategroyList();
+					mpage.showTemplateList();
+        		},
+
+        		showCategroyList : function (){
+    		    	var mpage = this;
+
+					$("#j-categroy-list").html( $("#j-tmpl-categroy-listitem").tmpl({
+						list : Shop_SubCategory
+					}) );
+				},
+
+				showTemplateList : function(){
+					var mpage = this;
+
+					$("#j-template-list").html( $("#j-tmpl-template-listitem").tmpl({
+						list : Template_List
+					}) );
+				}
+    		}
+
+    		$(function(){
+    			MPage.init();
+    		});
+    		
+        </script>
+	</body>
+</html>

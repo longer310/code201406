@@ -532,7 +532,6 @@
     <Content Include="Script\View\SourceMaterial\managerlist.js" />
     <Content Include="Script\View\UCenter\ManagerList.js" />
     <Content Include="Script\View\unicorn.login.js" />
-    <Content Include="Test.csproj" />
     <Content Include="Test.html" />
     <Content Include="View\Active\Add.aspx" />
     <Content Include="View\Active\Edit.aspx" />

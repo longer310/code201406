@@ -104,24 +104,24 @@
         <script src="../public/js/ue.pager.js"></script>
 
         <script type="text/javascript">
-	        var Shop_SubCategory = [
-	    		{
-	    			id : 1,
-	    			name : "二级分类一"
-	    		},
-	    		{
-	    			id : 2,
-	    			name : "二级分类二"
-	    		},
-	    		{
-	    			id : 3,
-	    			name : "二级分类三"
-	    		},
-	    		{
-	    			id : 4,
-	    			name : "二级分类四"
-	    		}
-	    	];
+	        var Shop_Category = [
+        		{
+        			id : 0,
+        			name : "所有模版"
+        		},
+        		{
+        			id : 1,
+        			name : "餐饮超市类"
+        		},
+        		{
+        			id : 2,
+        			name : "夜场类"
+        		},
+        		{
+        			id : 3,
+        			name : "企业类"
+        		}
+        	];
 
         </script>
 
@@ -153,6 +153,8 @@
         	var MPage = {
         		init : function(){
         			var mpage = this;
+
+        			mpage.showCategroyList();
 
 					mpage.getCategroyList();
 
@@ -344,9 +346,9 @@
     		    	var mpage = this;
 
 					$("#j-list").html( $("#j-tmpl-optionitem").tmpl({
-						list : Shop_SubCategory
+						list : Shop_Category
 					}) );
-				},
+				}
     		}
 
     		$(function(){

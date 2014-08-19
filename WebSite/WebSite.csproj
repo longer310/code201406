@@ -560,6 +560,7 @@
     <Content Include="View\System\VisitStat.aspx" />
     <Content Include="View\UCenter\ManagerList.aspx" />
     <Content Include="View\Goods\List.aspx" />
+    <Content Include="View\User\Edit.aspx" />
     <Content Include="View\User\User.aspx" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
@@ -872,6 +873,12 @@
     </Compile>
     <Compile Include="View\Goods\List.aspx.designer.cs">
       <DependentUpon>List.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="View\User\Edit.aspx.cs">
+      <DependentUpon>Edit.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="View\User\Edit.aspx.designer.cs">
+      <DependentUpon>Edit.aspx</DependentUpon>
     </Compile>
     <Compile Include="View\User\User.aspx.cs">
       <DependentUpon>User.aspx</DependentUpon>

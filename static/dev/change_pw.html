@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+	<!-- container-fluid -->
+	<head>
+		<title>Unicorn Admin</title>
+		<meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <!--公用样式-->
+		<link rel="stylesheet" href="../public/css/bootstrap.min.css" />
+		<link rel="stylesheet" href="../public/css/bootstrap-responsive.min.css" />	
+		<link rel="stylesheet" href="../public/css/unicorn.main.css" />
+		<link rel="stylesheet" href="../public/css/unicorn.grey.css" />
+		<!--页面样式-->
+		<link href="../public/kindeditor/themes/default/default.css" type="text/css" rel="stylesheet">
+	</head>
+	<body>
+		<!--top.html-->
+		<div id="header"></div>
+		<!--sidebar.html-->
+		<div id="sidebar"></div>
+		
+		<div id="content">
+
+			<div class="widget-box" >
+				<div class="widget-title">
+					<span class="icon">
+						<i class="icon-cog"></i>
+					</span>
+					<h5>账户设置</h5>
+				</div>
+				<div class="widget-content">
+					<ul class="nav nav-tabs">
+                        <li><a href="admin_list.html">管理员列表</a></li>
+                        <li class="active"><a href="admin_add.html">添加管理员</a></li>
+                        <li><a href="change_pw.html">密码修改</a></li>
+                    </ul>
+					<form action="#" method="get" class="form-horizontal" id="j-sysytem-login-changepassw_form" />
+						<div class="control-group">
+							<label class="control-label">登陆账号</label>
+							<div class="controls">
+								<span class="text-error">czonechan</span>
+							</div>
+						</div>
+						<div class="control-group">
+							<label class="control-label">原密码</label>
+							<div class="controls">
+								<input type="password" id="j-sysytem-login-prepassw" />
+							</div>
+						</div>
+						<div class="control-group">
+							<label class="control-label">新密码</label>
+							<div class="controls">
+								<input type="password" id="j-sysytem-login-newpassw" />
+							</div>
+						</div>
+						<div class="control-group">
+							<label class="control-label">确认密码</label>
+							<div class="controls">
+								<input type="password" id="j-sysytem-login-confirmpassw" />
+							</div>
+						</div>
+
+						<div class="form-actions">
+							<button type="reset" class="btn"><i class="icon-refresh"></i> 清除重置</button>
+							<button type="submit" class="btn btn-primary"><i class="icon-ok icon-white"></i> 完成保存</button>
+						</div>
+					</form>
+				</div>
+			</div>
+
+			<div id="footer">
+				<p>关于淘宝合作伙伴营销中心廉正举报联系客服开放平台诚征英才联系我们网站地图法律声明© 2003-2014 Taobao.com 版权所有</p>
+				<p>网络文化经营许可证：文网文[2010]040号|增值电信业务经营许可证：浙B2-20080224-1|信息网络传播视听节目许可证：1109364号 </p>
+			</div>
+		</div>
+		
+		<!--公用js-->
+        <script src="../public/js/jquery.min.js"></script>
+        <script src="../public/js/jquery.ui.custom.js"></script>
+        <script src="../public/js/bootstrap.min.js"></script>
+        <script src="../public/js/unicorn.js"></script>
+        <script src="../public/js/jquery.tmpl.min.js"></script>
+        <script src="../public/js/common.js"></script>
+
+        <!--页面js-->
+
+        <script type="text/javascript">
+        	var MPage = {
+        		init : function(){
+        			var mpage = this;
+
+					//绑定提交表单
+					$("#j-sysytem-login-changepassw_form").bind("submit", function(){
+						var save_data = {
+							prepassw : $.trim($("#j-sysytem-login-prepassw").val()),
+							newpassw : $.trim($("#j-sysytem-login-newpassw").val()),
+							confirmpassw : $.trim($("#j-sysytem-login-confirmpassw").val())
+						}
+
+						console.log(save_data);
+						alert('提交数据')
+						return false;
+					});
+
+					//绑定重置表单
+					$("#j-sysytem-login-changepassw_form").bind("reset", function(){
+						$("#j-sysytem-login-prepassw").val('');
+						$("#j-sysytem-login-newpassw").val('');
+						$("#j-sysytem-login-confirmpassw").val('');
+						return false;
+					});
+        		}
+    		}
+
+    		$(function(){
+    			MPage.init();
+    		});
+    		
+        </script>
+	</body>
+</html>

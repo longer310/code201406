@@ -160,7 +160,9 @@
 
 
 						//解析url中的id
-						var template_id = /\?id=(\d+)/.test(document.location.href);
+						/\?id=(\d+)/.test(document.location.href);
+						var template_id = RegExp.$1;
+						
 						if(template_id){
 							mpage.getImageDetail(template_id);
 						} else {

@@ -370,6 +370,17 @@
 								});
 							});
 						});
+
+						//解析url中的id
+						/\?id=(\d+)/.test(document.location.href);
+						var shop_id = RegExp.$1;
+						
+						if(shop_id){
+							//mpage.getDetail(shop_id);
+						} else {
+							alert("该商户不存在");
+							window.history.back();
+						}
 					});
 
 					//提交表单

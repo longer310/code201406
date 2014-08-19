@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+	<!-- container-fluid -->
+	<head>
+		<title>Unicorn Admin</title>
+		<meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <!--公用样式-->
+		<link rel="stylesheet" href="../public/css/bootstrap.min.css" />
+		<link rel="stylesheet" href="../public/css/bootstrap-responsive.min.css" />
+		<link rel="stylesheet" href="../public/css/unicorn.main.css" />
+		<link rel="stylesheet" href="../public/css/unicorn.grey.css" />
+		<!--页面样式-->
+		<link href="../public/kindeditor/themes/default/default.css" type="text/css" rel="stylesheet">
+		<link href="../public/css/select2.css" type="text/css" rel="stylesheet">
+	</head>
+	<body>
+		<!--top.html-->
+		<div id="header"></div>
+		<!--sidebar.html-->
+		<div id="sidebar"></div>
+		
+		<div id="content">
+			<div class="widget-box" >
+				<div class="widget-title">
+					<span class="icon">
+						<i class="icon-user"></i>
+					</span>
+					<h5>广告设置</h5>
+				</div>
+				<div class="widget-content">
+
+					<div class="widget-box" >
+						<div class="widget-title">
+							<h5>软件端广告</h5>
+						</div>
+						<div class="widget-content">
+							<form action="#" method="get" class="form-horizontal" id="j-ad-addForm" />
+								<div class="control-group">
+									<label class="control-label">广告图片</label>
+									<div class="controls">
+										
+										<a class="btn btn-info j-btn-imageUpload" href="javascript:;"><i class="icon-folder-open icon-white"></i> 本地上传</a>
+										<a class="btn btn-success j-btn-imageManager" href="javascript:;"><i class="icon-picture icon-white"></i> 素材库选择</a>
+										<span class="help-inline">上传过的图片可以直接从素材库选择</span>
+										<div class="clearfix" style="margin-top:10px;">
+											<span class="thumbnail pull-left">
+												<img src="http://placehold.it/128x128" alt="" class="j-img-placehold">
+											</span>
+										</div>
+									</div>
+								</div>
+
+								<div class="control-group">
+									<label class="control-label">跳转至</label>
+									<div class="controls">
+											<input class="j-goto" type="text" value="">
+										</div>
+									</div>
+								</div>
+
+								<div class="form-actions">
+									<button type="submit" class="btn btn-primary"><i class="icon-ok icon-white"></i> 完成保存</button>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div id="footer">
+				<p>关于淘宝合作伙伴营销中心廉正举报联系客服开放平台诚征英才联系我们网站地图法律声明© 2003-2014 Taobao.com 版权所有</p>
+				<p>网络文化经营许可证：文网文[2010]040号|增值电信业务经营许可证：浙B2-20080224-1|信息网络传播视听节目许可证：1109364号 </p>
+			</div>
+		</div>
+		
+		<!--公用js-->
+        <script src="../public/js/jquery.min.js"></script>
+        <script src="../public/js/jquery.ui.custom.js"></script>
+        <script src="../public/js/bootstrap.min.js"></script>
+        <script src="../public/js/unicorn.js"></script>
+        <script src="../public/js/jquery.tmpl.min.js"></script>
+        <script src="../public/js/common.js"></script>
+
+        <!--页面js-->
+         <script src="../public/js/ue.pager.js"></script>
+        <script charset="utf-8" src="../public/kindeditor/kindeditor-min.js"></script>
+		<script charset="utf-8" src="../public/kindeditor/lang/zh_CN.js"></script>
+
+		<script>
+			var MPage = {
+        		init : function(){
+        			var mpage = this;
+
+					mpage.initForm();
+        		},
+
+        		initForm : function(){
+        			var mpage = this;
+
+        			var ad_data = {
+						avatar : "http://placehold.it/128x128",
+						url : "http://www.baidu.com"
+					}
+					$(".j-img-placehold").attr("src", ad_data.avatar);
+					$(".j-goto").val(ad_data.url);
+					mpage.bindForm();
+        		},
+
+        		bindForm : function(){
+        			var mpage = this;
+
+        			var image_editor;
+					KindEditor.ready(function(K) {
+						
+						//图片上传编辑
+						mpage.image_editor = image_editor = K.editor({
+							uploadJson : '../public/kindeditor/php/upload_json.php',
+							fileManagerJson : '../public/kindeditor/php/file_manager_json.php'
+						});
+						
+						//图片上传绑定
+						K('.j-btn-imageManager').click(function() {
+							var $item = $(this).parents(".controls");
+
+							image_editor.loadPlugin('filemanager', function() {
+								image_editor.plugin.filemanagerDialog({
+									viewType : 'VIEW',
+									dirName : 'image',
+									clickFn : function(url, title) {
+										$item.find('.j-img-placehold').attr("src", url);
+										image_editor.hideDialog();
+									}
+								});
+							});
+						});
+
+						//从资料库选择图片
+						K('.j-btn-imageUpload').click(function() {
+							var $item = $(this).parents(".controls");
+
+							image_editor.loadPlugin('image', function() {
+								image_editor.plugin.imageDialog({
+									showRemote : false,
+									clickFn : function(url, title, width, height, border, align) {
+										$item.find('.j-img-placehold').attr("src", url);
+										image_editor.hideDialog();
+									}
+								});
+							});
+						});
+					});
+					
+
+					//绑定提交表单
+					$("#j-ad-addForm").bind("submit", function(){
+						
+						alert('提交数据');
+						return false;
+					});
+        		}
+    		}
+
+    		$(function(){
+    			MPage.init();
+    		});
+    		
+        </script>
+	</body>
+</html>

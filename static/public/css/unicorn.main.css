@@ -1285,6 +1285,12 @@ form {
 	margin-left: 200px;
 	padding: 10px 0;
 }
+.form-horizontal .static-text{
+	padding-top: 5px;
+	display: inline-block;
+	line-height: 20px;
+}
+
 .form-horizontal input[type=text], .form-horizontal input[type=password], .form-horizontal textarea {
 	width: 80%;
 }

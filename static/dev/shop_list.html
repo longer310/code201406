@@ -27,7 +27,6 @@
 					</span>
 					<h5>商户列表</h5>
 					<div class="buttons">
-						<a href="#" class="btn btn-primary btn-mini" id="j-btn-saveAll"><i class="icon-ok icon-white"></i> 保存</a>
 						<a href="#" class="btn btn-danger btn-mini" id="j-btn-delSelected"><i class="icon-remove icon-white"></i> 删除</a>
 					</div>
 				</div>
@@ -89,17 +88,10 @@
 					<td>酒吧类</td>
 					<td>56</td>
 					<td>12123</td>
-					<td style="width:250px;">
-						<div class="pull-left" style="height:45px;">
-							<label class="checkbox"><input type="checkbox" class="j-isrecommend"> 推荐</label>
-						</div>
-
-						<div class="pull-right">
-							<a class="btn btn-primary btn-mini" href="shop_edit.html?id=111"><i class="icon-pencil icon-white"></i> 查看</a>
-							<a class="btn btn-success btn-mini" href="shop_config.html?id=111"><i class="icon-cog icon-white"></i> 登陆管理</a>
-							<a href="#" class="btn btn-danger btn-mini j-btn-del"><i class="icon-remove icon-white"></i> 删除</a>
-						</div>
-					</td>
+					<td style="width:200px;">
+                        <a class="btn btn-primary btn-mini" href="shop_edit.html?id=111"><i class="icon-pencil icon-white"></i> 查看</a>
+                        <a class="btn btn-success btn-mini" href="shop_config.html?id=111"><i class="icon-cog icon-white"></i> 登陆管理</a>
+                        <a href="#" class="btn btn-danger btn-mini j-btn-del"><i class="icon-remove icon-white"></i> 删除</a>
 				</tr>
 			{{/each}}
         </script>
@@ -156,52 +148,6 @@
         					$("#j-shop-list .j-select:checkbox").removeAttr("checked");
         				}
         				
-        				return false;
-        			});
-
-
-        			//绑定批量保存
-        			$("#j-btn-saveAll").bind("click", function(){
-        				var $checked = $("#j-shop-list .j-select:checked");
-
-        				var data_save = [];
-
-        				$checked.each(function(){
-        					var $item = $(this).parents("tr");
-        					data_save.push(
-        					{
-        						id : $item.attr("data-gid"),
-        						isrecommend : $item.find(".j-isrecommend").attr("checked") ? 1 : 0
-        					});
-        				});
-
-        				console.log(data_save);
-
-        				if(data_save.length > 0){
-        					Common.confirm({
-        						title : "保存确认提示",
-        						content : "您确定要保存当前选择的所有修改吗？",
-        						confirm : function(){
-        							//执行确认回调
-        							alert('执行确认回调');
-
-        						},
-        						cancel : function(){
-        							//执行取消回调
-        							alert('执行取消回调');
-        						}
-        					});
-        				} else {
-        					Common.alert({
-        						title : "提示",
-        						content : "请至少选择一项",
-        						confirm : function(){
-        							//执行确认回调
-        							alert('执行确认回调');
-        						}
-        					});
-        				}
-
         				return false;
         			});
 					

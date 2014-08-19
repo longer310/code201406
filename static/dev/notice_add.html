@@ -31,7 +31,7 @@
 						<div class="control-group">
 							<label class="control-label">公告内容</label>
 							<div class="controls">
-								<textarea rows="10"></textarea>
+								<textarea rows="10" id="j-content"></textarea>
 							</div>
 						</div>
 
@@ -69,6 +69,9 @@
 
         			//提交表单
 					$("#j-addForm").bind("submit", function(){
+						var save_data = {
+							content : $("#j-content").val()
+						}
 						
 						return false;
 					});

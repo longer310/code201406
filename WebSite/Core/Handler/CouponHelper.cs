@@ -36,6 +36,7 @@ namespace Backstage.Core.Handler
                         c.DiscountMoney = (int)reader["DiscountMoney"];
                         c.GoodsIds = Utility.GetListint(reader["GoodsIds"].ToString());
                         c.Commentnum = (int)reader["Commentnum"];
+                        c.Views = (int)reader["Views"];
                         c.SellerId = (int)reader["SellerId"];
                         c.DownloadTimes = (int)reader["DownloadTimes"];
                         c.UsedTimes = (int)reader["UsedTimes"];
@@ -91,6 +92,7 @@ namespace Backstage.Core.Handler
                         c.DiscountMoney = (int)reader["DiscountMoney"];
                         c.GoodsIds = Utility.GetListint(reader["GoodsIds"].ToString());
                         c.Commentnum = (int)reader["Commentnum"];
+                        c.Views = (int)reader["Views"];
                         c.SellerId = (int)reader["SellerId"];
                         c.DownloadTimes = (int)reader["DownloadTimes"];
                         c.UsedTimes = (int)reader["UsedTimes"];
@@ -156,6 +158,7 @@ namespace Backstage.Core.Handler
                         c.DiscountMoney = (int)reader["DiscountMoney"];
                         c.GoodsIds = Utility.GetListint(reader["GoodsIds"].ToString());
                         c.Commentnum = (int)reader["Commentnum"];
+                        c.Views = (int)reader["Views"];
                         c.SellerId = (int)reader["SellerId"];
                         c.DownloadTimes = (int)reader["DownloadTimes"];
                         c.UsedTimes = (int)reader["UsedTimes"];
@@ -226,6 +229,7 @@ namespace Backstage.Core.Handler
                         c.DiscountMoney = (int)reader["DiscountMoney"];
                         c.GoodsIds = Utility.GetListint(reader["GoodsIds"].ToString());
                         c.Commentnum = (int)reader["Commentnum"];
+                        c.Views = (int)reader["Views"];
                         c.SellerId = (int)reader["SellerId"];
                         c.DownloadTimes = (int)reader["DownloadTimes"];
                         c.UsedTimes = (int)reader["UsedTimes"];
@@ -256,6 +260,7 @@ namespace Backstage.Core.Handler
                                         DiscountMoney = ?DiscountMoney,
                                         GoodsIds = ?GoodsIds,
                                         Commentnum = ?Commentnum,
+                                        Views = ?Views,
                                         DownloadTimes = ?DownloadTimes,
                                         UsedTimes = ?UsedTimes,
                                         Enabled = ?Enabled
@@ -275,6 +280,7 @@ namespace Backstage.Core.Handler
             parameters.Add(new MySqlParameter("?DiscountMoney", coupon.FullMoney));
             parameters.Add(new MySqlParameter("?GoodsIds", Utility.GetString(coupon.GoodsIds.ToList())));
             parameters.Add(new MySqlParameter("?Commentnum", coupon.Commentnum));
+            parameters.Add(new MySqlParameter("?Views", coupon.Views));
             parameters.Add(new MySqlParameter("?DownloadTimes", coupon.DownloadTimes));
             parameters.Add(new MySqlParameter("?UsedTimes", coupon.UsedTimes));
             parameters.Add(new MySqlParameter("?Enabled", coupon.Enabled));
@@ -357,6 +363,7 @@ namespace Backstage.Core.Handler
                                                 DiscountMoney,
             	                                GoodsIds, 
             	                                Commentnum,
+            	                                Views,
             	                                DownloadTimes,
                                                 UsedTimes,
                                                 Enabled
@@ -373,6 +380,7 @@ namespace Backstage.Core.Handler
                                                 ?DiscountMoney,
             	                                ?GoodsIds, 
             	                                ?Commentnum,
+            	                                ?Views,
             	                                ?DownloadTimes,
                                                 ?UsedTimes,
                                                 ?Enabled
@@ -389,6 +397,7 @@ namespace Backstage.Core.Handler
             parameters.Add(new MySqlParameter("?DiscountMoney", coupon.FullMoney));
             parameters.Add(new MySqlParameter("?GoodsIds", Utility.GetString(coupon.GoodsIds.ToList())));
             parameters.Add(new MySqlParameter("?Commentnum", coupon.Commentnum));
+            parameters.Add(new MySqlParameter("?Views", coupon.Views));
             parameters.Add(new MySqlParameter("?DownloadTimes", coupon.DownloadTimes));
             parameters.Add(new MySqlParameter("?UsedTimes", coupon.UsedTimes));
             parameters.Add(new MySqlParameter("?Enabled", coupon.Enabled));
@@ -468,6 +477,7 @@ namespace Backstage.Core.Handler
                         c.DiscountMoney = (int)reader["DiscountMoney"];
                         c.GoodsIds = Utility.GetListint(reader["GoodsIds"].ToString());
                         c.Commentnum = (int)reader["Commentnum"];
+                        c.Views = (int)reader["Views"];
                         c.SellerId = (int)reader["SellerId"];
                         c.Status = Convert.ToInt32(reader["Status"]);
                         c.Enabled = Convert.ToInt32(reader["Enabled"]);
@@ -539,6 +549,7 @@ namespace Backstage.Core.Handler
                         c.DiscountMoney = (int)reader["DiscountMoney"];
                         c.GoodsIds = Utility.GetListint(reader["GoodsIds"].ToString());
                         c.Commentnum = (int)reader["Commentnum"];
+                        c.Views = (int)reader["Views"];
                         c.SellerId = (int)reader["SellerId"];
                         c.Enabled = (int)reader["Enabled"];
                         results.Results.Add(c);
@@ -588,6 +599,7 @@ namespace Backstage.Core.Handler
                         c.DiscountMoney = (int)reader["DiscountMoney"];
                         c.GoodsIds = Utility.GetListint(reader["GoodsIds"].ToString());
                         c.Commentnum = (int)reader["Commentnum"];
+                        c.Views = (int)reader["Views"];
                         c.SellerId = (int)reader["SellerId"];
                     }
                 }

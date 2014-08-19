@@ -137,7 +137,9 @@ namespace Backstage.Core.Handler
                 title = item.Title,
                 img = item.CoverImgUrl,
                 summary = item.Summary,
-                dateline = item.CreateTime.GetUnixTime()
+                dateline = item.CreateTime.GetUnixTime(),
+                Views = item.Views,
+                Commentnum = item.Commentnum
             };
             item.Views++;
             ActiveHelper.Update(item);
@@ -165,7 +167,9 @@ namespace Backstage.Core.Handler
                     title = r.Title,
                     img = r.CoverImgUrl,
                     dateline = r.CreateTime.GetUnixTime(),
-                    summary = r.Summary
+                    summary = r.Summary,
+                    Views = r.Views,
+                    Commentnum = r.Commentnum
                 };
                 data.Add(d);
             }

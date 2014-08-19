@@ -200,8 +200,9 @@ namespace Backstage.Core.Handler
                 img = item.ImgUrl,
                 extcredit = item.Extcredit,
                 expiry = item.Expiry.GetUnixTime(),
-                description = item.Description
-
+                description = item.Description,
+                Views = item.Views,
+                Commentnum = item.Commentnum
             };
             JsonTransfer jt = new JsonTransfer();
             jt.AddSuccessParam();
@@ -228,7 +229,9 @@ namespace Backstage.Core.Handler
                     img = r.ImgUrl,
                     extcredit = r.Extcredit,
                     expiry = r.Expiry.GetUnixTime(),
-                    description = r.Description
+                    description = r.Description,
+                    Views = r.Views,
+                    Commentnum = r.Commentnum
                 };
                 data.Add(d);
             }

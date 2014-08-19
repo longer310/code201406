@@ -58,6 +58,11 @@ namespace Backstage.Core.Entity
         public int Commentnum { get; set; }
 
         /// <summary>
+        /// 浏览次数
+        /// </summary>
+        public int Views { get; set; }
+
+        /// <summary>
         /// 是否使用 1：可以使用 -1：已下架 不属于该表 但查找我的优惠券时需要！
         /// </summary>
         public int Enabled { get; set; }

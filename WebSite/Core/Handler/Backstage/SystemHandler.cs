@@ -33,7 +33,7 @@ namespace Backstage.Core.Handler.Backstage
                 case "getcashlist": //获取提现记录
                     GetCashList(); break;
                 case "getseller":
-                    GetMerchant();break;
+                    GetMerchant(); break;
                 case "withdraw ": //提现
                     Withdraw(); break;
                 case "getannouncement":
@@ -57,9 +57,13 @@ namespace Backstage.Core.Handler.Backstage
         {
             var item = new ExtractMoney();
             item.SellerId = GetInt("sellerid");
-            var seller = MerchantHelper.GetMerchant(item.SellerId);
-            //todo:减去余额
-            //if(seller)
+            var user = AccountHelper.GetUser(item.SellerId);
+            if (user == null)
+                throw new ArgumentNullException("user为空：" + item.SellerId);
+
+            //目前商户的用户信息分两张表存储
+            user.Money -= item.Money;
+            AccountHelper.UpdateUser(user);
 
             item.Money = GetInt("money");
             item.Bank = GetString("bank");
@@ -70,12 +74,6 @@ namespace Backstage.Core.Handler.Backstage
             ExtractMoneyHelper.Create(item);
         }
 
-
-
-        private void GetCash()
-        {
-            
-        }
 
         private void GetCashList()
         {

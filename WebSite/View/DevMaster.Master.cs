@@ -9,17 +9,29 @@ using Backstage.Core.Entity;
 
 namespace WebSite.View
 {
-    public partial class DevMaster : System.Web.UI.MasterPage
+    /// <summary>
+    /// 商户模板页
+    /// </summary>
+    public class DevMasterBasePage : System.Web.UI.MasterPage
     {
         public Account Merchant
         {
             get { return AccountHelper.GetCurUser(); }
         }
         public string DomainUrl { get { ; return Utility._domainurl; } }
+    }
+    public partial class DevMaster : DevMasterBasePage
+    {
+        public string UserName { get; set; }
+        public float Money { get; set; }
+
         protected void Page_Load(object sender, EventArgs e)
         {
-
-
+            if (Merchant != null)
+            {
+                UserName = Merchant.UserName;
+                Money = Merchant.Money;
+            }
         }
     }
 }

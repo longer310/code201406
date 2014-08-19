@@ -16,14 +16,9 @@ namespace Backstage.Core
         SuperManage = 1,
 
         /// <summary>
-        /// 一级管理员 具备转账
+        /// 一级管理员 不具备转账
         /// </summary>
         Manage = 2,
-
-        /// <summary>
-        /// 二级管理员 不具备转账
-        /// </summary>
-        SecondManage = 3,
 
         /// <summary>
         /// 商家

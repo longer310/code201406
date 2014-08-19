@@ -88,7 +88,7 @@ namespace Backstage.Handler
                 ReturnErrorMsg("用户不存在");
                 return;
             }
-            if (user.SellerId == 0 && CurrentUser.RoleType > RoleType.SecondManage)
+            if (user.SellerId == 0 && CurrentUser.RoleType > RoleType.Manage)
             {
                 ReturnErrorMsg("无权访问该商户");
                 return;

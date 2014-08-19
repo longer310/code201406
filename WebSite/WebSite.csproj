@@ -184,7 +184,6 @@
     <Content Include="Script\js\unicorn.login.js" />
     <Content Include="Script\js\unicorn.tables.js" />
     <Content Include="Script\js\unicorn.wizard.js" />
-    <Content Include="Index.aspx" />
     <Content Include="Script\jquery-bootstrap\bootstrap.min.js" />
     <Content Include="Script\jquery-bootstrap\copyright.js" />
     <Content Include="Script\jquery-bootstrap\jquery.bootstrap.min.js" />
@@ -562,11 +561,15 @@
     <Content Include="View\Goods\List.aspx" />
     <Content Include="View\User\Edit.aspx" />
     <Content Include="View\User\User.aspx" />
+    <Content Include="View\Dev\Merchant\Merlist.aspx" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Core\PlatBasePage.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
     <Compile Include="Core\BasePage.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
@@ -657,13 +660,6 @@
     <Compile Include="Core\SqlMapper.cs" />
     <Compile Include="Core\Utility.cs" />
     <Compile Include="GlobalConfig.cs" />
-    <Compile Include="Index.aspx.cs">
-      <DependentUpon>Index.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Index.aspx.designer.cs">
-      <DependentUpon>Index.aspx</DependentUpon>
-    </Compile>
     <Compile Include="Login.aspx.cs">
       <DependentUpon>Login.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -876,6 +872,7 @@
     </Compile>
     <Compile Include="View\User\Edit.aspx.cs">
       <DependentUpon>Edit.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="View\User\Edit.aspx.designer.cs">
       <DependentUpon>Edit.aspx</DependentUpon>
@@ -886,6 +883,13 @@
     </Compile>
     <Compile Include="View\User\User.aspx.designer.cs">
       <DependentUpon>User.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="View\Dev\Merchant\Merlist.aspx.cs">
+      <DependentUpon>Merlist.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="View\Dev\Merchant\Merlist.aspx.designer.cs">
+      <DependentUpon>Merlist.aspx</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>

@@ -502,7 +502,6 @@ namespace Backstage.Handler
             /// 关注微信地址
             /// </summary>
             public string wxurl { get; set; }
-
             /// <summary>
             /// 位置信息
             /// </summary>

@@ -97,5 +97,56 @@ namespace Backstage.Core.Entity
         /// </summary>
         public int NeedToFreeFreight { get; set; }
 
+        /// <summary>
+        /// 商户分类
+        /// </summary>
+        public int Mid { get; set; }
+
+        /// <summary>
+        /// 商户的用户量
+        /// </summary>
+        public int UserCount { get; set; }
+
+        /// <summary>
+        /// 服务时间
+        /// </summary>
+        public DateTime ServerEndTime { get; set; }
+
+        /// <summary>
+        /// 商户logo地址
+        /// </summary>
+        public string LogoUrl { get; set; }
+
+        /// <summary>
+        /// 是否使用易WiFi
+        /// </summary>
+        public int HasWifi { get; set; }
+
+        /// <summary>
+        /// 是否使用云打印
+        /// </summary>
+        public int HasPrint { get; set; }
+        /// <summary>
+        /// 管理员联系方式
+        /// </summary>
+        public string ManagerPhone { get; set; }
+
+        /// <summary>
+        /// 服务QQ号码
+        /// </summary>
+        public string Qq { get; set; }
+        /// <summary>
+        /// 微信公众号
+        /// </summary>
+        public string WinXinAccount { get; set; }
+        /// <summary>
+        /// 邮箱号
+        /// </summary>
+        public string Email { get; set; }
+
+        /// <summary>
+        /// 类名称列表【活动咨询、商品展示、快速预约、图片墙、包厢】
+        /// </summary>
+        public List<string> CnameList { get; set; }
     }
 }

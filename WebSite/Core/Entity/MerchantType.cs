@@ -15,7 +15,7 @@ namespace Backstage.Core.Entity
         /// </summary>
         public string Name { get; set; }
         /// <summary>
-        /// 默认分类id
+        /// 默认分类id 1：餐饮  2：夜场 3：企业
         /// </summary>
         public int TypeId { get; set; }
         /// <summary>

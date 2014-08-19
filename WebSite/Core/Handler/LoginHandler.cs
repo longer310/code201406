@@ -71,7 +71,10 @@ namespace Backstage.Handler
             {
                 //设置已登录
                 AccountHelper.SetLogOn(user.Id, true, AccountHelper.GetStringFromEntity(user), DateTime.Now.AddDays(1));
-                jt.Add("success", "登录成功");
+                if(user.RoleType == RoleType.Merchant)
+                    jt.Add("success", "1");
+                else if (user.RoleType < RoleType.Merchant)
+                    jt.Add("success", "2");
             }
             Response.Write(jt.ToJson());
         }

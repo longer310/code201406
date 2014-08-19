@@ -89,7 +89,10 @@ $(document).ready(function () {
             dataType: "json"
             //context: document.body
         }).success(function (data) {
-            window.location.href = "View/Index.aspx";
+            if (data.success == "1") //商户
+                window.location.href = "View/Index.aspx";
+            else if (data.success == "2")  //平台
+                window.location.href = "View/Dev/Index.aspx";
         });
     }
 

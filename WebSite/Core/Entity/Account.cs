@@ -101,13 +101,30 @@ namespace Backstage.Core.Entity
 
         public Account()
         {
-            if(string.IsNullOrEmpty(Avatar)) Avatar = Utility._userdefaulthead;
+            if (string.IsNullOrEmpty(Avatar)) Avatar = Utility._userdefaulthead;
             if (string.IsNullOrEmpty(Phone)) Phone = "";
             if (string.IsNullOrEmpty(Address)) Address = "";
             if (string.IsNullOrEmpty(LinkMan)) LinkMan = "";
             if (string.IsNullOrEmpty(NickName)) NickName = "";
             CreateTime = DateTime.Now;
             Discount = 10;//默认不打折
+        }
+
+        public void Concume(float price)
+        {
+            Money -= price;
+            TotalConsume += price;
+            TotalOrdersCount++;//完成付款的订单数
+
+            //添加到该商户
+            if (SellerId > 0)
+            {
+                var merchant = AccountHelper.GetUser(SellerId);
+                if (merchant != null)
+                {
+                    
+                }
+            }
         }
     }
 }

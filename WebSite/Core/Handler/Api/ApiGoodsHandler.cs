@@ -1089,7 +1089,7 @@ namespace Backstage.Handler
                         return;
                     }
                     user.Money -= orders.TotalPrice;
-                    user.TotalConsume -= orders.TotalPrice;
+                    user.TotalConsume += orders.TotalPrice;
                     user.TotalOrdersCount++;//完成付款的订单数
                 }
 

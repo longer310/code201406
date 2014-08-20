@@ -30,9 +30,9 @@ namespace Backstage.Core.Handler
                         e.SellerId = (int)reader["SellerId"];
                         e.CardNumber = (long)reader["CardNumber"];
                         e.Bank = reader["Bank"].ToString();
-                        e.Balance = (int)reader["Balance"];
+                        e.Balance = (float)reader["Balance"];
                         e.CreateTime = (DateTime)reader["CreateTime"];
-                        e.Money = (int)reader["Money"];
+                        e.Money = (float)reader["Money"];
                         e.AccountName = reader["AccountName"].ToString();
                         e.Status = (int)reader["Status"];
                     }
@@ -54,11 +54,11 @@ namespace Backstage.Core.Handler
         /// <param name="size"></param>
         /// <param name="order">排序sql</param>
         /// <returns></returns>
-        public static PagResults<ExtractMoney> GetPagings(int sellerId, int index, int size, string order = "")
+        public static PagResults<ExtractMoney> GetPagings(int sellerId, int index, int size, string order = "orderby CreateTime desc")
         {
             var results = new PagResults<ExtractMoney>();
             results.Results = new List<ExtractMoney>();
-            string commandText = @"select * from ExtractMoney where sellerId = ?sellerId LIMIT ?index,?size " + order;
+            string commandText = @"select * from ExtractMoney where sellerId = ?sellerId " + order + " LIMIT ?index,?size";
 
             List<MySqlParameter> parameters = new List<MySqlParameter>();
             parameters.Add(new MySqlParameter("?sellerId", sellerId));
@@ -78,9 +78,9 @@ namespace Backstage.Core.Handler
                         e.SellerId = (int)reader["SellerId"];
                         e.CardNumber = (long)reader["CardNumber"];
                         e.Bank = reader["Bank"].ToString();
-                        e.Balance = (int)reader["Balance"];
+                        e.Balance = (float)reader["Balance"];
                         e.CreateTime = (DateTime)reader["CreateTime"];
-                        e.Money = (int)reader["Money"];
+                        e.Money = (float)reader["Money"];
                         e.AccountName = reader["AccountName"].ToString();
                         e.Status = (int)reader["Status"];
 

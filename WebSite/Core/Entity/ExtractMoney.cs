@@ -14,12 +14,12 @@ namespace Backstage.Core.Entity
         /// <summary>
         /// 提现金额
         /// </summary>
-        public int Money { get; set; }
+        public float Money { get; set; }
 
         /// <summary>
         /// 余额
         /// </summary>
-        public int Balance { get; set; }
+        public float Balance { get; set; }
 
         /// <summary>
         /// 开户名

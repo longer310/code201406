@@ -6,112 +6,112 @@
     <link href="../../script/css/select2.css" type="text/css" rel="stylesheet" />
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="Content" runat="server">
-    <div class="widget-box" >
-				<div class="widget-title">
-					<span class="icon">
-						<i class="icon-cog"></i>
-					</span>
-					<h5>提现</h5>
-				</div>
-				<div class="widget-content">
-					<div class="widget-box" >
+    <div class="widget-box">
+        <div class="widget-title">
+            <span class="icon">
+                <i class="icon-cog"></i>
+            </span>
+            <h5>提现</h5>
+        </div>
+        <div class="widget-content">
+            <div class="widget-box">
 
-						<div class="widget-content">
-						
-							<form action="#" method="get" class="form-horizontal" id="j-activity-addForm" />
-								<div class="control-group control-group-text">
-									<label class="control-label">当前账户可提现金额</label>
-									<div class="controls">
-										￥3233.00
-									</div>
-								</div>
+                <div class="widget-content">
 
-								<div class="control-group control-group-text">
-									<label class="control-label">冻结金额</label>
-									<div class="controls">
-										￥3233.00
-									</div>
-								</div>
+                    <form action="#" method="get" class="form-horizontal" id="j-activity-addForm" />
+                    <div class="control-group control-group-text">
+                        <label class="control-label">当前账户可提现金额</label>
+                        <div class="controls">
+                            ￥3233.00
+								
+                        </div>
+                    </div>
 
-								<div class="control-group control-group-text">
-									<label class="control-label">您的签约模式</label>
-									<div class="controls text-error">
-										模式B，所有提现将扣除5%的手续费
-									</div>
-								</div>
+                    <div class="control-group control-group-text">
+                        <label class="control-label">冻结金额</label>
+                        <div class="controls">
+                            ￥3233.00
+								
+                        </div>
+                    </div>
 
-								<div class="control-group">
-									<label class="control-label">提现金额</label>
-									<div class="controls">
-										<input type="text" id="j-realname" /> 元
-									</div>
-								</div>
+                    <div class="control-group control-group-text">
+                        <label class="control-label">您的签约模式</label>
+                        <div class="controls text-error">
+                            模式B，所有提现将扣除5%的手续费
+								
+                        </div>
+                    </div>
 
-								<div class="control-group control-group-text">
-									<label class="control-label"></label>
-									<div class="controls text-error">
-										（注：体现周期为1个工作日，节假日不可到帐）
-									</div>
-								</div>
+                    <div class="control-group">
+                        <label class="control-label">提现金额</label>
+                        <div class="controls">
+                            <input type="text" id="j-realname" />
+                            元
+								
+                        </div>
+                    </div>
 
-								<div class="form-actions">
-									<button type="submit" class="btn btn-primary"><i class="icon-share-alt icon-white"></i> 确认提现</button>
-								</div>
-							</form>				
+                    <div class="control-group control-group-text">
+                        <label class="control-label"></label>
+                        <div class="controls text-error">
+                            （注：体现周期为1个工作日，节假日不可到帐）
+								
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary"><i class="icon-share-alt icon-white"></i>确认提现</button>
+                    </div>
+                    </form>				
 							
-						</div>
-					</div>
+					
+                </div>
+            </div>
 
-					<div class="widget-box" >
-						<div class="widget-title">
-							<h5>收款信息</h5>
-						</div>
-						<div class="widget-content">
-							<form action="#" method="get" class="form-horizontal" id="j-activity-addForm" />
-								<div class="control-group">
-									<label class="control-label">银行信息</label>
-									<div class="controls">
-										<select id="j-bank">
-											<option>中国银行</option>
-										</select>
-									</div>
-								</div>
+            <div class="widget-box">
+                <div class="widget-title">
+                    <h5>收款信息</h5>
+                </div>
+                <div class="widget-content">
+                    <form action="#" method="get" class="form-horizontal" id="j-activity-bank-edit" />
 
-								<div class="control-group">
-									<label class="control-label">开户行</label>
-									<div class="controls">
-										<input type="text" id="j-bank_open" />
-									</div>
-								</div>
+                    <div class="control-group">
+                        <label class="control-label">开户行</label>
+                        <div class="controls">
+                            <input type="text" id="j-bank_open" />
+                        </div>
+                    </div>
 
-								<div class="control-group">
-									<label class="control-label">银行卡号</label>
-									<div class="controls">
-										<input type="text" id="j-card" />
-									</div>
-								</div>
+                    <div class="control-group">
+                        <label class="control-label">银行卡号</label>
+                        <div class="controls">
+                            <input type="text" id="j-card" />
+                        </div>
+                    </div>
 
-								<div class="control-group">
-									<label class="control-label">开户名</label>
-									<div class="controls">
-										<input type="text" id="j-realname" />
-									</div>
-								</div>
+                    <div class="control-group">
+                        <label class="control-label">开户名</label>
+                        <div class="controls">
+                            <input type="text" id="j-realname" />
+                        </div>
+                    </div>
 
-								<div class="form-actions">
-									<button type="submit" class="btn btn-primary"><i class="icon-ok icon-white"></i> 保存</button>
-								</div>
-							</form>
-						</div>
-					</div>
-				</div>
-			</div>
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary"><i class="icon-ok icon-white"></i>保存</button>
+                    </div>
+                    </form>
+					
+                </div>
+            </div>
+        </div>
+    </div>
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="Footer" runat="server">
     <!--页面js-->
-        <script src="../../script/js/ue.pager.js"></script>
-      	
-      	<script type="text/jquery-x-tmpl" id="j-tmpl-level">
+    <script src="../../script/js/ue.pager.js"></script>
+
+    <script type="text/jquery-x-tmpl" id="j-tmpl-level">
       		{{each(i, v) list}}
 	      		<div class="control-group">
 					<div class="controls">
@@ -126,32 +126,46 @@
 			{{/each}}
       	</script>
 
-		<script>
-		    var sellerId = '<%=SellerId%>';
-		    var MPage = {
-		        init: function () {
-		            var mpage = this;
+    <script>
+        var sellerId = '<%=SellerId%>';
+        var MPage = {
+            init: function () {
+                var mpage = this;
 
 
-		            //绑定提交表单
-		            $("#j-rule_form").bind("submit", function () {
+                //绑定提交表单
+                $("#j-activity-bank-edit").bind("submit", function () {
+                    var data = {
+                        Bank: $("#j-bank_open").val(),
+                        CardNumber: $("#j-card").val(),
+                        AccountName: $("#j-realname").val()
+                    };
+                    $.ajax({
+                        url: "../../Handler/Backstage/SystemHandler.ashx?action=withdraw&sellerId=" + sellerId,
+                        type: "POST",
+                        data: data,
+                        dataType: "json"
+                    }).success(function (data) {
+                        if (data != null)
+                        {
 
+                        }
+                    });
 
-		                alert('提交数据');
-		                return false;
-		            });
+                    return false;
+                });
 
-		            mpage.initForm();
-		        },
+                mpage.initForm();
+            },
 
-		        initForm: function () {
-		            var mpage = this;
-		        }
-		    }
+            initForm: function () {
+                var mpage = this;
+            }
+        }
 
-		    $(function () {
-		        MPage.init();
-		    });
+        $(function () {
+            MPage.init();
+        });
 
         </script>
 

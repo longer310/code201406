@@ -50,13 +50,18 @@ namespace Backstage.Core.Handler.Backstage
             jt.Add("data", seller);
             Response.Write(DesEncrypt(jt));
             Response.End();
-
         }
 
         private void Withdraw()
         {
             var item = new ExtractMoney();
             item.SellerId = GetInt("sellerid");
+            item.Money = GetFloat("money");
+            item.Bank = GetString("bank");
+            item.CardNumber = GetLong("cardnumber");
+            item.AccountName = GetString("accountname");
+            item.CreateTime = DateTime.Now;
+
             var user = AccountHelper.GetUser(item.SellerId);
             if (user == null)
                 throw new ArgumentNullException("user为空：" + item.SellerId);
@@ -64,12 +69,7 @@ namespace Backstage.Core.Handler.Backstage
             //目前商户的用户信息分两张表存储
             user.Money -= item.Money;
             AccountHelper.UpdateUser(user);
-
-            item.Money = GetInt("money");
-            item.Bank = GetString("bank");
-            item.CardNumber = GetLong("cardnumber");
-            item.AccountName = GetString("accountname");
-            item.CreateTime = DateTime.Now;
+            item.Balance = user.Money;
 
             ExtractMoneyHelper.Create(item);
         }

@@ -44,7 +44,7 @@
                 <a href="<%=DomainUrl %>/View/Dev/Merchant/Merlist.aspx"><i class="icon icon-gift"></i><span>商户管理</span> <span class="label">3</span></a>
                 <ul>
                     <li class="sidebar_merlist"><a href="<%=DomainUrl %>/View/Dev/Merchant/Merlist.aspx">商户列表</a></li>
-                    <li class="sidebar_addmer"><a href="shop_add.html">新增商户</a></li>
+                    <li class="sidebar_addmer"><a href="<%=DomainUrl %>/View/Dev/Merchant/Meradd.aspx">新增商户</a></li>
                     <li class="sidebar_mertype"><a href="categroy.html">分类管理</a></li>
                 </ul>
             </li>

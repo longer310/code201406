@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/View/DevMaster.Master" AutoEventWireup="true" CodeBehind="Merlist.aspx.cs" Inherits="Backstage.View.Dev.Merchant.Merlist" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/View/DevMaster.Master" AutoEventWireup="true" CodeBehind="Meradd.aspx.cs" Inherits="Backstage.View.Dev.Merchant.Meradd" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="Header" runat="server">
     <link rel="shortcut icon" href="<%=DomainUrl %>/Css/img/favicon.ico">
@@ -61,7 +61,7 @@
 				<td>${v.UserCount}</td>
 				<td>${v.Money}</td>
 				<td style="width:200px;">
-                    <a class="btn btn-primary btn-mini" href="<%=DomainUrl %>/view/dev/merchant/meredit.aspx?id=${v.Id}"><i class="icon-pencil icon-white"></i> 查看</a>
+                    <a class="btn btn-primary btn-mini" href="shop_edit.html?id=111"><i class="icon-pencil icon-white"></i> 查看</a>
                     <a class="btn btn-success btn-mini" href="shop_config.html?id=111"><i class="icon-cog icon-white"></i> 登陆管理</a>
                     <a href="#" class="btn btn-danger btn-mini j-btn-del"><i class="icon-remove icon-white"></i> 删除</a>
 			</tr>

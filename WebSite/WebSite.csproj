@@ -543,6 +543,8 @@
     <Content Include="View\Coupon\Edit.aspx" />
     <Content Include="View\Coupon\List.aspx" />
     <Content Include="View\Dev\Index.aspx" />
+    <Content Include="View\Dev\Merchant\Meradd.aspx" />
+    <Content Include="View\Dev\Merchant\Meredit.aspx" />
     <Content Include="View\Goods\Item.aspx" />
     <Content Include="View\Goods\Categroy.aspx" />
     <Content Include="View\Index.aspx" />
@@ -753,6 +755,20 @@
     </Compile>
     <Compile Include="View\Dev\Index.aspx.designer.cs">
       <DependentUpon>Index.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="View\Dev\Merchant\Meradd.aspx.cs">
+      <DependentUpon>Meradd.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="View\Dev\Merchant\Meradd.aspx.designer.cs">
+      <DependentUpon>Meradd.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="View\Dev\Merchant\Meredit.aspx.cs">
+      <DependentUpon>Meredit.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="View\Dev\Merchant\Meredit.aspx.designer.cs">
+      <DependentUpon>Meredit.aspx</DependentUpon>
     </Compile>
     <Compile Include="View\Goods\Item.aspx.cs">
       <DependentUpon>Item.aspx</DependentUpon>

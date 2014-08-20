@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+	<!-- container-fluid -->
+	<head>
+		<title>Unicorn Admin</title>
+		<meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <!--公用样式-->
+		<link rel="stylesheet" href="../public/css/bootstrap.min.css" />
+		<link rel="stylesheet" href="../public/css/bootstrap-responsive.min.css" />
+		<link rel="stylesheet" href="../public/css/unicorn.main.css" />
+		<link rel="stylesheet" href="../public/css/unicorn.grey.css" />
+	</head>
+	<body>
+		<!--top.html-->
+		<div id="header"></div>
+		<!--sidebar.html-->
+		<div id="sidebar"></div>
+		
+		<div id="content">
+
+			<div class="widget-box" >
+				<div class="widget-title">
+					<span class="icon">
+						<i class="icon-cog"></i>
+					</span>
+					<h5>支付接口</h5>
+				</div>
+				<div class="widget-content">
+					<ul class="nav nav-tabs">
+                        <li class="active"><a href="pay_api.html">支付接口列表</a></li>
+                        <li><a href="pay_api_add.html">添加支付接口</a></li>
+                    </ul>
+
+					<div class="list-2col list-4col">
+						<ul class="list-in" id="j-list">
+						</ul>
+					</div>
+				</div>
+
+				<div class="widget-footer">
+					<div class="pagination alternate" id="j-pagination">
+						<ul class="page-main">
+							<li class="disabled"><a href="#">首页</a></li>
+							<li class="disabled"><a href="#">上一页</a></li>
+							<li class="active">
+								<a href="#">1</a>
+							</li>
+							<li><a href="#">2</a></li>
+							<li><a href="#">3</a></li>
+							<li><a href="#">4</a></li>
+							<li><a href="#">下一页</a></li>
+							<li><a href="#">末页</a></li>
+							<li class="page-info"><b class="text-info">1</b>/8页 共<b class="text-info">18</b>条记录</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+
+			<div id="footer">
+				<p>关于淘宝合作伙伴营销中心廉正举报联系客服开放平台诚征英才联系我们网站地图法律声明© 2003-2014 Taobao.com 版权所有</p>
+				<p>网络文化经营许可证：文网文[2010]040号|增值电信业务经营许可证：浙B2-20080224-1|信息网络传播视听节目许可证：1109364号 </p>
+			</div>
+		</div>
+		
+		<!--公用js-->
+        <script src="../public/js/jquery.min.js"></script>
+        <script src="../public/js/jquery.ui.custom.js"></script>
+        <script src="../public/js/bootstrap.min.js"></script>
+        <script src="../public/js/unicorn.js"></script>
+        <script src="../public/js/jquery.tmpl.min.js"></script>
+        <script src="../public/js/common.js"></script>
+        <!--页面js-->
+        <script src="../public/js/ue.pager.js"></script>
+
+        <!--活动列表模版-->
+        <script type="text/jquery-tmpl-x" id="j-tmpl-listitem">
+        	{{each(i, v) list}}
+	        	<li class="item" data-id="1">
+					<div class="item-in">
+						<h3 class="post-title" sty>支付宝</h3>
+						<div class="article-thumb">
+							<img alt="User" src="http://placehold.it/128x128" />
+						</div>
+						<div class="article-post">
+							<div class="post-action">
+								{{if v.status == 1}}
+									<a href="javascript:;" class="btn btn-danger btn-mini j-btn-status" data-status="0"><i class="icon-pause icon-white"></i> 停用</a>
+								{{else}}
+									<a href="javascript:;" class="btn btn-success btn-mini j-btn-status" data-status="1"><i class="icon-play icon-white"></i> 启用</a>
+								{{/if}}
+								
+								<a href="pay_api_edit.html?id=1" class="btn btn-primary btn-mini"><i class="icon-pencil icon-white"></i> 编辑</a>
+								<a href="javascript:;" class="btn btn-danger btn-mini j-btn-del"><i class="icon-remove icon-white"></i> 删除</a>
+							</div>
+						</div>
+					</div>
+				</li>
+			{{/each}}
+        </script>
+
+        <script type="text/javascript">
+        	var MPage = {
+        		init : function(){
+        			var mpage = this;
+
+        			mpage.getImageList(1);
+        		},
+
+    		    getImageList : function (p){
+    		    	var mpage = this;
+
+					//$.getJSON("", { p: p}， function(json){
+					
+						var json = {
+							code : 0,
+							msg : "", 
+							result : {
+								count : 59,
+								list : [
+									{
+										status : 1
+									},
+									{
+										status : 1
+									},
+									{
+										status : 0
+									},
+									{},
+									{},
+									{
+										status : 1
+									},
+									{},
+									{}
+								]
+							}
+						};
+						
+						$("#j-list").html( $("#j-tmpl-listitem").tmpl(json.result) );
+
+						ue.pager({
+							//target : $(".list_pager"),//放置分页的元素
+							pagerTarget : $("#j-pagination ul"),
+							first : '<li><a href="#">首页</a></li>',
+							firstDisabled : '<li class="disabled"><a href="#">首页</a></li>',
+							last : '<li><a href="#">末页</a></li>',
+							lastDisabled : '<li class="disabled"><a href="#">末页</a></li>',
+							prev : '<li><a href="#">上一页</a></li>',
+							prevDisabled : '<li class="disabled"><a href="#">上一页</a></li>',
+							next : '<li><a href="#">下一页</a></li>',
+							nextDisabled : '<li class="disabled"><a href="#">下一页</a></li>',
+							current : '<li class="active"><a href="#">@{page}</a></li>',
+							page : '<li><a href="#">@{page}</a></li>',
+							tip : '<li class="page-info"><b class="text-info">@{nowPage}</b>/@{pageCount}页 共<b class="text-info">@{count}</b>条记录</li>',
+							now : p,//当前页
+							maxPage : 5,//显示的最多页数
+							per : 8,//每页显示几个
+							count : json.result.count,
+							onchange : function(page){//切换页数回调函数
+								mpage.getImageList(page);
+							}
+						});
+
+						//绑定单个删除
+	        			$("#j-list .j-btn-del").bind("click", function(){
+	        				var $item = $(this).parents("li");
+	        				var id = $item.attr("data-id");
+
+	        				Common.confirm({
+        						title : "删除确认提示",
+        						content : "您确定要删除当前支付方式？",
+        						confirm : function(){
+        							//执行确认回调
+        							alert('执行确认回调');
+
+        							$item.remove();
+        						},
+        						cancel : function(){
+        							//执行取消回调
+        							alert('执行取消回调');
+        						}
+        					});
+	        				return false;
+	        			});
+
+	        			//绑定单个删除
+	        			$("#j-list .j-btn-status").bind("click", function(){
+	        				var $btn = $(this),
+	        					status = $btn.attr("data-status"),
+	        					$item = $btn.parents("li"),
+	        					id = $item.attr("data-id");
+
+	        				Common.confirm({
+        						title : "删除确认提示",
+        						content : "您确定要" + (status == 1 ? "启用" : "停用") + "该支付方式？",
+        						confirm : function(){
+        							//执行确认回调
+        							alert('执行确认回调');
+
+        							if(status == 1){
+        								$btn.removeClass("btn-success").addClass("btn-danger").attr("data-status", 0).html('<i class="icon-pause icon-white"></i> 停用');
+        							} else {
+        								$btn.removeClass("btn-danger").addClass("btn-success").attr("data-status", 1).html('<i class="icon-play icon-white"></i> 启用');
+        							}
+        						},
+        						cancel : function(){
+        							//执行取消回调
+        							alert('执行取消回调');
+        						}
+        					});
+	        				return false;
+	        			});
+					//});
+				}
+    		}
+
+    		$(function(){
+    			MPage.init();
+    		});
+        </script>
+	</body>
+</html>

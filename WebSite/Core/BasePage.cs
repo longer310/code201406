@@ -85,7 +85,10 @@ namespace Backstage.Core
             var rtn = context.Request.QueryString["rtn"];
             if (rtn == null)
             {
-                Redirect("Index.aspx");
+                if(CurrentUser.RoleType == RoleType.Merchant)
+                    Redirect("View/Index.aspx");
+                else if (CurrentUser.RoleType < RoleType.Merchant)
+                    Redirect("View/Dev/Index.aspx");
                 return;
             }
             string url = rtn.ToString();

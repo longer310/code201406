@@ -12,86 +12,10 @@
 		<link rel="stylesheet" href="../public/css/unicorn.grey.css" />
 	</head>
 	<body>
-		
-		
-		<div id="header">
-			<h1><a href="./dashboard.html">APP 商户管理系统</a></h1>		
-		</div>
-		
-		<div id="hotline" class="muted">服务热线：400-800-8888</div>
-
-		<div id="user-nav" class="navbar navbar-inverse">
-			<dl class="user-info">
-				<dt class="muted">福建省宁德米克中式餐饮</dt>
-				<dd><span class="muted">用户名：</span><b class="text-error">80222222</b></dd>
-				<dd><span class="muted">可提现金额：</span><b class="text-error">￥3088.00</b></dd>
-			</dl>
-            <ul class="nav btn-group">
-                <li class="btn btn-inverse"><a title="" href="#"><i class="icon icon-share"></i> <span class="text">提现</span></a></li>
-                <li class="btn btn-inverse"><a title="" href="login.html"><i class="icon icon-off"></i> <span class="text">退出登陆</span></a></li>
-            </ul>
-        </div>
-            
-		<div id="sidebar">
-			<ul>
-				<li><a href="index.html"><i class="icon icon-home"></i> <span>首页</span></a></li>
-				<li class="submenu">
-					<a href="#"><i class="icon icon-gift"></i> <span>活动管理</span> <span class="label">2</span></a>
-					<ul>
-						<li><a href="activity_list.html">活动列表</a></li>
-						<li><a href="activity_add.html">新增活动</a></li>
-					</ul>
-				</li>
-				<li class="submenu">
-					<a href="#"><i class="icon icon-tint"></i> <span>产品管理</span><span class="label">3</span></a>
-					<ul>
-						<li><a href="goods_list.html">产品列表</a></li>
-						<li><a href="goods_add.html">新增产品</a></li>
-						<li><a href="categroy.html">分类管理</a></li>
-					</ul>
-				</li>
-				<li><a href="order.html"><i class="icon icon-shopping-cart"></i> <span>订单管理</span></a></li>
-				<li class="submenu">
-					<a href="#"><i class="icon icon-picture"></i> <span>图片墙管理</span> <span class="label">2</span></a>
-					<ul>
-						<li><a href="image_list.html">图片墙列表</a></li>
-						<li><a href="image_add.html">新增图片墙</a></li>
-					</ul>
-				</li>
-				<li><a href="user.html"><i class="icon icon-user"></i> <span>会员管理</span></a></li>
-				<li><a href="comment.html"><i class="icon icon-comment"></i> <span>留言管理</span></a></li>
-				<li class="submenu">
-					<a href="#"><i class="icon icon-tags"></i> <span>电子券管理</span> <span class="label">2</span></a>
-					<ul>
-						<li><a href="ticket_list.html">电子券列表</a></li>
-						<li><a href="ticket_add.html">新增电子券</a></li>
-					</ul>
-				</li>
-				<li>
-					<a href="ad.html"><i class="icon icon-bullhorn"></i> <span>广告设置</span></a>
-				</li>
-				<li class="submenu active open">
-					<a href="#"><i class="icon icon-hdd"></i> <span>数据库统计</span> <span class="label">4</span></a>
-					<ul>
-						<li class="active"><a href="visit.html">访问量统计</a></li>
-						<li><a href="sale.html">销量统计</a></li>
-						<li><a href="charge.html">充值量统计</a></li>
-						<li><a href="backup.html">数据备份导出</a></li>
-					</ul>
-				</li>
-				<li class="submenu">
-					<a href="#"><i class="icon icon-cog"></i> <span>系统设置</span> <span class="label">6</span></a>
-					<ul>
-						<li><a href="change_pw.html">登录设置</a></li>
-						<li><a href="profile.html">资料设置</a></li>
-						<li><a href="message.html">推送服务</a></li>
-						<li><a href="rule.html">规则设置</a></li>
-						<li><a href="resource.html">素材库管理</a></li>
-						<li><a href="cash.html">提现管理</a></li>
-					</ul>
-				</li>
-			</ul>
-		</div>
+		<!--top.html-->
+		<div id="header"></div>
+		<!--sidebar.html-->
+		<div id="sidebar"></div>
 		
 		<div id="content">
 
@@ -100,19 +24,19 @@
 					<span class="icon">
 						<i class="icon-hdd"></i>
 					</span>
-					<h5>访问量统计</h5>
+					<h5>营业额统计</h5>
 				</div>
 				<div class="widget-content">
-					<ul class="nav nav-tabs" id="j-visit-tab">
-						<li class="active"><a href="#">日访问量</a></li>
-						<li><a href="#">月访问量</a></li>
-						<li><a href="#">季度访问量</a></li>
-						<li><a href="#">年访问量</a></li>
+					<ul class="nav nav-tabs" id="j-sale-tab">
+						<li class="active"><a href="#">日营业额</a></li>
+						<li><a href="#">月营业额</a></li>
+						<li><a href="#">季度营业额</a></li>
+						<li><a href="#">年营业额</a></li>
 					</ul>
 					<div><canvas id="canvas" height="150" width="600"></canvas></div>
 
 					<div style="text-align:center;">
-						<ul class="stat-boxes" id="j-visit-max_analysis">
+						<ul class="stat-boxes" id="j-sale-max_analysis">
 							
 						</ul>
 					</div>
@@ -121,19 +45,18 @@
 						<thead>
 							<tr>
 								<th>排名</th>
-								<th>页面类型</th>
-								<th>访问页面</th>
-								<th>访问量</th>
-								<th>平均访问时间</th>
+								<th>商户类别</th>
+								<th>商户名称</th>
+								<th>营业额</th>
+								<th>订单数量</th>
 							</tr>
 						</thead>
-						<tbody id="j-visit-list">
+						<tbody id="j-sale-list">
 						</tbody>
 					</table>
 				</div>
-
 				<div class="widget-footer">
-					<div class="pagination alternate" id="j-visit-pagination">
+					<div class="pagination alternate" id="j-sale-pagination">
                         <ul class="page-main"></ul>
 					</div>
 				</div>
@@ -158,45 +81,45 @@
         <script src="../public/js/chart.js"></script>
         <script src="../public/js/jquery.peity.min.js"></script>
 
-        <script type="text/jquery-tmpl-x" id="j-tmpl-visit-rankitem">
+        <script type="text/jquery-tmpl-x" id="j-tmpl-sale-rankitem">
         	{{each(i, v) list}}
 	        	<tr data-gid="1">
 					<td style="width:30px;">${(pagenum - 1) * perpage + i + 1}</td>
-					<td style="width:150px;">商品页面</td>
-					<td style="width:200px;">商品列表页</td>
+					<td style="width:150px;">餐饮类</td>
+					<td>宁德米克中餐</td>
 					<td>56</td>
 					<td>2.1</td>
 				</tr>
 			{{/each}}
         </script>
 
-        <script type="text/jquery-tmpl-x" id="j-tmpl-visit-max_analysis">
+        <script type="text/jquery-tmpl-x" id="j-tmpl-sale-max_analysis">
         	<li>
-				<div class="left peity_bar_uv"><span>2,4,9,7,12,10,12,2,4,9,7,12,10,12,2,4,9,7,12,10,12,2,4,9,7,12,10,12</span>+20%</div>
+				<div class="left peity_bar_all"><span>2,4,9,7,12,10,12,2,4,9,7,12,10,12,2,4,9,7,12,10,12,2,4,9,7,12,10,12</span>+20%</div>
 				<div class="right">
 					<strong>36094</strong>
-					独立访问人数（UV）
+					营业额金额
 				</div>
 			</li>
 			<li>
-				<div class="left peity_bar_pv"><span>20,15,18,14,10,9,9,9</span>0%</div>
+				<div class="left peity_bar_gn"><span>20,15,18,14,10,9,9,9</span>0%</div>
 				<div class="right">
 					<strong>1433</strong>
-					页面浏览数量（PV）
+					支付订单数
 				</div>
 			</li>
 			<li>
-				<div class="left peity_bar_pn"><span>3,5,9,7,12,20,10</span>-50%</div>
+				<div class="left peity_bar_cn"><span>3,5,9,7,12,20,10</span>-50%</div>
 				<div class="right">
 					<strong>8650</strong>
-					人均浏览页数
+					消费人数
 				</div>
 			</li>
 			<li>
-				<div class="left peity_bar_pt"><span>3,5,9,7,12,20,10</span>-50%</div>
+				<div class="left peity_bar_on"><span>3,5,9,7,12,20,10</span>-50%</div>
 				<div class="right">
 					<strong>8650</strong>
-					人均停留时间
+					有营业商户数
 				</div>
 			</li>
         </script>
@@ -206,7 +129,7 @@
         			var mpage = this;
 
 
-        			$('#j-visit-tab a').click(function (e) {
+        			$('#j-sale-tab a').click(function (e) {
         				var type = $(this).parent().index();
 						$(this).tab('show');
 						mpage.getDetail(type);
@@ -226,18 +149,7 @@
 							code : 0,
 							msg : "", 
 							result : {
-								list : [
-									{},
-									{},
-									{},
-									{},
-									{},
-									{},
-									{},
-									{},
-									{},
-									{}
-								]
+
 							}
 						};
 						
@@ -264,7 +176,8 @@
 									pointColor : "rgba(220,220,220,1)",
 									pointStrokeColor : "#fff",
 									pointHighlightFill : "#fff",
-									pointHighlightStroke : "rgba(220,220,220,1)",scaleSteps : 20,
+									pointHighlightStroke : "rgba(220,220,220,1)",
+									scaleSteps : 20,
 									data : data
 								}
 							]
@@ -277,7 +190,7 @@
 						});
 
 						//总计图表
-						$("#j-visit-max_analysis").html( $("#j-tmpl-visit-max_analysis").tmpl(json.result) );
+						$("#j-sale-max_analysis").html( $("#j-tmpl-sale-max_analysis").tmpl(json.result) );
 
 						$.fn.peity.defaults.bar = {
 							delimeter: ",",
@@ -287,18 +200,19 @@
 							width: 50
 						};
 		
-						$(".peity_bar_uv span").peity("bar", {
+						$(".peity_bar_all span").peity("bar", {
 							colour: "#459D1C"
 						});
-						$(".peity_bar_pv span").peity("bar", {
+						$(".peity_bar_gn span").peity("bar", {
 							colour: "#BA1E20"
 						});	
-						$(".peity_bar_pn span").peity("bar", {
+						$(".peity_bar_cn span").peity("bar", {
 							colour: "#090f7f"
 						});
-						$(".peity_bar_pt span").peity("bar", {
+						$(".peity_bar_on span").peity("bar", {
 							colour: "#cec82e"
 						});
+
 						
 					//});
 	        	},
@@ -326,11 +240,11 @@
 
 						json.result.pagenum = p;
 						//排行
-						$("#j-visit-list").html( $("#j-tmpl-visit-rankitem").tmpl(json.result) );
+						$("#j-sale-list").html( $("#j-tmpl-sale-rankitem").tmpl(json.result) );
 
 						ue.pager({
 							//target : $(".list_pager"),//放置分页的元素
-							pagerTarget : $("#j-visit-pagination ul"),
+							pagerTarget : $("#j-sale-pagination ul"),
 							first : '<li><a href="#">首页</a></li>',
 							firstDisabled : '<li class="disabled"><a href="#">首页</a></li>',
 							last : '<li><a href="#">末页</a></li>',

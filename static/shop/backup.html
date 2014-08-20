@@ -134,28 +134,7 @@
         		init : function(){
         			var mpage = this;
 
-        			mpage.getOrderDetail();
-        		},
-
-        		//p 页码
-        		//type tab 类型
-    		    getOrderDetail : function (){
-    		    	var mpage = this;
-
-					//$.getJSON("", { }， function(json){
-						
-						var json = {
-							code : 0,
-							msg : "", 
-							result : {
-								used : 15,
-								total : 100
-							}
-						};
-						
-						$("#j-orderDetail-status").html( $("#j-tmpl-orderDetail-status").tmpl(json.result) );
-	        		//});
-				}
+        		}
     		}
 
     		$(function(){

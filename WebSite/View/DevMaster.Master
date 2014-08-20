@@ -40,12 +40,12 @@
     <div id="sidebar">
         <ul>
             <li class="active open"><a href="index.html"><i class="icon icon-home"></i><span>首页</span></a></li>
-            <li class="submenu">
-                <a href="#"><i class="icon icon-gift"></i><span>商户管理</span> <span class="label">3</span></a>
+            <li class="submenu sidebar_merchant">
+                <a href="<%=DomainUrl %>/View/Dev/Merchant/Merlist.aspx"><i class="icon icon-gift"></i><span>商户管理</span> <span class="label">3</span></a>
                 <ul>
-                    <li><a href="shop_list.html">商户列表</a></li>
-                    <li><a href="shop_add.html">新增商户</a></li>
-                    <li><a href="categroy.html">分类管理</a></li>
+                    <li class="sidebar_merlist"><a href="<%=DomainUrl %>/View/Dev/Merchant/Merlist.aspx">商户列表</a></li>
+                    <li class="sidebar_addmer"><a href="shop_add.html">新增商户</a></li>
+                    <li class="sidebar_mertype"><a href="categroy.html">分类管理</a></li>
                 </ul>
             </li>
             <li class="submenu">

@@ -4,6 +4,7 @@ using System.Data;
 using System.Linq;
 using System.Web;
 using Backstage.Core.Entity;
+using Backstage.Model;
 using MySql.Data.MySqlClient;
 
 namespace Backstage.Core.Logic
@@ -28,28 +29,40 @@ namespace Backstage.Core.Logic
                         if (reader.Read())
                         {
                             Merchant merchant = new Merchant();
-                            merchant.Id             = reader.GetInt32(0);
-                            merchant.Tname          = reader["Tname"].ToString();
-                            merchant.Name           = reader["Name"].ToString();
-                            merchant.Address        = reader["Address"].ToString();
-                            merchant.Phone          = reader["Phone"].ToString();
-                            merchant.Description    = reader["Description"].ToString();
-                            merchant.Mapurl         = reader["Mapurl"].ToString();
-                            merchant.AppId          = reader["AppId"].ToString();
-                            merchant.AppSecret      = reader["AppSecret"].ToString();
-                            merchant.AccessToken    = reader["AccessToken"].ToString();
-                            merchant.AccessExpire   = (DateTime)reader["AccessExpire"];
-                            merchant.AndroidUrl     = reader["AndroidUrl"].ToString();
-                            merchant.IosUrl         = reader["IosUrl"].ToString();
-                            merchant.WxUrl          = reader["WxUrl"].ToString();
-                            merchant.PointX         = reader["PointX"].ToString();
-                            merchant.PointY         = reader["PointY"].ToString();
+                            merchant.Id = reader.GetInt32(0);
+                            merchant.Tname = reader["Tname"].ToString();
+                            merchant.Name = reader["Name"].ToString();
+                            merchant.Address = reader["Address"].ToString();
+                            merchant.Phone = reader["Phone"].ToString();
+                            merchant.Description = reader["Description"].ToString();
+                            merchant.Mapurl = reader["Mapurl"].ToString();
+                            merchant.AppId = reader["AppId"].ToString();
+                            merchant.AppSecret = reader["AppSecret"].ToString();
+                            merchant.AccessToken = reader["AccessToken"].ToString();
+                            merchant.AccessExpire = (DateTime)reader["AccessExpire"];
+                            merchant.AndroidUrl = reader["AndroidUrl"].ToString();
+                            merchant.IosUrl = reader["IosUrl"].ToString();
+                            merchant.WxUrl = reader["WxUrl"].ToString();
+                            merchant.PointX = reader["PointX"].ToString();
+                            merchant.PointY = reader["PointY"].ToString();
                             merchant.ReChargeIntegral = (int)reader["ReChargeIntegral"];
                             merchant.ConsumptionIntegral = (int)reader["ConsumptionIntegral"];
                             merchant.CommentIntegral = (int)reader["CommentIntegral"];
                             merchant.ShareIntegral = (int)reader["ShareIntegral"];
                             merchant.Freight = (int)reader["Freight"];
                             merchant.NeedToFreeFreight = (int)reader["NeedToFreeFreight"];
+
+                            merchant.ServerEndTime = (DateTime)reader["ServerEndTime"];
+                            merchant.Mid = (int)reader["Mid"];
+                            merchant.UserCount = (int)reader["UserCount"];
+                            merchant.Tid = (int)reader["Tid"];
+                            merchant.HasWifi = (int)reader["HasWifi"];
+                            merchant.HasPrint = (int)reader["HasPrint"];
+                            merchant.ManagerPhone = reader["ManagerPhone"].ToString();
+                            merchant.Qq = reader["Qq"].ToString();
+                            merchant.WinXinAccount = reader["WinXinAccount"].ToString();
+                            merchant.Email = reader["Email"].ToString();
+                            merchant.CnameList = Utility.GetListstring(reader["CnameList"].ToString());
 
                             return merchant;
                         }
@@ -64,7 +77,7 @@ namespace Backstage.Core.Logic
         }
 
         /// <summary>
-        /// 保存收藏
+        /// 保存商户
         /// </summary>
         /// <param name="merchant"></param>
         /// <param name="isAdd"></param>
@@ -96,26 +109,38 @@ namespace Backstage.Core.Logic
                                         CommentIntegral         = ?CommentIntegral      ,
                                         ShareIntegral           = ?ShareIntegral       ,
                                         Freight                 = ?Freight      ,
-                                        NeedToFreeFreight       = ?NeedToFreeFreight      
+                                        NeedToFreeFreight       = ?NeedToFreeFreight  ,    
+
+                                        ServerEndTime                 = ?ServerEndTime      ,
+                                        Mid                           = ?Mid                ,
+                                        UserCount                     = ?UserCount          ,
+                                        Tid                           = ?Tid                ,
+                                        HasWifi                       = ?HasWifi            ,
+                                        HasPrint                      = ?HasPrint           ,
+                                        ManagerPhone                  = ?ManagerPhone       ,
+                                        Qq                            = ?Qq                 ,
+                                        WinXinAccount                 = ?WinXinAccount      ,
+                                        Email                         = ?Email              ,
+                                        CnameList                     = ?CnameList          
 
                                     WHERE
                                         Id = ?Id";
-                parameters.Add(new MySqlParameter("?Name",merchant.Name));
-                parameters.Add(new MySqlParameter("?Tname",merchant.Tname));
-                parameters.Add(new MySqlParameter("?Address",merchant.Address));
-                parameters.Add(new MySqlParameter("?Phone",merchant.Phone));
-                parameters.Add(new MySqlParameter("?Description",merchant.Description));
-                parameters.Add(new MySqlParameter("?Mapurl",merchant.Mapurl));
-                parameters.Add(new MySqlParameter("?AppId",merchant.AppId));
-                parameters.Add(new MySqlParameter("?AppSecret",merchant.AppSecret));
-                parameters.Add(new MySqlParameter("?AccessToken",merchant.AccessToken));
-                parameters.Add(new MySqlParameter("?AccessExpire",merchant.AccessExpire));
-                parameters.Add(new MySqlParameter("?AndroidUrl",merchant.AndroidUrl));
-                parameters.Add(new MySqlParameter("?IosUrl",merchant.IosUrl));
-                parameters.Add(new MySqlParameter("?WxUrl",merchant.WxUrl));
-                parameters.Add(new MySqlParameter("?Id",merchant.Id));
-                parameters.Add(new MySqlParameter("?PointX",merchant.PointX));
-                parameters.Add(new MySqlParameter("?PointY",merchant.PointY));
+                parameters.Add(new MySqlParameter("?Name", merchant.Name));
+                parameters.Add(new MySqlParameter("?Tname", merchant.Tname));
+                parameters.Add(new MySqlParameter("?Address", merchant.Address));
+                parameters.Add(new MySqlParameter("?Phone", merchant.Phone));
+                parameters.Add(new MySqlParameter("?Description", merchant.Description));
+                parameters.Add(new MySqlParameter("?Mapurl", merchant.Mapurl));
+                parameters.Add(new MySqlParameter("?AppId", merchant.AppId));
+                parameters.Add(new MySqlParameter("?AppSecret", merchant.AppSecret));
+                parameters.Add(new MySqlParameter("?AccessToken", merchant.AccessToken));
+                parameters.Add(new MySqlParameter("?AccessExpire", merchant.AccessExpire));
+                parameters.Add(new MySqlParameter("?AndroidUrl", merchant.AndroidUrl));
+                parameters.Add(new MySqlParameter("?IosUrl", merchant.IosUrl));
+                parameters.Add(new MySqlParameter("?WxUrl", merchant.WxUrl));
+                parameters.Add(new MySqlParameter("?Id", merchant.Id));
+                parameters.Add(new MySqlParameter("?PointX", merchant.PointX));
+                parameters.Add(new MySqlParameter("?PointY", merchant.PointY));
 
                 parameters.Add(new MySqlParameter("?ReChargeIntegral", merchant.ReChargeIntegral));
                 parameters.Add(new MySqlParameter("?ConsumptionIntegral", merchant.ConsumptionIntegral));
@@ -123,6 +148,19 @@ namespace Backstage.Core.Logic
                 parameters.Add(new MySqlParameter("?ShareIntegral", merchant.ShareIntegral));
                 parameters.Add(new MySqlParameter("?Freight", merchant.Freight));
                 parameters.Add(new MySqlParameter("?NeedToFreeFreight", merchant.NeedToFreeFreight));
+
+
+                parameters.Add(new MySqlParameter("?ServerEndTime", merchant.ServerEndTime));
+                parameters.Add(new MySqlParameter("?Mid", merchant.Mid));
+                parameters.Add(new MySqlParameter("?UserCount", merchant.UserCount));
+                parameters.Add(new MySqlParameter("?Tid", merchant.Tid));
+                parameters.Add(new MySqlParameter("?HasWifi", merchant.HasWifi));
+                parameters.Add(new MySqlParameter("?HasPrint", merchant.HasPrint));
+                parameters.Add(new MySqlParameter("?ManagerPhone", merchant.ManagerPhone));
+                parameters.Add(new MySqlParameter("?Qq", merchant.Qq));
+                parameters.Add(new MySqlParameter("?WinXinAccount", merchant.WinXinAccount));
+                parameters.Add(new MySqlParameter("?Email", merchant.Email));
+                parameters.Add(new MySqlParameter("?CnameList", Utility.GetString(merchant.CnameList)));
 
 
             }
@@ -169,23 +207,35 @@ namespace Backstage.Core.Logic
                                         ?CommentIntegral       ,
                                         ?ShareIntegral        ,
                                         ?Freight       ,
-                                        ?NeedToFreeFreight   
+                                        ?NeedToFreeFreight   ,
+
+                                        ?ServerEndTime        ,
+                                        ?Mid                  ,
+                                        ?UserCount            ,
+                                        ?Tid                  ,
+                                        ?HasWifi              ,
+                                        ?HasPrint             ,
+                                        ?ManagerPhone         ,
+                                        ?Qq                   ,
+                                        ?WinXinAccount        ,
+                                        ?Email                ,
+                                        ?CnameList            
                                         )";
-                parameters.Add(new MySqlParameter("?Name",merchant.Name));
-                parameters.Add(new MySqlParameter("?Tname",merchant.Tname));
-                parameters.Add(new MySqlParameter("?Address",merchant.Address));
-                parameters.Add(new MySqlParameter("?Phone",merchant.Phone));
-                parameters.Add(new MySqlParameter("?Description",merchant.Description));
-                parameters.Add(new MySqlParameter("?Mapurl",merchant.Mapurl));
-                parameters.Add(new MySqlParameter("?AppId",merchant.AppId));
-                parameters.Add(new MySqlParameter("?AppSecret",merchant.AppSecret));
-                parameters.Add(new MySqlParameter("?AccessToken",merchant.AccessToken));
-                parameters.Add(new MySqlParameter("?AccessExpire",merchant.AccessExpire));
-                parameters.Add(new MySqlParameter("?AndroidUrl",merchant.AndroidUrl));
-                parameters.Add(new MySqlParameter("?IosUrl",merchant.IosUrl));
-                parameters.Add(new MySqlParameter("?WxUrl",merchant.WxUrl));
-                parameters.Add(new MySqlParameter("?PointX",merchant.IosUrl));
-                parameters.Add(new MySqlParameter("?PonitY",merchant.WxUrl));
+                parameters.Add(new MySqlParameter("?Name", merchant.Name));
+                parameters.Add(new MySqlParameter("?Tname", merchant.Tname));
+                parameters.Add(new MySqlParameter("?Address", merchant.Address));
+                parameters.Add(new MySqlParameter("?Phone", merchant.Phone));
+                parameters.Add(new MySqlParameter("?Description", merchant.Description));
+                parameters.Add(new MySqlParameter("?Mapurl", merchant.Mapurl));
+                parameters.Add(new MySqlParameter("?AppId", merchant.AppId));
+                parameters.Add(new MySqlParameter("?AppSecret", merchant.AppSecret));
+                parameters.Add(new MySqlParameter("?AccessToken", merchant.AccessToken));
+                parameters.Add(new MySqlParameter("?AccessExpire", merchant.AccessExpire));
+                parameters.Add(new MySqlParameter("?AndroidUrl", merchant.AndroidUrl));
+                parameters.Add(new MySqlParameter("?IosUrl", merchant.IosUrl));
+                parameters.Add(new MySqlParameter("?WxUrl", merchant.WxUrl));
+                parameters.Add(new MySqlParameter("?PointX", merchant.IosUrl));
+                parameters.Add(new MySqlParameter("?PonitY", merchant.WxUrl));
 
                 parameters.Add(new MySqlParameter("?ReChargeIntegral", merchant.ReChargeIntegral));
                 parameters.Add(new MySqlParameter("?ConsumptionIntegral", merchant.ConsumptionIntegral));
@@ -193,6 +243,18 @@ namespace Backstage.Core.Logic
                 parameters.Add(new MySqlParameter("?ShareIntegral", merchant.ShareIntegral));
                 parameters.Add(new MySqlParameter("?Freight", merchant.Freight));
                 parameters.Add(new MySqlParameter("?NeedToFreeFreight", merchant.NeedToFreeFreight));
+
+                parameters.Add(new MySqlParameter("?ServerEndTime", merchant.ServerEndTime));
+                parameters.Add(new MySqlParameter("?Mid", merchant.Mid));
+                parameters.Add(new MySqlParameter("?UserCount", merchant.UserCount));
+                parameters.Add(new MySqlParameter("?Tid", merchant.Tid));
+                parameters.Add(new MySqlParameter("?HasWifi", merchant.HasWifi));
+                parameters.Add(new MySqlParameter("?HasPrint", merchant.HasPrint));
+                parameters.Add(new MySqlParameter("?ManagerPhone", merchant.ManagerPhone));
+                parameters.Add(new MySqlParameter("?Qq", merchant.Qq));
+                parameters.Add(new MySqlParameter("?WinXinAccount", merchant.WinXinAccount));
+                parameters.Add(new MySqlParameter("?Email", merchant.Email));
+                parameters.Add(new MySqlParameter("?CnameList", Utility.GetString(merchant.CnameList)));
             }
             try
             {
@@ -204,6 +266,89 @@ namespace Backstage.Core.Logic
                 throw;
             }
             return false;
+        }
+
+        /// <summary>
+        /// 获取商户信息
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public static PagResults<Merchant> GetMerchantList(int mid, int gettotal = 1)
+        {
+            var result = new PagResults<Merchant>();
+            result.Results = new List<Merchant>();
+            var wheresql = mid > 0 ? string.Format(" where mid={0}", mid) : string.Empty;
+            var cmdText = string.Format("select * from Merchant ") + wheresql;
+            try
+            {
+                using (var conn = Utility.ObtainConn(Utility._gameDbConn))
+                {
+                    MySqlDataReader reader = MySqlHelper.ExecuteReader(conn, CommandType.Text, cmdText);
+                    while (reader.Read())
+                    {
+                        Merchant merchant = new Merchant();
+                        merchant.Id = reader.GetInt32(0);
+                        merchant.Tname = reader["Tname"].ToString();
+                        merchant.Name = reader["Name"].ToString();
+                        merchant.Address = reader["Address"].ToString();
+                        merchant.Phone = reader["Phone"].ToString();
+                        merchant.Description = reader["Description"].ToString();
+                        merchant.Mapurl = reader["Mapurl"].ToString();
+                        merchant.AppId = reader["AppId"].ToString();
+                        merchant.AppSecret = reader["AppSecret"].ToString();
+                        merchant.AccessToken = reader["AccessToken"].ToString();
+                        merchant.AccessExpire = (DateTime)reader["AccessExpire"];
+                        merchant.AndroidUrl = reader["AndroidUrl"].ToString();
+                        merchant.IosUrl = reader["IosUrl"].ToString();
+                        merchant.WxUrl = reader["WxUrl"].ToString();
+                        merchant.PointX = reader["PointX"].ToString();
+                        merchant.PointY = reader["PointY"].ToString();
+                        merchant.ReChargeIntegral = (int)reader["ReChargeIntegral"];
+                        merchant.ConsumptionIntegral = (int)reader["ConsumptionIntegral"];
+                        merchant.CommentIntegral = (int)reader["CommentIntegral"];
+                        merchant.ShareIntegral = (int)reader["ShareIntegral"];
+                        merchant.Freight = (int)reader["Freight"];
+                        merchant.NeedToFreeFreight = (int)reader["NeedToFreeFreight"];
+
+                        merchant.ServerEndTime = (DateTime)reader["ServerEndTime"];
+                        merchant.Mid = (int)reader["Mid"];
+                        merchant.UserCount = (int)reader["UserCount"];
+                        merchant.Tid = (int)reader["Tid"];
+                        merchant.HasWifi = (int)reader["HasWifi"];
+                        merchant.HasPrint = (int)reader["HasPrint"];
+                        merchant.ManagerPhone = reader["ManagerPhone"].ToString();
+                        merchant.Qq = reader["Qq"].ToString();
+                        merchant.WinXinAccount = reader["WinXinAccount"].ToString();
+                        merchant.Email = reader["Email"].ToString();
+                        merchant.CnameList = Utility.GetListstring(reader["CnameList"].ToString());
+
+                        result.Results.Add(merchant);
+                    }
+
+                    if (gettotal > 0)
+                    {
+                        //一个函数有两次连接数据库 先把连接断开 然后重连
+                        conn.Close();
+                        conn.Dispose();
+                        conn.Open();
+
+                        cmdText = "select count(*) from Merchant " + wheresql;
+                        reader = MySqlHelper.ExecuteReader(conn, CommandType.Text, cmdText);
+                        if (reader.HasRows)
+                        {
+                            if (reader.Read())
+                            {
+                                result.TotalCount = reader.GetInt32(0);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (System.Exception ex)
+            {
+                throw;
+            }
+            return null;
         }
     }
 }

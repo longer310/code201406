@@ -22,5 +22,9 @@ namespace Backstage.Core.Entity
         /// 该分类下 商户的个数
         /// </summary>
         public int Count { get; set; }
+        /// <summary>
+        /// 商户id
+        /// </summary>
+        public int SellerId { get; set; }
     }
 }

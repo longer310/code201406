@@ -2,12 +2,15 @@
 using System.Collections.Generic;
 using System.EnterpriseServices;
 using System.Linq;
+using System.Runtime.InteropServices.WindowsRuntime;
+using System.Security.Permissions;
 using System.Web;
 using System.Web.Script.Serialization;
 using System.Xml.Serialization;
 using Backstage.Core;
 using Backstage.Core.Entity;
 using Backstage.Core.Logic;
+using Backstage.View.Dev.Merchant;
 using Backstage.View.User;
 
 namespace Backstage.Handler
@@ -46,6 +49,13 @@ namespace Backstage.Handler
                     AddMerchantType(); break;
                 #endregion
 
+                #region 商户
+                case "getMerchantList":
+                    GetMerchantList(); break;
+                case "saveMerchant":
+                    SaveMerchant(); break;
+                #endregion
+
                 default: break;
             }
         }
@@ -78,7 +88,7 @@ namespace Backstage.Handler
                 return;
             }
 
-            if(AnnouncementHelper.DelAnnouncementList(ids))
+            if (AnnouncementHelper.DelAnnouncementList(ids))
                 ReturnCorrectMsg("删除成功");
             else
                 ReturnErrorMsg("删除失败");
@@ -174,7 +184,7 @@ namespace Backstage.Handler
         /// </summary>
         public void GetMerchantTypeList()
         {
-            var result = MerchantTypeHelper.GetList();
+            var result = MerchantTypeHelper.GetList(CurrentUser.Id);
 
             var jt = new JsonTransfer();
             jt.Add("list", result);
@@ -220,6 +230,93 @@ namespace Backstage.Handler
                 ReturnCorrectMsg("新增成功");
             else
                 ReturnErrorMsg("新增失败");
+        }
+        #endregion
+
+        #region 商户
+        public class MerchantListData
+        {
+            public List<MerchantItem> MerList { get; set; }
+            public List<MerchantTypeItem> MerTypeList { get; set; }
+
+            public MerchantListData()
+            {
+                MerList = new List<MerchantItem>();
+                MerTypeList = new List<MerchantTypeItem>();
+            }
+        }
+        public class MerchantTypeItem
+        {
+            public int Id { get; set; }
+            public string Name { get; set; }
+        }
+        public class MerchantItem
+        {
+            public int Id { get; set; }
+            public int UserCount { get; set; }
+            public float Money { get; set; }
+            public string Cname { get; set; }
+            public DateTime ServerEndTime { get; set; }
+            public string Name { get; set; }
+            public string LogoUrl { get; set; }
+        }
+        /// <summary>
+        /// 获取商户列表
+        /// </summary>
+        public void GetMerchantList()
+        {
+            var mid = GetInt("mid");
+            var merresult = MerchantHelper.GetMerchantList(mid);
+            var mertyperesult = MerchantTypeHelper.GetList(CurrentUser.Id);
+
+            var data = new MerchantListData();
+            var idlist = merresult.Results.Select(o => o.Id).ToList();
+            var users = AccountHelper.GetUserList(Utility.GetWhereSql(idlist));
+            foreach (var merchant in merresult.Results)
+            {
+                var merchantitem = new MerchantItem();
+                merchantitem.Id = merchant.Id;
+                merchantitem.UserCount = merchant.UserCount;
+                var user = users.Results.FirstOrDefault(o => o.Id == merchant.Id);
+                if (user == null)
+                {
+                    ReturnErrorMsg("数据出错");
+                    return;
+                }
+                merchantitem.Money = user.Money;
+                var mertype = mertyperesult.FirstOrDefault(o => o.Id == merchant.Mid);
+                if (mertype == null)
+                {
+                    ReturnErrorMsg("数据出错");
+                    return;
+                }
+                merchantitem.Cname = mertype.Name;
+                merchantitem.ServerEndTime = merchant.ServerEndTime;
+                merchantitem.Name = merchant.Name;
+                merchantitem.LogoUrl = merchant.LogoUrl;
+
+                data.MerList.Add(merchantitem);
+            }
+            foreach (var merchantType in mertyperesult)
+            {
+                var merchanttype = new MerchantTypeItem();
+                merchanttype.Id = merchantType.Id;
+                merchanttype.Name = merchantType.Name;
+
+                data.MerTypeList.Add(merchanttype);
+            }
+            var jt = new JsonTransfer();
+            jt.Add("data", data);
+            Response.Write(jt.ToJson());
+            Response.End();
+        }
+
+        /// <summary>
+        /// 保存商户信息
+        /// </summary>
+        public void SaveMerchant()
+        {
+
         }
         #endregion
     }

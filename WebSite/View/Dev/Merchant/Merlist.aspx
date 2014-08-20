@@ -4,6 +4,7 @@
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="Content" runat="server">
     
+	
 	<div class="widget-box" >
 		<div class="widget-title">
 			<span class="icon">
@@ -11,7 +12,6 @@
 			</span>
 			<h5>商户列表</h5>
 			<div class="buttons">
-				<a href="#" class="btn btn-primary btn-mini" id="j-btn-saveAll"><i class="icon-ok icon-white"></i> 保存</a>
 				<a href="#" class="btn btn-danger btn-mini" id="j-btn-delSelected"><i class="icon-remove icon-white"></i> 删除</a>
 			</div>
 		</div>
@@ -60,15 +60,9 @@
 				<td>56</td>
 				<td>12123</td>
 				<td style="width:200px;">
-					<%--<div class="pull-left" style="height:45px;">
-						<label class="checkbox"><input type="checkbox" class="j-isrecommend"> 推荐</label>
-					</div>--%>
-
-					<div class="pull-right">
-						<a class="btn btn-primary btn-mini" href="shop_edit.html?id=111"><i class="icon-pencil icon-white"></i> 查看</a>
-						<a class="btn btn-success btn-mini" href="shop_config.html?id=111"><i class="icon-cog icon-white"></i> 登陆管理</a>
-					</div>
-				</td>
+                    <a class="btn btn-primary btn-mini" href="shop_edit.html?id=111"><i class="icon-pencil icon-white"></i> 查看</a>
+                    <a class="btn btn-success btn-mini" href="shop_config.html?id=111"><i class="icon-cog icon-white"></i> 登陆管理</a>
+                    <a href="#" class="btn btn-danger btn-mini j-btn-del"><i class="icon-remove icon-white"></i> 删除</a>
 			</tr>
 		{{/each}}
     </script>
@@ -99,18 +93,24 @@
 
     </script>
 
+    
     <script type="text/javascript">
         var MPage = {
-            cid: 0,//当前分类 默认是全部分类
+            mid: 0,//当前分类 默认是全部分类
             orderBy: 0,//排序类型 默认按找编号
             orderByType: 0,//升降序 默认是降序
             pageNum: 1,//当前页
+            hander: "<%=DomainUrl %>/Handler/Platform/AnnouncementHandler.ashx?action=",
 
             init: function () {
                 var mpage = this;
 
+                //去掉之前选中打开的项 选中产品列表
+                $("#sidebar li").removeClass("active open");
+                $("#sidebar .sidebar_merchant").addClass("active open").find(".sidebar_merlist").addClass("active");
+
                 mpage.showShopCategoryTab();
-                mpage.getShopList(mpage.pageNum, mpage.cid, mpage.orderBy, mpage.orderByType);
+                mpage.getShopList(mpage.pageNum, mpage.mid, mpage.orderBy, mpage.orderByType);
 
                 mpage.bind();
             },
@@ -129,32 +129,25 @@
                     return false;
                 });
 
+                //绑定批量删除
+                $("#j-btn-delSelected").bind("click", function () {
+                    var $checked = $("#j-shop-list :checked");
 
-                //绑定批量保存
-                $("#j-btn-saveAll").bind("click", function () {
-                    var $checked = $("#j-shop-list .j-select:checked");
-
-                    var data_save = [];
-
+                    var ids = [];
                     $checked.each(function () {
-                        var $item = $(this).parents("tr");
-                        data_save.push(
-        				{
-        					id: $item.attr("data-gid"),
-        					isrecommend: $item.find(".j-isrecommend").attr("checked") ? 1 : 0
-        				});
+                        ids.push($(this).parents("tr").attr("data-id"));
                     });
 
-                    console.log(data_save);
-
-                    if (data_save.length > 0) {
+                    if (ids.length > 0) {
                         Common.confirm({
-                            title: "保存确认提示",
-                            content: "您确定要保存当前选择的所有修改吗？",
+                            title: "删除确认提示",
+                            content: "您确定要删除当前选择的所有数据吗？",
                             confirm: function () {
                                 //执行确认回调
                                 alert('执行确认回调');
 
+                                //删除成功后刷新本页
+                                mpage.getShopList(mpage.pageNum, mpage.mid, mpage.orderBy, mpage.orderByType);
                             },
                             cancel: function () {
                                 //执行取消回调
@@ -185,28 +178,40 @@
                     } else {//切换排序字段，重置排序类型
                         orderByType = 0;
                     }
-                    mpage.getShopList(1, mpage.cid, orderBy, orderByType);
+                    mpage.getShopList(1, mpage.mid, orderBy, orderByType);
                 });
             },
 
             showShopCategoryTab: function () {
                 var mpage = this,
         			tmpl = '';
+                $.post(mpage.hander + "getMerchantTypeList", {  }, function (data) {
+                    if (!data.error) {
+                        $.each(data.list, function (i, v) {
+                            tmpl += '<li class="' + (v.id == mpage.mid ? 'active' : '') + '" data-id="' + v.id + '"><a href="#">' + v.name + '</a></li>';
+                        });
 
-                $.each(Shop_Category, function (i, v) {
-                    tmpl += '<li class="' + (v.id == mpage.cid ? 'active' : '') + '" data-id="' + v.id + '"><a href="#">' + v.name + '</a></li>';
-                });
+                        $("#j-shop-category-tab").html(tmpl);
 
-                $("#j-shop-category-tab").html(tmpl);
-
-                //绑定tab
-                $('#j-shop-category-tab a').bind("click", function (e) {
-                    var id = $(this).parent().attr("data-id");
-                    $(this).tab('show');
-                    mpage.cid = id;
-                    mpage.getShopList(1, id, mpage.orderBy, mpage.orderByType);
-                    return false
-                });
+                        //绑定tab
+                        $('#j-shop-category-tab a').bind("click", function (e) {
+                            var id = $(this).parent().attr("data-id");
+                            $(this).tab('show');
+                            mpage.mid = id;
+                            mpage.getShopList(1, id, mpage.orderBy, mpage.orderByType);
+                            return false
+                        });
+                    } else {
+                        Common.tip({ type: "error", content: data.error });
+                        //Common.alert({
+                        //    title: "提示",
+                        //    content: data.error,
+                        //    confirm: function () {
+                        //    }
+                        //});
+                    }
+                }, "JSON");
+                
             },
 
             showOrderBy: function () {
@@ -233,7 +238,7 @@
                 var mpage = this;
 
                 mpage.pageNum = p;
-                mpage.cid = type;
+                mpage.mid = type;
                 mpage.orderBy = orderBy;
                 mpage.orderByType = orderByType;
                 mpage.showOrderBy();
@@ -282,6 +287,27 @@
                     }
                 });
 
+                //绑定单个删除
+                $("#j-shop-list .j-btn-del").bind("click", function () {
+                    var $item = $(this).parents("tr");
+                    var id = $item.attr("data-id");
+
+                    Common.confirm({
+                        title: "删除确认提示",
+                        content: "您确定要删除当前商户？",
+                        confirm: function () {
+                            //执行确认回调
+                            alert('执行确认回调');
+
+                            $item.remove();
+                        },
+                        cancel: function () {
+                            //执行取消回调
+                            alert('执行取消回调');
+                        }
+                    });
+                    return false;
+                });
                 //});
 
             }

@@ -122,7 +122,8 @@ namespace Backstage.Core.Entity
                 var merchant = AccountHelper.GetUser(SellerId);
                 if (merchant != null)
                 {
-                    
+                    merchant.Money += price;
+                    AccountHelper.UpdateUser(merchant);
                 }
             }
         }

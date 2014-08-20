@@ -15,15 +15,17 @@ namespace Backstage.Core.Logic
         /// 获取商户类型列表
         /// </summary>
         /// <returns></returns>
-        public static List<MerchantType> GetList()
+        public static List<MerchantType> GetList(int sellerId)
         {
             var result = new List<MerchantType>();
-            var cmdText = @"select * from MerchantType;";
+            var cmdText = @"select * from MerchantType WHERE sellerid=?sellerid;";
+            List<MySqlParameter> parameters = new List<MySqlParameter>();
+            parameters.Add(new MySqlParameter("?sellerid", sellerId));
             try
             {
                 using (var conn = Utility.ObtainConn(Utility._gameDbConn))
                 {
-                    MySqlDataReader reader = MySqlHelper.ExecuteReader(conn, CommandType.Text, cmdText);
+                    MySqlDataReader reader = MySqlHelper.ExecuteReader(conn, CommandType.Text, cmdText, parameters.ToArray());
                     while (reader.Read())
                     {
                         MerchantType merchantType = new MerchantType();
@@ -70,11 +72,12 @@ namespace Backstage.Core.Logic
         /// <returns></returns>
         public static bool AddMerchantType(MerchantType merchantType)
         {
-            var cmdText = @"insert into MerchantType (Count,Name,TypeId) values(?Count,?Name,?TypeId)";
+            var cmdText = @"insert into MerchantType (Count,Name,TypeId,SellerId) values(?Count,?Name,?TypeId,?SellerId)";
             var parameters = new List<MySqlParameter>();
             parameters.Add(new MySqlParameter("?Count", merchantType.Count));
             parameters.Add(new MySqlParameter("?Name", merchantType.Name));
             parameters.Add(new MySqlParameter("?TypeId", merchantType.TypeId));
+            parameters.Add(new MySqlParameter("?SellerId", merchantType.SellerId));
             try
             {
                 return

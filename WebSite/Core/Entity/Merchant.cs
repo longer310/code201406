@@ -98,7 +98,7 @@ namespace Backstage.Core.Entity
         public int NeedToFreeFreight { get; set; }
 
         /// <summary>
-        /// 商户分类
+        /// 商户分类id
         /// </summary>
         public int Mid { get; set; }
 
@@ -106,6 +106,11 @@ namespace Backstage.Core.Entity
         /// 商户的用户量
         /// </summary>
         public int UserCount { get; set; }
+
+        /// <summary>
+        /// 商户模板id
+        /// </summary>
+        public int Tid { get; set; }
 
         /// <summary>
         /// 服务时间

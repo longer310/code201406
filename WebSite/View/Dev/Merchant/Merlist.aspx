@@ -1,64 +1,65 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/View/DevMaster.Master" AutoEventWireup="true" CodeBehind="Merlist.aspx.cs" Inherits="Backstage.View.Dev.Merchant.Merlist" %>
+
 <asp:Content ID="Content1" ContentPlaceHolderID="Header" runat="server">
     <link rel="shortcut icon" href="<%=DomainUrl %>/Css/img/favicon.ico">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="Content" runat="server">
-    
-	
-	<div class="widget-box" >
-		<div class="widget-title">
-			<span class="icon">
-				<i class="icon-gift"></i>
-			</span>
-			<h5>商户列表</h5>
-			<div class="buttons">
-				<a href="#" class="btn btn-danger btn-mini" id="j-btn-delSelected"><i class="icon-remove icon-white"></i> 删除</a>
-			</div>
-		</div>
-		<div class="widget-content">
-			<ul class="nav nav-tabs" id="j-shop-category-tab">
-						
-			</ul>
-			<table class="table table-bordered table-striped with-check">
-				<thead>
-					<tr>
-						<th><input type="checkbox" id="j-btn-selectAll" name="title-table-checkbox" /></th>
-						<th style="width:40px;"><a href="javascript:;" class="j-orderby" data-orderby="0">编号<i class="icon-arrow-down icon-green" style="display:none;"></i></a></th>
-						<th>图片</th>
-						<th>名称</th>
-						<th><a href="javascript:;" class="j-orderby" data-orderby="1">服务期<i class="icon-arrow-up icon-green" style="display:none;"></i></a></th>
-						<th>分类</th>
-						<th><a href="javascript:;" class="j-orderby" data-orderby="2">用户量<i class="icon-arrow-up icon-green" style="display:none;"></i></a></th>
-						<th><a href="javascript:;" class="j-orderby" data-orderby="3">营业额<i class="icon-arrow-up icon-green" style="display:none;"></i></a></th>
-						<th>操作</th>
-					</tr>
-				</thead>
-				<tbody id="j-shop-list">
-				</tbody>
-			</table>
-		</div>
 
-		<div class="widget-footer">
-			<div class="pagination alternate" id="j-shop-pagination">
+
+    <div class="widget-box">
+        <div class="widget-title">
+            <span class="icon">
+                <i class="icon-gift"></i>
+            </span>
+            <h5>商户列表</h5>
+            <div class="buttons">
+                <a href="#" class="btn btn-danger btn-mini" id="j-btn-delSelected"><i class="icon-remove icon-white"></i>删除</a>
+            </div>
+        </div>
+        <div class="widget-content">
+            <ul class="nav nav-tabs" id="j-shop-category-tab">
+            </ul>
+            <table class="table table-bordered table-striped with-check">
+                <thead>
+                    <tr>
+                        <th>
+                            <input type="checkbox" id="j-btn-selectAll" name="title-table-checkbox" /></th>
+                        <th style="width: 40px;"><a href="javascript:;" class="j-orderby" data-orderby="0">编号<i class="icon-arrow-down icon-green" style="display: none;"></i></a></th>
+                        <th>图片</th>
+                        <th>名称</th>
+                        <th><a href="javascript:;" class="j-orderby" data-orderby="1">服务期<i class="icon-arrow-up icon-green" style="display: none;"></i></a></th>
+                        <th>分类</th>
+                        <th><a href="javascript:;" class="j-orderby" data-orderby="2">用户量<i class="icon-arrow-up icon-green" style="display: none;"></i></a></th>
+                        <th><a href="javascript:;" class="j-orderby" data-orderby="3">营业额<i class="icon-arrow-up icon-green" style="display: none;"></i></a></th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody id="j-shop-list">
+                </tbody>
+            </table>
+        </div>
+
+        <div class="widget-footer">
+            <div class="pagination alternate" id="j-shop-pagination">
                 <ul class="page-main"></ul>
-			</div>
-		</div>
-	</div>
-    
-        <!--页面js-->
+            </div>
+        </div>
+    </div>
+
+    <!--页面js-->
     <script type="text/javascript" src="<%=DomainUrl %>/Script/js/ue.pager.js"></script>
 
     <script type="text/jquery-tmpl-x" id="j-tmpl-shop-listitem">
         {{each(i, v) list}}
 	        <tr data-gid="1">
 				<td><input type="checkbox" class="j-select" /></td>
-				<td style="width:40px;">1</td>
-				<td style="width:45px;"><img src="http://placehold.it/45x45"></td>
-				<td>宁德市米克中式餐饮</td>
-				<td>2015-01-12</td>
-				<td>酒吧类</td>
-				<td>56</td>
-				<td>12123</td>
+				<td style="width:40px;">${v.Id}</td>
+				<td style="width:45px;"><img src="${v.LogoUrl}"></td>
+				<td>${v.Name}</td>
+				<td>${v.ServerEndTime.ToDate().Format("yyyy-MM-dd hh:mm:ss")}</td>
+				<td>${v.Cname}</td>
+				<td>${v.UserCount}</td>
+				<td>${v.Money}</td>
 				<td style="width:200px;">
                     <a class="btn btn-primary btn-mini" href="shop_edit.html?id=111"><i class="icon-pencil icon-white"></i> 查看</a>
                     <a class="btn btn-success btn-mini" href="shop_config.html?id=111"><i class="icon-cog icon-white"></i> 登陆管理</a>
@@ -70,36 +71,38 @@
     <script type="text/javascript">
         var Shop_Category = [
         	{
-        		id: 0,
-        		name: "全部分类"
+        	    id: 0,
+        	    name: "全部分类"
         	},
         	{
-        		id: 1,
-        		name: "餐饮类"
+        	    id: 1,
+        	    name: "餐饮类"
         	},
         	{
-        		id: 2,
-        		name: "超市类"
+        	    id: 2,
+        	    name: "超市类"
         	},
         	{
-        		id: 3,
-        		name: "酒吧类"
+        	    id: 3,
+        	    name: "酒吧类"
         	},
         	{
-        		id: 4,
-        		name: "KTV类"
+        	    id: 4,
+        	    name: "KTV类"
         	}
         ];
 
     </script>
 
-    
+
     <script type="text/javascript">
         var MPage = {
             mid: 0,//当前分类 默认是全部分类
             orderBy: 0,//排序类型 默认按找编号
             orderByType: 0,//升降序 默认是降序
-            pageNum: 1,//当前页
+            maxpage: 5,     //最多显示的页数
+            start: 1,       //页码
+            limit: 3,       //一页条数
             hander: "<%=DomainUrl %>/Handler/Platform/AnnouncementHandler.ashx?action=",
 
             init: function () {
@@ -110,7 +113,7 @@
                 $("#sidebar .sidebar_merchant").addClass("active open").find(".sidebar_merlist").addClass("active");
 
                 mpage.showShopCategoryTab();
-                mpage.getShopList(mpage.pageNum, mpage.mid, mpage.orderBy, mpage.orderByType);
+                mpage.getShopList(mpage.start, mpage.mid, mpage.orderBy, mpage.orderByType);
 
                 mpage.bind();
             },
@@ -147,7 +150,7 @@
                                 alert('执行确认回调');
 
                                 //删除成功后刷新本页
-                                mpage.getShopList(mpage.pageNum, mpage.mid, mpage.orderBy, mpage.orderByType);
+                                mpage.getShopList(mpage.start, mpage.mid, mpage.orderBy, mpage.orderByType);
                             },
                             cancel: function () {
                                 //执行取消回调
@@ -185,10 +188,10 @@
             showShopCategoryTab: function () {
                 var mpage = this,
         			tmpl = '';
-                $.post(mpage.hander + "getMerchantTypeList", {  }, function (data) {
+                $.post(mpage.hander + "getMerchantTypeList", {}, function (data) {
                     if (!data.error) {
                         $.each(data.list, function (i, v) {
-                            tmpl += '<li class="' + (v.id == mpage.mid ? 'active' : '') + '" data-id="' + v.id + '"><a href="#">' + v.name + '</a></li>';
+                            tmpl += '<li class="' + (v.Id == mpage.mid ? 'active' : '') + '" data-id="' + v.Id + '"><a href="#">' + v.Name + '</a></li>';
                         });
 
                         $("#j-shop-category-tab").html(tmpl);
@@ -199,7 +202,7 @@
                             $(this).tab('show');
                             mpage.mid = id;
                             mpage.getShopList(1, id, mpage.orderBy, mpage.orderByType);
-                            return false
+                            return false;
                         });
                     } else {
                         Common.tip({ type: "error", content: data.error });
@@ -211,7 +214,7 @@
                         //});
                     }
                 }, "JSON");
-                
+
             },
 
             showOrderBy: function () {
@@ -237,7 +240,7 @@
             getShopList: function (p, type, orderBy, orderByType) {
                 var mpage = this;
 
-                mpage.pageNum = p;
+                mpage.start = p;
                 mpage.mid = type;
                 mpage.orderBy = orderBy;
                 mpage.orderByType = orderByType;
@@ -262,52 +265,67 @@
                     }
                 };
 
-                $("#j-shop-list").html($("#j-tmpl-shop-listitem").tmpl(json.result));
+                //$("#j-shop-list").html($("#j-tmpl-shop-listitem").tmpl(json.result));
+                $.post(mpage.hander + "getMerchantList", { mid: mpage.mid, orderby: mpage.orderBy, orderbytype: mpage.orderByType, start: mpage.start - 1, limit: mpage.limit }, function (data) {
+                    if (!data.error) {
+                        $("#j-shop-list").html($("#j-tmpl-shop-listitem").tmpl(data));
 
-                ue.pager({
-                    //target : $(".list_pager"),//放置分页的元素
-                    pagerTarget: $("#j-shop-pagination ul"),
-                    first: '<li><a href="#">首页</a></li>',
-                    firstDisabled: '<li class="disabled"><a href="#">首页</a></li>',
-                    last: '<li><a href="#">末页</a></li>',
-                    lastDisabled: '<li class="disabled"><a href="#">末页</a></li>',
-                    prev: '<li><a href="#">上一页</a></li>',
-                    prevDisabled: '<li class="disabled"><a href="#">上一页</a></li>',
-                    next: '<li><a href="#">下一页</a></li>',
-                    nextDisabled: '<li class="disabled"><a href="#">下一页</a></li>',
-                    current: '<li class="active"><a href="#">@{page}</a></li>',
-                    page: '<li><a href="#">@{page}</a></li>',
-                    tip: '<li class="page-info"><b class="text-info">@{nowPage}</b>/@{pageCount}页 共<b class="text-info">@{count}</b>条记录</li>',
-                    now: p,//当前页
-                    maxPage: 5,//显示的最多页数
-                    per: 6,//每页显示几个
-                    count: json.result.count,
-                    onchange: function (page) {//切换页数回调函数
-                        mpage.getShopList(page, type, orderBy, orderByType);
+                        ue.pager({
+                            //target : $(".list_pager"),//放置分页的元素
+                            pagerTarget: $("#j-shop-pagination ul"),
+                            first: '<li><a href="#">首页</a></li>',
+                            firstDisabled: '<li class="disabled"><a href="#">首页</a></li>',
+                            last: '<li><a href="#">末页</a></li>',
+                            lastDisabled: '<li class="disabled"><a href="#">末页</a></li>',
+                            prev: '<li><a href="#">上一页</a></li>',
+                            prevDisabled: '<li class="disabled"><a href="#">上一页</a></li>',
+                            next: '<li><a href="#">下一页</a></li>',
+                            nextDisabled: '<li class="disabled"><a href="#">下一页</a></li>',
+                            current: '<li class="active"><a href="#">@{page}</a></li>',
+                            page: '<li><a href="#">@{page}</a></li>',
+                            tip: '<li class="page-info"><b class="text-info">@{nowPage}</b>/@{pageCount}页 共<b class="text-info">@{count}</b>条记录</li>',
+                            now: p,//当前页
+                            maxPage: mpage.maxpage,//显示的最多页数
+                            per: mpage.start,//每页显示几个
+                            count: data.totalcount,
+                            onchange: function (page) {//切换页数回调函数
+                                mpage.getShopList(page, type, orderBy, orderByType);
+                            }
+                        });
+
+                        //绑定单个删除
+                        $("#j-shop-list .j-btn-del").bind("click", function () {
+                            var $item = $(this).parents("tr");
+                            var id = $item.attr("data-id");
+
+                            Common.confirm({
+                                title: "删除确认提示",
+                                content: "您确定要删除当前商户？",
+                                confirm: function () {
+                                    //执行确认回调
+                                    alert('执行确认回调');
+
+                                    $item.remove();
+                                },
+                                cancel: function () {
+                                    //执行取消回调
+                                    alert('执行取消回调');
+                                }
+                            });
+                            return false;
+                        });
+                    } else {
+                        Common.tip({ type: "error", content: data.error });
+                        //Common.alert({
+                        //    title: "提示",
+                        //    content: data.error,
+                        //    confirm: function () {
+                        //    }
+                        //});
                     }
-                });
+                }, "JSON");
 
-                //绑定单个删除
-                $("#j-shop-list .j-btn-del").bind("click", function () {
-                    var $item = $(this).parents("tr");
-                    var id = $item.attr("data-id");
 
-                    Common.confirm({
-                        title: "删除确认提示",
-                        content: "您确定要删除当前商户？",
-                        confirm: function () {
-                            //执行确认回调
-                            alert('执行确认回调');
-
-                            $item.remove();
-                        },
-                        cancel: function () {
-                            //执行取消回调
-                            alert('执行取消回调');
-                        }
-                    });
-                    return false;
-                });
                 //});
 
             }

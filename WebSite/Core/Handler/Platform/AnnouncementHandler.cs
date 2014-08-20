@@ -184,7 +184,9 @@ namespace Backstage.Handler
         /// </summary>
         public void GetMerchantTypeList()
         {
-            var result = MerchantTypeHelper.GetList(CurrentUser.Id);
+            var result = MerchantTypeHelper.GetList();
+
+            result.Insert(0, new MerchantType() { Id = 0, Name = "全部分类" });
 
             var jt = new JsonTransfer();
             jt.Add("list", result);
@@ -234,22 +236,6 @@ namespace Backstage.Handler
         #endregion
 
         #region 商户
-        public class MerchantListData
-        {
-            public List<MerchantItem> MerList { get; set; }
-            public List<MerchantTypeItem> MerTypeList { get; set; }
-
-            public MerchantListData()
-            {
-                MerList = new List<MerchantItem>();
-                MerTypeList = new List<MerchantTypeItem>();
-            }
-        }
-        public class MerchantTypeItem
-        {
-            public int Id { get; set; }
-            public string Name { get; set; }
-        }
         public class MerchantItem
         {
             public int Id { get; set; }
@@ -266,10 +252,15 @@ namespace Backstage.Handler
         public void GetMerchantList()
         {
             var mid = GetInt("mid");
-            var merresult = MerchantHelper.GetMerchantList(mid);
-            var mertyperesult = MerchantTypeHelper.GetList(CurrentUser.Id);
+            var orderby = GetInt("orderby");
+            var orderbytype = GetInt("orderbytype");
+            var start = GetInt("start");
+            var limit = GetInt("limit");
 
-            var data = new MerchantListData();
+            var merresult = MerchantHelper.GetMerchantList(mid, orderby, orderbytype, start*limit, limit);
+            var mertyperesult = MerchantTypeHelper.GetList();
+
+            var data = new List<MerchantItem>();
             var idlist = merresult.Results.Select(o => o.Id).ToList();
             var users = AccountHelper.GetUserList(Utility.GetWhereSql(idlist));
             foreach (var merchant in merresult.Results)
@@ -295,18 +286,12 @@ namespace Backstage.Handler
                 merchantitem.Name = merchant.Name;
                 merchantitem.LogoUrl = merchant.LogoUrl;
 
-                data.MerList.Add(merchantitem);
-            }
-            foreach (var merchantType in mertyperesult)
-            {
-                var merchanttype = new MerchantTypeItem();
-                merchanttype.Id = merchantType.Id;
-                merchanttype.Name = merchantType.Name;
-
-                data.MerTypeList.Add(merchanttype);
+                data.Add(merchantitem);
             }
             var jt = new JsonTransfer();
-            jt.Add("data", data);
+            jt.Add("list", data);
+            jt.Add("totalcount", merresult.TotalCount);
+
             Response.Write(jt.ToJson());
             Response.End();
         }

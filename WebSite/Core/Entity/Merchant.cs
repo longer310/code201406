@@ -153,5 +153,10 @@ namespace Backstage.Core.Entity
         /// 类名称列表【活动咨询、商品展示、快速预约、图片墙、包厢】
         /// </summary>
         public List<string> CnameList { get; set; }
+
+        /// <summary>
+        /// 总营业额
+        /// </summary>
+        public float Money { get; set; }
     }
 }

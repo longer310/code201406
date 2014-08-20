@@ -63,6 +63,7 @@ namespace Backstage.Core.Logic
                             merchant.WinXinAccount = reader["WinXinAccount"].ToString();
                             merchant.Email = reader["Email"].ToString();
                             merchant.CnameList = Utility.GetListstring(reader["CnameList"].ToString());
+                            merchant.Money = (float)reader["Money"];
 
                             return merchant;
                         }
@@ -121,6 +122,7 @@ namespace Backstage.Core.Logic
                                         Qq                            = ?Qq                 ,
                                         WinXinAccount                 = ?WinXinAccount      ,
                                         Email                         = ?Email              ,
+                                        Money                         = ?Money              ,
                                         CnameList                     = ?CnameList          
 
                                     WHERE
@@ -160,6 +162,7 @@ namespace Backstage.Core.Logic
                 parameters.Add(new MySqlParameter("?Qq", merchant.Qq));
                 parameters.Add(new MySqlParameter("?WinXinAccount", merchant.WinXinAccount));
                 parameters.Add(new MySqlParameter("?Email", merchant.Email));
+                parameters.Add(new MySqlParameter("?Money", merchant.Money));
                 parameters.Add(new MySqlParameter("?CnameList", Utility.GetString(merchant.CnameList)));
 
 
@@ -182,7 +185,27 @@ namespace Backstage.Core.Logic
                                         IosUrl       ,
                                         WxUrl        ,
                                         PointX       ,
-                                        PonitY        
+                                        PonitY        ,
+
+                                        ReChargeIntegral ,
+                                        ConsumptionIntegral   ,
+                                        CommentIntegral       ,
+                                        ShareIntegral        ,
+                                        Freight       ,
+                                        NeedToFreeFreight   ,
+
+                                        ServerEndTime        ,
+                                        Mid                  ,
+                                        UserCount            ,
+                                        Tid                  ,
+                                        HasWifi              ,
+                                        HasPrint             ,
+                                        ManagerPhone         ,
+                                        Qq                   ,
+                                        WinXinAccount        ,
+                                        Email                ,
+                                        Money                ,
+                                        CnameList            
                                         ) 
                                         values
                                         (
@@ -219,6 +242,7 @@ namespace Backstage.Core.Logic
                                         ?Qq                   ,
                                         ?WinXinAccount        ,
                                         ?Email                ,
+                                        ?Money                ,
                                         ?CnameList            
                                         )";
                 parameters.Add(new MySqlParameter("?Name", merchant.Name));
@@ -255,6 +279,7 @@ namespace Backstage.Core.Logic
                 parameters.Add(new MySqlParameter("?WinXinAccount", merchant.WinXinAccount));
                 parameters.Add(new MySqlParameter("?Email", merchant.Email));
                 parameters.Add(new MySqlParameter("?CnameList", Utility.GetString(merchant.CnameList)));
+                parameters.Add(new MySqlParameter("?Money", merchant.Money));
             }
             try
             {
@@ -273,17 +298,32 @@ namespace Backstage.Core.Logic
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public static PagResults<Merchant> GetMerchantList(int mid, int gettotal = 1)
+        public static PagResults<Merchant> GetMerchantList(int mid, int orderby, int orderbytype, int start = 0, int limit = 0, int gettotal = 1)
         {
             var result = new PagResults<Merchant>();
             result.Results = new List<Merchant>();
             var wheresql = mid > 0 ? string.Format(" where mid={0}", mid) : string.Empty;
-            var cmdText = string.Format("select * from Merchant ") + wheresql;
+            var orderbysql = string.Empty;
+            if (orderby == 0) orderbysql = " order by Id ";
+            else if (orderby == 1) orderbysql = " order by ServerEndTime ";
+            else if (orderby == 2) orderbysql = " order by UserCount ";
+            else if (orderby == 3) orderbysql = " order by Money ";
+            if (!string.IsNullOrEmpty(orderbysql) && orderbytype == 0)
+                orderbysql += " desc";
+            string limitsql = limit != 0 ? " LIMIT ?start,?limit" : string.Empty;
+            var cmdText = string.Format("select * from Merchant ") + wheresql + orderbysql + limitsql;
+
+            List<MySqlParameter> parameters = new List<MySqlParameter>();
+            if (!string.IsNullOrEmpty(limitsql))
+            {
+                parameters.Add(new MySqlParameter("?start", start));
+                parameters.Add(new MySqlParameter("?limit", limit));
+            }
             try
             {
                 using (var conn = Utility.ObtainConn(Utility._gameDbConn))
                 {
-                    MySqlDataReader reader = MySqlHelper.ExecuteReader(conn, CommandType.Text, cmdText);
+                    MySqlDataReader reader = MySqlHelper.ExecuteReader(conn, CommandType.Text, cmdText, parameters.ToArray());
                     while (reader.Read())
                     {
                         Merchant merchant = new Merchant();
@@ -321,6 +361,7 @@ namespace Backstage.Core.Logic
                         merchant.WinXinAccount = reader["WinXinAccount"].ToString();
                         merchant.Email = reader["Email"].ToString();
                         merchant.CnameList = Utility.GetListstring(reader["CnameList"].ToString());
+                        merchant.Money = (float)reader["Money"];
 
                         result.Results.Add(merchant);
                     }
@@ -342,6 +383,8 @@ namespace Backstage.Core.Logic
                             }
                         }
                     }
+
+                    return result;
                 }
             }
             catch (System.Exception ex)

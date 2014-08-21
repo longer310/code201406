@@ -54,6 +54,8 @@ namespace Backstage.Handler
                     GetMerchantList(); break;
                 case "saveMerchant":
                     SaveMerchant(); break;
+                case "getMerchant":
+                    GetMerchant(); break;
                 #endregion
 
                 default: break;
@@ -66,11 +68,13 @@ namespace Backstage.Handler
         /// </summary>
         public void GetAnnouncemmentList()
         {
-            var result = AnnouncementHelper.GetList();
+            var start = GetInt("start");
+            var limit = GetInt("limit");
+            var result = AnnouncementHelper.GetList(start * limit, limit);
 
             var jt = new JsonTransfer();
             jt.Add("list", result.Results);
-            jt.Add("count", result.TotalCount);
+            jt.Add("totalcount", result.TotalCount);
             Response.Write(jt.ToJson());
             Response.End();
         }
@@ -257,7 +261,7 @@ namespace Backstage.Handler
             var start = GetInt("start");
             var limit = GetInt("limit");
 
-            var merresult = MerchantHelper.GetMerchantList(mid, orderby, orderbytype, start*limit, limit);
+            var merresult = MerchantHelper.GetMerchantList(mid, orderby, orderbytype, start * limit, limit);
             var mertyperesult = MerchantTypeHelper.GetList();
 
             var data = new List<MerchantItem>();
@@ -302,6 +306,29 @@ namespace Backstage.Handler
         public void SaveMerchant()
         {
 
+        }
+
+        /// <summary>
+        /// 获取商户信息
+        /// </summary>
+        public void GetMerchant()
+        {
+            var id = GetInt("id");
+
+            var user = AccountHelper.GetUser(id);
+            var merchant = MerchantHelper.GetMerchant(id);
+            if (merchant == null || user == null)
+            {
+                ReturnErrorMsg("商户不存在");
+                return;
+            }
+
+            var jt = new JsonTransfer();
+            jt.Add("mer", merchant);
+            jt.Add("user", user);
+
+            Response.Write(jt.ToJson());
+            Response.End();
         }
         #endregion
     }

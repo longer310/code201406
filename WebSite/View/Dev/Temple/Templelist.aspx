@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/View/DevMaster.Master" AutoEventWireup="true" CodeBehind="Merlist.aspx.cs" Inherits="Backstage.View.Dev.Merchant.Merlist" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/View/DevMaster.Master" AutoEventWireup="true" CodeBehind="Templelist.aspx.cs" Inherits="Backstage.View.Dev.Temple.Templelist" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="Header" runat="server">
     <link rel="shortcut icon" href="<%=DomainUrl %>/Css/img/favicon.ico">
@@ -206,6 +206,12 @@
                         });
                     } else {
                         Common.tip({ type: "error", content: data.error });
+                        //Common.alert({
+                        //    title: "提示",
+                        //    content: data.error,
+                        //    confirm: function () {
+                        //    }
+                        //});
                     }
                 }, "JSON");
 

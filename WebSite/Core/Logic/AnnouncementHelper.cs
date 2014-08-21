@@ -15,16 +15,23 @@ namespace Backstage.Core.Logic
         /// 获取公告列表
         /// </summary>
         /// <returns></returns>
-        public static PagResults<Announcement> GetList()
+        public static PagResults<Announcement> GetList(int start, int limit)
         {
             var result = new PagResults<Announcement>();
             result.Results = new List<Announcement>();
-            var cmdText = @"select * from Announcement;";
+            string limitsql = limit != 0 ? " LIMIT ?start,?limit" : string.Empty;
+            var cmdText = @"select * from Announcement " + limitsql;
+            List<MySqlParameter> parameters = new List<MySqlParameter>();
+            if (!string.IsNullOrEmpty(limitsql))
+            {
+                parameters.Add(new MySqlParameter("?start", start));
+                parameters.Add(new MySqlParameter("?limit", limit));
+            }
             try
             {
                 using (var conn = Utility.ObtainConn(Utility._gameDbConn))
                 {
-                    MySqlDataReader reader = MySqlHelper.ExecuteReader(conn, CommandType.Text, cmdText);
+                    MySqlDataReader reader = MySqlHelper.ExecuteReader(conn, CommandType.Text, cmdText, parameters.ToArray());
                     while (reader.Read())
                     {
                         Announcement announcement = new Announcement();

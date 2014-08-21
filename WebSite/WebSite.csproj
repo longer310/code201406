@@ -542,9 +542,15 @@
     <Content Include="View\Coupon\Add.aspx" />
     <Content Include="View\Coupon\Edit.aspx" />
     <Content Include="View\Coupon\List.aspx" />
+    <Content Include="View\Dev\Ad\Ad.aspx" />
+    <Content Include="View\Dev\Announcement\AddAnn.aspx" />
+    <Content Include="View\Dev\Announcement\Annlist.aspx" />
     <Content Include="View\Dev\Index.aspx" />
     <Content Include="View\Dev\Merchant\Meradd.aspx" />
     <Content Include="View\Dev\Merchant\Meredit.aspx" />
+    <Content Include="View\Dev\Settlement\Settlement.aspx" />
+    <Content Include="View\Dev\Temple\AddTemple.aspx" />
+    <Content Include="View\Dev\Temple\Templelist.aspx" />
     <Content Include="View\Goods\Item.aspx" />
     <Content Include="View\Goods\Categroy.aspx" />
     <Content Include="View\Index.aspx" />
@@ -569,6 +575,8 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Core\Entity\Temple.cs" />
+    <Compile Include="Core\Logic\TempleHelper.cs" />
     <Compile Include="Core\PlatBasePage.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
@@ -749,6 +757,27 @@
     <Compile Include="View\DevMaster.Master.designer.cs">
       <DependentUpon>DevMaster.Master</DependentUpon>
     </Compile>
+    <Compile Include="View\Dev\Ad\Ad.aspx.cs">
+      <DependentUpon>Ad.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="View\Dev\Ad\Ad.aspx.designer.cs">
+      <DependentUpon>Ad.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="View\Dev\Announcement\AddAnn.aspx.cs">
+      <DependentUpon>AddAnn.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="View\Dev\Announcement\AddAnn.aspx.designer.cs">
+      <DependentUpon>AddAnn.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="View\Dev\Announcement\Annlist.aspx.cs">
+      <DependentUpon>Annlist.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="View\Dev\Announcement\Annlist.aspx.designer.cs">
+      <DependentUpon>Annlist.aspx</DependentUpon>
+    </Compile>
     <Compile Include="View\Dev\Index.aspx.cs">
       <DependentUpon>Index.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -769,6 +798,27 @@
     </Compile>
     <Compile Include="View\Dev\Merchant\Meredit.aspx.designer.cs">
       <DependentUpon>Meredit.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="View\Dev\Settlement\Settlement.aspx.cs">
+      <DependentUpon>Settlement.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="View\Dev\Settlement\Settlement.aspx.designer.cs">
+      <DependentUpon>Settlement.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="View\Dev\Temple\AddTemple.aspx.cs">
+      <DependentUpon>AddTemple.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="View\Dev\Temple\AddTemple.aspx.designer.cs">
+      <DependentUpon>AddTemple.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="View\Dev\Temple\Templelist.aspx.cs">
+      <DependentUpon>Templelist.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="View\Dev\Temple\Templelist.aspx.designer.cs">
+      <DependentUpon>Templelist.aspx</DependentUpon>
     </Compile>
     <Compile Include="View\Goods\Item.aspx.cs">
       <DependentUpon>Item.aspx</DependentUpon>

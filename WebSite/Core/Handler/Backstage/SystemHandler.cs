@@ -107,7 +107,7 @@ namespace Backstage.Core.Handler.Backstage
 
         private void GetAnnouncement()
         {
-            var data = AnnouncementHelper.GetList();
+            var data = AnnouncementHelper.GetList(0,1);
             JsonTransfer jt = new JsonTransfer();
             jt.Add("data", data);
             Response.Write(DesEncrypt(jt));

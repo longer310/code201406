@@ -26,7 +26,7 @@
 					<span class="icon">
 						<i class="icon-gift"></i>
 					</span>
-					<h5>商户修改</h5>
+					<h5>新增商户</h5>
 				</div>
 				<div class="widget-content">
 					<form action="#" method="post" class="form-horizontal" id="j-goods-addForm" />
@@ -63,26 +63,14 @@
 								<div class="control-group">
 									<label class="control-label">商户类型</label>
 									<div class="controls">
-										<select id="j-categroy-list">
-											<option>餐饮超市分类1</option>
-											<option>餐饮超市分类2</option>
-											<option>餐饮超市分类3</option>
-											<option>餐饮超市分类4</option>
-											<option>餐饮超市分类5</option>
-										</select><span style="padding:0 20px;">所属</span><span class="text-warning">餐饮超市类</span>
+										<select id="j-subCategory-list"></select><span id="j-shop-category-hold" style="display:none;"><span style="padding:0 20px;">所属</span><span class="text-warning" id="j-shop-category">餐饮超市类</span></span>
 									</div>
 								</div>
 
-								<div class="control-group">
+								<div class="control-group" style="display:none;" id="j-template-hold">
 									<label class="control-label">使用UI模版</label>
 									<div class="controls">
-										<select id="j-template-list">
-											<option>1</option>
-											<option>2</option>
-											<option>3</option>
-											<option>4</option>
-											<option>5</option>
-										</select>
+										<select id="j-template-list"></select>
 									</div>
 								</div>
 
@@ -184,23 +172,6 @@
 							</div>
 						</div>
 
-
-						<div class="widget-box">
-							<div class="widget-title">
-								<h5>运营状况</h5>
-							</div>
-							<div class="widget-content">
-								<ul class="server_info clearfix">
-									<li>用户下载量：<b class="text-error">2222</b>次</li>
-									<li>注册会员量：<b class="text-error">2222</b>名</li>
-									<li>商品量：<b class="text-error">2222</b>个</li>
-									<li>本月营业额：<b class="text-error">2222</b>元</li>
-									<li>总营业额：<b class="text-error">2222</b>元</li>
-									<li>空间剩余情况：<b class="text-error">2222</b>MB</li>
-								</ul>
-							</div>
-						</div>
-						
 						<div class="widget-box" >
 							<div class="widget-title">
 								<h5>类别名称</h5>
@@ -272,9 +243,10 @@
 		<script charset="utf-8" src="../public/kindeditor/lang/zh_CN.js"></script>
 
         <!--分类下拉框模版-->
-        <script type="text/jquery-tmpl-x" id="j-tmpl-categroy-listitem">
+        <script type="text/jquery-tmpl-x" id="j-tmpl-category-listitem">
+        	<option value="0">请选择分类</option>
         	{{each(i, v) list}}
-        		<option value="${v.id}">${v.name}</option>
+        		<option value="${v.id}" data-cid="${v.cid}">${v.name}</option>
         	{{/each}}
         </script>
 
@@ -285,41 +257,105 @@
         </script>
 
         <script type="text/javascript">
+        	var Shop_Category = [
+        		{
+        			id : 1,
+        			name : "餐饮超市类"
+        		},
+        		{
+        			id : 2,
+        			name : "夜场类"
+        		},
+        		{
+        			id : 3,
+        			name : "企业类"
+        		}
+        	];
+
+
 	        var Shop_SubCategory = [
 	    		{
 	    			id : 1,
-	    			name : "二级分类一"
+	    			name : "二级分类一",
+	    			cid : 1
 	    		},
 	    		{
 	    			id : 2,
-	    			name : "二级分类二"
+	    			name : "二级分类二",
+	    			cid : 1
 	    		},
 	    		{
 	    			id : 3,
-	    			name : "二级分类三"
+	    			name : "二级分类三",
+	    			cid : 1
 	    		},
 	    		{
 	    			id : 4,
-	    			name : "二级分类四"
+	    			name : "二级分类四",
+	    			cid : 1
+	    		},
+	    		{
+	    			id : 5,
+	    			name : "二级分类5",
+	    			cid : 2
+	    		},
+	    		{
+	    			id : 6,
+	    			name : "二级分类6",
+	    			cid : 3
+	    		},
+	    		{
+	    			id : 7,
+	    			name : "二级分类7",
+	    			cid : 3
+	    		},
+	    		{
+	    			id : 8,
+	    			name : "二级分类8",
+	    			cid : 3
 	    		}
 	    	];
 
 	    	var Template_List = [
 	    		{
 	    			id : 1,
-	    			name : "模版一"
+	    			name : "模版一",
+	    			cid : 1
 	    		},
 	    		{
 	    			id : 2,
-	    			name : "模版二"
+	    			name : "模版二",
+	    			cid : 2
 	    		},
 	    		{
 	    			id : 3,
-	    			name : "模版三"
+	    			name : "模版三",
+	    			cid : 2
 	    		},
 	    		{
 	    			id : 4,
-	    			name : "模版四"
+	    			name : "模版四",
+	    			cid : 3
+	    		},
+	    		{
+	    			id : 5,
+	    			name : "模版5",
+	    			cid : 1
+	    		},
+	    		{
+	    			id : 6,
+	    			name : "模版6",
+	    			cid : 2
+	    		},
+	    		{
+	    			id : 7,
+	    			name : "模版7",
+	    			cid : 2
+	    		},
+	    		{
+	    			id : 8,
+	    			name : "模版8",
+	    			cid : 3
 	    		}
 	    	];
         </script>
@@ -394,23 +430,64 @@
 						
 					});
 
-					mpage.showCategroyList();
-					mpage.showTemplateList();
+					$("#j-subCategory-list").bind("change", function(){
+						var cid = parseInt($(this).find("option:selected").attr("data-cid")) || 0;
+
+						if(cid > 0){
+							$("#j-shop-category-hold").show();
+
+							$.each(Shop_Category, function(i, v){
+								if(v.id == cid){
+									$("#j-shop-category").html(v.name);
+									return false;
+								}
+							});
+
+
+							var _Template_List = [];
+
+							$.each(Template_List, function(i, v){
+								if(v.cid == cid){
+									_Template_List.push(v);
+								}
+							});
+
+							$("#j-template-list").html( $("#j-tmpl-template-listitem").tmpl({
+								list : _Template_List
+							}) );
+
+							$("#j-template-hold").show();
+						} else {
+							$("#j-shop-category-hold").hide();
+							$("#j-template-hold").hide();
+
+							$("#j-template-list").val(0);
+							$("#j-shop-category").html("");
+						}
+
+					});
+
+					mpage.showSubCategoryList();
+					mpage.getDetail();
         		},
 
-        		showCategroyList : function (){
+        		getDetail : function(){
+        			var data = {
+        				cid : 1,
+        				scid : 1,
+        				tid : 5
+        			}
+
+        			$("#j-subCategory-list").val(data.scid).trigger("change");
+        			$("#j-template-list").val(data.tid);
+        		},
+
+
+        		showSubCategoryList : function (){
     		    	var mpage = this;
 
-					$("#j-categroy-list").html( $("#j-tmpl-categroy-listitem").tmpl({
+					$("#j-subCategory-list").html( $("#j-tmpl-category-listitem").tmpl({
 						list : Shop_SubCategory
-					}) );
-				},
-
-				showTemplateList : function(){
-					var mpage = this;
-
-					$("#j-template-list").html( $("#j-tmpl-template-listitem").tmpl({
-						list : Template_List
 					}) );
 				}
     		}

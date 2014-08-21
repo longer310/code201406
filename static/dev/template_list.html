@@ -110,7 +110,7 @@
 							<p>所属：<span class="text-warning">夜场类</span></p>
 							<div class="post-action">
 								<div class="checker"><span><input type="checkbox" name="radios"></span></div>
-								<a href="template_edit.html?id=1" class="btn btn-primary btn-mini"><i class="icon-pencil icon-white"></i> 编辑</a>
+								<a href="template_edit.html?id=1" class="btn btn-primary btn-mini j-btn-edit"><i class="icon-pencil icon-white"></i> 编辑</a>
 								<a href="#" class="btn btn-danger btn-mini j-btn-del"><i class="icon-remove icon-white"></i> 删除</a>
 							</div>
 						</div>
@@ -126,6 +126,10 @@
 
         		init : function(){
         			var mpage = this;
+
+        			var route = Route.parse(document.location.href, Route.SEARCH);
+        			mpage.pageNum = route.param.page || mpage.pageNum;
+        			mpage.cid = route.param.cid || mpage.cid;
 
         			mpage.renderTab();
         			mpage.getList(mpage.pageNum, mpage.cid);
@@ -161,7 +165,8 @@
         							alert('执行确认回调');
 
         							//删除成功后刷新本页
-        							mpage.getList(mpage.pageNum, mpage.cid);
+        							//mpage.getList(mpage.pageNum, mpage.cid);
+        							Route.goto(document.location.href);
         						},
         						cancel : function(){
         							//执行取消回调
@@ -183,11 +188,10 @@
         			});
         		},
 
-    		    getList : function (p){
+    		    getList : function (p, type){
     		    	var mpage = this;
 
-    		    	mpage.pageNum = p;
-					//$.getJSON("", { p: p}， function(json){
+					//$.getJSON("", { p: p, type : type}， function(json){
 						
 						$("#j-btn-selectAll").data("checked", false).html('<i class="icon-check icon-white"></i> 全选');
 
@@ -230,7 +234,8 @@
 							per : 8,//每页显示几个
 							count : json.result.count,
 							onchange : function(page){//切换页数回调函数
-								mpage.getList(page);
+								//mpage.getList(page);
+								Route.goto("template_list.html?page=" + page + "&cid=" + mpage.cid);
 							}
 						});
 
@@ -255,6 +260,11 @@
         					});
 	        				return false;
 	        			});
+
+	        			$("#j-list .j-btn-edit").bind("click", function(){
+	        				Route.goto(this.href);
+	        				return false;
+	        			});
 					//});
 				},
 
@@ -272,8 +282,10 @@
         			$('#j-tab a').bind("click", function (e) {
         				var id = $(this).parent().attr("data-id");
 						$(this).tab('show');
-						mpage.cid = id;
-						mpage.getList(1, id);
+						//mpage.cid = id;
+						//mpage.getList(1, id);
+
+						Route.goto("template_list.html?page=" + 1 + "&cid=" + id);
 						return false
 					});
         		},

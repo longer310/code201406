@@ -159,9 +159,8 @@
 						});
 
 
-						//解析url中的id
-						/\?id=(\d+)/.test(document.location.href);
-						var template_id = RegExp.$1;
+						var route = Route.parse(document.location.href, Route.SEARCH);
+						var template_id = route.param.id;
 						
 						if(template_id){
 							mpage.getImageDetail(template_id);

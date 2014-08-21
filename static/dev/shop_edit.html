@@ -407,6 +407,10 @@
 							});
 						});
 
+						var route = Route.parse(document.location.href, Route.SEARCH);
+
+						console.log(route.param);
+
 						//解析url中的id
 						/\?id=(\d+)/.test(document.location.href);
 						var shop_id = RegExp.$1;

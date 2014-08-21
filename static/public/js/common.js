@@ -220,5 +220,37 @@ var Route = {
         }
 
         return base_url + (param_arr.length > 0 ? '?' + param_arr.join('&') : '')
+    },
+
+    goto : function(url, param, filter){
+        url = Route.format(url, param, filter);
+
+        var loading = document.createElement("div");
+        loading.innerHTML = '<div class="loading-mask"></div><div class="loading-main">正在加载中...</div>';
+        loading.className = "loading-dialog";
+        document.body.appendChild(loading);
+
+        var load_iframe = document.createElement("iframe");
+        load_iframe.style.height = "0px";
+        load_iframe.style.width = "0px";
+        load_iframe.frameBorder = 0;
+        load_iframe.id = "load_iframe";
+
+        load_iframe.onload = function(){
+            document.location.href = url;
+        }
+
+        load_iframe.onerror = function(){
+            alert("加载失败，请重试");
+            document.body.removeChild(load_iframe, document.body);
+            document.body.removeChild(loading, document.body);
+        }
+
+        
+
+        setTimeout(function(){
+            load_iframe.src = url;
+            document.body.appendChild(load_iframe);
+        }, 1000);
     }
 }

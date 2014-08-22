@@ -58,6 +58,19 @@ namespace Backstage.Handler
                     GetMerchant(); break;
                 #endregion
 
+                #region 模板
+                case "getTempleList":
+                    GetTempleList(); break;
+                case "addTemple":
+                    AddTemple(); break;
+                case "updateTemple":
+                    UpdateTemple(); break;
+                case "getTemple":
+                    GetTemple(); break;
+                case "delTempleList":
+                    DelTempleList(); break;
+                #endregion
+
                 default: break;
             }
         }
@@ -327,6 +340,119 @@ namespace Backstage.Handler
             jt.Add("mer", merchant);
             jt.Add("user", user);
 
+            Response.Write(jt.ToJson());
+            Response.End();
+        }
+        #endregion
+
+        #region 模板类型
+        /// <summary>
+        /// 获取模板列表
+        /// </summary>
+        public void GetTempleList()
+        {
+            var mid = GetInt("mid");
+            var start = GetInt("start");
+            var limit = GetInt("limit");
+            var result = TempleHelper.GetList(mid, start, limit);
+
+            result.Insert(0, new Temple() { Id = 0, Name = "全部分类" });
+
+            var jt = new JsonTransfer();
+            jt.Add("list", result.Results);
+            jt.Add("totalcount", result.TotalCount);
+            Response.Write(jt.ToJson());
+            Response.End();
+        }
+
+        /// <summary>
+        /// 删除模板列表
+        /// </summary>
+        public void DelTempleList()
+        {
+            var ids = GetString("ids");
+            var idlist = Utility.GetListint(ids);
+            if (idlist.Count == 0)
+            {
+                ReturnErrorMsg("删除的模板id不能为空");
+                return;
+            }
+
+            if (TempleHelper.DelTempleList(ids))
+                ReturnCorrectMsg("删除成功");
+            else
+                ReturnErrorMsg("删除失败");
+        }
+
+        /// <summary>
+        /// 添加模板
+        /// </summary>
+        public void AddTemple()
+        {
+            var logourl = GetString("logourl");
+            var name = GetString("name");
+            var typeid = GetInt("typeid");
+            if (string.IsNullOrEmpty(name) || string.IsNullOrEmpty(logourl))
+            {
+                ReturnErrorMsg("参数有误");
+                return;
+            }
+            var temple = new Temple();
+            temple.TypeId = typeid;
+            temple.Name = name;
+            temple.LogoUrl = logourl;
+
+            if (TempleHelper.AddTemple(temple))
+                ReturnCorrectMsg("新增成功");
+            else
+                ReturnErrorMsg("新增失败");
+        }
+
+        /// <summary>
+        /// 更新模板
+        /// </summary>
+        public void UpdateTemple()
+        {
+            var id = GetInt("id");
+            var logourl = GetString("logourl");
+            var name = GetString("name");
+            var typeid = GetInt("typeid");
+            if (string.IsNullOrEmpty(name) || string.IsNullOrEmpty(logourl) || id == 0)
+            {
+                ReturnErrorMsg("参数有误");
+                return;
+            }
+            var temple = TempleHelper.GetTemple(id);
+            if (temple == null)
+            {
+                ReturnErrorMsg("找不到模板");
+                return;
+            }
+
+            temple.TypeId = typeid;
+            temple.Name = name;
+            temple.LogoUrl = logourl;
+
+            if (TempleHelper.UpdateTemple(temple))
+                ReturnCorrectMsg("更新成功");
+            else
+                ReturnErrorMsg("更新失败");
+        }
+        /// <summary>
+        /// 获取模板信息
+        /// </summary>
+        public void GetTemple()
+        {
+            var id = GetInt("id");
+            var temple = TempleHelper.GetTemple(id);
+            if (temple == null)
+            {
+                ReturnErrorMsg("找不到模板");
+                return;
+            }
+            var jt = new JsonTransfer();
+            jt.Add("data", result.Results);
+            jt.Add("totalcount", result.TotalCount);
             Response.Write(jt.ToJson());
             Response.End();
         }

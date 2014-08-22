@@ -153,6 +153,7 @@
     <Content Include="Script\js\bootstrap-colorpicker.js" />
     <Content Include="Script\js\bootstrap-datepicker.js" />
     <Content Include="Script\js\bootstrap.min.js" />
+    <Content Include="Script\js\Chart.js" />
     <Content Include="Script\js\common.js" />
     <Content Include="Script\js\excanvas.min.js" />
     <Content Include="Script\js\fullcalendar.min.js" />
@@ -551,6 +552,7 @@
     <Content Include="View\Dev\Settlement\Settlement.aspx" />
     <Content Include="View\Dev\Temple\AddTemple.aspx" />
     <Content Include="View\Dev\Temple\Templelist.aspx" />
+    <Content Include="View\Dev\Temple\EditTemple.aspx" />
     <Content Include="View\Goods\Item.aspx" />
     <Content Include="View\Goods\Categroy.aspx" />
     <Content Include="View\Index.aspx" />
@@ -819,6 +821,13 @@
     </Compile>
     <Compile Include="View\Dev\Temple\Templelist.aspx.designer.cs">
       <DependentUpon>Templelist.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="View\Dev\Temple\EditTemple.aspx.cs">
+      <DependentUpon>EditTemple.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="View\Dev\Temple\EditTemple.aspx.designer.cs">
+      <DependentUpon>EditTemple.aspx</DependentUpon>
     </Compile>
     <Compile Include="View\Goods\Item.aspx.cs">
       <DependentUpon>Item.aspx</DependentUpon>

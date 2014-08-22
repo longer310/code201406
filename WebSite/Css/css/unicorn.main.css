@@ -26,13 +26,13 @@ a:hover {
 
 #header h1 {
     background: url("../img/logo.png") no-repeat scroll 0 0 transparent;
-    height: 31px;
-    left: 15px;
+    height: 49px;
+    left: 10px;
     line-height: 600px;
     overflow: hidden;
     position: relative;
-    top: 24px;
-    width: 191px;
+    top: 15px;
+    width: 200px;
 }
 
 #header h1 a {
@@ -1285,6 +1285,12 @@ form {
 	margin-left: 200px;
 	padding: 10px 0;
 }
+.form-horizontal .static-text{
+	padding-top: 5px;
+	display: inline-block;
+	line-height: 20px;
+}
+
 .form-horizontal input[type=text], .form-horizontal input[type=password], .form-horizontal textarea {
 	width: 80%;
 }
@@ -1432,4 +1438,31 @@ ul.inline>li,ol.inline>li{
 	line-height: 24px;
 	margin: 0;
 	padding: 5px 0;
+}
+
+.loading-main{
+	background: url(../img/loading.gif) 40px center no-repeat #fff;
+	position: fixed;
+	width: 120px;
+	padding-left: 80px;
+	height: 40px;
+	line-height: 40px;
+	color: #333;
+	font-size: 14px;
+	z-index: 100000;
+	top: 50%;
+	left: 50%;
+	margin-left: -100px;
+	margin-top: -20px;
+	border-radius: 20px;
+}
+
+.loading-mask{
+	background: #000;
+	opacity: .5;
+	z-index: 99999;
+	position: fixed;
+	top: 0;
+	bottom: 0;
+	width: 100%;
 }

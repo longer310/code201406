@@ -10,6 +10,6 @@
 namespace Backstage.View.Dev.Temple {
     
     
-    public partial class AddTemple {
+    public partial class EditTemple {
     }
 }

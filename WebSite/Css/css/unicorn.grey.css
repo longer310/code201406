@@ -127,6 +127,7 @@ body {
 	display: block;
 	line-height: 20px;
 	font-weight: bold;
+	text-align: center;
 }
 
 .list-2col .post-desc{
@@ -136,8 +137,12 @@ body {
 	overflow: hidden;
 	color: #666;
 	margin-top: 10px;
+	margin-bottom: 0;
 }
 
+.list-2col .article-post{
+	margin-top: 10px;
+}
 .list-2col .post-meta{
 	font-size: 12px;
 	text-align: right;

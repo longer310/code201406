@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/View/DevMaster.Master" AutoEventWireup="true" CodeBehind="AddTemple.aspx.cs" Inherits="Backstage.View.Dev.Temple.AddTemple" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/View/DevMaster.Master" AutoEventWireup="true" CodeBehind="EditTemple.aspx.cs" Inherits="Backstage.View.Dev.Temple.EditTemple" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="Header" runat="server">
     <link rel="shortcut icon" href="<%=DomainUrl %>/Css/img/favicon.ico">

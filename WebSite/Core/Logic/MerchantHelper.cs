@@ -53,6 +53,7 @@ namespace Backstage.Core.Logic
                             merchant.NeedToFreeFreight = (int)reader["NeedToFreeFreight"];
 
                             merchant.ServerEndTime = (DateTime)reader["ServerEndTime"];
+                            merchant.LogoUrl = reader["LogoUrl"].ToString();
                             merchant.Mid = (int)reader["Mid"];
                             merchant.UserCount = (int)reader["UserCount"];
                             merchant.Tid = (int)reader["Tid"];
@@ -113,6 +114,7 @@ namespace Backstage.Core.Logic
                                         NeedToFreeFreight       = ?NeedToFreeFreight  ,    
 
                                         ServerEndTime                 = ?ServerEndTime      ,
+                                        LogoUrl                           = ?LogoUrl                ,
                                         Mid                           = ?Mid                ,
                                         UserCount                     = ?UserCount          ,
                                         Tid                           = ?Tid                ,
@@ -153,6 +155,7 @@ namespace Backstage.Core.Logic
 
 
                 parameters.Add(new MySqlParameter("?ServerEndTime", merchant.ServerEndTime));
+                parameters.Add(new MySqlParameter("?LogoUrl", merchant.LogoUrl));
                 parameters.Add(new MySqlParameter("?Mid", merchant.Mid));
                 parameters.Add(new MySqlParameter("?UserCount", merchant.UserCount));
                 parameters.Add(new MySqlParameter("?Tid", merchant.Tid));
@@ -195,6 +198,7 @@ namespace Backstage.Core.Logic
                                         NeedToFreeFreight   ,
 
                                         ServerEndTime        ,
+                                        LogoUrl                  ,
                                         Mid                  ,
                                         UserCount            ,
                                         Tid                  ,
@@ -233,6 +237,7 @@ namespace Backstage.Core.Logic
                                         ?NeedToFreeFreight   ,
 
                                         ?ServerEndTime        ,
+                                        ?LogoUrl                  ,
                                         ?Mid                  ,
                                         ?UserCount            ,
                                         ?Tid                  ,
@@ -269,6 +274,7 @@ namespace Backstage.Core.Logic
                 parameters.Add(new MySqlParameter("?NeedToFreeFreight", merchant.NeedToFreeFreight));
 
                 parameters.Add(new MySqlParameter("?ServerEndTime", merchant.ServerEndTime));
+                parameters.Add(new MySqlParameter("?LogoUrl", merchant.LogoUrl));
                 parameters.Add(new MySqlParameter("?Mid", merchant.Mid));
                 parameters.Add(new MySqlParameter("?UserCount", merchant.UserCount));
                 parameters.Add(new MySqlParameter("?Tid", merchant.Tid));
@@ -351,6 +357,7 @@ namespace Backstage.Core.Logic
                         merchant.NeedToFreeFreight = (int)reader["NeedToFreeFreight"];
 
                         merchant.ServerEndTime = (DateTime)reader["ServerEndTime"];
+                        merchant.LogoUrl = reader["LogoUrl"].ToString();
                         merchant.Mid = (int)reader["Mid"];
                         merchant.UserCount = (int)reader["UserCount"];
                         merchant.Tid = (int)reader["Tid"];

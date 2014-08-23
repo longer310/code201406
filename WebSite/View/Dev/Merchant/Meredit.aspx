@@ -10,7 +10,7 @@
             <span class="icon">
                 <i class="icon-gift"></i>
             </span>
-            <h5>商户修改</h5>
+            <h5>修改商户</h5>
         </div>
         <div class="widget-content">
             <div action="#" method="post" class="form-horizontal" id="j-goods-addForm" />
@@ -47,26 +47,14 @@
                     <div class="control-group">
                         <label class="control-label">商户类型</label>
                         <div class="controls">
-                            <select id="j-categroy-list">
-                                <option>餐饮超市分类1</option>
-                                <option>餐饮超市分类2</option>
-                                <option>餐饮超市分类3</option>
-                                <option>餐饮超市分类4</option>
-                                <option>餐饮超市分类5</option>
-                            </select><span style="padding: 0 20px;">所属</span><span class="text-warning">餐饮超市类</span>
+                            <select id="j-subCategory-list"></select><span id="j-shop-category-hold" style="display: none;"><span style="padding: 0 20px;">所属</span><span class="text-warning" id="j-shop-category">餐饮超市类</span></span>
                         </div>
                     </div>
 
-                    <div class="control-group">
+                    <div class="control-group" style="display: none;" id="j-template-hold">
                         <label class="control-label">使用UI模版</label>
                         <div class="controls">
-                            <select id="j-template-list">
-                                <option>1</option>
-                                <option>2</option>
-                                <option>3</option>
-                                <option>4</option>
-                                <option>5</option>
-                            </select>
+                            <select id="j-template-list"></select>
                         </div>
                     </div>
 
@@ -110,13 +98,7 @@
                     <div class="control-group">
                         <label class="control-label">开发人员</label>
                         <div class="controls">
-                            <select id="j-dev-list">
-                                <option>1</option>
-                                <option>2</option>
-                                <option>3</option>
-                                <option>4</option>
-                                <option>5</option>
-                            </select>
+                            <input type="text" id="j-dev-name" />
                         </div>
                     </div>
                 </div>
@@ -169,23 +151,6 @@
                             <input type="text" id="j-profile-email" />
                         </div>
                     </div>
-                </div>
-            </div>
-
-
-            <div class="widget-box">
-                <div class="widget-title">
-                    <h5>运营状况</h5>
-                </div>
-                <div class="widget-content">
-                    <ul class="server_info clearfix">
-                        <li>用户下载量：<b class="text-error">2222</b>次</li>
-                        <li>注册会员量：<b class="text-error">2222</b>名</li>
-                        <li>商品量：<b class="text-error">2222</b>个</li>
-                        <li>本月营业额：<b class="text-error">2222</b>元</li>
-                        <li>总营业额：<b class="text-error">2222</b>元</li>
-                        <li>空间剩余情况：<b class="text-error">2222</b>MB</li>
-                    </ul>
                 </div>
             </div>
 
@@ -247,179 +212,319 @@
 
 
     <!--分类下拉框模版-->
-    <script type="text/jquery-tmpl-x" id="j-tmpl-categroy-listitem">
+    <script type="text/jquery-tmpl-x" id="j-tmpl-category-listitem">
+        	<option value="0">请选择分类</option>
         	{{each(i, v) list}}
-        		<option value="${v.id}">${v.name}</option>
+        		<option value="${v.Id}" data-typeid="${v.TypeId}">${v.Name}</option>
         	{{/each}}
-        </script>
+    </script>
 
     <script type="text/jquery-tmpl-x" id="j-tmpl-template-listitem">
         	{{each(i, v) list}}
-        		<option value="${v.id}">${v.name}</option>
+        		<option value="${v.Id}">${v.Name}</option>
         	{{/each}}
-        </script>
+    </script>
 
     <script type="text/javascript">
-        var Shop_SubCategory = [
+        var Shop_Category = [
             {
                 id: 1,
-                name: "二级分类一"
+                name: "餐饮超市类"
             },
             {
                 id: 2,
-                name: "二级分类二"
+                name: "夜场类"
             },
             {
                 id: 3,
-                name: "二级分类三"
+                name: "企业类"
+            }
+        ];
+
+
+        var Shop_SubCategory = [
+            {
+                id: 1,
+                name: "二级分类一",
+                typeid: 1
+            },
+            {
+                id: 2,
+                name: "二级分类二",
+                typeid: 1
+            },
+            {
+                id: 3,
+                name: "二级分类三",
+                typeid: 1
             },
             {
                 id: 4,
-                name: "二级分类四"
+                name: "二级分类四",
+                typeid: 1
+            },
+            {
+                id: 5,
+                name: "二级分类5",
+                typeid: 2
+            },
+            {
+                id: 6,
+                name: "二级分类6",
+                typeid: 3
+            },
+            {
+                id: 7,
+                name: "二级分类7",
+                typeid: 3
+            },
+            {
+                id: 8,
+                name: "二级分类8",
+                typeid: 3
             }
         ];
 
         var Template_List = [
             {
                 id: 1,
-                name: "模版一"
+                name: "模版一",
+                typeid: 1
             },
             {
                 id: 2,
-                name: "模版二"
+                name: "模版二",
+                typeid: 2
             },
             {
                 id: 3,
-                name: "模版三"
+                name: "模版三",
+                typeid: 2
             },
             {
                 id: 4,
-                name: "模版四"
+                name: "模版四",
+                typeid: 3
+            },
+            {
+                id: 5,
+                name: "模版5",
+                typeid: 1
+            },
+            {
+                id: 6,
+                name: "模版6",
+                typeid: 2
+            },
+            {
+                id: 7,
+                name: "模版7",
+                typeid: 2
+            },
+            {
+                id: 8,
+                name: "模版8",
+                typeid: 3
             }
         ];
-    	</script>
-
+    </script>
     <script type="text/javascript">
         var MPage = {
+            merchantid: 0,
             hander: "<%=DomainUrl %>/Handler/Platform/AnnouncementHandler.ashx?action=",
-                init: function () {
-                    var mpage = this;
+            init: function () {
+                var mpage = this;
 
-                    //去掉之前选中打开的项 选中产品列表
-                    $("#sidebar li").removeClass("active open");
-                    $("#sidebar .sidebar_merchant").addClass("active open").find(".sidebar_merlist").addClass("active");
+                //去掉之前选中打开的项 选中产品列表
+                $("#sidebar li").removeClass("active open");
+                $("#sidebar .sidebar_merchant").addClass("active open").find(".sidebar_merlist").addClass("active");
 
-                    var text_editor,
-                        image_editor;
-                    KindEditor.ready(function (K) {
-                        //文本编辑器
-                        mpage.text_editor = text_editor = K.create('textarea[name="content"]', {
-                            uploadJson: '<%=DomainUrl %>/Handler/FileManager/UploadHandler.ashx?type=3',
-                            allowFileManager: true
-                        });
+                var text_editor,
+                    image_editor;
+                KindEditor.ready(function (K) {
+                    //文本编辑器
+                    mpage.text_editor = text_editor = K.create('textarea[name="content"]', {
+                        uploadJson: '<%=DomainUrl %>/Handler/FileManager/UploadHandler.ashx?type=3',
+                        allowFileManager: true
+                    });
 
-                        //图片上传编辑
-                        mpage.image_editor = image_editor = K.editor({
-                            uploadJson: '<%=DomainUrl %>/Handler/FileManager/UploadHandler.ashx?type=3',
-                            fileManagerJson: '<%=DomainUrl %>/Handler/FileManager/FileManagerHandler.ashx?type=3',
-                        });
+                    //图片上传编辑
+                    mpage.image_editor = image_editor = K.editor({
+                        uploadJson: '<%=DomainUrl %>/Handler/FileManager/UploadHandler.ashx?type=3',
+                        fileManagerJson: '<%=DomainUrl %>/Handler/FileManager/FileManagerHandler.ashx?type=3',
+                    });
 
-                        //图片上传绑定
-                        K('#j-btn-imageManager').click(function () {
-                            image_editor.loadPlugin('filemanager', function () {
-                                image_editor.plugin.filemanagerDialog({
-                                    viewType: 'VIEW',
-                                    dirName: 'image',
-                                    clickFn: function (url, title) {
-                                        K('#j-img-placehold').attr("src", url);
-                                        image_editor.hideDialog();
-                                    }
-                                });
+                    //图片上传绑定
+                    K('#j-btn-imageManager').click(function () {
+                        image_editor.loadPlugin('filemanager', function () {
+                            image_editor.plugin.filemanagerDialog({
+                                viewType: 'VIEW',
+                                dirName: 'image',
+                                clickFn: function (url, title) {
+                                    K('#j-img-placehold').attr("src", url);
+                                    image_editor.hideDialog();
+                                }
                             });
                         });
+                    });
 
-                        //从资料库选择图片
-                        K('#j-btn-imageUpload').click(function () {
-                            image_editor.loadPlugin('image', function () {
-                                image_editor.plugin.imageDialog({
-                                    showRemote: false,
-                                    imageUrl: K('#j-img-placehold').attr("src"),
-                                    clickFn: function (url, title, width, height, border, align) {
-                                        K('#j-img-placehold').attr("src", url);
-                                        image_editor.hideDialog();
-                                    }
-                                });
+                    //从资料库选择图片
+                    K('#j-btn-imageUpload').click(function () {
+                        image_editor.loadPlugin('image', function () {
+                            image_editor.plugin.imageDialog({
+                                showRemote: false,
+                                imageUrl: K('#j-img-placehold').attr("src"),
+                                clickFn: function (url, title, width, height, border, align) {
+                                    K('#j-img-placehold').attr("src", url);
+                                    image_editor.hideDialog();
+                                }
                             });
                         });
-
-                        //解析url中的id
-                        /\?id=(\d+)/.test(document.location.href);
-                        var shop_id = RegExp.$1;
-
-                        if (shop_id) {
-                            mpage.getDetail(shop_id);
-                        } else {
-                            alert("该商户不存在");
-                            window.history.back();
-                        }
                     });
 
-                    //提交表单
-                    $("#j-goods-addForm").bind("submit", function () {
+                    //解析url中的id
+                    /\?id=(\d+)/.test(document.location.href);
+                    var shop_id = RegExp.$1;
 
-                        return false;
-                    });
+                    if (shop_id) {
+                        mpage.merchantid = shop_id;
+                        mpage.getDetail();
+                    } else {
+                        alert("该商户不存在");
+                        window.history.back();
+                    }
+                });
 
-                    //重置表单
-                    $("#j-goods-addForm").bind("reset", function () {
+                //提交表单
+                $("#j-goods-addForm").bind("submit", function () {
 
-                    });
+                    return false;
+                });
 
-                    mpage.showCategroyList();
-                    mpage.showTemplateList();
-                },
+                //重置表单
+                $("#j-goods-addForm").bind("reset", function () {
 
-                showCategroyList: function () {
-                    var mpage = this;
-                    $.post(mpage.hander + "getMerchantTypeList", {}, function (data) {
-                        if (!data.error) {
-                            $("#j-categroy-list").html($("#j-tmpl-categroy-listitem").tmpl(data));
-                        } else {
-                            Common.tip({ type: "error", content: data.error });
-                        }
-                    }, "JSON");
-                },
+                });
 
-                showTemplateList: function () {
-                    var mpage = this;
+                $("#j-subCategory-list").bind("change", function () {
+                    var typeid = parseInt($(this).find("option:selected").attr("data-typeid")) || 0;
 
-                    $("#j-template-list").html($("#j-tmpl-template-listitem").tmpl({
-                        list: Template_List
-                    }));
-                },
+                    if (typeid > 0) {
+                        $("#j-shop-category-hold").show();
 
-                getDetail: function (id) {
-                    var mpage = this;
+                        $.each(Shop_Category, function (i, v) {
+                            if (v.id == typeid) {
+                                $("#j-shop-category").html(v.name);
+                                return false;
+                            }
+                        });
 
-                    $.post(mpage.hander + "getMerchant", { id: id }, function (data) {
-                        if (!data.error) {
-                            $("#j-shop-name").val(data.mer.Name);
-                        } else {
-                            Common.tip({ type: "error", content: data.error });
-                            //Common.alert({
-                            //    title: "提示",
-                            //    content: data.error,
-                            //    confirm: function () {
-                            //    }
-                            //});
-                        }
-                    }, "JSON");
+
+                        var _Template_List = [];
+
+                        $.each(Template_List, function (i, v) {
+                            if (v.TypeId == typeid || v.TypeId == 0) {
+                                _Template_List.push(v);
+                            }
+                        });
+
+                        $("#j-template-list").html($("#j-tmpl-template-listitem").tmpl({
+                            list: _Template_List
+                        }));
+
+                        $("#j-template-hold").show();
+                    } else {
+                        $("#j-shop-category-hold").hide();
+                        $("#j-template-hold").hide();
+
+                        $("#j-template-list").val(0);
+                        $("#j-shop-category").html("");
+                    }
+
+                });
+
+                mpage.showSubCategoryList();
+                mpage.getDetail();
+            },
+
+            showCategroyList: function () {
+                var mpage = this;
+                $.post(mpage.hander + "getMerchantTypeList", {}, function (data) {
+                    if (!data.error) {
+                        $("#j-categroy-list").html($("#j-tmpl-categroy-listitem").tmpl(data));
+                    } else {
+                        Common.tip({ type: "error", content: data.error });
+                    }
+                }, "JSON");
+            },
+
+            showTemplateList: function () {
+                var mpage = this;
+
+                $("#j-template-list").html($("#j-tmpl-template-listitem").tmpl({
+                    list: Template_List
+                }));
+            },
+
+            getDetail: function () {
+                var mpage = this;
+                var data = {
+                    typeid: 1,
+                    stypeid: 1,
+                    tid: 5
                 }
-            };
 
-            $(function () {
-                MPage.init();
-            });
+
+                $.post(mpage.hander + "getMerchant", { id: mpage.merchantid }, function (data) {
+                    if (!data.error) {
+                        $("#j-subCategory-list").val(data.mer.Mid).trigger("change");
+                        $("#j-template-list").val(data.mer.Tid);
+                        $("#j-shop-name").val(data.mer.Name);
+                        $("#j-login-name").val(data.user.UserName);
+                        $('#j-img-placehold').attr("src", data.mer.LogoUrl);
+                        $('#j_user_createtime').val(data.user.CreateTime); 
+                        $('#j_mer_serverendtime').val(data.mer.ServerEndTime);
+                        if (data.mer.HasWifi) $("#j-is_wifi").attr("checked", "checked");
+                        if (data.mer.HasPrint) $("#j-is_print").attr("checked", "checked"); 
+                        $("#j-dev-name").val(data.mer.DevName);
+                    } else {
+                        Common.tip({ type: "error", content: data.error });
+                        //Common.alert({
+                        //    title: "提示",
+                        //    content: data.error,
+                        //    confirm: function () {
+                        //    }
+                        //});
+                    }
+                }, "JSON");
+            },
+
+
+            showSubCategoryList: function () {
+                var mpage = this;
+                $("#j-subCategory-list").html($("#j-tmpl-category-listitem").tmpl({
+                    list: Shop_SubCategory
+                }));
+            }
+        };
+
+        $(function () {
+            $.post(MPage.hander + "getMerchantTypeList", { type: 1 }, function (data) {
+                if (!data.error) {
+                    Shop_SubCategory = data.list;
+                    $.post(MPage.hander + "getTempleList", { typeid: 0, start: 0, limit: 0 }, function (data2) {
+                        if (!data.error) {
+                            Template_List = data2.list;
+                            MPage.init();
+                        } else {
+                            Common.tip({ type: "error", content: data.error });
+                        }
+                    }, "JSON");
+                } else {
+                    Common.tip({ type: "error", content: data.error });
+                }
+            }, "JSON");
+        });
 
         </script>
 </asp:Content>

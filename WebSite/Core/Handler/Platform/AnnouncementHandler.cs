@@ -201,9 +201,10 @@ namespace Backstage.Handler
         /// </summary>
         public void GetMerchantTypeList()
         {
+            var type = GetInt("type");
             var result = MerchantTypeHelper.GetList();
 
-            result.Insert(0, new MerchantType() { Id = 0, Name = "全部分类" });
+            if (type != 0) result.Insert(0, new MerchantType() { Id = 0, Name = "全部分类" });
 
             var jt = new JsonTransfer();
             jt.Add("list", result);

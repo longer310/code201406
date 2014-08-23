@@ -158,5 +158,41 @@ namespace Backstage.Core.Entity
         /// 总营业额
         /// </summary>
         public float Money { get; set; }
+        /// <summary>
+        /// 开发员名称
+        /// </summary>
+        public string DevName { get; set; }
+        /// <summary>
+        /// 签约模式id 存储在param表的PlatformCfg里面
+        /// </summary>
+        public int Sid { get; set; }
+
+        public Merchant()
+        {
+            Name =
+            Tname =
+            Address =
+            Phone =
+            Description =
+            Mapurl = 
+            AppId =
+            AppSecret =
+            AccessToken =
+            AndroidUrl =
+            IosUrl =
+            WxUrl = 
+            PointX =
+            PointY =
+            LogoUrl =
+            ManagerPhone =
+            Qq =
+            WinXinAccount =
+            Email =
+            DevName =string.Empty;
+            AccessExpire = DateTime.Now;
+            ServerEndTime = DateTime.Now;
+            CnameList = new List<string>();
+            Sid = 1;//默认一个签约id
+        }
     }
 }

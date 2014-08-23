@@ -56,6 +56,10 @@ namespace Backstage.Handler
                     SaveMerchant(); break;
                 case "getMerchant":
                     GetMerchant(); break;
+                case "getCfgList":
+                    GetCfgList(); break;
+                case "delMerchantList":
+                    DelMerchantList(); break;
                 #endregion
 
                 #region 模板
@@ -204,7 +208,7 @@ namespace Backstage.Handler
             var type = GetInt("type");
             var result = MerchantTypeHelper.GetList();
 
-            if (type != 0) result.Insert(0, new MerchantType() { Id = 0, Name = "全部分类" });
+            if (type == 0) result.Insert(0, new MerchantType() { Id = 0, Name = "全部分类" });
 
             var jt = new JsonTransfer();
             jt.Add("list", result);
@@ -314,12 +318,135 @@ namespace Backstage.Handler
             Response.End();
         }
 
+
+        [Serializable]
+        public class SaveMerchantInfo
+        {
+            [XmlElement("Id")]
+            public int Id { get; set; }
+            [XmlElement("Name")]
+            public string Name { get; set; }
+            [XmlElement("UserName")]
+            public string UserName { get; set; }
+            [XmlElement("LogoUrl")]
+            public string LogoUrl { get; set; }
+            [XmlElement("Mid")]
+            public int Mid { get; set; }
+            [XmlElement("Tid")]
+            public int Tid { get; set; }
+            [XmlElement("CreateTime")]
+            public DateTime CreateTime { get; set; }
+            [XmlElement("ServerEndTime")]
+            public DateTime ServerEndTime { get; set; }
+            [XmlElement("HasWifi")]
+            public int HasWifi { get; set; }
+            [XmlElement("HasPrint")]
+            public int HasPrint { get; set; }
+            [XmlElement("DevName")]
+            public string DevName { get; set; }
+            [XmlElement("Sid")]
+            public int Sid { get; set; }
+            [XmlElement("Phone")]
+            public string Phone { get; set; }
+            [XmlElement("ManagerPhone")]
+            public string ManagerPhone { get; set; }
+            [XmlElement("Address")]
+            public string Address { get; set; }
+            [XmlElement("WinXinAccount")]
+            public string WinXinAccount { get; set; }
+            [XmlElement("Qq")]
+            public string Qq { get; set; }
+            [XmlElement("Email")]
+            public string Email { get; set; }
+            [XmlElement("CnameList")]
+            public string CnameList { get; set; }
+        }
         /// <summary>
         /// 保存商户信息
         /// </summary>
         public void SaveMerchant()
         {
+            string data_save = GetString("data_save");
+            if (string.IsNullOrEmpty(data_save))
+            {
+                ReturnErrorMsg("商户信息为空");
+                return;
+            }
 
+            var json = new JavaScriptSerializer();
+            var merchantinfo = json.Deserialize<SaveMerchantInfo>(data_save);
+            if (merchantinfo == null)
+            {
+                ReturnErrorMsg("商户信息为空");
+                return;
+            }
+
+            var user = new Account();
+
+            var id = merchantinfo.Id;
+            if (id == 0)
+            {
+                user.UserName = merchantinfo.UserName;
+                user.Pwd = "111111";
+                user.RoleType = RoleType.Merchant;
+                user.Phone = merchantinfo.Phone;
+                user.Address = merchantinfo.Address;
+
+                merchantinfo.Id = AccountHelper.UpdateUser(user);
+            }
+            else user = AccountHelper.GetUser(merchantinfo.Id);
+            if (user == null)
+            {
+                ReturnErrorMsg("不存在该商户");
+                return;
+            }
+            var merchant = MerchantHelper.GetMerchant(merchantinfo.Id);
+            var isadd = 0;
+            if (merchant == null)
+            {
+                merchant = new Merchant();
+                merchant.Id = merchantinfo.Id;
+                isadd = 1;
+            }
+
+            user.UserName = merchantinfo.UserName;
+
+            merchant.Name = merchantinfo.Name;
+            merchant.LogoUrl = merchantinfo.LogoUrl;
+            merchant.Mid = merchantinfo.Mid;
+            merchant.Tid = merchantinfo.Tid;
+            merchant.ServerEndTime = merchantinfo.ServerEndTime;
+            merchant.HasWifi = merchantinfo.HasWifi;
+            merchant.HasPrint = merchantinfo.HasPrint;
+            merchant.Sid = merchantinfo.Sid;
+            merchant.Phone = merchantinfo.Phone;
+            merchant.ManagerPhone = merchantinfo.ManagerPhone;
+            merchant.Address = merchantinfo.Address;
+            merchant.WinXinAccount = merchantinfo.WinXinAccount;
+            merchant.Qq = merchantinfo.Qq;
+            merchant.Email = merchantinfo.Email;
+            var cnameList = Utility.GetListstring(merchantinfo.CnameList);
+            if (string.IsNullOrEmpty(cnameList[0])) cnameList[0] = "活动咨询";
+            if (string.IsNullOrEmpty(cnameList[1])) cnameList[0] = "商品展示";
+            if (string.IsNullOrEmpty(cnameList[2])) cnameList[0] = "快速预约";
+            if (string.IsNullOrEmpty(cnameList[3])) cnameList[0] = "图片墙";
+            if (string.IsNullOrEmpty(cnameList[4])) cnameList[0] = "包厢";
+            merchant.CnameList = cnameList;
+            merchant.DevName = merchantinfo.DevName;
+
+            AccountHelper.UpdateUser(user);
+            if (MerchantHelper.SaveMerchant(merchant, isadd))
+            {
+                if (id == 0)
+                    ReturnCorrectMsg("添加成功");
+                else
+                    ReturnCorrectMsg("更新成功");
+            }
+            else
+                if (id == 0)
+                    ReturnErrorMsg("添加失败");
+                else
+                    ReturnErrorMsg("更新失败");
         }
 
         /// <summary>
@@ -343,6 +470,31 @@ namespace Backstage.Handler
 
             Response.Write(jt.ToJson());
             Response.End();
+        }
+
+        /// <summary>
+        /// 获取商户详情页面的一些配置列表
+        /// </summary>
+        public void GetCfgList()
+        {
+            var result = MerchantTypeHelper.GetList();
+            var tresult = TempleHelper.GetList();
+            var signlist = ParamHelper.PlatformCfgData.SignList;
+            var jt = new JsonTransfer();
+            jt.Add("mertypelist", result);
+            jt.Add("templelist", tresult.Results);
+            jt.Add("signlist", signlist);
+
+            Response.Write(jt.ToJson());
+            Response.End();
+        }
+
+        /// <summary>
+        /// 删除商户列表
+        /// </summary>
+        public void DelMerchantList()
+        {
+            //暂且不做
         }
         #endregion
 

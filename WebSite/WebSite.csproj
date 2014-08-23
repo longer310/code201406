@@ -549,6 +549,7 @@
     <Content Include="View\Dev\Index.aspx" />
     <Content Include="View\Dev\Merchant\Meradd.aspx" />
     <Content Include="View\Dev\Merchant\Meredit.aspx" />
+    <Content Include="View\Dev\Merchant\Mertypelist.aspx" />
     <Content Include="View\Dev\Settlement\Settlement.aspx" />
     <Content Include="View\Dev\Temple\AddTemple.aspx" />
     <Content Include="View\Dev\Temple\Templelist.aspx" />
@@ -800,6 +801,13 @@
     </Compile>
     <Compile Include="View\Dev\Merchant\Meredit.aspx.designer.cs">
       <DependentUpon>Meredit.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="View\Dev\Merchant\Mertypelist.aspx.cs">
+      <DependentUpon>Mertypelist.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="View\Dev\Merchant\Mertypelist.aspx.designer.cs">
+      <DependentUpon>Mertypelist.aspx</DependentUpon>
     </Compile>
     <Compile Include="View\Dev\Settlement\Settlement.aspx.cs">
       <DependentUpon>Settlement.aspx</DependentUpon>

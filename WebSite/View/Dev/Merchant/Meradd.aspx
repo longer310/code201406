@@ -11,331 +11,603 @@
             <span class="icon">
                 <i class="icon-gift"></i>
             </span>
-            <h5>商户列表</h5>
-            <div class="buttons">
-                <a href="#" class="btn btn-danger btn-mini" id="j-btn-delSelected"><i class="icon-remove icon-white"></i>删除</a>
-            </div>
+            <h5>新增商户</h5>
         </div>
         <div class="widget-content">
-            <ul class="nav nav-tabs" id="j-shop-category-tab">
-            </ul>
-            <table class="table table-bordered table-striped with-check">
-                <thead>
-                    <tr>
-                        <th>
-                            <input type="checkbox" id="j-btn-selectAll" name="title-table-checkbox" /></th>
-                        <th style="width: 40px;"><a href="javascript:;" class="j-orderby" data-orderby="0">编号<i class="icon-arrow-down icon-green" style="display: none;"></i></a></th>
-                        <th>图片</th>
-                        <th>名称</th>
-                        <th><a href="javascript:;" class="j-orderby" data-orderby="1">服务期<i class="icon-arrow-up icon-green" style="display: none;"></i></a></th>
-                        <th>分类</th>
-                        <th><a href="javascript:;" class="j-orderby" data-orderby="2">用户量<i class="icon-arrow-up icon-green" style="display: none;"></i></a></th>
-                        <th><a href="javascript:;" class="j-orderby" data-orderby="3">营业额<i class="icon-arrow-up icon-green" style="display: none;"></i></a></th>
-                        <th>操作</th>
-                    </tr>
-                </thead>
-                <tbody id="j-shop-list">
-                </tbody>
-            </table>
-        </div>
+            <div action="#" method="post" class="form-horizontal" id="j-goods-addForm" />
+            <div class="widget-box">
+                <div class="widget-content">
+                    <div class="control-group">
+                        <label class="control-label">商户名称</label>
+                        <div class="controls">
+                            <input type="text" id="j-shop-name" />
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label">登陆用户名</label>
+                        <div class="controls">
+                            <input type="text" id="j-login-name" />
+                        </div>
+                    </div>
 
-        <div class="widget-footer">
-            <div class="pagination alternate" id="j-shop-pagination">
-                <ul class="page-main"></ul>
+                    <div class="control-group">
+                        <label class="control-label">商户logo</label>
+                        <div class="controls">
+
+                            <a class="btn btn-info" href="javascript:;" id="j-btn-imageUpload"><i class="icon-folder-open icon-white"></i>本地上传</a>
+                            <a class="btn btn-success" href="javascript:;" id="j-btn-imageManager"><i class="icon-picture icon-white"></i>素材库选择</a>
+                            <span class="help-inline">上传过的图片可以直接从素材库选择</span>
+                            <div class="clearfix" style="margin-top: 10px;">
+                                <span class="thumbnail pull-left">
+                                    <img style="max-width: 128px; min-width: 128px; max-height: 128px; min-height: 128px;" src="http://placehold.it/128x128" alt="" id="j-img-placehold">
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="control-group">
+                        <label class="control-label">商户类型</label>
+                        <div class="controls">
+                            <select id="j-subCategory-list"></select><span id="j-shop-category-hold" style="display: none;"><span style="padding: 0 20px;">所属</span><span class="text-warning" id="j-shop-category">餐饮超市类</span></span>
+                        </div>
+                    </div>
+
+                    <div class="control-group" style="display: none;" id="j-template-hold">
+                        <label class="control-label">使用UI模版</label>
+                        <div class="controls">
+                            <select id="j-template-list"></select>
+                        </div>
+                    </div>
+
+                    <div class="control-group">
+                        <label class="control-label">入驻日期</label>
+                        <div class="controls">
+                            <span class="static-text" id="j_user_createtime">2014-02-12</span>
+                        </div>
+                    </div>
+
+                    <div class="control-group">
+                        <label class="control-label">服务期至</label>
+                        <div class="controls">
+                            <span class="static-text" id="j_mer_serverendtime">2014-02-12</span>
+                            <a href="javascript:void(0);" id="j_add_oneyear" class="btn btn-primary btn-mini"><i class="icon-plus icon-white"></i>增加一年</a>
+                            <a href="javascript:void(0);" id="j_sub_oneyear" class="btn btn-primary btn-mini"><i class="icon-minus icon-white"></i>减少一年</a>
+                        </div>
+                    </div>
+
+                    <div class="control-group">
+                        <label class="control-label">易wifi和云打印</label>
+                        <div class="controls">
+                            <label class="checkbox">
+                                <input type="checkbox" id="j-is_wifi">
+                                是否使用【易wifi】</label>
+                            <label class="checkbox">
+                                <input type="checkbox" id="j-is_print">
+                                是否使用【云打印】</label>
+                        </div>
+                    </div>
+
+                    <div class="control-group">
+                        <label class="control-label">签约模式</label>
+                        <div class="controls">
+                            <select id="j-sign-list">
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="control-group">
+                        <label class="control-label">开发人员</label>
+                        <div class="controls">
+                            <input type="text" id="j-dev-name" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="widget-box">
+                <div class="widget-title">
+                    <h5>基本资料</h5>
+                </div>
+                <div class="widget-content">
+
+                    <div class="control-group">
+                        <label class="control-label">联系电话</label>
+                        <div class="controls">
+                            <input type="text" id="j-profile-phone" />
+                        </div>
+                    </div>
+
+                    <div class="control-group">
+                        <label class="control-label">管理人联系电话</label>
+                        <div class="controls">
+                            <input type="text" id="j-profile-admin_phone" />
+                        </div>
+                    </div>
+
+                    <div class="control-group">
+                        <label class="control-label">联系地址</label>
+                        <div class="controls">
+                            <input type="text" id="j-profile-address" />
+                        </div>
+                    </div>
+
+                    <div class="control-group">
+                        <label class="control-label">微信公众号</label>
+                        <div class="controls">
+                            <input type="text" id="j-profile-wechat_id" />
+                        </div>
+                    </div>
+
+                    <div class="control-group">
+                        <label class="control-label">服务QQ号</label>
+                        <div class="controls">
+                            <input type="text" id="j-profile-qq" />
+                        </div>
+                    </div>
+
+                    <div class="control-group">
+                        <label class="control-label">Email</label>
+                        <div class="controls">
+                            <input type="text" id="j-profile-email" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="widget-box">
+                <div class="widget-title">
+                    <h5>类别名称</h5>
+                </div>
+                <div class="widget-content">
+
+                    <div class="control-group">
+                        <label class="control-label">活动咨询</label>
+                        <div class="controls">
+                            <input type="text" id="j_name_activity" value="活动咨询" />
+                        </div>
+                    </div>
+
+                    <div class="control-group">
+                        <label class="control-label">商品展示</label>
+                        <div class="controls">
+                            <input type="text" id="j_name_goods" value="商品展示" />
+                        </div>
+                    </div>
+
+                    <div class="control-group">
+                        <label class="control-label">快速预约</label>
+                        <div class="controls">
+                            <input type="text" id="j_name_appointment" value="快速预约" />
+                        </div>
+                    </div>
+
+                    <div class="control-group">
+                        <label class="control-label">图片墙</label>
+                        <div class="controls">
+                            <input type="text" id="j_name_img" value="图片墙" />
+                        </div>
+                    </div>
+
+                    <div class="control-group">
+                        <label class="control-label">包厢</label>
+                        <div class="controls">
+                            <input type="text" id="j_name_box" value="包厢" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-actions">
+                <a href="javascript:history.back();" class="btn">返回</a>
+                <a href="javascript:void(0);" id="reset" class="btn btn-primary"><i class="icon-ok icon-white"></i>清除重置</a>
+                <a href="javascript:void(0);" id="save" class="btn btn-primary"><i class="icon-ok icon-white"></i>完成保存</a>
             </div>
         </div>
     </div>
-
+    </div>
+       
     <!--页面js-->
-    <script type="text/javascript" src="<%=DomainUrl %>/Script/js/ue.pager.js"></script>
+    <script charset="utf-8" src="<%=DomainUrl %>/Script/kindeditor/kindeditor-min.js"></script>
+    <script charset="utf-8" src="<%=DomainUrl %>/Script/kindeditor/lang/zh_CN.js"></script>
 
-    <script type="text/jquery-tmpl-x" id="j-tmpl-shop-listitem">
-        {{each(i, v) list}}
-	        <tr data-gid="1">
-				<td><input type="checkbox" class="j-select" /></td>
-				<td style="width:40px;">${v.Id}</td>
-				<td style="width:45px;"><img src="${v.LogoUrl}"></td>
-				<td>${v.Name}</td>
-				<td>${v.ServerEndTime.ToDate().Format("yyyy-MM-dd hh:mm:ss")}</td>
-				<td>${v.Cname}</td>
-				<td>${v.UserCount}</td>
-				<td>${v.Money}</td>
-				<td style="width:200px;">
-                    <a class="btn btn-primary btn-mini" href="shop_edit.html?id=111"><i class="icon-pencil icon-white"></i> 查看</a>
-                    <a class="btn btn-success btn-mini" href="shop_config.html?id=111"><i class="icon-cog icon-white"></i> 登陆管理</a>
-                    <a href="#" class="btn btn-danger btn-mini j-btn-del"><i class="icon-remove icon-white"></i> 删除</a>
-			</tr>
-		{{/each}}
+
+    <!--分类下拉框模版-->
+    <script type="text/jquery-tmpl-x" id="j-tmpl-category-listitem">
+        	<option value="0">请选择分类</option>
+        	{{each(i, v) list}}
+        		<option value="${v.Id}" data-typeid="${v.TypeId}">${v.Name}</option>
+        	{{/each}}
+    </script>
+
+    <script type="text/jquery-tmpl-x" id="j-tmpl-template-listitem">
+        	{{each(i, v) list}}
+        		<option value="${v.Id}">${v.Name}</option>
+        	{{/each}}
+    </script>
+    <script type="text/jquery-tmpl-x" id="j-tmpl-sign-listitem">
+        	{{each(i, v) list}}
+        		<option value="${v.Id}">${v.Name}</option>
+        	{{/each}}
     </script>
 
     <script type="text/javascript">
         var Shop_Category = [
-        	{
-        	    id: 0,
-        	    name: "全部分类"
-        	},
-        	{
-        	    id: 1,
-        	    name: "餐饮类"
-        	},
-        	{
-        	    id: 2,
-        	    name: "超市类"
-        	},
-        	{
-        	    id: 3,
-        	    name: "酒吧类"
-        	},
-        	{
-        	    id: 4,
-        	    name: "KTV类"
-        	}
+            {
+                id: 1,
+                name: "餐饮超市类"
+            },
+            {
+                id: 2,
+                name: "夜场类"
+            },
+            {
+                id: 3,
+                name: "企业类"
+            }
         ];
 
+
+        var Shop_SubCategory = [
+            {
+                id: 1,
+                name: "二级分类一",
+                typeid: 1
+            },
+            {
+                id: 2,
+                name: "二级分类二",
+                typeid: 1
+            },
+            {
+                id: 3,
+                name: "二级分类三",
+                typeid: 1
+            },
+            {
+                id: 4,
+                name: "二级分类四",
+                typeid: 1
+            },
+            {
+                id: 5,
+                name: "二级分类5",
+                typeid: 2
+            },
+            {
+                id: 6,
+                name: "二级分类6",
+                typeid: 3
+            },
+            {
+                id: 7,
+                name: "二级分类7",
+                typeid: 3
+            },
+            {
+                id: 8,
+                name: "二级分类8",
+                typeid: 3
+            }
+        ];
+
+        var Template_List = [
+            {
+                id: 1,
+                name: "模版一",
+                typeid: 1
+            },
+            {
+                id: 2,
+                name: "模版二",
+                typeid: 2
+            },
+            {
+                id: 3,
+                name: "模版三",
+                typeid: 2
+            },
+            {
+                id: 4,
+                name: "模版四",
+                typeid: 3
+            },
+            {
+                id: 5,
+                name: "模版5",
+                typeid: 1
+            },
+            {
+                id: 6,
+                name: "模版6",
+                typeid: 2
+            },
+            {
+                id: 7,
+                name: "模版7",
+                typeid: 2
+            },
+            {
+                id: 8,
+                name: "模版8",
+                typeid: 3
+            }
+        ];
+
+        var Sign_List = [
+            {
+                Id: 1,
+                Name: "签约A",
+                Pre: 7
+            },
+            {
+                Id: 1,
+                Name: "签约B",
+                Pre: 8
+            },
+            {
+                Id: 1,
+                Name: "签约C",
+                Pre: 10
+            }
+        ];
     </script>
-
-
     <script type="text/javascript">
         var MPage = {
-            mid: 0,//当前分类 默认是全部分类
-            orderBy: 0,//排序类型 默认按找编号
-            orderByType: 0,//升降序 默认是降序
-            maxpage: 5,     //最多显示的页数
-            start: 1,       //页码
-            limit: 3,       //一页条数
+            merchantid: 0,
+            merchantdata: {},
             hander: "<%=DomainUrl %>/Handler/Platform/AnnouncementHandler.ashx?action=",
-
             init: function () {
                 var mpage = this;
 
                 //去掉之前选中打开的项 选中产品列表
                 $("#sidebar li").removeClass("active open");
-                $("#sidebar .sidebar_merchant").addClass("active open").find(".sidebar_merlist").addClass("active");
+                $("#sidebar .sidebar_merchant").addClass("active open").find(".sidebar_addmer").addClass("active");
 
-                mpage.showShopCategoryTab();
-                mpage.getShopList(mpage.start, mpage.mid, mpage.orderBy, mpage.orderByType);
-
-                mpage.bind();
-            },
-
-            bind: function () {
-                var mpage = this;
-
-                //绑定全选
-                $("#j-btn-selectAll").bind("change", function () {
-                    if ($(this).attr("checked")) {
-                        $("#j-shop-list .j-select:checkbox").attr("checked", "checked");
+                $.post(MPage.hander + "getCfgList", { type: 1 }, function (data) {
+                    if (!data.error) {
+                        Shop_SubCategory = data.mertypelist;
+                        Template_List = data.templelist;
+                        Sign_List = data.signlist;
+                        mpage.showSubCategoryList();
                     } else {
-                        $("#j-shop-list .j-select:checkbox").removeAttr("checked");
+                        Common.tip({ type: "error", content: data.error });
                     }
+                }, "JSON");
 
-                    return false;
-                });
-
-                //绑定批量删除
-                $("#j-btn-delSelected").bind("click", function () {
-                    var $checked = $("#j-shop-list :checked");
-
-                    var ids = [];
-                    $checked.each(function () {
-                        ids.push($(this).parents("tr").attr("data-id"));
+                var text_editor,
+                    image_editor;
+                KindEditor.ready(function (K) {
+                    //文本编辑器
+                    mpage.text_editor = text_editor = K.create('textarea[name="content"]', {
+                        uploadJson: '<%=DomainUrl %>/Handler/FileManager/UploadHandler.ashx?type=3',
+                        allowFileManager: true
                     });
 
-                    if (ids.length > 0) {
-                        Common.confirm({
-                            title: "删除确认提示",
-                            content: "您确定要删除当前选择的所有数据吗？",
-                            confirm: function () {
-                                //执行确认回调
-                                alert('执行确认回调');
+                    //图片上传编辑
+                    mpage.image_editor = image_editor = K.editor({
+                        uploadJson: '<%=DomainUrl %>/Handler/FileManager/UploadHandler.ashx?type=3',
+                        fileManagerJson: '<%=DomainUrl %>/Handler/FileManager/FileManagerHandler.ashx?type=3',
+                    });
 
-                                //删除成功后刷新本页
-                                mpage.getShopList(mpage.start, mpage.mid, mpage.orderBy, mpage.orderByType);
-                            },
-                            cancel: function () {
-                                //执行取消回调
-                                alert('执行取消回调');
-                            }
+                    //图片上传绑定
+                    K('#j-btn-imageManager').click(function () {
+                        image_editor.loadPlugin('filemanager', function () {
+                            image_editor.plugin.filemanagerDialog({
+                                viewType: 'VIEW',
+                                dirName: 'image',
+                                clickFn: function (url, title) {
+                                    K('#j-img-placehold').attr("src", url);
+                                    image_editor.hideDialog();
+                                }
+                            });
                         });
-                    } else {
-                        Common.alert({
-                            title: "提示",
-                            content: "请至少选择一项",
-                            confirm: function () {
-                                //执行确认回调
-                                alert('执行确认回调');
-                            }
-                        });
-                    }
+                    });
 
+                    //从资料库选择图片
+                    K('#j-btn-imageUpload').click(function () {
+                        image_editor.loadPlugin('image', function () {
+                            image_editor.plugin.imageDialog({
+                                showRemote: false,
+                                imageUrl: K('#j-img-placehold').attr("src"),
+                                clickFn: function (url, title, width, height, border, align) {
+                                    K('#j-img-placehold').attr("src", url);
+                                    image_editor.hideDialog();
+                                }
+                            });
+                        });
+                    });
+                });
+
+                //增加一年
+                $("#j_add_oneyear").bind("click", function () {
+                    var date = $('#j_mer_serverendtime').html();
+                    var d = new Date(date);
+                    d.setYear(d.getFullYear() + 1);
+                    $('#j_mer_serverendtime').html(d.Format("yyyy-MM-dd"));
+                    return false;
+                });
+                //减少一年
+                $("#j_sub_oneyear").bind("click", function () {
+                    var date = $('#j_mer_serverendtime').html();
+                    var d = new Date(date);
+                    d.setYear(d.getFullYear() - 1);
+                    $('#j_mer_serverendtime').html(d.Format("yyyy-MM-dd"));
                     return false;
                 });
 
-                //绑定排序
-                $(".j-orderby").bind("click", function () {
-                    var orderBy = +$(this).attr("data-orderby"),
-						orderByType;
-
-                    if (mpage.orderBy == orderBy) {
-                        orderByType = mpage.orderByType == 0 ? 1 : 0;
-                    } else {//切换排序字段，重置排序类型
-                        orderByType = 0;
-                    }
-                    mpage.getShopList(1, mpage.mid, orderBy, orderByType);
+                //提交表单
+                $("#save").bind("click", function () {
+                    mpage.addMerchant();
                 });
-            },
 
-            showShopCategoryTab: function () {
-                var mpage = this,
-        			tmpl = '';
-                $.post(mpage.hander + "getMerchantTypeList", {}, function (data) {
-                    if (!data.error) {
-                        $.each(data.list, function (i, v) {
-                            tmpl += '<li class="' + (v.Id == mpage.mid ? 'active' : '') + '" data-id="' + v.Id + '"><a href="#">' + v.Name + '</a></li>';
-                        });
-
-                        $("#j-shop-category-tab").html(tmpl);
-
-                        //绑定tab
-                        $('#j-shop-category-tab a').bind("click", function (e) {
-                            var id = $(this).parent().attr("data-id");
-                            $(this).tab('show');
-                            mpage.mid = id;
-                            mpage.getShopList(1, id, mpage.orderBy, mpage.orderByType);
-                            return false;
-                        });
-                    } else {
-                        Common.tip({ type: "error", content: data.error });
-                        //Common.alert({
-                        //    title: "提示",
-                        //    content: data.error,
-                        //    confirm: function () {
-                        //    }
-                        //});
-                    }
-                }, "JSON");
-
-            },
-
-            showOrderBy: function () {
-                var mpage = this;
-
-                $(".j-orderby").each(function (i, v) {
-                    if (mpage.orderByType == 0) {
-                        $(v).find("i").removeClass("icon-arrow-up").addClass("icon-arrow-down");
-                    } else {
-                        $(v).find("i").removeClass("icon-arrow-down").addClass("icon-arrow-up");
-                    }
-
-                    if ($(v).attr("data-orderby") == mpage.orderBy) {
-                        $(v).find("i").show();
-                    } else {
-                        $(v).find("i").hide();
-                    }
+                //重置表单
+                $("#reset").bind("click", function () {
+                    mpage.clearMerchantData();
                 });
-            },
 
-            //p 页码
-            //type tab 类型
-            getShopList: function (p, type, orderBy, orderByType) {
-                var mpage = this;
+                $("#j-subCategory-list").bind("change", function () {
+                    var typeid = parseInt($(this).find("option:selected").attr("data-typeid")) || 0;
 
-                mpage.start = p;
-                mpage.mid = type;
-                mpage.orderBy = orderBy;
-                mpage.orderByType = orderByType;
-                mpage.showOrderBy();
+                    if (typeid > 0) {
+                        $("#j-shop-category-hold").show();
 
-                //$.getJSON("", { p: p, type : type, orderBy : orderBy, orderByType : orderByType}， function(json){
-
-                $("#j-btn-selectAll").removeAttr("checked");
-                var json = {
-                    code: 0,
-                    msg: "",
-                    result: {
-                        count: 59,
-                        list: [
-                            {},
-                            {},
-                            {},
-                            {},
-                            {},
-                            {}
-                        ]
-                    }
-                };
-
-                //$("#j-shop-list").html($("#j-tmpl-shop-listitem").tmpl(json.result));
-                $.post(mpage.hander + "getMerchantList", { mid: mpage.mid, orderby: mpage.orderBy, orderbytype: mpage.orderByType, start: mpage.start - 1, limit: mpage.limit }, function (data) {
-                    if (!data.error) {
-                        $("#j-shop-list").html($("#j-tmpl-shop-listitem").tmpl(data));
-
-                        ue.pager({
-                            //target : $(".list_pager"),//放置分页的元素
-                            pagerTarget: $("#j-shop-pagination ul"),
-                            first: '<li><a href="#">首页</a></li>',
-                            firstDisabled: '<li class="disabled"><a href="#">首页</a></li>',
-                            last: '<li><a href="#">末页</a></li>',
-                            lastDisabled: '<li class="disabled"><a href="#">末页</a></li>',
-                            prev: '<li><a href="#">上一页</a></li>',
-                            prevDisabled: '<li class="disabled"><a href="#">上一页</a></li>',
-                            next: '<li><a href="#">下一页</a></li>',
-                            nextDisabled: '<li class="disabled"><a href="#">下一页</a></li>',
-                            current: '<li class="active"><a href="#">@{page}</a></li>',
-                            page: '<li><a href="#">@{page}</a></li>',
-                            tip: '<li class="page-info"><b class="text-info">@{nowPage}</b>/@{pageCount}页 共<b class="text-info">@{count}</b>条记录</li>',
-                            now: p,//当前页
-                            maxPage: mpage.maxpage,//显示的最多页数
-                            per: mpage.start,//每页显示几个
-                            count: data.totalcount,
-                            onchange: function (page) {//切换页数回调函数
-                                mpage.getShopList(page, type, orderBy, orderByType);
+                        $.each(Shop_Category, function (i, v) {
+                            if (v.id == typeid) {
+                                $("#j-shop-category").html(v.name);
+                                return false;
                             }
                         });
 
-                        //绑定单个删除
-                        $("#j-shop-list .j-btn-del").bind("click", function () {
-                            var $item = $(this).parents("tr");
-                            var id = $item.attr("data-id");
 
-                            Common.confirm({
-                                title: "删除确认提示",
-                                content: "您确定要删除当前商户？",
-                                confirm: function () {
-                                    //执行确认回调
-                                    alert('执行确认回调');
+                        var _Template_List = [];
 
-                                    $item.remove();
-                                },
-                                cancel: function () {
-                                    //执行取消回调
-                                    alert('执行取消回调');
-                                }
-                            });
-                            return false;
+                        $.each(Template_List, function (i, v) {
+                            if (v.TypeId == typeid || v.TypeId == 0) {
+                                _Template_List.push(v);
+                            }
                         });
+
+                        $("#j-template-list").html($("#j-tmpl-template-listitem").tmpl({
+                            list: _Template_List
+                        }));
+
+                        $("#j-template-hold").show();
+                    } else {
+                        $("#j-shop-category-hold").hide();
+                        $("#j-template-hold").hide();
+
+                        $("#j-template-list").val(0);
+                        $("#j-shop-category").html("");
+                    }
+
+                });
+
+            },
+
+            clearMerchantData: function () {
+                var mpage = this;
+
+                $("#j-shop-name").val("");
+                $("#j-login-name").val("");
+                $('#j-img-placehold').attr("src", "http://placehold.it/128x128");
+                $("#j-subCategory-list").val(0).trigger("change");
+                $('#j_user_createtime').html(new Date().Format("yyyy-MM-dd"));
+                $('#j_mer_serverendtime').html(new Date().Format("yyyy-MM-dd"));
+                $("#j-is_wifi").removeAttr("checked");
+                $("#j-is_print").removeAttr("checked");
+                $("#j-sign-list").val(1);
+
+                $("#j-profile-phone").val("");
+                $("#j-profile-admin_phone").val("");
+                $("#j-profile-address").val("");
+                $("#j-profile-wechat_id").val("");
+                $("#j-profile-qq").val("");
+                $("#j-profile-email").val("");
+                $("#j_name_activity").val("活动咨询");
+                $("#j_name_goods").val("商品展示");
+                $("#j_name_appointment").val("快速预约");
+                $("#j_name_img").val("图片墙");
+                $("#j_name_box").val("包厢");
+            },
+
+
+            showSubCategoryList: function () {
+                var mpage = this;
+                $("#j-subCategory-list").html($("#j-tmpl-category-listitem").tmpl({
+                    list: Shop_SubCategory
+                }));
+                $("#j-sign-list").html($("#j-tmpl-sign-listitem").tmpl({
+                    list: Sign_List
+                }));
+            },
+
+            addMerchant: function () {
+                var mpage = this;
+
+                var data_save = {};
+                data_save.Id = mpage.merchantid;
+                data_save.Name = $("#j-shop-name").val().trim();
+                data_save.UserName = $("#j-login-name").val().trim();
+                data_save.LogoUrl = $('#j-img-placehold').attr("src");
+                data_save.Mid = $("#j-subCategory-list").val();
+                data_save.Tid = $("#j-template-list").val();
+                data_save.CreateTime = new Date($('#j_user_createtime').html());
+                data_save.ServerEndTime = new Date($('#j_mer_serverendtime').html());
+                data_save.HasWifi = $("#j-is_wifi").attr("checked") == "checked" ? 1 : 0;
+                data_save.HasPrint = $("#j-is_print").attr("checked") == "checked" ? 1 : 0;
+                data_save.Sid = $("#j-sign-list").val();
+                data_save.DevName = $("#j-dev-name").val();
+                data_save.Phone = $("#j-profile-phone").val().trim();
+                data_save.ManagerPhone = $("#j-profile-admin_phone").val().trim();
+                data_save.Address = $("#j-profile-address").val().trim();
+                data_save.WinXinAccount = $("#j-profile-wechat_id").val().trim();
+                data_save.Qq = $("#j-profile-qq").val().trim();
+                data_save.Email = $("#j-profile-email").val().trim();
+                data_save.CnameList = [
+                    $("#j_name_activity").val().trim(),
+                    $("#j_name_goods").val().trim(),
+                    $("#j_name_appointment").val().trim(),
+                    $("#j_name_img").val().trim(),
+                    $("#j_name_box").val().trim()
+                ].join(',');
+
+                if (data_save.Name == "") {
+                    Common.tip({ type: "error", content: "商户名称不能为空" });
+                    return;
+                }
+                if (data_save.UserName == "") {
+                    Common.tip({ type: "error", content: "商户登录名不能为空" });
+                    return;
+                }
+                if (data_save.LogoUrl == "" ||
+                    data_save.LogoUrl == "http://placehold.it/128x128") {
+                    Common.tip({ type: "error", content: "商户logo不能为空" });
+                    return;
+                }
+                if (data_save.DevName == "") {
+                    Common.tip({ type: "error", content: "开发员不能为空" });
+                    return;
+                }
+                if (data_save.Phone == "") {
+                    Common.tip({ type: "error", content: "联系电话不能为空" });
+                    return;
+                }
+                if (data_save.ManagerPhone == "") {
+                    Common.tip({ type: "error", content: "管理人联系电话不能为空" });
+                    return;
+                }
+                if (data_save.Address == "") {
+                    Common.tip({ type: "error", content: "联系地址不能为空" });
+                    return;
+                }
+                if (data_save.WinXinAccount == "") {
+                    Common.tip({ type: "error", content: "微信公众号不能为空" });
+                    return;
+                }
+                if (data_save.Qq == "") {
+                    Common.tip({ type: "error", content: "服务QQ不能为空" });
+                    return;
+                }
+                if (data_save.Email == "") {
+                    Common.tip({ type: "error", content: "Email不能为空" });
+                    return;
+                }
+
+                $.post(mpage.hander + "saveMerchant", { data_save: JSON.stringify(data_save) }, function (data) {
+                    if (!data.error) {
+                        Common.tip({ type: "success", content: data.success });
                     } else {
                         Common.tip({ type: "error", content: data.error });
-                        //Common.alert({
-                        //    title: "提示",
-                        //    content: data.error,
-                        //    confirm: function () {
-                        //    }
-                        //});
                     }
                 }, "JSON");
-
-
-                //});
-
             }
-        }
+        };
 
         $(function () {
             MPage.init();
         });
 
-    </script>
+        </script>
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="Footer" runat="server">
 </asp:Content>

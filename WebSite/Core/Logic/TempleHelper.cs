@@ -15,7 +15,7 @@ namespace Backstage.Core.Logic
         /// 获取模板列表
         /// </summary>
         /// <returns></returns>
-        public static PagResults<Temple> GetList(int typeid, int start, int limit)
+        public static PagResults<Temple> GetList(int typeid = 0, int start = 0, int limit = 0)
         {
             var result = new PagResults<Temple>();
             result.Results = new List<Temple>();

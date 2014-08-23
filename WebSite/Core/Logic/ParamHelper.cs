@@ -59,6 +59,18 @@ namespace Backstage.Core.Logic
             public int Id { get; set; }
             public string Name { get; set; }
         }
+        public class SignTypeItem
+        {
+            public int Id { get; set; }
+            /// <summary>
+            /// 签约模式名称 模式A 模式B 模式C
+            /// </summary>
+            public string Name { get; set; }
+            /// <summary>
+            /// 销量的百分比 7% 8% 10%（存7、8、110）
+            /// </summary>
+            public float Prec { get; set; }
+        }
         public class PlatformCfg
         {
             /// <summary>
@@ -77,6 +89,10 @@ namespace Backstage.Core.Logic
             /// 商户类型名称列表
             /// </summary>
             public List<string> MerchantTypeList { get; set; }
+            /// <summary>
+            /// 签约列表
+            /// </summary>
+            public List<SignTypeItem> SignList { get; set; }
         }
 
         public static PlatformCfg PlatformCfgData

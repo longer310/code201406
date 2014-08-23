@@ -61,15 +61,16 @@
                     <div class="control-group">
                         <label class="control-label">入驻日期</label>
                         <div class="controls">
-                            <span class="static-text">2014-02-12</span>
+                            <span class="static-text" id="j_user_createtime">2014-02-12</span>
                         </div>
                     </div>
 
                     <div class="control-group">
                         <label class="control-label">服务期至</label>
                         <div class="controls">
-                            <span class="static-text">2014-02-12</span>
-                            <a href="" class="btn btn-primary btn-mini"><i class="icon-plus icon-white"></i>增加一年</a>
+                            <span class="static-text" id="j_mer_serverendtime">2014-02-12</span>
+                            <a href="javascript:void(0);" id="j_add_oneyear" class="btn btn-primary btn-mini"><i class="icon-plus icon-white"></i>增加一年</a>
+                            <a href="javascript:void(0);" id="j_sub_oneyear" class="btn btn-primary btn-mini"><i class="icon-minus icon-white"></i>减少一年</a>
                         </div>
                     </div>
 
@@ -89,8 +90,6 @@
                         <label class="control-label">签约模式</label>
                         <div class="controls">
                             <select id="j-sign-list">
-                                <option>模式A</option>
-                                <option>模式B</option>
                             </select>
                         </div>
                     </div>
@@ -163,35 +162,35 @@
                     <div class="control-group">
                         <label class="control-label">活动咨询</label>
                         <div class="controls">
-                            <input type="text" value="默认名称" />
+                            <input type="text" id="j_name_activity" value="活动咨询" />
                         </div>
                     </div>
 
                     <div class="control-group">
                         <label class="control-label">商品展示</label>
                         <div class="controls">
-                            <input type="text" value="默认名称" />
+                            <input type="text" id="j_name_goods" value="商品展示" />
                         </div>
                     </div>
 
                     <div class="control-group">
                         <label class="control-label">快速预约</label>
                         <div class="controls">
-                            <input type="text" value="默认名称" />
+                            <input type="text" id="j_name_appointment" value="快速预约" />
                         </div>
                     </div>
 
                     <div class="control-group">
                         <label class="control-label">图片墙</label>
                         <div class="controls">
-                            <input type="text" value="默认名称" />
+                            <input type="text" id="j_name_img" value="图片墙" />
                         </div>
                     </div>
 
                     <div class="control-group">
                         <label class="control-label">包厢</label>
                         <div class="controls">
-                            <input type="text" value="默认名称" />
+                            <input type="text" id="j_name_box" value="包厢" />
                         </div>
                     </div>
                 </div>
@@ -220,6 +219,11 @@
     </script>
 
     <script type="text/jquery-tmpl-x" id="j-tmpl-template-listitem">
+        	{{each(i, v) list}}
+        		<option value="${v.Id}">${v.Name}</option>
+        	{{/each}}
+    </script>
+    <script type="text/jquery-tmpl-x" id="j-tmpl-sign-listitem">
         	{{each(i, v) list}}
         		<option value="${v.Id}">${v.Name}</option>
         	{{/each}}
@@ -327,10 +331,29 @@
                 typeid: 3
             }
         ];
+
+        var Sign_List = [
+            {
+                Id: 1,
+                Name: "签约A",
+                Pre: 7
+            },
+            {
+                Id: 1,
+                Name: "签约B",
+                Pre: 8
+            },
+            {
+                Id: 1,
+                Name: "签约C",
+                Pre: 10
+            }
+        ];
     </script>
     <script type="text/javascript">
         var MPage = {
             merchantid: 0,
+            merchantdata: {},
             hander: "<%=DomainUrl %>/Handler/Platform/AnnouncementHandler.ashx?action=",
             init: function () {
                 var mpage = this;
@@ -338,6 +361,18 @@
                 //去掉之前选中打开的项 选中产品列表
                 $("#sidebar li").removeClass("active open");
                 $("#sidebar .sidebar_merchant").addClass("active open").find(".sidebar_merlist").addClass("active");
+
+
+                $.post(mpage.hander + "getCfgList", { type: 1 }, function (data) {
+                    if (!data.error) {
+                        Shop_SubCategory = data.mertypelist;
+                        Template_List = data.templelist;
+                        Sign_List = data.signlist;
+                        mpage.showSubCategoryList();
+                    } else {
+                        Common.tip({ type: "error", content: data.error });
+                    }
+                }, "JSON");
 
                 var text_editor,
                     image_editor;
@@ -395,15 +430,31 @@
                     }
                 });
 
-                //提交表单
-                $("#j-goods-addForm").bind("submit", function () {
-
+                //增加一年
+                $("#j_add_oneyear").bind("click", function () {
+                    var date = $('#j_mer_serverendtime').html();
+                    var d = new Date(date);
+                    d.setYear(d.getFullYear() + 1);
+                    $('#j_mer_serverendtime').html(d.Format("yyyy-MM-dd"));
+                    return false;
+                });
+                //减少一年
+                $("#j_sub_oneyear").bind("click", function () {
+                    var date = $('#j_mer_serverendtime').html();
+                    var d = new Date(date);
+                    d.setYear(d.getFullYear() - 1);
+                    $('#j_mer_serverendtime').html(d.Format("yyyy-MM-dd"));
                     return false;
                 });
 
-                //重置表单
-                $("#j-goods-addForm").bind("reset", function () {
+                //提交表单
+                $("#save").bind("click", function () {
+                    mpage.updateMerchant();
+                });
 
+                //重置表单
+                $("#reset").bind("click", function () {
+                    mpage.showMerchantData();
                 });
 
                 $("#j-subCategory-list").bind("change", function () {
@@ -443,8 +494,6 @@
 
                 });
 
-                mpage.showSubCategoryList();
-                mpage.getDetail();
             },
 
             showCategroyList: function () {
@@ -468,33 +517,13 @@
 
             getDetail: function () {
                 var mpage = this;
-                var data = {
-                    typeid: 1,
-                    stypeid: 1,
-                    tid: 5
-                }
-
 
                 $.post(mpage.hander + "getMerchant", { id: mpage.merchantid }, function (data) {
                     if (!data.error) {
-                        $("#j-subCategory-list").val(data.mer.Mid).trigger("change");
-                        $("#j-template-list").val(data.mer.Tid);
-                        $("#j-shop-name").val(data.mer.Name);
-                        $("#j-login-name").val(data.user.UserName);
-                        $('#j-img-placehold').attr("src", data.mer.LogoUrl);
-                        $('#j_user_createtime').val(data.user.CreateTime); 
-                        $('#j_mer_serverendtime').val(data.mer.ServerEndTime);
-                        if (data.mer.HasWifi) $("#j-is_wifi").attr("checked", "checked");
-                        if (data.mer.HasPrint) $("#j-is_print").attr("checked", "checked"); 
-                        $("#j-dev-name").val(data.mer.DevName);
+                        mpage.merchantdata = data;
+                        mpage.showMerchantData();//显示商户详情
                     } else {
                         Common.tip({ type: "error", content: data.error });
-                        //Common.alert({
-                        //    title: "提示",
-                        //    content: data.error,
-                        //    confirm: function () {
-                        //    }
-                        //});
                     }
                 }, "JSON");
             },
@@ -505,25 +534,125 @@
                 $("#j-subCategory-list").html($("#j-tmpl-category-listitem").tmpl({
                     list: Shop_SubCategory
                 }));
+                $("#j-sign-list").html($("#j-tmpl-sign-listitem").tmpl({
+                    list: Sign_List
+                }));
+            },
+
+            showMerchantData: function () {
+                var mpage = this;
+
+                $("#j-shop-name").val(mpage.merchantdata.mer.Name);
+                $("#j-login-name").val(mpage.merchantdata.user.UserName);
+                $('#j-img-placehold').attr("src", mpage.merchantdata.mer.LogoUrl);
+                $("#j-subCategory-list").val(mpage.merchantdata.mer.Mid).trigger("change");
+                $("#j-template-list").val(mpage.merchantdata.mer.Tid);
+                $('#j_user_createtime').html(mpage.merchantdata.user.CreateTime.ToDate().Format("yyyy-MM-dd"));
+                $('#j_mer_serverendtime').html(mpage.merchantdata.mer.ServerEndTime.ToDate().Format("yyyy-MM-dd"));
+                if (mpage.merchantdata.mer.HasWifi) $("#j-is_wifi").attr("checked", "checked");
+                if (mpage.merchantdata.mer.HasPrint) $("#j-is_print").attr("checked", "checked");
+                $("#j-sign-list").val(mpage.merchantdata.mer.Sid);
+                $("#j-dev-name").val(mpage.merchantdata.mer.DevName);
+
+                $("#j-profile-phone").val(mpage.merchantdata.mer.Phone);
+                $("#j-profile-admin_phone").val(mpage.merchantdata.mer.ManagerPhone);
+                $("#j-profile-address").val(mpage.merchantdata.mer.Address);
+                $("#j-profile-wechat_id").val(mpage.merchantdata.mer.WinXinAccount);
+                $("#j-profile-qq").val(mpage.merchantdata.mer.Qq);
+                $("#j-profile-email").val(mpage.merchantdata.mer.Email);
+                $("#j_name_activity").val(mpage.merchantdata.mer.CnameList[0]);
+                $("#j_name_goods").val(mpage.merchantdata.mer.CnameList[1]);
+                $("#j_name_appointment").val(mpage.merchantdata.mer.CnameList[2]);
+                $("#j_name_img").val(mpage.merchantdata.mer.CnameList[3]);
+                $("#j_name_box").val(mpage.merchantdata.mer.CnameList[4]);
+            },
+
+            updateMerchant: function () {
+                var mpage = this;
+
+                var data_save = {};
+                data_save.Id = mpage.merchantid;
+                data_save.Name = $("#j-shop-name").val().trim();
+                data_save.UserName = $("#j-login-name").val().trim();
+                data_save.LogoUrl = $('#j-img-placehold').attr("src");
+                data_save.Mid = $("#j-subCategory-list").val();
+                data_save.Tid = $("#j-template-list").val();
+                data_save.CreateTime = new Date($('#j_user_createtime').html());
+                data_save.ServerEndTime = new Date($('#j_mer_serverendtime').html());
+                data_save.HasWifi = $("#j-is_wifi").attr("checked") == "checked" ? 1 : 0;
+                data_save.HasPrint = $("#j-is_print").attr("checked") == "checked" ? 1 : 0;
+                data_save.Sid = $("#j-sign-list").val();
+                data_save.DevName = $("#j-dev-name").val();
+                data_save.Phone = $("#j-profile-phone").val().trim();
+                data_save.ManagerPhone = $("#j-profile-admin_phone").val().trim();
+                data_save.Address = $("#j-profile-address").val().trim();
+                data_save.WinXinAccount = $("#j-profile-wechat_id").val().trim();
+                data_save.Qq = $("#j-profile-qq").val().trim();
+                data_save.Email = $("#j-profile-email").val().trim();
+                data_save.CnameList = [
+                    $("#j_name_activity").val().trim(),
+                    $("#j_name_goods").val().trim(),
+                    $("#j_name_appointment").val().trim(),
+                    $("#j_name_img").val().trim(),
+                    $("#j_name_box").val().trim()
+                ].join(',');
+
+
+                if (data_save.Name == "") {
+                    Common.tip({ type: "error", content: "商户名称不能为空" });
+                    return;
+                }
+                if (data_save.UserName == "") {
+                    Common.tip({ type: "error", content: "商户登录名不能为空" });
+                    return;
+                }
+                if (data_save.LogoUrl == "" ||
+                    data_save.LogoUrl == "http://placehold.it/128x128") {
+                    Common.tip({ type: "error", content: "商户logo不能为空" });
+                    return;
+                }
+                if (data_save.DevName == "") {
+                    Common.tip({ type: "error", content: "开发员不能为空" });
+                    return;
+                }
+                if (data_save.Phone == "") {
+                    Common.tip({ type: "error", content: "联系电话不能为空" });
+                    return;
+                }
+                if (data_save.ManagerPhone == "") {
+                    Common.tip({ type: "error", content: "管理人联系电话不能为空" });
+                    return;
+                }
+                if (data_save.Address == "") {
+                    Common.tip({ type: "error", content: "联系地址不能为空" });
+                    return;
+                }
+                if (data_save.WinXinAccount == "") {
+                    Common.tip({ type: "error", content: "微信公众号不能为空" });
+                    return;
+                }
+                if (data_save.Qq == "") {
+                    Common.tip({ type: "error", content: "服务QQ不能为空" });
+                    return;
+                }
+                if (data_save.Email == "") {
+                    Common.tip({ type: "error", content: "Email不能为空" });
+                    return;
+                }
+
+                $.post(mpage.hander + "saveMerchant", { data_save: JSON.stringify(data_save) }, function (data) {
+                    if (!data.error) {
+                        Common.tip({ type: "success", content: data.success });
+                        mpage.getDetail();//再次获取 重置。
+                    } else {
+                        Common.tip({ type: "error", content: data.error });
+                    }
+                }, "JSON");
             }
         };
 
         $(function () {
-            $.post(MPage.hander + "getMerchantTypeList", { type: 1 }, function (data) {
-                if (!data.error) {
-                    Shop_SubCategory = data.list;
-                    $.post(MPage.hander + "getTempleList", { typeid: 0, start: 0, limit: 0 }, function (data2) {
-                        if (!data.error) {
-                            Template_List = data2.list;
-                            MPage.init();
-                        } else {
-                            Common.tip({ type: "error", content: data.error });
-                        }
-                    }, "JSON");
-                } else {
-                    Common.tip({ type: "error", content: data.error });
-                }
-            }, "JSON");
+            MPage.init();
         });
 
         </script>

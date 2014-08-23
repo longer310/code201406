@@ -65,6 +65,8 @@ namespace Backstage.Core.Logic
                             merchant.Email = reader["Email"].ToString();
                             merchant.CnameList = Utility.GetListstring(reader["CnameList"].ToString());
                             merchant.Money = (float)reader["Money"];
+                            merchant.DevName = reader["DevName"].ToString();
+                            merchant.Sid = (int)reader["Sid"];
 
                             return merchant;
                         }
@@ -84,11 +86,11 @@ namespace Backstage.Core.Logic
         /// <param name="merchant"></param>
         /// <param name="isAdd"></param>
         /// <returns></returns>
-        public static bool SaveMerchant(Merchant merchant)
+        public static bool SaveMerchant(Merchant merchant,int isadd = 0)
         {
             var cmdText = string.Empty;
             List<MySqlParameter> parameters = new List<MySqlParameter>();
-            if (merchant.Id > 0)
+            if (isadd == 0)
             {
                 cmdText = @"UPDATE merchant SET
                                         Name           = ?Name        ,
@@ -125,6 +127,8 @@ namespace Backstage.Core.Logic
                                         WinXinAccount                 = ?WinXinAccount      ,
                                         Email                         = ?Email              ,
                                         Money                         = ?Money              ,
+                                        DevName                         = ?DevName              ,
+                                        Sid                         = ?Sid              ,
                                         CnameList                     = ?CnameList          
 
                                     WHERE
@@ -167,6 +171,8 @@ namespace Backstage.Core.Logic
                 parameters.Add(new MySqlParameter("?Email", merchant.Email));
                 parameters.Add(new MySqlParameter("?Money", merchant.Money));
                 parameters.Add(new MySqlParameter("?CnameList", Utility.GetString(merchant.CnameList)));
+                parameters.Add(new MySqlParameter("?DevName", merchant.DevName));
+                parameters.Add(new MySqlParameter("?Sid", merchant.Sid));
 
 
             }
@@ -174,6 +180,7 @@ namespace Backstage.Core.Logic
             {
                 cmdText = @"insert into merchant
                                         (
+                                        Id         ,
                                         Name         ,
                                         Tname        ,
                                         Address      ,
@@ -188,7 +195,7 @@ namespace Backstage.Core.Logic
                                         IosUrl       ,
                                         WxUrl        ,
                                         PointX       ,
-                                        PonitY        ,
+                                        PointY        ,
 
                                         ReChargeIntegral ,
                                         ConsumptionIntegral   ,
@@ -209,10 +216,13 @@ namespace Backstage.Core.Logic
                                         WinXinAccount        ,
                                         Email                ,
                                         Money                ,
+                                        DevName                ,
+                                        Sid                ,
                                         CnameList            
                                         ) 
                                         values
                                         (
+                                        ?Id         ,
                                         ?Name         ,
                                         ?Tname        ,
                                         ?Address      ,
@@ -227,7 +237,7 @@ namespace Backstage.Core.Logic
                                         ?IosUrl       ,
                                         ?WxUrl        ,
                                         ?PointX       ,
-                                        ?PonitY       ,
+                                        ?PointY       ,
 
                                         ?ReChargeIntegral ,
                                         ?ConsumptionIntegral   ,
@@ -248,8 +258,11 @@ namespace Backstage.Core.Logic
                                         ?WinXinAccount        ,
                                         ?Email                ,
                                         ?Money                ,
+                                        ?DevName                ,
+                                        ?Sid                ,
                                         ?CnameList            
                                         )";
+                parameters.Add(new MySqlParameter("?Id", merchant.Id));
                 parameters.Add(new MySqlParameter("?Name", merchant.Name));
                 parameters.Add(new MySqlParameter("?Tname", merchant.Tname));
                 parameters.Add(new MySqlParameter("?Address", merchant.Address));
@@ -263,8 +276,8 @@ namespace Backstage.Core.Logic
                 parameters.Add(new MySqlParameter("?AndroidUrl", merchant.AndroidUrl));
                 parameters.Add(new MySqlParameter("?IosUrl", merchant.IosUrl));
                 parameters.Add(new MySqlParameter("?WxUrl", merchant.WxUrl));
-                parameters.Add(new MySqlParameter("?PointX", merchant.IosUrl));
-                parameters.Add(new MySqlParameter("?PonitY", merchant.WxUrl));
+                parameters.Add(new MySqlParameter("?PointX", merchant.PointX));
+                parameters.Add(new MySqlParameter("?PointY", merchant.PointY));
 
                 parameters.Add(new MySqlParameter("?ReChargeIntegral", merchant.ReChargeIntegral));
                 parameters.Add(new MySqlParameter("?ConsumptionIntegral", merchant.ConsumptionIntegral));
@@ -286,6 +299,8 @@ namespace Backstage.Core.Logic
                 parameters.Add(new MySqlParameter("?Email", merchant.Email));
                 parameters.Add(new MySqlParameter("?CnameList", Utility.GetString(merchant.CnameList)));
                 parameters.Add(new MySqlParameter("?Money", merchant.Money));
+                parameters.Add(new MySqlParameter("?DevName", merchant.DevName));
+                parameters.Add(new MySqlParameter("?Sid", merchant.Sid));
             }
             try
             {
@@ -369,6 +384,8 @@ namespace Backstage.Core.Logic
                         merchant.Email = reader["Email"].ToString();
                         merchant.CnameList = Utility.GetListstring(reader["CnameList"].ToString());
                         merchant.Money = (float)reader["Money"];
+                        merchant.DevName = reader["DevName"].ToString();
+                        merchant.Sid = (int)reader["Sid"];
 
                         result.Results.Add(merchant);
                     }

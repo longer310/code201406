@@ -45,7 +45,7 @@
                 <ul>
                     <li class="sidebar_merlist"><a href="<%=DomainUrl %>/View/Dev/Merchant/Merlist.aspx">商户列表</a></li>
                     <li class="sidebar_addmer"><a href="<%=DomainUrl %>/View/Dev/Merchant/Meradd.aspx">新增商户</a></li>
-                    <li class="sidebar_mertype"><a href="categroy.html">分类管理</a></li>
+                    <li class="sidebar_mertype"><a href="<%=DomainUrl %>/View/Dev/Merchant/Mertypelist.aspx">分类管理</a></li>
                 </ul>
             </li>
             <li class="submenu sidebar_announcement">

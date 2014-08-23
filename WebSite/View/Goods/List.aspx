@@ -311,16 +311,8 @@
                         //TODO:提示弹窗toast
                         mpage.getGoodsList(mpage.start, mpage.type);
                         Common.tip({ type: "success", content: data.success });
-                        //Common.alert({
-                        //    title: "提示",
-                        //    content: data.success
-                        //});
                     } else {
                         Common.tip({ type: "error", content: data.error });
-                        //Common.alert({
-                        //    title: "错误提示",
-                        //    content: data.error
-                        //});
                     }
                 }, "JSON");
             },

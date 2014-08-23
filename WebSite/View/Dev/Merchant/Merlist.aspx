@@ -26,7 +26,7 @@
                             <input type="checkbox" id="j-btn-selectAll" name="title-table-checkbox" /></th>--%>
                         <th style="width: 40px;"><a href="javascript:;" class="j-orderby" data-orderby="0">编号<i class="icon-arrow-down icon-green" style="display: none;"></i></a></th>
                         <th>图片</th>
-                        <th>名称</th>
+                        <th style="width: 100px;">名称</th>
                         <th><a href="javascript:;" class="j-orderby" data-orderby="1">服务期<i class="icon-arrow-up icon-green" style="display: none;"></i></a></th>
                         <th>分类</th>
                         <th><a href="javascript:;" class="j-orderby" data-orderby="2">用户量<i class="icon-arrow-up icon-green" style="display: none;"></i></a></th>

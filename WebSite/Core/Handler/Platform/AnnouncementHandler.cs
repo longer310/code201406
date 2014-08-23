@@ -351,12 +351,10 @@ namespace Backstage.Handler
         /// </summary>
         public void GetTempleList()
         {
-            var mid = GetInt("mid");
+            var typeid = GetInt("typeid");
             var start = GetInt("start");
             var limit = GetInt("limit");
-            var result = TempleHelper.GetList(mid, start, limit);
-
-            result.Insert(0, new Temple() { Id = 0, Name = "全部分类" });
+            var result = TempleHelper.GetList(typeid, start * limit, limit);
 
             var jt = new JsonTransfer();
             jt.Add("list", result.Results);
@@ -451,8 +449,7 @@ namespace Backstage.Handler
                 return;
             }
             var jt = new JsonTransfer();
-            jt.Add("data", result.Results);
-            jt.Add("totalcount", result.TotalCount);
+            jt.Add("data", temple);
             Response.Write(jt.ToJson());
             Response.End();
         }

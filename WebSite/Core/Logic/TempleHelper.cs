@@ -15,14 +15,14 @@ namespace Backstage.Core.Logic
         /// 获取模板列表
         /// </summary>
         /// <returns></returns>
-        public static PagResults<Temple> GetList(int mid, int start, int limit)
+        public static PagResults<Temple> GetList(int typeid, int start, int limit)
         {
             var result = new PagResults<Temple>();
             result.Results = new List<Temple>();
+            string wheresql = typeid == 0 ? string.Empty : string.Format(" where TypeId={0} ", typeid);
             string limitsql = limit != 0 ? " LIMIT ?start,?limit" : string.Empty;
-            var cmdText = @"select * from Temple where TypeId=?TypeId " + limitsql;
+            var cmdText = @"select * from Temple " + wheresql + limitsql;
             List<MySqlParameter> parameters = new List<MySqlParameter>();
-            parameters.Add(new MySqlParameter("?TypeId", mid));
             if (!string.IsNullOrEmpty(limitsql))
             {
                 parameters.Add(new MySqlParameter("?start", start));
@@ -49,7 +49,7 @@ namespace Backstage.Core.Logic
                     conn.Dispose();
                     conn.Open();
 
-                    cmdText = string.Format("select count(*) from Temple where TypeId={0}", mid);
+                    cmdText = "select count(*) from Temple " + wheresql;
                     reader = MySqlHelper.ExecuteReader(conn, CommandType.Text, cmdText);
                     if (reader.HasRows)
                     {

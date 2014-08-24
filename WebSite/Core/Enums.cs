@@ -351,4 +351,22 @@ namespace Backstage.Core
         /// </summary>
         Logo = 4
     }
+    /// <summary>
+    /// 商户类型
+    /// </summary>
+    public enum MerchantTypes
+    {
+        /// <summary>
+        /// 餐饮超市类
+        /// </summary>
+        Food = 1,
+        /// <summary>
+        /// 夜场
+        /// </summary>
+        Night = 2,
+        /// <summary>
+        /// 企业
+        /// </summary>
+        Company = 3,
+    }
 }

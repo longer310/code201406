@@ -62,7 +62,7 @@
 				<td>${v.Money}</td>
 				<td style="width:200px;">
                     <a class="btn btn-primary btn-mini" href="<%=DomainUrl %>/view/dev/merchant/meredit.aspx?id=${v.Id}"><i class="icon-pencil icon-white"></i> 查看</a>
-                    <a class="btn btn-success btn-mini" href="shop_config.html?id=111"><i class="icon-cog icon-white"></i> 登陆管理</a>
+                    <a class="btn btn-success btn-mini" href="javascript:void(0);" onclick="window.open(<%=DomainUrl %>/view/Index.aspx?sellerid=${v.Id})"><i class="icon-cog icon-white"></i> 登陆管理</a>
                     <%--<a href="#" class="btn btn-danger btn-mini j-btn-del"><i class="icon-remove icon-white"></i> 删除</a>--%>
 			</tr>
 		{{/each}}

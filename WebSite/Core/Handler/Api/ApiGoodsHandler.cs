@@ -128,6 +128,13 @@ namespace Backstage.Handler
                 ReturnErrorMsg("商户id不合法");
                 return;
             }
+            var merchant = MerchantHelper.GetMerchant(sellerid);
+            if (merchant == null)
+            {
+                ReturnErrorMsg("不存在该商户");
+                return;
+            }
+
             //单独获取产品的列表 以后得改 +图片墙+活动
             var list = new List<TSlideItem>();
             var gads = GoodsHelper.GetGoodsList(sellerid, "", "", 0, 5).Results;
@@ -176,12 +183,23 @@ namespace Backstage.Handler
             }
 
             var pcfg = ParamHelper.PlatformCfgData;
-            data.ad = new AdItem() { img = pcfg.PhoneAd.PicUrl,  url = pcfg.PhoneAd.JumpUrl };
+            data.ad = new AdItem() { img = pcfg.PhoneAd.PicUrl, url = pcfg.PhoneAd.JumpUrl };
 
-            var glist = GoodsHelper.GetGoodsList(sellerid, " and IsHot = 1 ", "", 0, 8).Results;
-            foreach (var gl in glist)
+            if (merchant.MerType == MerchantTypes.Food)
             {
-                data.hots.Add(new HotItem() { img = gl.LogoUrl, gid = gl.Id });
+                var glist = GoodsHelper.GetGoodsList(sellerid, " and IsHot = 1 ", "", 0, 8).Results;
+                foreach (var gl in glist)
+                {
+                    data.hots.Add(new HotItem() { img = gl.LogoUrl, gid = gl.Id });
+                }
+            }
+            else if (merchant.MerType == MerchantTypes.Night)
+            {
+                var mlist = SourceMaterialHelper.GetList(sellerid, 0, 8);
+                foreach (var gl in mlist)
+                {
+                    data.hots.Add(new HotItem() { img = gl.Url, gid = gl.Id });
+                }
             }
 
             //返回信息

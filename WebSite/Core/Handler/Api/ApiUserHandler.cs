@@ -508,6 +508,7 @@ namespace Backstage.Handler
             public string pointx { get; set; }
 
             public string pointy { get; set; }
+            public int mertypeid { get; set; }
         }
         public void GetMerchant()
         {
@@ -542,6 +543,8 @@ namespace Backstage.Handler
             data.wxurl = merchant.WxUrl;
             data.pointx = merchant.PointX;
             data.pointy = merchant.PointY;
+            //商户类型
+            data.mertypeid = (int)merchant.MerType;
 
             //返回信息
             ReturnCorrectData(data);

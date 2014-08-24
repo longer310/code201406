@@ -12,6 +12,37 @@ namespace Backstage.Core.Logic
     public static class MerchantTypeHelper
     {
         /// <summary>
+        /// 获取商户类型
+        /// </summary>
+        /// <returns></returns>
+        public static MerchantType GetMerchantType(int id)
+        {
+            MerchantType merchantType = new MerchantType();
+            var cmdText = string.Format("select * from MerchantType where id={0}", id);
+            try
+            {
+                using (var conn = Utility.ObtainConn(Utility._gameDbConn))
+                {
+                    MySqlDataReader reader = MySqlHelper.ExecuteReader(conn, CommandType.Text, cmdText);
+                    if (reader.HasRows)
+                    {
+                        if (reader.Read())
+                        {
+                            merchantType.Id = reader.GetInt32(0);
+                            merchantType.Name = reader["Name"].ToString();
+                            merchantType.Count = (int) reader["Count"];
+                            merchantType.TypeId = (int) reader["TypeId"];
+                        }
+                    }
+                }
+            }
+            catch (System.Exception ex)
+            {
+                throw;
+            }
+            return merchantType;
+        }
+        /// <summary>
         /// 获取商户类型列表
         /// </summary>
         /// <returns></returns>

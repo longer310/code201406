@@ -68,6 +68,11 @@ namespace Backstage.Core.Logic
                             merchant.DevName = reader["DevName"].ToString();
                             merchant.Sid = (int)reader["Sid"];
 
+                            //获取商户基础类型
+                            var merchanttype = MerchantTypeHelper.GetMerchantType(merchant.Mid);
+                            if (merchanttype != null)
+                                merchant.MerType = (MerchantTypes)merchanttype.TypeId;
+
                             return merchant;
                         }
                     }

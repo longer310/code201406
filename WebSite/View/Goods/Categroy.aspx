@@ -105,8 +105,9 @@
 </script>
 
 <script type="text/javascript">
+    var sellerId = '<%=SellerId%>';
     var MPage = {
-        hander: "<%=DomainUrl %>/Handler/Merchant/GoodsHandler.ashx?action=",
+        hander: "<%=DomainUrl %>/Handler/Merchant/GoodsHandler.ashx?sellerId=" + sellerId + "&action=",
         init: function () {
             var mpage = this;
 

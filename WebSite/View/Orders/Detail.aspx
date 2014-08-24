@@ -143,8 +143,9 @@
         Common.tip({type : "warning", content :"asfdsadf"})
         Common.tip({type : "error", content :"asfdsadf"})--%>
     <script type="text/javascript">
+        var sellerId = '<%=SellerId%>';
         var MPage = {
-            hander: "<%=DomainUrl %>/Handler/Merchant/OrdersHandler.ashx?action=",
+            hander: "<%=DomainUrl %>/Handler/Merchant/OrdersHandler.ashx?sellerId=" + sellerId + "&action=",
             init: function () {
                 var mpage = this;
 

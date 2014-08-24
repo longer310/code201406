@@ -14,11 +14,37 @@ namespace WebSite.View
     /// </summary>
     public class MerchantMasterBasePage : System.Web.UI.MasterPage
     {
+
+        public string GetString(string paramName)
+        {
+            string defaultVale = "";
+            var p1 = Request.Form[paramName];
+            if (string.IsNullOrEmpty(p1))
+            {
+                p1 = Request.QueryString[paramName];
+                if (string.IsNullOrEmpty(p1))
+                {
+                    return defaultVale;
+                }
+            }
+            return p1;
+        }
         public Account Merchant
         {
             get { return AccountHelper.GetCurUser(); }
         }
-        public string DomainUrl { get { ; return Utility._domainurl; } }
+        public string DomainUrl { get { return Utility._domainurl; } }
+
+        public string SellerId
+        {
+            get
+            {
+                var sellerId = GetString("sellerId");
+                if (sellerId != null)
+                    return sellerId;
+                return Merchant.Id.ToString();
+            }
+        }
     }
     public partial class MerchantMaster : MerchantMasterBasePage
     {

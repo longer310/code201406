@@ -77,16 +77,17 @@
 					<td>￥<b class="text-error">${v.TotalConsume}</b></td>
 					<td>${v.LastLoginTime.ToDate().Format("yyyy-MM-dd hh:mm:ss")}</td>
 					<td style="width:120px;">
-						<a class="btn btn-primary btn-mini" href="<%=DomainUrl %>/view/user/edit.aspx?id=${v.Id}"><i class="icon-pencil icon-white"></i> 编辑</a>
+						<a class="btn btn-primary btn-mini" href="<%=DomainUrl %>/view/user/edit.aspx?id=${v.Id}&sellerId=<%=SellerId%>"><i class="icon-pencil icon-white"></i> 编辑</a>
 						<a class="btn btn-danger btn-mini j-btn-del" href="javascript:void(0);"><i class="icon-remove icon-white"></i> 删除</a>
 					</td>
 				</tr>
 			{{/each}}
-        </script>
+    </script>
 
     <script type="text/javascript">
+        var sellerId = '<%=SellerId%>';
         var MPage = {
-            hander: "<%=DomainUrl %>/Handler/Merchant/UserHandler.ashx?action=",
+            hander: "<%=DomainUrl %>/Handler/Merchant/UserHandler.ashx?sellerId=" + sellerId + "&action=",
             maxpage: 5,     //最多显示的页数
             start: 0,       //页码
             limit: 3,       //一页条数
@@ -265,7 +266,7 @@
             MPage.init();
         });
 
-        </script>
+    </script>
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="Footer" runat="server">
 </asp:Content>

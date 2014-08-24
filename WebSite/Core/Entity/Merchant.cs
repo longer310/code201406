@@ -166,6 +166,10 @@ namespace Backstage.Core.Entity
         /// 签约模式id 存储在param表的PlatformCfg里面
         /// </summary>
         public int Sid { get; set; }
+        /// <summary>
+        /// 商户类型 获取单个的时候 赋值
+        /// </summary>
+        public MerchantTypes MerType { get; set; }
 
         public Merchant()
         {

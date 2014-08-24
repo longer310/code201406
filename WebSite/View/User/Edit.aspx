@@ -41,7 +41,7 @@
         	<table class="table table-striped table-bordered">
                 <tbody>
                 	<tr>
-                		<td rowspan="3" style="text-align:center; width:120px;"><img src="${Avatar}" /></td>
+                		<td rowspan="3" style="text-align:center; width:120px;"><img style="max-width:100px;min-width:100px;max-height:100px;min-height:100px;" src="${Avatar}" /></td>
                 		<th>会员账号：</th>
                         <td><span class="text-info">${UserName}</span></td>
                         <th>性　　别：</th>
@@ -127,8 +127,9 @@
 			</div>
         </script>
     <script type="text/javascript">
+        var sellerId = '<%=SellerId%>';
         var MPage = {
-            hander: "<%=DomainUrl %>/Handler/Merchant/UserHandler.ashx?action=",
+            hander: "<%=DomainUrl %>/Handler/Merchant/UserHandler.ashx?sellerId=" + sellerId + "&action=",
             uid: 0,
             init: function () {
                 var mpage = this;

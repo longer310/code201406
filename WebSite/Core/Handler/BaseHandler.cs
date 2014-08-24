@@ -57,7 +57,7 @@ namespace Backstage.Core
                     _curSellerId = CurrentUser.Id;
                 else //管理员
                 {
-                    var sellerId = Request.QueryString["sellerid"];
+                    var sellerId = GetString("sellerId");
                     if (!string.IsNullOrEmpty(sellerId) && Utility.IsNum(sellerId))
                         _curSellerId = Convert.ToInt32(sellerId);
                 }

@@ -61,15 +61,25 @@ namespace Backstage.Core
                 return;
             }
             //if (_currentUser != null && (_currentUser.RoleType != RoleType.Manage || _currentUser.RoleType != RoleType.Merchant && _currentUser.RoleType != RoleType.SecondManage && _currentUser.RoleType != RoleType.SuperManage))
-            if(_currentUser != null && _currentUser.RoleType > RoleType.Merchant)
+            if (_currentUser != null && _currentUser.RoleType > RoleType.Merchant)
             {
                 AccountHelper.SetLogOut();
-//                throw new ArgumentException("对不起，你不是管理员");
+                //                throw new ArgumentException("对不起，你不是管理员");
 
                 Response.Write(new JsonTransfer().SetError("对不起，你不是管理员或商户"));
                 Response.End();
             }
-            if (_currentUser != null) SellerId = _currentUser.SellerId.ToString();
+            if (_currentUser != null)
+            {
+                if (_currentUser.RoleType == RoleType.Merchant) //角色为商户时 本身id即为商户id
+                    SellerId = _currentUser.Id.ToString();
+                else if (_currentUser.RoleType > RoleType.Merchant)//角色为会员 则为会员用户的商户id字段
+                    SellerId = _currentUser.SellerId.ToString();
+                else
+                {
+                    SellerId = GetString("sellerId");//管理员 则是接受传参
+                }
+            }
         }
 
         private void RedirectToLoginPage()
@@ -85,7 +95,7 @@ namespace Backstage.Core
             var rtn = context.Request.QueryString["rtn"];
             if (rtn == null)
             {
-                if(CurrentUser.RoleType == RoleType.Merchant)
+                if (CurrentUser.RoleType == RoleType.Merchant)
                     Redirect("View/Index.aspx");
                 else if (CurrentUser.RoleType < RoleType.Merchant)
                     Redirect("View/Dev/Index.aspx");
@@ -136,6 +146,21 @@ namespace Backstage.Core
                     return false;
             }
             return true;
+        }
+
+        public string GetString(string paramName)
+        {
+            string defaultVale = "";
+            var p1 = Request.Form[paramName];
+            if (string.IsNullOrEmpty(p1))
+            {
+                p1 = Request.QueryString[paramName];
+                if (string.IsNullOrEmpty(p1))
+                {
+                    return defaultVale;
+                }
+            }
+            return p1;
         }
     }
 }

@@ -99,7 +99,7 @@
                         {{if v.Type == 1}}
 							<a class="btn btn-success btn-mini j-btn-reach" href="javascript:;"><i class="icon-ok icon-white"></i> 已发货</a>
                         {{/if}}
-							<a class="btn btn-primary btn-mini" href="<%=DomainUrl %>/view/orders/detail.aspx?id=${v.Id}"><i class="icon-pencil icon-white"></i> 查看</a>
+							<a class="btn btn-primary btn-mini" href="<%=DomainUrl %>/view/orders/detail.aspx?id=${v.Id}&sellerId=<%=SellerId%>"><i class="icon-pencil icon-white"></i> 查看</a>
 						</div>
 					</td>
 				</tr>
@@ -120,8 +120,9 @@
         }
         </script>
     <script type="text/javascript">
+        var sellerId = '<%=SellerId%>';
         var MPage = {
-            hander: "<%=DomainUrl %>/Handler/Merchant/OrdersHandler.ashx?action=",
+            hander: "<%=DomainUrl %>/Handler/Merchant/OrdersHandler.ashx?sellerId=" + sellerId + "&action=",
             maxpage: 5,     //最多显示的页数
             start: 0,       //页码
             limit: 3,       //一页条数

@@ -254,7 +254,7 @@ namespace Backstage.Core.Logic
         /// </summary>
         /// <param name="data"></param>
         /// <returns></returns>
-        public static bool UpdateGoodsCategoriesCount(List<GoodsHandler.GoodsCategoriesCountItem> data)
+        public static bool UpdateGoodsCategoriesCount(List<GoodsHandler.ChangeCountItem> data)
         {
             var cmdText = string.Empty;
             List<MySqlParameter> parameters = new List<MySqlParameter>();

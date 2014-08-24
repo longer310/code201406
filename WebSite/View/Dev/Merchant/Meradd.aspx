@@ -549,7 +549,7 @@
                     $("#j_name_appointment").val().trim(),
                     $("#j_name_img").val().trim(),
                     $("#j_name_box").val().trim()
-                ].join(',');
+                ];
 
                 if (data_save.Name == "") {
                     Common.tip({ type: "error", content: "商户名称不能为空" });

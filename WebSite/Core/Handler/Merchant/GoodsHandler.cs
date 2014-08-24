@@ -259,7 +259,7 @@ namespace Backstage.Handler
             Response.Write(jt.ToJson());
             Response.End();
         }
-        public class GoodsCategoriesCountItem
+        public class ChangeCountItem
         {
             public int Id { get; set; }
             public int Change { get; set; }
@@ -284,12 +284,12 @@ namespace Backstage.Handler
                 ReturnErrorMsg("没有权限删除其他商户产品或产品不存在");
                 return;
             }
-            var data = new List<GoodsCategoriesCountItem>();
+            var data = new List<ChangeCountItem>();
             foreach (var goods in goodsresult.Results)
             {
                 var item = data.FirstOrDefault(o => o.Id == goods.Cid);
                 if (item == null)
-                    data.Add(new GoodsCategoriesCountItem() { Id = goods.Cid, Change = -1 });
+                    data.Add(new ChangeCountItem() { Id = goods.Cid, Change = -1 });
                 else
                     item.Change--;
             }
@@ -361,9 +361,9 @@ namespace Backstage.Handler
             goods.TagList = Utility.GetListstring(tags);
             if (goods.Cid != cid)
             {//改变产品分类的商品个数 统计
-                var data = new List<GoodsCategoriesCountItem>();
-                if (goods.Cid > 0) data.Add(new GoodsCategoriesCountItem() { Id = goods.Cid, Change = -1 });
-                data.Add(new GoodsCategoriesCountItem() { Id = cid, Change = 1 });
+                var data = new List<ChangeCountItem>();
+                if (goods.Cid > 0) data.Add(new ChangeCountItem() { Id = goods.Cid, Change = -1 });
+                data.Add(new ChangeCountItem() { Id = cid, Change = 1 });
                 GoodsCategoriesHelper.UpdateGoodsCategoriesCount(data);
             }
             goods.Cid = cid;

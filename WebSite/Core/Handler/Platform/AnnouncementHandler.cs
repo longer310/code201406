@@ -47,6 +47,8 @@ namespace Backstage.Handler
                     DelMerchantTypeList(); break;
                 case "addMerchantType":
                     AddMerchantType(); break;
+                case "saveMerchantTypeList":
+                    SaveMerchantTypeList(); break;
                 #endregion
 
                 #region 商户
@@ -255,6 +257,60 @@ namespace Backstage.Handler
             else
                 ReturnErrorMsg("新增失败");
         }
+        [Serializable]
+        public class SaveMerchantTypeItem
+        {
+            [XmlElement("Id")]
+            public int Id { get; set; }
+            [XmlElement("Name")]
+            public string Name { get; set; }
+        }
+        /// <summary>
+        /// 保存商户分类列表
+        /// </summary>
+        public void SaveMerchantTypeList()
+        {
+            string data_save = GetString("data_save");
+            if (string.IsNullOrEmpty(data_save))
+            {
+                ReturnErrorMsg("没有选择需要保存的商户分类");
+                return;
+            }
+
+            var json = new JavaScriptSerializer();
+            var list = json.Deserialize(data_save, typeof(List<SaveMerchantTypeItem>)) as List<SaveMerchantTypeItem>;
+            if (list == null)
+            {
+                ReturnErrorMsg("没有选择需要保存的商户分类");
+                return;
+            }
+
+            var merTypeList = MerchantTypeHelper.GetList();
+            var saveTypeList = new List<MerchantType>();
+            foreach (var saveMerchantTypeItem in list)
+            {
+                var item = merTypeList.FirstOrDefault(o => o.Id == saveMerchantTypeItem.Id);
+                if (item == null)
+                {
+                    ReturnErrorMsg("上传了不存在商户类型id");
+                    return;
+                }
+                item.Name = saveMerchantTypeItem.Name;
+
+                saveTypeList.Add(item);
+            }
+
+            if (saveTypeList.Count == 0)
+            {
+                ReturnErrorMsg("没有选择需要保存的商户分类");
+                return;
+            }
+
+            if (MerchantTypeHelper.SaveMerchantTypeList(saveTypeList))
+                ReturnCorrectMsg("保存成功");
+            else
+                ReturnErrorMsg("保存失败");
+        }
         #endregion
 
         #region 商户
@@ -359,7 +415,7 @@ namespace Backstage.Handler
             [XmlElement("Email")]
             public string Email { get; set; }
             [XmlElement("CnameList")]
-            public string CnameList { get; set; }
+            public List<string> CnameList { get; set; }
         }
         /// <summary>
         /// 保存商户信息
@@ -402,18 +458,27 @@ namespace Backstage.Handler
             }
             var merchant = MerchantHelper.GetMerchant(merchantinfo.Id);
             var isadd = 0;
+            var changeCountList = new List<GoodsHandler.ChangeCountItem>();
             if (merchant == null)
             {
                 merchant = new Merchant();
                 merchant.Id = merchantinfo.Id;
                 isadd = 1;
+
+                changeCountList.Add(new GoodsHandler.ChangeCountItem() { Id = merchantinfo.Mid, Change = 1 });
             }
 
             user.UserName = merchantinfo.UserName;
 
             merchant.Name = merchantinfo.Name;
             merchant.LogoUrl = merchantinfo.LogoUrl;
+            if (id > 0 && merchantinfo.Mid != merchant.Mid)
+            {
+                if (merchant.Mid > 0) changeCountList.Add(new GoodsHandler.ChangeCountItem() { Id = merchant.Mid, Change = -1 });
+                changeCountList.Add(new GoodsHandler.ChangeCountItem() { Id = merchantinfo.Mid, Change = 1 });
+            }
             merchant.Mid = merchantinfo.Mid;
+
             merchant.Tid = merchantinfo.Tid;
             merchant.ServerEndTime = merchantinfo.ServerEndTime;
             merchant.HasWifi = merchantinfo.HasWifi;
@@ -425,20 +490,22 @@ namespace Backstage.Handler
             merchant.WinXinAccount = merchantinfo.WinXinAccount;
             merchant.Qq = merchantinfo.Qq;
             merchant.Email = merchantinfo.Email;
-            var cnameList = Utility.GetListstring(merchantinfo.CnameList);
-            if (string.IsNullOrEmpty(cnameList[0])) cnameList[0] = "活动咨询";
-            if (string.IsNullOrEmpty(cnameList[1])) cnameList[0] = "商品展示";
-            if (string.IsNullOrEmpty(cnameList[2])) cnameList[0] = "快速预约";
-            if (string.IsNullOrEmpty(cnameList[3])) cnameList[0] = "图片墙";
-            if (string.IsNullOrEmpty(cnameList[4])) cnameList[0] = "包厢";
-            merchant.CnameList = cnameList;
+            if (string.IsNullOrEmpty(merchantinfo.CnameList[0])) merchantinfo.CnameList[0] = "活动咨询";
+            if (string.IsNullOrEmpty(merchantinfo.CnameList[1])) merchantinfo.CnameList[1] = "商品展示";
+            if (string.IsNullOrEmpty(merchantinfo.CnameList[2])) merchantinfo.CnameList[2] = "快速预约";
+            if (string.IsNullOrEmpty(merchantinfo.CnameList[3])) merchantinfo.CnameList[3] = "图片墙";
+            if (string.IsNullOrEmpty(merchantinfo.CnameList[4])) merchantinfo.CnameList[4] = "包厢";
+            merchant.CnameList = merchantinfo.CnameList;
             merchant.DevName = merchantinfo.DevName;
 
             AccountHelper.UpdateUser(user);
             if (MerchantHelper.SaveMerchant(merchant, isadd))
             {
+                MerchantTypeHelper.UpdateMerchantCount(changeCountList);
                 if (id == 0)
+                {
                     ReturnCorrectMsg("添加成功");
+                }
                 else
                     ReturnCorrectMsg("更新成功");
             }

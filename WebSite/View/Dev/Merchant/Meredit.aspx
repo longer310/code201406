@@ -363,7 +363,7 @@
                 $("#sidebar .sidebar_merchant").addClass("active open").find(".sidebar_merlist").addClass("active");
 
 
-                $.post(mpage.hander + "getCfgList", { type: 1 }, function (data) {
+                $.post(mpage.hander + "getCfgList", {  }, function (data) {
                     if (!data.error) {
                         Shop_SubCategory = data.mertypelist;
                         Template_List = data.templelist;
@@ -595,7 +595,7 @@
                     $("#j_name_appointment").val().trim(),
                     $("#j_name_img").val().trim(),
                     $("#j_name_box").val().trim()
-                ].join(',');
+                ];
 
 
                 if (data_save.Name == "") {

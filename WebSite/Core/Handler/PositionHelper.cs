@@ -89,12 +89,18 @@ namespace Backstage.Core.Handler
         {
             var results = new List<BoxType>();
             string commandText = @"select * from boxtype where sellerId = ?sellerId LIMIT ?index,?size";
-
             List<MySqlParameter> parameters = new List<MySqlParameter>();
-            parameters.Add(new MySqlParameter("?sellerId", sellerId));
-            parameters.Add(new MySqlParameter("?index", pageIndex));
-            parameters.Add(new MySqlParameter("?size", pageSize));
-
+            if (pageSize == 0)
+            {
+                commandText = @"select * from boxtype where sellerId = ?sellerId";
+                parameters.Add(new MySqlParameter("?sellerId", sellerId));
+            }
+            else
+            {
+                parameters.Add(new MySqlParameter("?sellerId", sellerId));
+                parameters.Add(new MySqlParameter("?index", pageIndex));
+                parameters.Add(new MySqlParameter("?size", pageSize));
+            }
             try
             {
                 using (var conn = Utility.ObtainConn(Utility._gameDbConn))

@@ -32,20 +32,33 @@ namespace Backstage.Core.Handler
             int size = GetInt("limit");
             int sid = GetInt("sellerid");
 
-            var results = PositionHelper.GetList(sid, index, size);
+            var categories = PositionHelper.GetListBoxTypes(sid, index * size, size);
             var data = new List<object>();
-            foreach (var r in results)
+
+            foreach (var r in categories)
             {
+                var items = PositionHelper.GetListByBoxTypeId(r.Id);
+
                 var d = new
                 {
-                    sid = r.Id,
-                    img = r.ImgUrl,
                     title = r.Title,
-                    price = r.Price,
-                    des = r.Description,
-                    tel = r.Phone,
-                    status = r.Status
+                    cid = r.Id,
+                    list = new List<object>()
                 };
+
+                foreach (var item in items)
+                {
+                    d.list.Add(new
+                    {
+                        sid = item.Id,
+                        hold = r.HoldNum,
+                        price = item.Price,
+                        cid = r.Id,
+                        lowest = r.Lowest,
+                        status = item.Status
+                    });
+                }
+
                 data.Add(d);
             }
 
@@ -61,15 +74,31 @@ namespace Backstage.Core.Handler
             int sid = GetInt("sid");
 
             var item = PositionHelper.GetItem(sid);
+            var boxType = PositionHelper.GetBoxType(item.BoxTypeId);
+            IList<Timeline> timeslot = PositionHelper.GetTimeLines(sid);
+            var times = new List<object>();
+            foreach (var t in timeslot)
+            {
+                var time_item = new
+                {
+                    name = t.Title,
+                    time = t.BeginTime.ToString("yyyy-MM-dd HH:mm:ss") + "至" + t.EndTime.ToString("yyyy-MM-dd HH:mm:ss"),
+                    status = t.Status,
+                    tid = t.Id
+                };
+                times.Add(time_item);
+            }
             var data = new
             {
                 sid = item.Id,
-                img = item.ImgUrl,
-                title = item.Title,
+                imgs = Utility.GetListstring(item.ImgUrls),
+                cid = item.BoxTypeId,
+                ctitle = boxType.Title,
                 price = item.Price,
                 des = item.Description,
-                tel = item.Phone,
-                status = item.Status
+                lowest = boxType.Lowest,
+                status = item.Status,
+                timelost = times
             };
 
 
@@ -87,36 +116,28 @@ namespace Backstage.Core.Handler
             {
                 var userPosition = new UserPosition();
                 userPosition.PositionId = GetInt("sid");
-                userPosition.UserId = GetInt("uid");
-                userPosition.NickName = GetString("nickname");
-                userPosition.PayId = GetInt("pid");
-                userPosition.Message = GetString("message");
-                userPosition.Phone = GetInt("mobile");
+                userPosition.TimeId = GetInt("tid");
+                userPosition.Phone = GetString("mobile");
                 userPosition.SellerId = GetInt("sellerid");
-                userPosition.CreateTime = new DateTime(GetInt("dateline"), DateTimeKind.Utc);
-                var old = PositionHelper.GetUserPosition(userPosition.UserId, userPosition.PositionId);
+                //userPosition.CreateTime = new DateTime(GetInt("dateline"), DateTimeKind.Utc);
+                //var account = AccountHelper.GetUserByPhone(userPosition.Phone, userPosition.SellerId);
+                //userPosition.UserId = account.Id;
+                //userPosition.NickName = account.NickName;
+
                 var position = PositionHelper.GetItem(userPosition.PositionId);
-                if (position.Status == 1)
+                var timeline = PositionHelper.GetTimeLine(userPosition.TimeId);
+                if (timeline.Status == 1)
                 {
                     jt.Add("status", 0);
                     jt.Add("message", "该位置已经被预定了");
                     Response.Write(DesEncrypt(jt).ToLower());
-                    Response.End();
-                    return;
-                }
-                if (old.Id != 0)
-                {
-                    jt.Add("status", 0);
-                    jt.Add("message", "该用户已经预定过该位置");
-                    Response.Write(DesEncrypt(jt).ToLower());
-                    Response.End();
+                    //Response.End();
                     return;
                 }
                 PositionHelper.CreateUserPositon(userPosition);
-                userPosition = PositionHelper.GetUserPosition(userPosition.UserId, userPosition.PositionId);
-                var data = new { orderId = userPosition.Id };
-                jt.Add("data", data);
-
+                //userPosition = PositionHelper.GetUserPosition(userPosition.UserId, userPosition.PositionId);
+                timeline.Status = 1;
+                PositionHelper.UpdateTimeline(timeline);
             }
             catch
             {

@@ -5,31 +5,29 @@ using System.Web;
 
 namespace Backstage.Core.Entity
 {
-    public class Position
+    /// <summary>
+    /// 包厢时间段
+    /// </summary>
+    public class Timeline
     {
         public int Id { get; set; }
 
-        //public int ImgId { get; set; }
-
-        public int BoxTypeId { get; set; }
+        public int PositionId { get; set; }
 
         /// <summary>
-        /// 多个url,","相隔
+        /// 时间段的名称
         /// </summary>
-        public string ImgUrls { get; set; }
-
         public string Title { get; set; }
+        public DateTime BeginTime { get; set; }
 
-        public float Price { get; set; }
+        public DateTime EndTime { get; set; }
 
-        public string Description { get; set; }
-
-        public string Phone { get; set; }
-
+        /// <summary>
+        ///  1：被预定，0：未被预定
+        /// </summary>
         public int Status { get; set; }
 
         public int SellerId { get; set; }
 
-       
     }
 }

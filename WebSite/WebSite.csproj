@@ -554,6 +554,8 @@
     <Content Include="View\Dev\Temple\AddTemple.aspx" />
     <Content Include="View\Dev\Temple\Templelist.aspx" />
     <Content Include="View\Dev\Temple\EditTemple.aspx" />
+    <Content Include="View\Dev\UserCenter\Add.aspx" />
+    <Content Include="View\Dev\UserCenter\List.aspx" />
     <Content Include="View\Goods\Item.aspx" />
     <Content Include="View\Goods\Categroy.aspx" />
     <Content Include="View\Index.aspx" />
@@ -578,7 +580,9 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Core\Entity\BoxType.cs" />
     <Compile Include="Core\Entity\Temple.cs" />
+    <Compile Include="Core\Entity\Timeline.cs" />
     <Compile Include="Core\Logic\TempleHelper.cs" />
     <Compile Include="Core\PlatBasePage.cs">
       <SubType>ASPXCodeBehind</SubType>
@@ -837,6 +841,20 @@
     <Compile Include="View\Dev\Temple\EditTemple.aspx.designer.cs">
       <DependentUpon>EditTemple.aspx</DependentUpon>
     </Compile>
+    <Compile Include="View\Dev\UserCenter\Add.aspx.cs">
+      <DependentUpon>Add.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="View\Dev\UserCenter\Add.aspx.designer.cs">
+      <DependentUpon>Add.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="View\Dev\UserCenter\List.aspx.cs">
+      <DependentUpon>List.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="View\Dev\UserCenter\List.aspx.designer.cs">
+      <DependentUpon>List.aspx</DependentUpon>
+    </Compile>
     <Compile Include="View\Goods\Item.aspx.cs">
       <DependentUpon>Item.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1011,6 +1029,7 @@
     <Content Include="Handler\Backstage\SystemHandler.ashx" />
     <Content Include="Handler\Platform\AnnouncementHandler.ashx" />
     <Content Include="View\DevMaster.Master" />
+    <Content Include="Handler\Backstage\DevSystemHandler.ashx" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

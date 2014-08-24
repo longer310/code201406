@@ -19,7 +19,7 @@ namespace Backstage.Core.Entity
 
         public DateTime CreateTime { get; set; }
 
-        public int Phone { get; set; }
+        public string Phone { get; set; }
 
         public string Message { get; set; }
 
@@ -30,5 +30,6 @@ namespace Backstage.Core.Entity
         /// </summary>
         public int Status { get; set; }
 
+        public int TimeId { get; set; }
     }
 }

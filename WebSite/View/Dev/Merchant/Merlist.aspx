@@ -62,7 +62,7 @@
 				<td>${v.Money}</td>
 				<td style="width:200px;">
                     <a class="btn btn-primary btn-mini" href="<%=DomainUrl %>/view/dev/merchant/meredit.aspx?id=${v.Id}"><i class="icon-pencil icon-white"></i> 查看</a>
-                    <a class="btn btn-success btn-mini" href="javascript:void(0);" onclick="window.open(<%=DomainUrl %>/view/Index.aspx?sellerid=${v.Id})"><i class="icon-cog icon-white"></i> 登陆管理</a>
+                    <a class="btn btn-success btn-mini" href="javascript:void(0);" onclick="MPage.jumpManagerPage(${v.Id})"><i class="icon-cog icon-white"></i> 登陆管理</a>
                     <%--<a href="#" class="btn btn-danger btn-mini j-btn-del"><i class="icon-remove icon-white"></i> 删除</a>--%>
 			</tr>
 		{{/each}}
@@ -101,7 +101,7 @@
             limit: 3, //一页条数
             hander: "<%=DomainUrl %>/Handler/Platform/AnnouncementHandler.ashx?action=",
 
-            init: function() {
+            init: function () {
                 var mpage = this;
 
                 //去掉之前选中打开的项 选中产品列表
@@ -114,11 +114,11 @@
                 mpage.bind();
             },
 
-            bind: function() {
+            bind: function () {
                 var mpage = this;
 
                 //绑定全选
-                $("#j-btn-selectAll").bind("change", function() {
+                $("#j-btn-selectAll").bind("change", function () {
                     if ($(this).attr("checked")) {
                         $("#j-shop-list .j-select:checkbox").attr("checked", "checked");
                     } else {
@@ -129,11 +129,11 @@
                 });
 
                 //绑定批量删除
-                $("#j-btn-delSelected").bind("click", function() {
+                $("#j-btn-delSelected").bind("click", function () {
                     var $checked = $("#j-shop-list :checked");
 
                     var ids = [];
-                    $checked.each(function() {
+                    $checked.each(function () {
                         ids.push($(this).parents("tr").attr("data-id"));
                     });
 
@@ -141,11 +141,11 @@
                         Common.confirm({
                             title: "删除确认提示",
                             content: "您确定要删除当前选择的所有数据吗？",
-                            confirm: function() {
+                            confirm: function () {
                                 //执行确认回调
                                 mpage.delMerchantList(ids.join(','));
                             },
-                            cancel: function() {
+                            cancel: function () {
                                 //执行取消回调
                                 alert('执行取消回调');
                             }
@@ -154,7 +154,7 @@
                         Common.alert({
                             title: "提示",
                             content: "请至少选择一项",
-                            confirm: function() {
+                            confirm: function () {
                                 //执行确认回调
                                 alert('执行确认回调');
                             }
@@ -165,7 +165,7 @@
                 });
 
                 //绑定排序
-                $(".j-orderby").bind("click", function() {
+                $(".j-orderby").bind("click", function () {
                     var orderBy = +$(this).attr("data-orderby"),
                         orderByType;
 
@@ -177,20 +177,24 @@
                     mpage.getShopList(1, mpage.mid, orderBy, orderByType);
                 });
             },
+            jumpManagerPage: function (id) {
+                window.open("<%=DomainUrl %>/view/index.aspx?sellerId=" + id);
+                return false;
+            },
 
-            showShopCategoryTab: function() {
+            showShopCategoryTab: function () {
                 var mpage = this,
                     tmpl = '';
-                $.post(mpage.hander + "getMerchantTypeList", {}, function(data) {
+                $.post(mpage.hander + "getMerchantTypeList", {}, function (data) {
                     if (!data.error) {
-                        $.each(data.list, function(i, v) {
+                        $.each(data.list, function (i, v) {
                             tmpl += '<li class="' + (v.Id == mpage.mid ? 'active' : '') + '" data-id="' + v.Id + '"><a href="#">' + v.Name + '</a></li>';
                         });
 
                         $("#j-shop-category-tab").html(tmpl);
 
                         //绑定tab
-                        $('#j-shop-category-tab a').bind("click", function(e) {
+                        $('#j-shop-category-tab a').bind("click", function (e) {
                             var id = $(this).parent().attr("data-id");
                             $(this).tab('show');
                             mpage.mid = id;
@@ -204,10 +208,10 @@
 
             },
 
-            showOrderBy: function() {
+            showOrderBy: function () {
                 var mpage = this;
 
-                $(".j-orderby").each(function(i, v) {
+                $(".j-orderby").each(function (i, v) {
                     if (mpage.orderByType == 0) {
                         $(v).find("i").removeClass("icon-arrow-up").addClass("icon-arrow-down");
                     } else {
@@ -224,7 +228,7 @@
 
             //p 页码
             //type tab 类型
-            getShopList: function(p, type, orderBy, orderByType) {
+            getShopList: function (p, type, orderBy, orderByType) {
                 var mpage = this;
 
                 mpage.start = p;
@@ -234,7 +238,7 @@
                 mpage.showOrderBy();
 
                 $("#j-btn-selectAll").removeAttr("checked");
-                $.post(mpage.hander + "getMerchantList", { mid: mpage.mid, orderby: mpage.orderBy, orderbytype: mpage.orderByType, start: mpage.start - 1, limit: mpage.limit }, function(data) {
+                $.post(mpage.hander + "getMerchantList", { mid: mpage.mid, orderby: mpage.orderBy, orderbytype: mpage.orderByType, start: mpage.start - 1, limit: mpage.limit }, function (data) {
                     if (!data.error) {
                         $("#j-shop-list").html($("#j-tmpl-shop-listitem").tmpl(data));
 
@@ -256,23 +260,23 @@
                             maxPage: mpage.maxpage, //显示的最多页数
                             per: mpage.limit, //每页显示几个
                             count: data.totalcount,
-                            onchange: function(page) { //切换页数回调函数
+                            onchange: function (page) { //切换页数回调函数
                                 mpage.getShopList(page, type, orderBy, orderByType);
                             }
                         });
 
                         //绑定单个删除
-                        $("#j-shop-list .j-btn-del").bind("click", function() {
+                        $("#j-shop-list .j-btn-del").bind("click", function () {
                             var $item = $(this).parents("tr");
                             var id = $item.attr("data-id");
 
                             Common.confirm({
                                 title: "删除确认提示",
                                 content: "您确定要删除当前商户？",
-                                confirm: function() {
+                                confirm: function () {
                                     mpage.delMerchantList(id);
                                 },
-                                cancel: function() {
+                                cancel: function () {
                                     //执行取消回调
                                     alert('执行取消回调');
                                 }
@@ -287,9 +291,9 @@
             },
 
             //删除商户列表
-            delMerchantList: function(ids) {
+            delMerchantList: function (ids) {
                 var mpage = this;
-                $.post(mpage.hander + "delMerchantList", { ids: ids }, function(data) {
+                $.post(mpage.hander + "delMerchantList", { ids: ids }, function (data) {
                     if (!data.error) {
                         Common.tip({ type: "success", content: data.success });
                         mpage.getShopList(mpage.start);
@@ -301,9 +305,9 @@
             }
         };
 
-        $(function () {
-            MPage.init();
-        });
+            $(function () {
+                MPage.init();
+            });
 
     </script>
 </asp:Content>

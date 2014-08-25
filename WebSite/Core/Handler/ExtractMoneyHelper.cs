@@ -54,7 +54,7 @@ namespace Backstage.Core.Handler
         /// <param name="size"></param>
         /// <param name="order">排序sql</param>
         /// <returns></returns>
-        public static PagResults<ExtractMoney> GetPagings(int sellerId, int index, int size, string order = "orderby CreateTime desc")
+        public static PagResults<ExtractMoney> GetPagings(int sellerId, int index, int size, string order = "order by CreateTime desc")
         {
             var results = new PagResults<ExtractMoney>();
             results.Results = new List<ExtractMoney>();

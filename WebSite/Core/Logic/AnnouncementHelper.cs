@@ -64,6 +64,31 @@ namespace Backstage.Core.Logic
             }
             return result;
         }
+
+
+        public static Announcement GetNewsItem()
+        {
+            var announcement = new Announcement();
+            var cmdText = @"select * from Announcement order by CreateTime desc limit 0,1";
+            try
+            {
+                using (var conn = Utility.ObtainConn(Utility._gameDbConn))
+                {
+                    MySqlDataReader reader = MySqlHelper.ExecuteReader(conn, CommandType.Text, cmdText);
+                    while (reader.Read())
+                    {
+                        announcement.Id = reader.GetInt32(0);
+                        announcement.Content = reader["Content"].ToString();
+                        announcement.CreateTime = (DateTime)reader["CreateTime"];
+                    }
+                }
+            }
+            catch (System.Exception ex)
+            {
+                throw;
+            }
+            return announcement;
+        }
         /// <summary>
         /// 删除公告列表
         /// </summary>

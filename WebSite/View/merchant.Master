@@ -40,8 +40,8 @@
             <li class="submenu">
                 <a href="#"><i class="icon icon-gift"></i><span>活动管理</span> <span class="label">2</span></a>
                 <ul>
-                    <li><a href="#">活动列表</a></li>
-                    <li><a href="#">新增活动</a></li>
+                    <li><a href="<%=DomainUrl %>/View/Active/List.aspx?sellerId=<%=SellerId%>">活动列表</a></li>
+                    <li><a href="<%=DomainUrl %>/View/Active/Add.aspx?sellerId=<%=SellerId%>">新增活动</a></li>
                 </ul>
             </li>
             <li class="submenu sidebar_goods">
@@ -56,17 +56,17 @@
             <li class="submenu">
                 <a href="#"><i class="icon icon-picture"></i><span>图片墙管理</span> <span class="label">2</span></a>
                 <ul>
-                    <li><a href="#">图片墙列表</a></li>
-                    <li><a href="#">新增图片墙</a></li>
+                    <li><a href="<%=DomainUrl %>/View/SourceMaterial/List.aspx?sellerId=<%=SellerId%>">图片墙列表</a></li>
+                    <li><a href="<%=DomainUrl %>/View/SourceMaterial/Add.aspx?sellerId=<%=SellerId%>">新增图片墙</a></li>
                 </ul>
             </li>
             <li class="sidebar_user"><a href="<%=DomainUrl %>/View/User/User.aspx?sellerId=<%=SellerId%>"><i class="icon icon-user"></i><span>会员管理</span></a></li>
-            <li><a href="#"><i class="icon icon-comment"></i><span>留言管理</span></a></li>
+            <li><a href="<%=DomainUrl %>/View/Comment/List.aspx?sellerId=<%=SellerId%>"><i class="icon icon-comment"></i><span>留言管理</span></a></li>
             <li class="submenu">
                 <a href="#"><i class="icon icon-tags"></i><span>电子券管理</span> <span class="label">2</span></a>
                 <ul>
-                    <li><a href="#">电子券列表</a></li>
-                    <li><a href="#">新增电子券</a></li>
+                    <li><a href="<%=DomainUrl %>/View/Coupon/List.aspx?sellerId=<%=SellerId%>">电子券列表</a></li>
+                    <li><a href="<%=DomainUrl %>/View/Coupon/Add.aspx?sellerId=<%=SellerId%>">新增电子券</a></li>
                 </ul>
             </li>
             <li class="sidebar_ad">

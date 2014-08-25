@@ -171,6 +171,22 @@ namespace Backstage.Core.Entity
         /// </summary>
         public MerchantTypes MerType { get; set; }
 
+
+        /// <summary>
+        /// 开户名
+        /// </summary>
+        public string AccountName { get; set; }
+
+        /// <summary>
+        /// 银行
+        /// </summary>
+        public string Bank { get; set; }
+
+        /// <summary>
+        /// 卡号
+        /// </summary>
+        public long CardNumber { get; set; }
+
         public Merchant()
         {
             Name =

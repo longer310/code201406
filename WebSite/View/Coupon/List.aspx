@@ -110,7 +110,7 @@
 					<td><b class="text-error">${v.downloadtimes}</b>次</td>
 					<td><b class="text-error">${v.usertimes}</b>次</td>
 					<td style="width:200px;">
-						<a class="btn btn-primary btn-mini" href="edit.aspx?id=111"><i class="icon-pencil icon-white"></i> 编辑</a>
+						<a class="btn btn-primary btn-mini" href="edit.aspx?id=${v.id}"><i class="icon-pencil icon-white"></i> 编辑</a>
 						<a class="btn btn-info btn-mini j-btn-pause" href=""><i class="icon-pause icon-white"></i> 下架</a>
 						<a class="btn btn-danger btn-mini j-btn-del" href=""><i class="icon-remove icon-white"></i> 删除</a>
 					</td>

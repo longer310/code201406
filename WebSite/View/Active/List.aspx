@@ -41,9 +41,6 @@
     </div>
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="Footer" runat="server">
-    <script src="../../script/js/unicorn.js"></script>
-    <script src="../../script/js/jquery.tmpl.min.js"></script>
-    <script src="../../script/js/common.js"></script>
     <!--页面js-->
     <script src="../../script/js/ue.pager.js"></script>
     <script type="text/javascript">
@@ -70,7 +67,7 @@
 							<div class="post-action">
 								<div class="checker"><span><input type="checkbox" name="radios"></span></div>
 								<span class="label label-warning pull-left">电子券</span>
-								<a href="activity_edit.html?id=1" class="btn btn-primary btn-mini"><i class="icon-pencil icon-white"></i> 编辑</a>
+								<a href="Edit.aspx?id=${v.id}" class="btn btn-primary btn-mini"><i class="icon-pencil icon-white"></i> 编辑</a>
 								<a href="#" class="btn btn-danger btn-mini j-btn-del"><i class="icon-remove icon-white"></i> 删除</a>
 							</div>
 						</div>

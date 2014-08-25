@@ -68,6 +68,10 @@ namespace Backstage.Core.Logic
                             merchant.DevName = reader["DevName"].ToString();
                             merchant.Sid = (int)reader["Sid"];
 
+                            merchant.AccountName = reader["AccountName"].ToString();
+                            merchant.CardNumber = (int)reader["CardNumber"];
+                            merchant.Bank = reader["Bank"].ToString();
+
                             //获取商户基础类型
                             var merchanttype = MerchantTypeHelper.GetMerchantType(merchant.Mid);
                             if (merchanttype != null)
@@ -134,10 +138,14 @@ namespace Backstage.Core.Logic
                                         Money                         = ?Money              ,
                                         DevName                         = ?DevName              ,
                                         Sid                         = ?Sid              ,
-                                        CnameList                     = ?CnameList          
+                                        CnameList                     = ?CnameList   ,    
+                                        AccountName                         = ?AccountName              ,
+                                        CardNumber                         = ?CardNumber              ,
+                                        Bank                     = ?Bank        
 
                                     WHERE
                                         Id = ?Id";
+
                 parameters.Add(new MySqlParameter("?Name", merchant.Name));
                 parameters.Add(new MySqlParameter("?Tname", merchant.Tname));
                 parameters.Add(new MySqlParameter("?Address", merchant.Address));
@@ -178,6 +186,10 @@ namespace Backstage.Core.Logic
                 parameters.Add(new MySqlParameter("?CnameList", Utility.GetString(merchant.CnameList)));
                 parameters.Add(new MySqlParameter("?DevName", merchant.DevName));
                 parameters.Add(new MySqlParameter("?Sid", merchant.Sid));
+
+                parameters.Add(new MySqlParameter("?AccountName", merchant.AccountName));
+                parameters.Add(new MySqlParameter("?CardNumber", merchant.CardNumber));
+                parameters.Add(new MySqlParameter("?Bank", merchant.Bank));
 
 
             }
@@ -223,7 +235,10 @@ namespace Backstage.Core.Logic
                                         Money                ,
                                         DevName                ,
                                         Sid                ,
-                                        CnameList            
+                                        CnameList          ,
+                                        AccountName              ,
+                                        CardNumber              ,
+                                        Bank          
                                         ) 
                                         values
                                         (
@@ -265,7 +280,10 @@ namespace Backstage.Core.Logic
                                         ?Money                ,
                                         ?DevName                ,
                                         ?Sid                ,
-                                        ?CnameList            
+                                        ?CnameList          ,
+                                        ?AccountName              ,
+                                        ?CardNumber              ,
+                                        ?Bank          
                                         )";
                 parameters.Add(new MySqlParameter("?Id", merchant.Id));
                 parameters.Add(new MySqlParameter("?Name", merchant.Name));
@@ -306,6 +324,10 @@ namespace Backstage.Core.Logic
                 parameters.Add(new MySqlParameter("?Money", merchant.Money));
                 parameters.Add(new MySqlParameter("?DevName", merchant.DevName));
                 parameters.Add(new MySqlParameter("?Sid", merchant.Sid));
+
+                parameters.Add(new MySqlParameter("?AccountName", merchant.AccountName));
+                parameters.Add(new MySqlParameter("?CardNumber", merchant.CardNumber));
+                parameters.Add(new MySqlParameter("?Bank", merchant.Bank));
             }
             try
             {
@@ -391,6 +413,10 @@ namespace Backstage.Core.Logic
                         merchant.Money = (float)reader["Money"];
                         merchant.DevName = reader["DevName"].ToString();
                         merchant.Sid = (int)reader["Sid"];
+
+                        merchant.AccountName = reader["AccountName"].ToString();
+                        merchant.CardNumber = (int)reader["CardNumber"];
+                        merchant.Bank = reader["Bank"].ToString();
 
                         result.Results.Add(merchant);
                     }

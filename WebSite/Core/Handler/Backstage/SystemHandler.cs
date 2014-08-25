@@ -56,6 +56,8 @@ namespace Backstage.Core.Handler.Backstage
         {
             var item = new ExtractMoney();
             item.SellerId = GetInt("sellerid");
+
+
             item.Money = GetFloat("money");
             item.Bank = GetString("bank");
             item.CardNumber = GetLong("cardnumber");
@@ -66,11 +68,19 @@ namespace Backstage.Core.Handler.Backstage
             if (user == null)
                 throw new ArgumentNullException("user为空：" + item.SellerId);
 
-            //目前商户的用户信息分两张表存储
+            //目前商户的用户信息分三张表存储
             user.Money -= item.Money;
             AccountHelper.UpdateUser(user);
-            item.Balance = user.Money;
 
+            //商家更新
+            var seller = MerchantHelper.GetMerchant(item.SellerId);
+            seller.CardNumber = item.CardNumber;
+            seller.Bank = item.Bank;
+            seller.AccountName = item.AccountName;
+            MerchantHelper.SaveMerchant(seller);
+
+            //提现表更新
+            item.Balance = user.Money;
             ExtractMoneyHelper.Create(item);
         }
 
@@ -82,6 +92,7 @@ namespace Backstage.Core.Handler.Backstage
             var limit = GetInt("limit");
 
             var result = ExtractMoneyHelper.GetPagings(sellerId, start * limit, limit);
+
             var data = new PagResults<object>();
             data.TotalCount = result.TotalCount;
             foreach (var item in result.Results.OrderByDescending(o => o.CreateTime))
@@ -107,7 +118,7 @@ namespace Backstage.Core.Handler.Backstage
 
         private void GetAnnouncement()
         {
-            var data = AnnouncementHelper.GetList(0,1);
+            var data = AnnouncementHelper.GetList(0, 1);
             JsonTransfer jt = new JsonTransfer();
             jt.Add("data", data);
             Response.Write(DesEncrypt(jt));

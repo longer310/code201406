@@ -192,21 +192,6 @@
 							</ul>
 						</div>
 					</div>
-
-					<div class="widget-box nest-box" >
-						<div class="widget-title">
-							<h5>系统信息</h5>
-						</div>
-						<div class="widget-content">
-							<ul class="server_info clearfix">
-								<li>服务器时间：2013-12-12 12:12:12</li>
-								<li>服务器名称：2013-12-12 12:12:12</li>
-								<li>服务器IP：2013-12-12 12:12:12</li>
-								<li>not framework版本：2013-12-12 12:12:12</li>
-								<li>数据库：2013-12-12 12:12:12</li>
-							</ul>
-						</div>
-					</div>
 				</div>
 			</div>
 </asp:Content>

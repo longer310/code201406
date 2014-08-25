@@ -15,8 +15,7 @@
         <div class="widget-content">
             <div class="alert alert-info alert-block">
                 <h4 class="alert-heading">公告</h4>
-                公告内容公告内容公告内容公告内容公告内容公告内容公告内容公告内容公告内容公告内容公告内容公告内容公告内容公告内容公告内容公告内容公告内容
-				
+                <%=MerchantStat.AnnouncementContent %>
             </div>
 
             <div class="widget-box nest-box">
@@ -65,7 +64,7 @@
                 </div>
             </div>
 
-            <div class="widget-box nest-box">
+           <%-- <div class="widget-box nest-box">
                 <div class="widget-title">
                     <h5>未处理信息</h5>
                 </div>
@@ -76,7 +75,7 @@
                         <li class="span4"><a href="comment_list.html"><i class="icon-comment"></i><strong class="text-info">259</strong> <small>新留言</small></a></li>
                     </ul>
                 </div>
-            </div>
+            </div>--%>
 
             <div class="row-fluid">
                 <div class="span3">
@@ -89,10 +88,10 @@
                         </div>
                         <div class="widget-content">
                             <ul class="site-stats">
-                                <li><i class="icon-user"></i><strong>1433</strong> <small>会员数量</small></li>
-                                <li><i class="icon-gift"></i><strong>16</strong> <small>活动数量</small></li>
-                                <li><i class="icon-tint"></i><strong>259</strong> <small>商品数量</small></li>
-                                <li><i class="icon-picture"></i><strong>8650</strong> <small>图片墙数量</small></li>
+                                <li><i class="icon-user"></i><strong><%=MerchantStat.UserCount %></strong> <small>会员数量</small></li>
+                                <li><i class="icon-gift"></i><strong><%=MerchantStat.ActiveCount %></strong> <small>活动数量</small></li>
+                                <li><i class="icon-tint"></i><strong><%=MerchantStat.GoodsCount %></strong> <small>商品数量</small></li>
+                                <li><i class="icon-picture"></i><strong><%=MerchantStat.ImgCount %></strong> <small>图片墙数量</small></li>
                             </ul>
                         </div>
                     </div>
@@ -108,15 +107,14 @@
                         </div>
                         <div class="widget-content">
                             <ul class="site-stats">
-                                <li><strong>3单</strong> <small>今日</small></li>
-                                <li><strong>16单</strong> <small>本月</small></li>
-                                <li><strong>259单</strong> <small>历史</small></li>
+                                <li><strong><%=MerchantStat.OrderNumber %>单</strong> <small>历史</small></li>
+                                <li><strong><%=MerchantStat.MoneyCount %>元</strong> <small>历史</small></li>
                             </ul>
                         </div>
                     </div>
                 </div>
 
-                <div class="span3">
+                <%--<div class="span3">
                     <div class="widget-box nest-box">
                         <div class="widget-title">
                             <span class="icon">
@@ -128,7 +126,7 @@
                             <ul class="site-stats">
                                 <li><strong>3元</strong> <small>今日</small></li>
                                 <li><strong>16元</strong> <small>本月</small></li>
-                                <li><strong>259元</strong> <small>历史</small></li>
+                                
                             </ul>
                         </div>
                     </div>
@@ -150,10 +148,25 @@
                             </ul>
                         </div>
                     </div>
-                </div>
+                </div>--%>
             </div>
         </div>
     </div>
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="Footer" runat="server">
+    
+        <script type="text/javascript">
+            var MPage = {
+                init: function () {
+                    var mpage = this;
+
+
+                }
+            }
+
+            $(function () {
+                MPage.init();
+            });
+
+        </script>
 </asp:Content>

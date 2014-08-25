@@ -546,6 +546,7 @@
     <Content Include="View\Dev\Ad\Ad.aspx" />
     <Content Include="View\Dev\Announcement\AddAnn.aspx" />
     <Content Include="View\Dev\Announcement\Annlist.aspx" />
+    <Content Include="View\Dev\Cash\List.aspx" />
     <Content Include="View\Dev\Index.aspx" />
     <Content Include="View\Dev\Merchant\Meradd.aspx" />
     <Content Include="View\Dev\Merchant\Meredit.aspx" />
@@ -561,6 +562,8 @@
     <Content Include="View\Index.aspx" />
     <Content Include="View\Orders\Detail.aspx" />
     <Content Include="View\Orders\List.aspx" />
+    <Content Include="View\Push\Add.aspx" />
+    <Content Include="View\Push\List.aspx" />
     <Content Include="View\SourceMaterial\Add.aspx" />
     <Content Include="View\SourceMaterial\Edit.aspx" />
     <Content Include="View\SourceMaterial\List.aspx" />
@@ -581,6 +584,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Core\Entity\BoxType.cs" />
+    <Compile Include="Core\Entity\MerchantStat.cs" />
     <Compile Include="Core\Entity\Temple.cs" />
     <Compile Include="Core\Entity\Timeline.cs" />
     <Compile Include="Core\Logic\TempleHelper.cs" />
@@ -785,6 +789,13 @@
     <Compile Include="View\Dev\Announcement\Annlist.aspx.designer.cs">
       <DependentUpon>Annlist.aspx</DependentUpon>
     </Compile>
+    <Compile Include="View\Dev\Cash\List.aspx.cs">
+      <DependentUpon>List.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="View\Dev\Cash\List.aspx.designer.cs">
+      <DependentUpon>List.aspx</DependentUpon>
+    </Compile>
     <Compile Include="View\Dev\Index.aspx.cs">
       <DependentUpon>Index.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -895,6 +906,20 @@
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="View\Orders\List.aspx.designer.cs">
+      <DependentUpon>List.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="View\Push\Add.aspx.cs">
+      <DependentUpon>Add.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="View\Push\Add.aspx.designer.cs">
+      <DependentUpon>Add.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="View\Push\List.aspx.cs">
+      <DependentUpon>List.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="View\Push\List.aspx.designer.cs">
       <DependentUpon>List.aspx</DependentUpon>
     </Compile>
     <Compile Include="View\SourceMaterial\Add.aspx.cs">

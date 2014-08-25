@@ -55,6 +55,7 @@
         </script>
 
         <script type="text/javascript">
+            var sellerId = '<%=SellerId%>';
             var MPage = {
                 init: function () {
                     var mpage = this;
@@ -108,7 +109,7 @@
 
 
                     $.ajax({
-                        url: "../../Handler/Backstage/SystemHandler.ashx?action=GetCashList&sellerId=" + sellerId + "&start=" + (p - 1) + "&limit=8",
+                        url: "../../Handler/Backstage/SystemHandler.ashx?action=getcashlist&sellerId=" + sellerId + "&start=" + (p - 1) + "&limit=8",
                         type: "Get",
                         dataType: "json"
                         //context: document.body

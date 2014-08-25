@@ -110,13 +110,7 @@
 								<div class="control-group">
 									<label class="control-label">开发人员</label>
 									<div class="controls">
-										<select id="j-dev-list">
-											<option>1</option>
-											<option>2</option>
-											<option>3</option>
-											<option>4</option>
-											<option>5</option>
-										</select>
+										<input type="text" id="j-developer" />
 									</div>
 								</div>
 							</div>
@@ -411,6 +405,11 @@
 					//提交表单
 					$("#j-goods-addForm").bind("submit", function(){
 						
+						var developer = $.trim( $("#j-developer").val() );
+						if(!/[0-9A-Za-z]/.test(developer)){
+							alert('开发人员格式输入错误');
+							return false;
+						}
 						return false;
 					});
 					

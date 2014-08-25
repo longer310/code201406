@@ -268,16 +268,16 @@
 							//target : $(".list_pager"),//放置分页的元素
 							pagerTarget : $("#j-image-pagination ul"),
 							first : '<li><a href="#">首页</a></li>',
-							firstDisabled : '<li class="disabled"><a href="#">首页</a></li>',
+							firstDisabled : '<li class="disabled"><span>首页</span></li>',
 							last : '<li><a href="#">末页</a></li>',
-							lastDisabled : '<li class="disabled"><a href="#">末页</a></li>',
+							lastDisabled : '<li class="disabled"><span>末页</span></li>',
 							prev : '<li><a href="#">上一页</a></li>',
-							prevDisabled : '<li class="disabled"><a href="#">上一页</a></li>',
+							prevDisabled : '<li class="disabled"><span>上一页</span></li>',
 							next : '<li><a href="#">下一页</a></li>',
-							nextDisabled : '<li class="disabled"><a href="#">下一页</a></li>',
-							current : '<li class="active"><a href="#">@{page}</a></li>',
+							nextDisabled : '<li class="disabled"><span>下一页</span></li>',
+							current : '<li class="active"><span href="#">@{page}</span></li>',
 							page : '<li><a href="#">@{page}</a></li>',
-							tip : '<li class="page-info"><b class="text-info">@{nowPage}</b>/@{pageCount}页 共<b class="text-info">@{count}</b>条记录</li>',
+							tip : '<li class="page-info"><span><b class="text-info">@{nowPage}</b>/@{pageCount}页 共<b class="text-info">@{count}</b>条记录</span></li>',
 							now : p,//当前页
 							maxPage : 5,//显示的最多页数
 							per : 8,//每页显示几个

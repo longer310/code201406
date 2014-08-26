@@ -69,7 +69,7 @@ namespace Backstage.Core.Logic
                             merchant.Sid = (int)reader["Sid"];
 
                             merchant.AccountName = reader["AccountName"].ToString();
-                            merchant.CardNumber = (int)reader["CardNumber"];
+                            merchant.CardNumber = (long)reader["CardNumber"];
                             merchant.Bank = reader["Bank"].ToString();
 
                             //获取商户基础类型
@@ -415,7 +415,7 @@ namespace Backstage.Core.Logic
                         merchant.Sid = (int)reader["Sid"];
 
                         merchant.AccountName = reader["AccountName"].ToString();
-                        merchant.CardNumber = (int)reader["CardNumber"];
+                        merchant.CardNumber = (long)reader["CardNumber"];
                         merchant.Bank = reader["Bank"].ToString();
 
                         result.Results.Add(merchant);

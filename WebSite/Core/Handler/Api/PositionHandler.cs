@@ -32,34 +32,40 @@ namespace Backstage.Core.Handler
             int size = GetInt("limit");
             int sid = GetInt("sellerid");
 
-            var categories = PositionHelper.GetListBoxTypes(sid, index * size, size);
-            var data = new List<object>();
+            var cs = PositionHelper.GetListBoxTypes(sid, 0, 0);
+            var ps = PositionHelper.GetList(sid, index*size, size);
 
-            foreach (var r in categories)
+
+            var data = new {
+                categories = new List<object>(),
+                lists = new List<object>()
+            };
+            
+            foreach(var c in cs)
             {
-                var items = PositionHelper.GetListByBoxTypeId(r.Id);
-
                 var d = new
                 {
-                    title = r.Title,
-                    cid = r.Id,
-                    list = new List<object>()
+                    title = c.Title,
+                    cid = c.Id,
                 };
+                data.categories.Add(d);
+            }
+            foreach(var item in ps)
+            {
+                var r = cs.FirstOrDefault(c=>c.Id == item.BoxTypeId);
+                if(r == null)
+                    throw new ArgumentNullException(String.Format("包厢分类Id:{0}不存在",item.BoxTypeId));
 
-                foreach (var item in items)
+                var p = new 
                 {
-                    d.list.Add(new
-                    {
                         sid = item.Id,
                         hold = r.HoldNum,
                         price = item.Price,
                         cid = r.Id,
                         lowest = r.Lowest,
                         status = item.Status
-                    });
-                }
-
-                data.Add(d);
+                };
+                data.lists.Add(p);
             }
 
             JsonTransfer jt = new JsonTransfer();

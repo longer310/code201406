@@ -95,17 +95,17 @@ var Common = {
 
 		$("#j-tip .j-content").html(options.content);
 
-		$('#j-tip')[0].className = 'alert alert-' + type;
+		$('#j-tip')[0].className = 'alert modal-tip alert-' + type;
 
 		$("#j-tip").height("auto");
 
 		$("#j-tip .j-btn-close").unbind("click").bind("click", function(){
-        	$('#j-tip')[0].className = 'alert hide';
+        	$('#j-tip')[0].className = 'alert hide modal-tip';
             return false;
         });
 
 		setTimeout(function(){
-			$('#j-tip')[0].className = 'alert hide';
+			$('#j-tip')[0].className = 'alert hide modal-tip';
 		}, delay);
 		
 		var height = $("#j-tip").height();

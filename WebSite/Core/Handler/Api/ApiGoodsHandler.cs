@@ -53,14 +53,14 @@ namespace Backstage.Handler
                 case "getshoppingcartlist"://获取购物车列表 6.2
                     GetShoppingCartList();
                     break;
-                case "getpaymentlist"://获取支付方式列表 6.3
-                    GetPaymentList();
-                    break;
-                case "addorders"://添加订单 6.4
+                case "addorders"://添加订单 6.3
                     AddOrders();
                     break;
-                case "getordersdetail"://获取订单详情 6.5
+                case "getordersdetail"://获取订单详情 6.4
                     GetOrdersDetail();
+                    break;
+                case "getpaymentlist"://获取支付方式列表 6.5
+                    GetPaymentList();
                     break;
                 case "updateorders"://更新订单 6.6
                     UpdateOrders();

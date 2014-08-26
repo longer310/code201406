@@ -583,10 +583,12 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Core\Entity\Announcement.cs" />
     <Compile Include="Core\Entity\BoxType.cs" />
     <Compile Include="Core\Entity\MerchantStat.cs" />
     <Compile Include="Core\Entity\Temple.cs" />
     <Compile Include="Core\Entity\Timeline.cs" />
+    <Compile Include="Core\Logic\PaypalRecordHelper.cs" />
     <Compile Include="Core\Logic\TempleHelper.cs" />
     <Compile Include="Core\PlatBasePage.cs">
       <SubType>ASPXCodeBehind</SubType>
@@ -597,7 +599,7 @@
     <Compile Include="Core\CryptHelper.cs" />
     <Compile Include="Core\Entity\ExtractMoney.cs" />
     <Compile Include="Core\Entity\MerchantType.cs" />
-    <Compile Include="Core\Entity\Announcement.cs" />
+    <Compile Include="Core\Entity\PaypalRecord.cs" />
     <Compile Include="Core\Entity\ChargeLog.cs" />
     <Compile Include="Core\Entity\AccountBinding.cs" />
     <Compile Include="Core\Entity\ExtcreditLog.cs" />

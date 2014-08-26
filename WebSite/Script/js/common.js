@@ -88,31 +88,31 @@ var Common = {
 		});
 	},
 
-	tip : function(options){
-		options = options || {};
-		var type = options.type || "info";
-		var delay = options.delay || 3000;
+	tip: function (options) {
+	    options = options || {};
+	    var type = options.type || "info";
+	    var delay = options.delay || 3000;
 
-		$("#j-tip .j-content").html(options.content);
+	    $("#j-tip .j-content").html(options.content);
 
-		$('#j-tip')[0].className = 'alert alert-' + type;
+	    $('#j-tip')[0].className = 'alert alert-' + type;
 
-		$("#j-tip").height("auto");
+	    $("#j-tip").height("auto");
 
-		$("#j-tip .j-btn-close").unbind("click").bind("click", function(){
-        	$('#j-tip')[0].className = 'alert hide';
-            return false;
-        });
+	    $("#j-tip .j-btn-close").unbind("click").bind("click", function () {
+	        $('#j-tip')[0].className = 'alert hide';
+	        return false;
+	    });
 
-		setTimeout(function(){
-			$('#j-tip')[0].className = 'alert hide';
-		}, delay);
-		
-		var height = $("#j-tip").height();
-		$("#j-tip").css({
-			height : height,
-			"margin-top" : -height / 2
-		});
+	    setTimeout(function () {
+	        $('#j-tip')[0].className = 'alert hide';
+	    }, delay);
+
+	    var height = $("#j-tip").height();
+	    $("#j-tip").css({
+	        height: height,
+	        "margin-top": -height / 2
+	    });
 	}
 }
 

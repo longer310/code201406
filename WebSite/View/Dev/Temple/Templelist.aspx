@@ -72,13 +72,12 @@
         	{{each(i, v) list}}
 	        	<li class="item" data-id="${v.Id}">
 					<div class="item-in">
-						<h3 class="post-title"></h3>
+						<h3 class="post-title">${v.Name}</h3>
 						<div class="article-thumb">
 							<img alt="User" src="${v.LogoUrl}" />
 						</div>
 						<div class="article-post" style="margin-top:10px;">
-							<p>名称：<span class="text-warning">${v.Name}</span></p> 
-							<p>所属：<span class="text-warning">
+							<p class="post-meta">所属：<span class="text-info">
                                 {{if v.TypeId == 1}}餐饮超市类
                                 {{else v.TypeId == 2}}夜场类
                                 {{else v.TypeId == 3}}企业类

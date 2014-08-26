@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Drawing;
 using System.Linq;
 using System.Reflection;
 using System.Security.Permissions;
@@ -224,6 +225,8 @@ namespace Backstage.Handler
         {
             public int cid { get; set; }
             public string title { get; set; }
+            public string img { get; set; }
+            //public string color { get; set; }
             public CategoriesItem()
             {
                 title = "";
@@ -301,6 +304,8 @@ namespace Backstage.Handler
                 CategoriesItem citem = new CategoriesItem();
                 citem.cid = goodsCategoriese.Id;
                 citem.title = goodsCategoriese.Name;
+                citem.img = goodsCategoriese.ImageUrl;
+                //citem.color = goodsCategoriese.Color;
 
                 data.categories.Add(citem);
             }
@@ -850,6 +855,7 @@ namespace Backstage.Handler
             public string linkman { get; set; }
             public int pid { get; set; }
             public float discount { get; set; }
+            public int boxno { get; set; }
             public List<OrderGoddsItem> goodslist { get; set; }
 
             public OrderDetailData()
@@ -902,6 +908,7 @@ namespace Backstage.Handler
                 linkman = orders.LinkMan;
                 pid = orders.Pid;
                 discount = orders.Discount;
+                boxno = orders.Boxno;
             }
         }
         public class OrderGoddsItem
@@ -986,6 +993,7 @@ namespace Backstage.Handler
             var remark = GetString("remark");
             var uid = GetInt("uid");
             var orderId = GetInt("orderid");
+            var boxno = GetInt("boxno");
 
             var orders = OrdersHelper.GetOrders(orderId, uid);
 
@@ -1019,6 +1027,7 @@ namespace Backstage.Handler
             if (!string.IsNullOrEmpty(address)) orders.Address = address;
             if (!string.IsNullOrEmpty(linkman)) orders.LinkMan = linkman;
             if (!string.IsNullOrEmpty(phone)) orders.Mobile = phone;
+            orders.Boxno = boxno;//添加包厢号（夜场）
             float discount = 0;
             if (orders.CouponId == 0)
             {//获取优惠券优惠的价格

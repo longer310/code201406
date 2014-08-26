@@ -53,6 +53,7 @@ namespace Backstage.Core.Logic
                         goodsCategories.SellerId = (int)reader["SellerId"];
                         goodsCategories.Count = (int)reader["Count"];
                         goodsCategories.ImageUrl = reader["ImageUrl"].ToString();
+                        goodsCategories.Color = reader["Color"].ToString();
 
                         result.Results.Add(goodsCategories);
                     }
@@ -108,6 +109,7 @@ namespace Backstage.Core.Logic
                             goodsCategories.SellerId = (int)reader["SellerId"];
                             goodsCategories.Count = (int)reader["Count"];
                             goodsCategories.ImageUrl = reader["ImageUrl"].ToString();
+                            goodsCategories.Color = reader["Color"].ToString();
                             return goodsCategories;
                         }
                     }
@@ -164,7 +166,8 @@ namespace Backstage.Core.Logic
                                                    Index=?Index,
                                                    Name =?Name ,
                                                    Count =?Count ,
-                                                   ImageUrl =?ImageUrl 
+                                                   ImageUrl =?ImageUrl ,
+                                                   Color =?Color
                                                    where 
                                                    Id=?Id";
                 parameters.Add(new MySqlParameter("?Id", goodsCategories.Id));
@@ -172,6 +175,7 @@ namespace Backstage.Core.Logic
                 parameters.Add(new MySqlParameter("?Name", goodsCategories.Name));
                 parameters.Add(new MySqlParameter("?Count", goodsCategories.Count));
                 parameters.Add(new MySqlParameter("?ImageUrl", goodsCategories.ImageUrl));
+                parameters.Add(new MySqlParameter("?Color", goodsCategories.Color));
             }
             else
             {
@@ -224,7 +228,8 @@ namespace Backstage.Core.Logic
                 var tempcmdText = @"UPDATE goodscategories SET
                                         `Index`        = ?Index,
                                         ImageUrl          = ?ImageUrl,
-                                        Name            = ?Name
+                                        Name            = ?Name,
+                                        Color            = ?Color
                                     WHERE
                                         Id = ?Id;";
                 string newStr = string.Format("?{0}", goodsCategories.Id);
@@ -234,6 +239,7 @@ namespace Backstage.Core.Logic
                 parameters.Add(new MySqlParameter(newStr + "Index", goodsCategories.Index));
                 parameters.Add(new MySqlParameter(newStr + "ImageUrl", goodsCategories.ImageUrl));
                 parameters.Add(new MySqlParameter(newStr + "Name", goodsCategories.Name));
+                parameters.Add(new MySqlParameter(newStr + "Color", goodsCategories.Color));
             }
             cmdText += "commit;";
             try

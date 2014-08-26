@@ -10,11 +10,11 @@ using Backstage.Core.Entity;
 namespace WebSite.View
 {
     /// <summary>
-    /// 商户模板页
+    /// 开发者（平台）模板页
     /// </summary>
     public class DevMasterBasePage : System.Web.UI.MasterPage
     {
-        public Account Merchant
+        public Account DevUser
         {
             get { return AccountHelper.GetCurUser(); }
         }
@@ -22,15 +22,28 @@ namespace WebSite.View
     }
     public partial class DevMaster : DevMasterBasePage
     {
+        public string RoleName = string.Empty;
         public string UserName { get; set; }
         public float Money { get; set; }
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (Merchant != null)
+            if (DevUser != null)
             {
-                UserName = Merchant.UserName;
-                Money = Merchant.Money;
+                UserName = DevUser.UserName;
+                Money = DevUser.Money;
+
+                UserName = DevUser.UserName;
+                switch (DevUser.RoleType)
+                {
+                    case RoleType.Manage:
+                        RoleName = "管理员";
+                        break;
+                    case RoleType.SuperManage:
+                        RoleName = "超级管理员";
+                        break;
+                    default: break;
+                }
             }
         }
     }

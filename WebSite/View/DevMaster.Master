@@ -27,12 +27,10 @@
 
     <div id="user-nav" class="navbar navbar-inverse">
         <dl class="user-info">
-            <dt class="muted">福建省宁德米克中式餐饮</dt>
             <dd><span class="muted">用户名：</span><b class="text-error"><%=UserName %></b></dd>
-            <dd><span class="muted">可提现金额：</span><b class="text-error">￥<%=Money %></b></dd>
+            <dd><span class="muted">权限：</span><b class="text-error"><%=RoleName%></b></dd>
         </dl>
         <ul class="nav btn-group">
-            <li class="btn btn-inverse"><a title="" href="#"><i class="icon icon-share"></i><span class="text">提现</span></a></li>
             <li class="btn btn-inverse"><a title="" href="javascript:void(0);" onclick="page.alertlogout();"><i class="icon icon-off"></i><span class="text">退出登陆</span></a></li>
         </ul>
     </div>

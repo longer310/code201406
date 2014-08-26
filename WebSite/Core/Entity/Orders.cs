@@ -122,6 +122,11 @@ namespace Backstage.Core.Entity
         /// </summary>
         public float Discount { get; set; }
 
+        /// <summary>
+        /// 包厢号 夜场类 商户才有
+        /// </summary>
+        public int Boxno { get; set; }
+
         public Orders()
         {
             //Gids = Nums = Imgs = NowPrices = OriginalPrices = 

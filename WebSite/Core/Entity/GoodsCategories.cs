@@ -34,6 +34,11 @@ namespace Backstage.Core.Entity
         /// </summary>
         public int Count { get; set; }
 
+        /// <summary>
+        /// 分类颜色
+        /// </summary>
+        public string Color { get; set; }
+
         public GoodsCategories()
         {
             Name = "";

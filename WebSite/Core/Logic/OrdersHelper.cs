@@ -60,6 +60,7 @@ namespace Backstage.Core.Logic
                         orders.Status = (OrderStatus)reader["Status"];
                         orders.SellerId = (int)reader["SellerId"];
                         orders.Ccontent = reader["Ccontent"].ToString();
+                        orders.Boxno = (int)reader["Boxno"];
 
                         result.Results.Add(orders);
                     }
@@ -129,6 +130,7 @@ namespace Backstage.Core.Logic
                             orders.Status = (OrderStatus)reader["Status"];
                             orders.SellerId = (int)reader["SellerId"];
                             orders.Ccontent = reader["Ccontent"].ToString();
+                            orders.Boxno = (int)reader["Boxno"];
                             return orders;
                         }
                     }
@@ -177,7 +179,8 @@ namespace Backstage.Core.Logic
                                         Status                      = ?Status        ,
                                         SellerId                      = ?SellerId        ,
                                         Ccontent                      = ?Ccontent        ,
-                                        CreateTime                  = ?CreateTime    
+                                        CreateTime                  = ?CreateTime    ,
+                                        Boxno                  = ?Boxno    
                                     WHERE
                                         Id = ?Id";
                 parameters.Add(new MySqlParameter("?Id", orders.Id));
@@ -205,6 +208,7 @@ namespace Backstage.Core.Logic
                 parameters.Add(new MySqlParameter("?CreateTime", orders.CreateTime));
                 parameters.Add(new MySqlParameter("?SellerId", orders.SellerId));
                 parameters.Add(new MySqlParameter("?Ccontent", orders.Ccontent));
+                parameters.Add(new MySqlParameter("?Boxno", orders.Boxno));
             }
             else
             {

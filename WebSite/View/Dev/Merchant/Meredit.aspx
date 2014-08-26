@@ -615,6 +615,10 @@
                     Common.tip({ type: "error", content: "开发员不能为空" });
                     return;
                 }
+                if (!/[0-9A-Za-z]/.test(data_save.DevName)) {
+                    alert('开发人员格式输入错误');
+                    return false;
+                }
                 if (data_save.Phone == "") {
                     Common.tip({ type: "error", content: "联系电话不能为空" });
                     return;

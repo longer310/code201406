@@ -44,12 +44,16 @@ namespace Backstage.Core.Handler
             return p;
         }
 
-        public static IList<Position> GetList(int sellerId, int pageIndex, int pageSize)
+        public static IList<Position> GetList(int sellerId, int pageIndex, int pageSize,int cid = 0, int status =-1)
         {
             var results = new List<Position>();
             int totalnum = 0;
-            string commandText = @"select * from position where sellerId = ?sellerId LIMIT ?index,?size";
-
+            string commandText = @"select * from position where sellerId = ?sellerId";
+            if(cid != 0)
+                commandText += (" and BoxTypeId = " + cid);
+            if (status != -1)
+                commandText += (" and status = " + status);
+            commandText += " LIMIT ?index,?size";
             List<MySqlParameter> parameters = new List<MySqlParameter>();
             parameters.Add(new MySqlParameter("?sellerId", sellerId));
             parameters.Add(new MySqlParameter("?index", pageIndex));

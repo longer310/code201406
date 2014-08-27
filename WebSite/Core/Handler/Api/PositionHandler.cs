@@ -31,17 +31,19 @@ namespace Backstage.Core.Handler
             int index = GetInt("start");
             int size = GetInt("limit");
             int sid = GetInt("sellerid");
+            int status = GetInt("status");
+            int cid = GetInt("cid");
 
             var cs = PositionHelper.GetListBoxTypes(sid, 0, 0);
-            var ps = PositionHelper.GetList(sid, index*size, size);
+            var ps = PositionHelper.GetList(sid, index * size, size, cid, status);
 
-
-            var data = new {
+            var data = new
+            {
                 categories = new List<object>(),
                 lists = new List<object>()
             };
-            
-            foreach(var c in cs)
+
+            foreach (var c in cs)
             {
                 var d = new
                 {
@@ -50,20 +52,21 @@ namespace Backstage.Core.Handler
                 };
                 data.categories.Add(d);
             }
-            foreach(var item in ps)
+            foreach (var item in ps)
             {
-                var r = cs.FirstOrDefault(c=>c.Id == item.BoxTypeId);
-                if(r == null)
-                    throw new ArgumentNullException(String.Format("包厢分类Id:{0}不存在",item.BoxTypeId));
+                var r = cs.FirstOrDefault(c => c.Id == item.BoxTypeId);
+                if (r == null)
+                    throw new ArgumentNullException(String.Format("包厢分类Id:{0}不存在", item.BoxTypeId));
 
-                var p = new 
+                var p = new
                 {
-                        sid = item.Id,
-                        hold = r.HoldNum,
-                        price = item.Price,
-                        cid = r.Id,
-                        lowest = r.Lowest,
-                        status = item.Status
+                    sid = item.Id,
+                    hold = r.HoldNum,
+                    price = item.Price,
+                    cid = r.Id,
+                    name = item.Title,
+                    lowest = r.Lowest,
+                    status = item.Status
                 };
                 data.lists.Add(p);
             }

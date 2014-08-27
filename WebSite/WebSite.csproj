@@ -586,6 +586,7 @@
     <Compile Include="Core\Entity\Announcement.cs" />
     <Compile Include="Core\Entity\BoxType.cs" />
     <Compile Include="Core\Entity\MerchantStat.cs" />
+    <Compile Include="Core\Entity\Push.cs" />
     <Compile Include="Core\Entity\Temple.cs" />
     <Compile Include="Core\Entity\Timeline.cs" />
     <Compile Include="Core\Logic\PaypalRecordHelper.cs" />

@@ -45,10 +45,10 @@
         	{{each(i, v) list}}
 	        	<tr data-gid="1">
 					<td style="width:30px;">1</td>
-					<td>${v.type}商品推送</td>
+					<td>${v.Type}商品推送</td>
 					<td>${v.Title}</td>
 					<td>${v.Content}</td>
-					<td>2014-06-20 13:12:12</td>
+					<td>${v.CreateTime}</td>
 				</tr>
 			{{/each}}
         </script>
@@ -104,32 +104,43 @@
                             ]
                         }
                     };
+                    $.ajax({
+                        url: "../../Handler/Backstage/SourceMaterialHandler.ashx?action=getlist&sellerId=" + sellerId + "&start=" + (p - 1) + "&limit=8",
+                        type: "Get",
+                        dataType: "json"
+                        //context: document.body
+                    }).success(function (data) {
+                        json.result.list = data.data.Results;
+                        json.result.count = data.data.TotalCount;
 
+                        $("#j-message-list").html($("#j-tmpl-message-listitem").tmpl(json.result));
 
-                    $("#j-message-list").html($("#j-tmpl-message-listitem").tmpl(json.result));
+                        ue.pager({
+                            //target : $(".list_pager"),//放置分页的元素
+                            pagerTarget: $("#j-message-pagination ul"),
+                            first: '<li><a href="#">首页</a></li>',
+                            firstDisabled: '<li class="disabled"><a href="#">首页</a></li>',
+                            last: '<li><a href="#">末页</a></li>',
+                            lastDisabled: '<li class="disabled"><a href="#">末页</a></li>',
+                            prev: '<li><a href="#">上一页</a></li>',
+                            prevDisabled: '<li class="disabled"><a href="#">上一页</a></li>',
+                            next: '<li><a href="#">下一页</a></li>',
+                            nextDisabled: '<li class="disabled"><a href="#">下一页</a></li>',
+                            current: '<li class="active"><a href="#">@{page}</a></li>',
+                            page: '<li><a href="#">@{page}</a></li>',
+                            tip: '<li class="page-info"><b class="text-info">@{nowPage}</b>/@{pageCount}页 共<b class="text-info">@{count}</b>条记录</li>',
+                            now: p,//当前页
+                            maxPage: 5,//显示的最多页数
+                            per: 6,//每页显示几个
+                            count: json.result.count,
+                            onchange: function (page) {//切换页数回调函数
+                                mpage.getCommentList(page);
+                            }
+                        });
 
-                    ue.pager({
-                        //target : $(".list_pager"),//放置分页的元素
-                        pagerTarget: $("#j-message-pagination ul"),
-                        first: '<li><a href="#">首页</a></li>',
-                        firstDisabled: '<li class="disabled"><a href="#">首页</a></li>',
-                        last: '<li><a href="#">末页</a></li>',
-                        lastDisabled: '<li class="disabled"><a href="#">末页</a></li>',
-                        prev: '<li><a href="#">上一页</a></li>',
-                        prevDisabled: '<li class="disabled"><a href="#">上一页</a></li>',
-                        next: '<li><a href="#">下一页</a></li>',
-                        nextDisabled: '<li class="disabled"><a href="#">下一页</a></li>',
-                        current: '<li class="active"><a href="#">@{page}</a></li>',
-                        page: '<li><a href="#">@{page}</a></li>',
-                        tip: '<li class="page-info"><b class="text-info">@{nowPage}</b>/@{pageCount}页 共<b class="text-info">@{count}</b>条记录</li>',
-                        now: p,//当前页
-                        maxPage: 5,//显示的最多页数
-                        per: 6,//每页显示几个
-                        count: json.result.count,
-                        onchange: function (page) {//切换页数回调函数
-                            mpage.getCommentList(page);
-                        }
                     });
+
+                   
 
 
                     //});

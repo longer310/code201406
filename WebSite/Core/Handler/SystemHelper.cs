@@ -1,4 +1,5 @@
 ﻿using Backstage.Core.Entity;
+using Backstage.Model;
 using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
@@ -183,5 +184,116 @@ namespace Backstage.Core.Handler
 
 
         }
+
+        public static void CreatePush(Push push)
+        {
+            string connectionString = GlobalConfig.DbConn;
+            string commandText = @"INSERT INTO push 
+        	                                (
+         	                                SellerId, 
+        	                                Title, 
+        	                                PushType,
+        	                                Content, 
+        	                                TypeId,
+        	                                CreateTime
+        	                                )
+        	                                VALUES
+        	                                ( 
+      	                                    ?SellerId,
+        	                                ?Title, 
+        	                                ?PushType,
+        	                                ?Content, 
+        	                                ?TypeId,
+        	                                ?CreateTime
+        	                                )";
+
+            List<MySqlParameter> parameters = new List<MySqlParameter>();
+            parameters.Add(new MySqlParameter("?Title", push.Title));
+            parameters.Add(new MySqlParameter("?SellerId", push.Title));
+            parameters.Add(new MySqlParameter("?PushType", push.PushType));
+            parameters.Add(new MySqlParameter("?Content", push.Content));
+            parameters.Add(new MySqlParameter("?TypeId", push.TypeId));
+            parameters.Add(new MySqlParameter("?CreateTime", push.CreateTime));
+            MySqlHelper.ExecuteNonQuery(connectionString, CommandType.Text, commandText, parameters.ToArray());
+        }
+
+        public static void UpdatePush(Push push)
+        {
+            string commandText = @"UPDATE push SET
+                                        SellerId = ?SellerId,
+                                        Title = ?Title,
+                                        PushType = ?PushType,
+                                        Content = ?Content,
+                                        TypeId = ?TypeId,
+                                        CreateTime = ?CreateTime
+                                    WHERE
+                                        Id = ?Id";
+
+            List<MySqlParameter> parameters = new List<MySqlParameter>();
+            parameters.Add(new MySqlParameter("?Id", push.Id));
+            parameters.Add(new MySqlParameter("?Title", push.Title));
+            parameters.Add(new MySqlParameter("?PushType", push.PushType));
+            parameters.Add(new MySqlParameter("?Content", push.Content));
+            parameters.Add(new MySqlParameter("?TypeId", push.TypeId));
+            parameters.Add(new MySqlParameter("?CreateTime", push.CreateTime));
+            parameters.Add(new MySqlParameter("?SellerId", push.SellerId));
+
+
+            MySqlHelper.ExecuteNonQuery(GlobalConfig.DbConn, CommandType.Text, commandText, parameters.ToArray());
+        }
+
+        public static PagResults<Push> GetPagPushs(int sellerId, int start, int limit)
+        {
+            var results = new PagResults<Push>();
+            string commandText = @"select * from push where sellerId = ?sellerId order by CreateTime desc limit ?index,?size";
+
+            List<MySqlParameter> parameters = new List<MySqlParameter>();
+            parameters.Add(new MySqlParameter("?sellerId", sellerId));
+            parameters.Add(new MySqlParameter("?index", start));
+            parameters.Add(new MySqlParameter("?size", limit));
+            try
+            {
+                using (var conn = Utility.ObtainConn(Utility._gameDbConn))
+                {
+                    MySqlDataReader reader = MySqlHelper.ExecuteReader(conn, CommandType.Text, commandText, parameters.ToArray());
+                    while (reader.Read())
+                    {
+                        Push p = new Push();
+                        p.Id = reader.GetInt32(0);
+
+                        p.SellerId = (int)reader["SellerId"];
+                        p.CreateTime = (DateTime)reader["CreateTime"];
+                        p.TypeId = (int)reader["Discount"];
+                        p.PushType = (PushType)reader["PushType"];
+                        p.Title = reader["Title"].ToString();
+                        p.Content = reader["Content"].ToString();
+                        p.CreateTime = (DateTime)reader["CreateTime"];
+
+                        results.Results.Add(p);
+                    }
+                    //一个函数有两次连接数据库 先把连接断开 然后重连
+                    conn.Close();
+                    conn.Dispose();
+                    conn.Open();
+
+                    commandText = @"select count(*) from push";
+                    reader = MySqlHelper.ExecuteReader(conn, CommandType.Text, commandText, parameters.ToArray());
+                    if (reader.HasRows)
+                    {
+                        if (reader.Read())
+                        {
+                            results.TotalCount = reader.GetInt32(0);
+                        }
+                    }
+                }
+
+            }
+            catch (System.Exception ex)
+            {
+                throw;
+            }
+            return results;
+        }
+
     }
 }

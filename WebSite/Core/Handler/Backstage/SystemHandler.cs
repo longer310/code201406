@@ -38,8 +38,69 @@ namespace Backstage.Core.Handler.Backstage
                     Withdraw(); break;
                 case "getannouncement":
                     GetAnnouncement(); break;
+                case "getpushs":
+                    GetPushs(); break;
+                case "addpush":
+                    CreatePush(); break;
+                case "editpush":
+                    UpdatePush(); break;
                 default: break;
             }
+        }
+
+        private void UpdatePush()
+        {
+            var push = new Push();
+            push.Id = GetInt("id");
+            push.Title = GetString("title");
+            //push.Content = GetString("content");
+            push.PushType = (PushType)GetInt("pushtype");
+            push.SellerId = GetInt("sellerid");
+            push.TypeId = GetInt("typeId");
+
+            SystemHelper.UpdatePush(push);
+        }
+
+        private void CreatePush()
+        {
+            var push = new Push();
+            push.Id = GetInt("id");
+            push.Title = GetString("title");
+            //push.Content = GetString("content");
+            push.PushType = (PushType)GetInt("pushtype");
+            push.SellerId = GetInt("sellerid");
+            push.TypeId = GetInt("typeId");
+            push.CreateTime = DateTime.Now;
+
+            SystemHelper.CreatePush(push);
+        }
+
+        private void GetPushs()
+        {
+            var sellerId = GetInt("sellerid");
+            var start = GetInt("start");
+            var limit = GetInt("limit");
+            var list = SystemHelper.GetPagPushs(sellerId, start * limit, limit);
+            var items = new PagResults<object>();
+            foreach (var l in list.Results)
+            {
+                var o = new
+                {
+                    Id = l.Id,
+                    CreateTime = l.CreateTime.ToString("yyyy-MM-dd HH:mm:ss"),
+                    Title = l.Title,
+                    Content = l.Content,
+                    PushType = l.PushType,
+                    SellerId = l.SellerId,
+                    TypeId = l.TypeId
+                };
+                items.Results.Add(o);
+            }
+            items.TotalCount = list.TotalCount;
+            JsonTransfer jt = new JsonTransfer();
+            jt.Add("data", list);
+            Response.Write(DesEncrypt(jt).ToLower());
+            Response.End();
         }
 
         private void GetMerchant()

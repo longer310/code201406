@@ -35,6 +35,7 @@ namespace Backstage.Core.Handler
                         e.Money = (float)reader["Money"];
                         e.AccountName = reader["AccountName"].ToString();
                         e.Status = (int)reader["Status"];
+                        e.Fee = (float)reader["Fee"];
                     }
                 }
             }
@@ -58,10 +59,17 @@ namespace Backstage.Core.Handler
         {
             var results = new PagResults<ExtractMoney>();
             results.Results = new List<ExtractMoney>();
-            string commandText = @"select * from ExtractMoney where sellerId = ?sellerId " + order + " LIMIT ?index,?size";
-
             List<MySqlParameter> parameters = new List<MySqlParameter>();
-            parameters.Add(new MySqlParameter("?sellerId", sellerId));
+
+            string commandText = "";
+            if (sellerId != 0)
+            {
+                commandText = @"select * from ExtractMoney where sellerId = ?sellerId " + order + " LIMIT ?index,?size";
+                parameters.Add(new MySqlParameter("?sellerId", sellerId));
+            }
+            else
+                commandText = @"select * from ExtractMoney " + order + " LIMIT ?index,?size";
+
             parameters.Add(new MySqlParameter("?index", index));
             parameters.Add(new MySqlParameter("?size", size));
 
@@ -83,6 +91,7 @@ namespace Backstage.Core.Handler
                         e.Money = (float)reader["Money"];
                         e.AccountName = reader["AccountName"].ToString();
                         e.Status = (int)reader["Status"];
+                        e.Fee = (float)reader["Fee"];
 
                         results.Results.Add(e);
                     }
@@ -124,7 +133,8 @@ namespace Backstage.Core.Handler
         	                                Money,
         	                                CreateTime,
         	                                AccountName,
-        	                                Status
+        	                                Status,
+        	                                Fee
         	                                )
         	                                VALUES
         	                                ( 
@@ -135,7 +145,8 @@ namespace Backstage.Core.Handler
         	                                ?Money,
         	                                ?CreateTime,
         	                                ?AccountName,
-        	                                ?Status
+        	                                ?Status,
+        	                                ?Fee
         	                                )";
 
             List<MySqlParameter> parameters = new List<MySqlParameter>();
@@ -146,7 +157,8 @@ namespace Backstage.Core.Handler
             parameters.Add(new MySqlParameter("?Money", item.Money));
             parameters.Add(new MySqlParameter("?CreateTime", item.CreateTime));
             parameters.Add(new MySqlParameter("?AccountName", item.AccountName));
-            parameters.Add(new MySqlParameter("?Status", item.AccountName));
+            parameters.Add(new MySqlParameter("?Status", item.Status));
+            parameters.Add(new MySqlParameter("?Fee", item.Fee));
 
             MySqlHelper.ExecuteNonQuery(connectionString, CommandType.Text, commandText, parameters.ToArray());
         }
@@ -161,7 +173,8 @@ namespace Backstage.Core.Handler
                                         Money = ?Money,
                                         AccountName = ?AccountName,
                                         CreateTime = ?CreateTime,
-                                        Status = ?Status
+                                        Status = ?Status,
+                                        Fee = ?Fee
                                     WHERE
                                         Id = ?Id";
 
@@ -174,7 +187,8 @@ namespace Backstage.Core.Handler
             parameters.Add(new MySqlParameter("?Money", item.Money));
             parameters.Add(new MySqlParameter("?CreateTime", item.CreateTime));
             parameters.Add(new MySqlParameter("?AccountName", item.AccountName));
-            parameters.Add(new MySqlParameter("?Status", item.AccountName));
+            parameters.Add(new MySqlParameter("?Status", item.Status));
+            parameters.Add(new MySqlParameter("?Fee", item.Fee));
 
             MySqlHelper.ExecuteNonQuery(GlobalConfig.DbConn, CommandType.Text, commandText, parameters.ToArray());
         }

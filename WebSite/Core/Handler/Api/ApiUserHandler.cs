@@ -98,27 +98,27 @@ namespace Backstage.Handler
                 case "modifymerchant"://更新商户信息 7.25
                     ModifyMerchant();
                     break;
-                case "addpaypalrecord":// 支付宝同步返回接口 11
-                    AddPaypalRecord();
-                    break;
+                //case "addpaypalrecord":// 支付宝同步返回接口 11
+                //    AddPaypalRecord();
+                //    break;
                 default: break;
             }
         }
 
-        private void AddPaypalRecord()
-        {
-            var orderid = GetInt("orderid");
-            var status = GetString("status");
-            var trade_no = GetString("trade_no");
+        //private void AddPaypalRecord()
+        //{
+        //    var orderid = GetInt("orderid");
+        //    var status = GetString("status");
+        //    var trade_no = GetString("trade_no");
 
-            var paypalRecord = new PaypalRecord();
-            paypalRecord.OrderId = orderid;
-            paypalRecord.Status = status;
-            paypalRecord.Trade_no = trade_no;
-            if(PaypalRecordHelper.AddPaypalRecord(paypalRecord))
-                ReturnCorrectMsg("同步成功");
-            else ReturnErrorMsg("同步失败");
-        }
+        //    var paypalRecord = new PaypalRecord();
+        //    paypalRecord.OrderId = orderid;
+        //    paypalRecord.Status = status;
+        //    paypalRecord.Trade_no = trade_no;
+        //    if(PaypalRecordHelper.AddPaypalRecord(paypalRecord))
+        //        ReturnCorrectMsg("同步成功");
+        //    else ReturnErrorMsg("同步失败");
+        //}
 
         #region 返回积分的公用类
         public class IntegralData
@@ -380,7 +380,7 @@ namespace Backstage.Handler
             //保存用户信息
             AccountHelper.UpdateUser(user);
 
-            //返回信息
+            //返回信息 为充值记录的id
             ReturnCorrectData(new IntegralData(log.Extcredit));
         }
         #endregion

@@ -39,9 +39,20 @@ namespace Backstage.Core.Entity
         /// </summary>
         public DateTime CreateTime { get; set; }
 
+        /// <summary>
+        /// 充值状态 0：充值请求、10：充值成功、-1：充值失败
+        /// </summary>
+        public RechargeStatus Status { get; set; }
+
+        /// <summary>
+        /// 更新状态时间
+        /// </summary>
+        public DateTime UpdateStatusTime { get; set; }
+
         public ChargeLog()
         {
             CreateTime = DateTime.Now;
+            UpdateStatusTime = Utility.UnixEpochDateTime;
         }
     }
 }

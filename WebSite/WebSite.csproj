@@ -537,6 +537,7 @@
     <Content Include="View\Active\Edit.aspx" />
     <Content Include="View\Active\List.aspx" />
     <Content Include="View\Ad\Ad.aspx" />
+    <Content Include="View\Alipay\notify_url.aspx" />
     <Content Include="View\Cash\Add.aspx" />
     <Content Include="View\Cash\List.aspx" />
     <Content Include="View\Comment\List.aspx" />
@@ -583,13 +584,16 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Core\Alipay\AlipayConfig.cs" />
+    <Compile Include="Core\Alipay\AlipayCore.cs" />
+    <Compile Include="Core\Alipay\AlipayNotify.cs" />
+    <Compile Include="Core\Alipay\RSA.cs" />
     <Compile Include="Core\Entity\Announcement.cs" />
     <Compile Include="Core\Entity\BoxType.cs" />
     <Compile Include="Core\Entity\MerchantStat.cs" />
     <Compile Include="Core\Entity\Push.cs" />
     <Compile Include="Core\Entity\Temple.cs" />
     <Compile Include="Core\Entity\Timeline.cs" />
-    <Compile Include="Core\Logic\PaypalRecordHelper.cs" />
     <Compile Include="Core\Logic\TempleHelper.cs" />
     <Compile Include="Core\PlatBasePage.cs">
       <SubType>ASPXCodeBehind</SubType>
@@ -600,7 +604,6 @@
     <Compile Include="Core\CryptHelper.cs" />
     <Compile Include="Core\Entity\ExtractMoney.cs" />
     <Compile Include="Core\Entity\MerchantType.cs" />
-    <Compile Include="Core\Entity\PaypalRecord.cs" />
     <Compile Include="Core\Entity\ChargeLog.cs" />
     <Compile Include="Core\Entity\AccountBinding.cs" />
     <Compile Include="Core\Entity\ExtcreditLog.cs" />
@@ -721,6 +724,10 @@
     </Compile>
     <Compile Include="View\Ad\Ad.aspx.designer.cs">
       <DependentUpon>Ad.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="View\Alipay\notify_url.aspx.cs">
+      <DependentUpon>notify_url.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="View\Cash\Add.aspx.cs">
       <DependentUpon>Add.aspx</DependentUpon>

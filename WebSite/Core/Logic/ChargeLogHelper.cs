@@ -11,12 +11,15 @@ namespace Backstage.Core.Logic
 {
     public static class ChargeLogHelper
     {
-        public static PagResults<ChargeLog> GetChargeLogList(int sellerId, int userId, int start = 0, int limit = 0, int ifgetcount = 0)
+        public static PagResults<ChargeLog> GetChargeLogList(int sellerId, int userId, int start = 0, int limit = 0,
+            int ifgetcount = 0)
         {
             var result = new PagResults<ChargeLog>();
             result.Results = new List<ChargeLog>();
             string limitsql = start != 0 ? " LIMIT ?start,?limit" : string.Empty;
-            var cmdText = @"select * from ChargeLog where SellerId=?SellerId and UserId=?UserId order by createtime desc " + limitsql;
+            var cmdText =
+                @"select * from ChargeLog where SellerId=?SellerId and UserId=?UserId order by createtime desc " +
+                limitsql;
 
             List<MySqlParameter> parameters = new List<MySqlParameter>();
             if (start != 0)
@@ -31,7 +34,7 @@ namespace Backstage.Core.Logic
                 using (var conn = Utility.ObtainConn(Utility._gameDbConn))
                 {
                     MySqlDataReader reader = MySqlHelper.ExecuteReader(conn, CommandType.Text, cmdText,
-                    parameters.ToArray());
+                        parameters.ToArray());
                     while (reader.Read())
                     {
                         ChargeLog ChargeLog = new ChargeLog();
@@ -43,6 +46,8 @@ namespace Backstage.Core.Logic
                         ChargeLog.PayName = reader["PayName"].ToString();
                         ChargeLog.OrderId = reader["OrderId"].ToString();
                         ChargeLog.CreateTime = (DateTime)reader["CreateTime"];
+                        ChargeLog.Status = (RechargeStatus)reader["Status"];
+                        ChargeLog.UpdateStatusTime = (DateTime)reader["UpdateStatusTime"];
 
                         result.Results.Add(ChargeLog);
                     }
@@ -76,6 +81,51 @@ namespace Backstage.Core.Logic
             }
             return result;
         }
+
+        /// <summary>
+        /// 获取充值记录
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public static ChargeLog GetChargeLog(int id)
+        {
+            var result = new ChargeLog();
+            var cmdText = @"select * from ChargeLog where Id=?Id;";
+
+            List<MySqlParameter> parameters = new List<MySqlParameter>();
+            parameters.Add(new MySqlParameter("?Id", id));
+            try
+            {
+                using (var conn = Utility.ObtainConn(Utility._gameDbConn))
+                {
+                    MySqlDataReader reader = MySqlHelper.ExecuteReader(conn, CommandType.Text, cmdText,
+                        parameters.ToArray());
+                    if (reader.HasRows)
+                    {
+                        if (reader.Read())
+                        {
+                            result.Id = reader.GetInt32(0);
+                            result.SellerId = (int)reader["SellerId"];
+                            result.UserId = (int)reader["UserId"];
+                            result.Money = (float)reader["Money"];
+                            result.Pid = (int)reader["Pid"];
+                            result.PayName = reader["PayName"].ToString();
+                            result.OrderId = reader["OrderId"].ToString();
+                            result.CreateTime = (DateTime)reader["CreateTime"];
+                            result.Status = (RechargeStatus)reader["Status"];
+                            result.UpdateStatusTime = (DateTime)reader["UpdateStatusTime"];
+                        }
+                    }
+                }
+
+            }
+            catch (System.Exception ex)
+            {
+                throw;
+            }
+            return result;
+        }
+
         /// <summary>
         /// 保存充值记录
         /// </summary>
@@ -94,7 +144,9 @@ namespace Backstage.Core.Logic
                                         OrderId,
                                         SellerId,
                                         PayName,
-                                        CreateTime
+                                        CreateTime,
+                                        Status,
+                                        UpdateStatusTime
                                         ) 
                                         values 
                                         (
@@ -104,7 +156,9 @@ namespace Backstage.Core.Logic
                                         ?OrderId,
                                         ?SellerId,
                                         ?PayName,
-                                        ?CreateTime
+                                        ?CreateTime,
+                                        ?Status,
+                                        ?UpdateStatusTime
                                         )";
             parameters.Add(new MySqlParameter("?UserId", chargeLog.UserId));
             parameters.Add(new MySqlParameter("?Money", chargeLog.Money));
@@ -113,15 +167,51 @@ namespace Backstage.Core.Logic
             parameters.Add(new MySqlParameter("?SellerId", chargeLog.SellerId));
             parameters.Add(new MySqlParameter("?PayName", chargeLog.PayName));
             parameters.Add(new MySqlParameter("?CreateTime", chargeLog.CreateTime));
+            parameters.Add(new MySqlParameter("?Status", chargeLog.Status));
+            parameters.Add(new MySqlParameter("?UpdateStatusTime", chargeLog.UpdateStatusTime));
             try
             {
-                var num = MySqlHelper.ExecuteNonQuery(Utility._gameDbConn, CommandType.Text, cmdText, parameters.ToArray());
+                var num = MySqlHelper.ExecuteNonQuery(Utility._gameDbConn, CommandType.Text, cmdText,
+                    parameters.ToArray());
                 return num > 0;
             }
             catch (System.Exception ex)
             {
                 throw;
             }
+            return false;
+        }
+
+        /// <summary>
+        /// 更新充值状态
+        /// </summary>
+        /// <param name="status"></param>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public static bool UpdateStatus(RechargeStatus status, int id)
+        {
+            var cmdText = string.Empty;
+            List<MySqlParameter> parameters = new List<MySqlParameter>();
+
+            cmdText = @"update ChargeLog set Status=?Status,UpdateStatusTime=?UpdateStatusTime where Id=?Id;";
+
+            parameters.Add(new MySqlParameter("?Id", status));
+            parameters.Add(new MySqlParameter("?UpdateStatusTime", DateTime.Now));
+            parameters.Add(new MySqlParameter("?Id", id));
+
+            try
+            {
+                using (var conn = Utility.ObtainConn(Utility._gameDbConn))
+                {
+                    return MySqlHelper.ExecuteNonQuery(conn, CommandType.Text, cmdText,
+                        parameters.ToArray()) > 0;
+                }
+            }
+            catch (Exception e)
+            {
+
+            }
+
             return false;
         }
     }

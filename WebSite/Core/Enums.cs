@@ -369,4 +369,20 @@ namespace Backstage.Core
         /// </summary>
         Company = 3,
     }
+
+    public enum RechargeStatus
+    {
+        /// <summary>
+        /// 充值失败
+        /// </summary>
+        Fail = -1,
+        /// <summary>
+        /// 充值请求
+        /// </summary>
+        Request = 0,
+        /// <summary>
+        /// 充值成功
+        /// </summary>
+        Success = 10,
+    }
 }

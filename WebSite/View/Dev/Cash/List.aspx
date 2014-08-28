@@ -13,13 +13,11 @@
 				<div class="widget-content">
 					<ul class="nav nav-tabs" id="j-tab">
                         <li class="active"><a href="#">未处理</a></li>
-						<li><a href="#">历史记录</a></li>
 					</ul>
 					<table class="table table-bordered table-striped with-check">
 						<thead>
 							<tr>
 								<th><input type="checkbox" id="j-btn-selectAll" name="title-table-checkbox" /></th>
-								<th style="width:40px;">编号</th>
 								<th>商户账户</th>
 								<th>金额</th>
 								<th>手续费</th>
@@ -51,17 +49,18 @@
         	{{each(i, v) list}}
 	        	<tr data-gid="1">
 					<td><input type="checkbox" class="j-select" /></td>
-					<td style="width:40px;">1</td>
-					<td>1234567</td>
-					<td><b class="text-info">123</b>元</td>
-					<td><b class="text-error">24</b>元</td>
-					<td>中国银行</td>
-					<td>6222************</td>
-					<td>2014-06-20 13:12:12</td>
-                    <td class="j-status"><b class="text-error">未处理</b></td>
+					<td>${v.AccountName}</td>
+					<td><b class="text-info">${v.Money}</b>元</td>
+					<td><b class="text-error">${v.Fee}</b>元</td>
+					<td>${v.Bank}</td>
+					<td>${v.CardNumber}td>
+					<td>${v.CreateTime}</td>
+                    <td class="j-status"><b class="text-error">${v.Status}</b></td>
+                    ${if v.Status == 0}
 					<td style="width:60px;">
 						<a class="btn btn-primary btn-mini j-btn-pay" href="javascript:;"><i class="icon-pencil icon-white"></i> 打款</a>
 					</td>
+                    
 				</tr>
 			{{/each}}
         </script>
@@ -76,18 +75,8 @@
 
                     mpage.getList(1, 0);
 
-                    //绑定tab
-                    $('#j-tab a').bind("click", function (e) {
-                        var type = $(this).parent().index();
-                        $(this).tab('show');
-                        mpage.getList(1, type);
-                        return false
-                    });
                 },
 
-
-                //p 页码
-                //type tab 类型
                 getList: function (p, type) {
                     var mpage = this;
 
@@ -107,52 +96,69 @@
                             ]
                         }
                     };
-                    $("#j-list").html($("#j-tmpl-listitem").tmpl(json.result));
+                    $.ajax({
+                        url: "../../Handler/Backstage/DevSystemHandler.ashx?action=getcashs&start=" + (p - 1) + "&limit=8",
+                        type: "Get",
+                        dataType: "json"
+                        //context: document.body
+                    }).success(function (data) {
 
-                    ue.pager({
-                        //target : $(".list_pager"),//放置分页的元素
-                        pagerTarget: $("#j-pagination ul"),
-                        first: '<li><a href="#">首页</a></li>',
-                        firstDisabled: '<li class="disabled"><a href="#">首页</a></li>',
-                        last: '<li><a href="#">末页</a></li>',
-                        lastDisabled: '<li class="disabled"><a href="#">末页</a></li>',
-                        prev: '<li><a href="#">上一页</a></li>',
-                        prevDisabled: '<li class="disabled"><a href="#">上一页</a></li>',
-                        next: '<li><a href="#">下一页</a></li>',
-                        nextDisabled: '<li class="disabled"><a href="#">下一页</a></li>',
-                        current: '<li class="active"><a href="#">@{page}</a></li>',
-                        page: '<li><a href="#">@{page}</a></li>',
-                        tip: '<li class="page-info"><b class="text-info">@{nowPage}</b>/@{pageCount}页 共<b class="text-info">@{count}</b>条记录</li>',
-                        now: p,//当前页
-                        maxPage: 5,//显示的最多页数
-                        per: 6,//每页显示几个
-                        count: json.result.count,
-                        onchange: function (page) {//切换页数回调函数
-                            mpage.getList(page, type);
-                        }
-                    });
+                        json.result.count = data.data.TotalCount;
+                        json.result.list = data.data.Results;
 
-                    //绑定提款
-                    $("#j-list .j-btn-pay").bind("click", function () {
-                        var $item = $(this).parents("tr");
-                        var id = $item.attr("data-id");
+                        $("#j-list").html($("#j-tmpl-listitem").tmpl(json.result));
 
-                        Common.confirm({
-                            title: "打款确认提示",
-                            content: "您确定更改该提款申请为已处理？",
-                            confirm: function () {
-                                //执行确认回调
-                                alert('执行确认回调');
-
-                                $item.find(".j-status").html('<b class="text-success">已处理</b>');
-                            },
-                            cancel: function () {
-                                //执行取消回调
-                                alert('执行取消回调');
+                        ue.pager({
+                            //target : $(".list_pager"),//放置分页的元素
+                            pagerTarget: $("#j-pagination ul"),
+                            first: '<li><a href="#">首页</a></li>',
+                            firstDisabled: '<li class="disabled"><a href="#">首页</a></li>',
+                            last: '<li><a href="#">末页</a></li>',
+                            lastDisabled: '<li class="disabled"><a href="#">末页</a></li>',
+                            prev: '<li><a href="#">上一页</a></li>',
+                            prevDisabled: '<li class="disabled"><a href="#">上一页</a></li>',
+                            next: '<li><a href="#">下一页</a></li>',
+                            nextDisabled: '<li class="disabled"><a href="#">下一页</a></li>',
+                            current: '<li class="active"><a href="#">@{page}</a></li>',
+                            page: '<li><a href="#">@{page}</a></li>',
+                            tip: '<li class="page-info"><b class="text-info">@{nowPage}</b>/@{pageCount}页 共<b class="text-info">@{count}</b>条记录</li>',
+                            now: p,//当前页
+                            maxPage: 5,//显示的最多页数
+                            per: 6,//每页显示几个
+                            count: json.result.count,
+                            onchange: function (page) {//切换页数回调函数
+                                mpage.getList(page, type);
                             }
                         });
-                        return false;
+
+                        //绑定提款
+                        $("#j-list .j-btn-pay").bind("click", function () {
+                            var $item = $(this).parents("tr");
+                            var id = $item.attr("data-id");
+
+                            Common.confirm({
+                                title: "打款确认提示",
+                                content: "您确定更改该提款申请为已处理？",
+                                confirm: function () {
+                                    $.ajax({
+                                        url: "../../Handler/Backstage/DevSystemHandler.ashx?action=updatecash&id=" + id,
+                                        type: "Get",
+                                        dataType: "json"
+                                        //context: document.body
+                                    }).success(function (data) {
+                                        $item.find(".j-status").html('<b class="text-success">已处理</b>');
+                                    });
+                                },
+                                cancel: function () {
+                                    //执行取消回调
+                                    alert('执行取消回调');
+                                }
+                            });
+                            return false;
+                        });
+
                     });
+
                     //});
 
                 }

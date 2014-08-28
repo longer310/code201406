@@ -103,6 +103,7 @@ namespace Backstage.Core.Handler
                 imgs = Utility.GetListstring(item.ImgUrls),
                 cid = item.BoxTypeId,
                 ctitle = boxType.Title,
+                name = item.Title,
                 price = item.Price,
                 des = item.Description,
                 lowest = boxType.Lowest,

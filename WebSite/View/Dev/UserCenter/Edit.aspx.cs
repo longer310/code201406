@@ -1,4 +1,5 @@
 ﻿using Backstage.Core;
+using Backstage.Core.Entity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,9 +11,13 @@ namespace Backstage.View.Dev.UserCenter
 {
     public partial class Edit : BasePage
     {
+        public Account account;
+
+
         protected void Page_Load(object sender, EventArgs e)
         {
-
+            int id = Int32.Parse(Request.QueryString["id"]);
+            account = AccountHelper.GetUser(id);
         }
     }
 }

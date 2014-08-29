@@ -65,9 +65,22 @@
                             newpassw: $.trim($("#j-sysytem-login-newpassw").val()),
                             confirmpassw: $.trim($("#j-sysytem-login-confirmpassw").val())
                         }
-
-                        console.log(save_data);
-                        alert('提交数据')
+                        if (save_data.newpassw != confirmPassw)
+                        {
+                            alert("两次密码输入不一致");
+                            return;
+                        }
+                        $.ajax({
+                            url: "../../Handler/Backstage/DevSystemHandler.ashx?action=addadmin",
+                            type: "POST",
+                            data: save_data,
+                            dataType: "json"
+                            //context: document.body
+                        }).success(function (data) {
+                            alert("修改成功");
+                        }).error(function (data) {
+                            alert(data);
+                        });
                         return false;
                     });
 

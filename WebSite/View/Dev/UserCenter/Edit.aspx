@@ -19,7 +19,7 @@
 						<div class="control-group">
 							<label class="control-label">管理员名称</label>
 							<div class="controls">
-								<input type="text" id="j-name" />
+								<input type="text" id="j-name" value="<%=account.NickName %>" />
 							</div>
 						</div>
 
@@ -27,8 +27,8 @@
 							<label class="control-label">管理级别</label>
 							<div class="controls">
 								<select id="j-level-list">
-									<option>普通管理员</option>
-									<option>超级管理员</option>
+									<option value="2">普通管理员</option>
+									<option value="1">超级管理员</option>
 								</select>
 							</div>
 						</div>
@@ -36,16 +36,11 @@
 						<div class="control-group">
 							<label class="control-label">登陆名称</label>
 							<div class="controls">
-								<input type="text" id="j-login_name" />
+								<input type="text" id="j-login_name" value="<%=account.UserName %>" />
 							</div>
 						</div>
 
-						<div class="control-group">
-							<label class="control-label">管理员名称</label>
-							<div class="controls">
-								<input type="password" id="j-password" />
-							</div>
-						</div>
+						
 
 						<div class="form-actions">
 							<button type="reset" class="btn">清空重填</button>
@@ -72,28 +67,25 @@
                  /\?id=(\d+)/.test(document.location.href);
                  var admin_id = RegExp.$1;
 
-                 if (admin_id) {
-                     mpage.getDetail(admin_id);
-                 } else {
-                     alert("该商户不存在");
-                     window.history.back();
-                 }
+                 
 
                  //提交表单
                  $("#j-addForm").bind("submit", function () {
                      var save_data = {
-                         name: $("#j-name").val(),
-                         level: $("#j-level-list").val(),
-                         login_name: $("#j-login_name").val(),
-                         password: $("#j-password").val()
+                         nickname: $("#j-name").val(),
+                         roletype: $("#j-level-list").val(),
+                         username: $("#j-login_name").val()
                      }
-
-                     return false;
+                     $.ajax({
+                         url: "../../Handler/Backstage/DevSystemHandler.ashx?action=addadmin",
+                         type: "POST",
+                         data: save_data,
+                         dataType: "json"
+                         //context: document.body
+                     }).success(function (data) {
+                         alert("修改成功");
+                     });
                  });
-             },
-
-             getDetail: function (admin_id) {
-
              }
          }
 

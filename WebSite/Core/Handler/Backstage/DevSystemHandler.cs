@@ -30,8 +30,19 @@ namespace Backstage.Core.Handler.Backstage
                     AddAdmin(); break;
                 case "updateadmin":
                     UpdateAdmin(); break;
+                case "deladmin":
+                    DeleteAdmin(); break;
                 default: break;
             }
+        }
+
+        private void DeleteAdmin()
+        {
+            var id = GetInt("id");
+            var admin = AccountHelper.GetUser(id);
+            if (admin == null)
+                throw new ArgumentNullException("管理员为空Id:" + id);
+            AccountHelper.DelUser(id);
         }
 
         private void UpdateAdmin()
@@ -58,7 +69,13 @@ namespace Backstage.Core.Handler.Backstage
         {
             int id = GetInt("id");
             var admin = AccountHelper.GetUser(id);
-            admin.Pwd = GetString("pwd");
+            var orignPwd = GetString("prepassw");
+            var newPwd = GetString("newpassw");
+            if (admin.Pwd != orignPwd)
+            {
+                throw new ArgumentException("原始密码错误");
+            }
+            admin.Pwd = newPwd;
             AccountHelper.SaveAccount(admin);
         }
 

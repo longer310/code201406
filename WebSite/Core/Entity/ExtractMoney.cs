@@ -31,6 +31,9 @@ namespace Backstage.Core.Entity
         /// </summary>
         public string Bank { get; set; }
 
+        /// <summary>
+        /// 手续费
+        /// </summary>
         public float Fee { get; set; }
 
         /// <summary>

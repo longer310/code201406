@@ -1,4 +1,5 @@
-﻿using Backstage.Core.Logic;
+﻿using Backstage.Core.Entity;
+using Backstage.Core.Logic;
 using Backstage.Model;
 using System;
 using System.Collections.Generic;
@@ -18,11 +19,60 @@ namespace Backstage.Core.Handler.Backstage
                 case "getrules": //获取规则
                     GetRules(); break;
                 case "getcashs":
-                    GetCashs();break;
+                    GetCashs(); break;
                 case "updatecash":
-                    UpdateCash();break;
+                    UpdateCash(); break;
+                case "getadmins":
+                    GetAdmins(); break;
+                case "pwdedit":
+                    PwdEdit(); break;
+                case "addadmin":
+                    AddAdmin(); break;
+                case "updateadmin":
+                    UpdateAdmin(); break;
                 default: break;
             }
+        }
+
+        private void UpdateAdmin()
+        {
+            int id = GetInt("id");
+            var admin = AccountHelper.GetUser(id);
+            admin.RoleType = (RoleType)GetInt("roletype");
+            admin.NickName = GetString("nickname");
+            admin.UserName = GetString("username");
+            AccountHelper.SaveAccount(admin);
+        }
+
+        private void AddAdmin()
+        {
+            var admin = new Account();
+            admin.RoleType = RoleType.SuperManage;
+            admin.NickName = GetString("nickname");
+            admin.UserName = GetString("username");
+            admin.Pwd = GetString("pwd");
+            AccountHelper.SaveAccount(admin);
+        }
+
+        private void PwdEdit()
+        {
+            int id = GetInt("id");
+            var admin = AccountHelper.GetUser(id);
+            admin.Pwd = GetString("pwd");
+            AccountHelper.SaveAccount(admin);
+        }
+
+        private void GetAdmins()
+        {
+            int index = GetInt("start");
+            int size = GetInt("limit");
+            var admins = AccountHelper.GetPagAdmins(index * size, size);
+
+            JsonTransfer jt = new JsonTransfer();
+            jt.Add("data", admins);
+            Response.Write(DesEncrypt(jt));
+            Response.End();
+
         }
 
         private void UpdateCash()
@@ -54,7 +104,7 @@ namespace Backstage.Core.Handler.Backstage
                     AccountName = c.AccountName,
                     Money = c.Money,
                     SellerId = c.SellerId,
-                    Status = c.Status == 1 ?  "已处理": "未处理",
+                    Status = c.Status == 1 ? "已处理" : "未处理",
                     CreateTime = c.CreateTime.ToString("yyyy-MM-dd HH:mm:ss")
                 };
                 results.Results.Add(item);
@@ -72,7 +122,7 @@ namespace Backstage.Core.Handler.Backstage
             throw new NotImplementedException();
         }
 
-        
+
 
     }
 }

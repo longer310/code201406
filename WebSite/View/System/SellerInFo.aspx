@@ -15,7 +15,7 @@
 						<div class="control-group">
 							<label class="control-label">商户名称</label>
 							<div class="controls">
-								<input type="text" id="j-sysytem-profile-name" />
+								<input type="text" id="j-sysytem-profile-name" value="<%=Seller.Name %>" />
 							</div>
 						</div>
 						<div class="control-group">
@@ -27,7 +27,7 @@
 								<span class="help-inline">上传过的图片可以直接从素材库选择</span>
 								<div class="clearfix" style="margin-top:10px;">
 									<span class="thumbnail pull-left">
-										<img src="http://placehold.it/128x128" alt="" id="j-sysytem-profile-logo">
+										<img src="<%=Seller.LogoUrl == "" ? "http://placehold.it/128x128" : Seller.LogoUrl%>" alt="" id="j-sysytem-profile-logo">
 									</span>
 								</div>
 							</div>
@@ -36,21 +36,21 @@
 						<div class="control-group">
 							<label class="control-label">联系电话</label>
 							<div class="controls">
-								<input type="text" id="j-sysytem-profile-phone" />
+								<input type="text" id="j-sysytem-profile-phone" value="<%=Seller.Phone %>" />
 							</div>
 						</div>
 
 						<div class="control-group">
 							<label class="control-label">管理人联系电话</label>
 							<div class="controls">
-								<input type="text" id="j-sysytem-profile-admin_phone" />
+								<input type="text" id="j-sysytem-profile-admin_phone" value="<%=Seller.ManagerPhone %>" />
 							</div>
 						</div>
 
 						<div class="control-group">
 							<label class="control-label">详细地址</label>
 							<div class="controls">
-								<input type="text" id="j-sysytem-profile-address" />
+								<input type="text" id="j-sysytem-profile-address" value="<%=Seller.Address %>" />
 							</div>
 						</div>
 
@@ -58,11 +58,11 @@
 			                <tbody>
 			                    <tr>
 			                    	<th style="width:16.66%">入住日期：</th>
-			                        <td style="width:16.66%"><span class="text-info">2014-06-12</span></td>
+			                        <td style="width:16.66%"><span class="text-info"><%=Seller.CreateTime.ToString("yyyy-MM-dd HH:mm:ss") %></span></td>
 			                        <th style="width:16.66%">服务期至：</th>
-			                        <td style="width:16.66%"><span class="text-error">2015-06-12</td>
+			                        <td style="width:16.66%"><span class="text-error"><%=Seller.ServerEndTime.ToString("yyyy-MM-dd HH:mm:ss") %></td>
 			                        <th style="width:16.66%">签约模式：</th>
-			                        <td style="width:16.66%"><span class="text-info">模式A</span></td>
+			                        <td style="width:16.66%"><span class="text-info"></span></td>
 			                    </tr>
 			                </tbody>
 			            </table>

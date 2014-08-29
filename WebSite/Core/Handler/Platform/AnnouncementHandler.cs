@@ -448,7 +448,7 @@ namespace Backstage.Handler
                 user.Phone = merchantinfo.Phone;
                 user.Address = merchantinfo.Address;
 
-                merchantinfo.Id = AccountHelper.UpdateUser(user);
+                merchantinfo.Id = AccountHelper.SaveAccount(user);
             }
             else user = AccountHelper.GetUser(merchantinfo.Id);
             if (user == null)
@@ -498,7 +498,7 @@ namespace Backstage.Handler
             merchant.CnameList = merchantinfo.CnameList;
             merchant.DevName = merchantinfo.DevName;
 
-            AccountHelper.UpdateUser(user);
+            AccountHelper.SaveAccount(user);
             if (MerchantHelper.SaveMerchant(merchant, isadd))
             {
                 MerchantTypeHelper.UpdateMerchantCount(changeCountList);

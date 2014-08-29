@@ -70,7 +70,7 @@ namespace Backstage.Core.Handler
             if (code != verificationCode.Code)
                 ReturnCorrectMsg("验证码错误");
             user.Pwd = pwd;
-            AccountHelper.UpdateUser(user);
+            AccountHelper.SaveAccount(user);
             ReturnCorrectMsg("密码修改成功");
         }
 

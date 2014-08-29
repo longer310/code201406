@@ -106,7 +106,7 @@ public partial class notify_url : System.Web.UI.Page
                                     user.Money += chargeLog.Money;
                                     user.TotalRecharge += chargeLog.Money;
                                     //保存用户信息
-                                    AccountHelper.UpdateUser(user);
+                                    AccountHelper.SaveAccount(user);
                                     //更新充值记录
                                     ChargeLogHelper.UpdateStatus(RechargeStatus.Success, id);
                                     logger.ErrorFormat("充值成功;UserId={1},Money={0}", chargeLog.Money, chargeLog.UserId);

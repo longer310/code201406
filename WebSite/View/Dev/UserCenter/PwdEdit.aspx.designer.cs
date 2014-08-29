@@ -10,6 +10,6 @@
 namespace Backstage.View.Dev.UserCenter {
     
     
-    public partial class List {
+    public partial class PwdEdit {
     }
 }

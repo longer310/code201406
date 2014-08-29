@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/View/DevMaster.Master" AutoEventWireup="true" CodeBehind="Add.aspx.cs" Inherits="Backstage.View.Dev.UserCenter.Add" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/View/DevMaster.Master" AutoEventWireup="true" CodeBehind="Edit.aspx.cs" Inherits="Backstage.View.Dev.UserCenter.Edit" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="Header" runat="server">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="Content" runat="server">
@@ -11,8 +11,8 @@
 				</div>
 				<div class="widget-content">
 					<ul class="nav nav-tabs">
-                        <li><a href="admin_list.html">管理员列表</a></li>
-                        <li class="active"><a href="admin_add.html">添加管理员</a></li>
+                        <li class="active"><a href="admin_list.html">管理员列表</a></li>
+                        <li><a href="admin_add.html">添加管理员</a></li>
                         <li><a href="change_pw.html">密码修改</a></li>
                     </ul>
 					<form action="#" method="get" class="form-horizontal" id="j-addForm">
@@ -62,29 +62,44 @@
 
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="Footer" runat="server">
-    <script type="text/javascript">
-        var MPage = {
-            init: function () {
-                var mpage = this;
+     <script type="text/javascript">
+         var MPage = {
+             init: function () {
+                 var mpage = this;
 
 
-                //提交表单
-                $("#j-addForm").bind("submit", function () {
-                    var save_data = {
-                        name: $("#j-name").val(),
-                        level: $("#j-level-list").val(),
-                        login_name: $("#j-login_name").val(),
-                        password: $("#j-password").val()
-                    }
+                 //解析url中的id
+                 /\?id=(\d+)/.test(document.location.href);
+                 var admin_id = RegExp.$1;
 
-                    return false;
-                });
-            }
-        }
+                 if (admin_id) {
+                     mpage.getDetail(admin_id);
+                 } else {
+                     alert("该商户不存在");
+                     window.history.back();
+                 }
 
-        $(function () {
-            MPage.init();
-        });
+                 //提交表单
+                 $("#j-addForm").bind("submit", function () {
+                     var save_data = {
+                         name: $("#j-name").val(),
+                         level: $("#j-level-list").val(),
+                         login_name: $("#j-login_name").val(),
+                         password: $("#j-password").val()
+                     }
+
+                     return false;
+                 });
+             },
+
+             getDetail: function (admin_id) {
+
+             }
+         }
+
+         $(function () {
+             MPage.init();
+         });
 
         </script>
 

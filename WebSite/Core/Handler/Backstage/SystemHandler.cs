@@ -26,10 +26,6 @@ namespace Backstage.Core.Handler.Backstage
                     RechargeStat(); break;
                 case "sellerinfo":  //更新商家资料
                     UpdateSellerInfo(); break;
-                case "addmsg":  //新增商家推送
-                    AddSystemMsg(); break;
-                case "getmsgs":  //获取商家推送信息
-                    GetMsgs(); break;
                 case "getcashlist": //获取提现记录
                     GetCashList(); break;
                 case "getseller":
@@ -131,7 +127,7 @@ namespace Backstage.Core.Handler.Backstage
 
             //目前商户的用户信息分三张表存储
             user.Money -= item.Money;
-            AccountHelper.UpdateUser(user);
+            AccountHelper.SaveAccount(user);
 
             //商家更新
             var seller = MerchantHelper.GetMerchant(item.SellerId);

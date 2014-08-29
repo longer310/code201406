@@ -187,6 +187,8 @@ namespace Backstage.Core.Entity
         /// </summary>
         public long CardNumber { get; set; }
 
+        public DateTime CreateTime { get; set; }
+
         public Merchant()
         {
             Name =
@@ -211,6 +213,7 @@ namespace Backstage.Core.Entity
             DevName =string.Empty;
             AccessExpire = DateTime.Now;
             ServerEndTime = DateTime.Now;
+            CreateTime = DateTime.Now;
             CnameList = new List<string>();
             Sid = 1;//默认一个签约id
         }

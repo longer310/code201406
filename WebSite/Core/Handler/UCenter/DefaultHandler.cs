@@ -69,7 +69,7 @@ namespace Backstage.Handler
             account.Sex = (SexType)GetInt("sex");
             account.CreateTime = GetTime("createtime");
 
-            int num = AccountHelper.UpdateUser(account);
+            int num = AccountHelper.SaveAccount(account);
             jt.Add("num", num);
             Response.Write(jt.ToJson());
         }

@@ -151,7 +151,7 @@ namespace Backstage.Handler
             user.RoleType = (RoleType)((int)(user.RoleType) / 10 * 10 + roletype);
             user.Remark = remark;
 
-            if (AccountHelper.UpdateUser(user) > 0)
+            if (AccountHelper.SaveAccount(user) > 0)
                 ReturnCorrectMsg("保存成功");
             else
                 ReturnErrorMsg("保存失败");

@@ -96,6 +96,73 @@ namespace Backstage.Core
             return result;
         }
 
+
+        public static PagResults<Account> GetPagAdmins(int index, int size)
+        {
+            var items = new PagResults<Account>();
+            string cmdText = @"select * from account where roletype = ?roletype limit ?index,?size";
+            List<MySqlParameter> parameters = new List<MySqlParameter>();
+            parameters.Add(new MySqlParameter("?index", index));
+            parameters.Add(new MySqlParameter("?size", size));
+            try
+            {
+                using (var conn = Utility.ObtainConn(Utility._gameDbConn))
+                {
+                    MySqlDataReader reader = MySqlHelper.ExecuteReader(conn, CommandType.Text, cmdText);
+                    while (reader.Read())
+                    {
+                        Account user = new Account();
+                        user.Id = reader.GetInt32(0);
+                        user.UserName = reader["UserName"].ToString();
+                        user.NickName = reader["NickName"].ToString();
+                        user.Pwd = reader["Pwd"].ToString();
+                        user.RoleType = (RoleType)reader["RoleType"];
+                        user.Avatar = reader["Avatar"].ToString();
+                        user.Sex = (SexType)reader["Sex"];
+                        user.Phone = reader["Phone"].ToString();
+                        user.Address = reader["Address"].ToString();
+                        user.Money = (float)reader["Money"];
+                        user.SellerId = (int)reader["SellerId"];
+                        user.CreateTime = (DateTime)reader["CreateTime"];
+                        user.Integral = (int)reader["Integral"];
+                        user.LinkMan = reader["LinkMan"].ToString();
+                        user.Discount = (float)reader["Discount"];
+                        user.TotalRecharge = (float)reader["TotalRecharge"];
+                        user.TotalConsume = (float)reader["TotalConsume"];
+                        user.Status = (int)reader["Status"];
+                        user.TotalLoginCount = (int)reader["TotalLoginCount"];
+                        user.TotalOrdersCount = (int)reader["TotalOrdersCount"];
+                        user.RegisterTime = (DateTime)reader["RegisterTime"];
+                        user.LastLoginTime = (DateTime)reader["LastLoginTime"];
+                        user.Remark = reader["Remark"].ToString();
+
+                        items.Results.Add(user);
+
+                        //一个函数有两次连接数据库 先把连接断开 然后重连
+                        conn.Close();
+                        conn.Dispose();
+                        conn.Open();
+
+                        cmdText = @"select count(*) from account where roletype = " + RoleType.SuperManage;
+                        reader = MySqlHelper.ExecuteReader(conn, CommandType.Text, cmdText);
+                        if (reader.HasRows)
+                        {
+                            if (reader.Read())
+                            {
+                                items.TotalCount = reader.GetInt32(0);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+
+            return items;
+        }
+
         public static IList<Account> GetUserList(IList<int> uids)
         {
             IList<Account> list = new List<Account>();
@@ -155,7 +222,7 @@ namespace Backstage.Core
         /// </summary>
         /// <param name="account"></param>
         /// <returns></returns>
-        public static int UpdateUser(Account account)
+        public static int SaveAccount(Account account)
         {
             var cmdText = String.Empty;
             List<MySqlParameter> parameters = new List<MySqlParameter>();
@@ -719,5 +786,6 @@ namespace Backstage.Core
                 return null;
             return GetEntityFromString(userData);
         }
+     
     }
 }

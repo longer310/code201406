@@ -136,7 +136,7 @@ namespace Backstage.Core.Handler
                 ExtcreditLogHelper.AddExtcreditLog(log);
 
                 user.Integral += log.Extcredit;
-                AccountHelper.UpdateUser(user);
+                AccountHelper.SaveAccount(user);
             }
 
             //ReturnCorrectMsg("评论成功");

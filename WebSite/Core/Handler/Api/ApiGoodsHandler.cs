@@ -528,7 +528,7 @@ namespace Backstage.Handler
                 ExtcreditLogHelper.AddExtcreditLog(log);
 
                 user.Integral += log.Extcredit;
-                AccountHelper.UpdateUser(user);
+                AccountHelper.SaveAccount(user);
             }
 
             //返回信息
@@ -636,7 +636,7 @@ namespace Backstage.Handler
                 ExtcreditLogHelper.AddExtcreditLog(log);
 
                 user.Integral += log.Extcredit;
-                AccountHelper.UpdateUser(user);
+                AccountHelper.SaveAccount(user);
             }
 
             ShareLog shareLog = new ShareLog();
@@ -1147,7 +1147,7 @@ namespace Backstage.Handler
                 user.Integral += log.Extcredit;
 
                 //保存用户信息
-                AccountHelper.UpdateUser(user);
+                AccountHelper.SaveAccount(user);
 
                 //更新订单中商品的销量
                 GoodsHelper.UpdateGoodsSales(orders.GidList, orders.NumList);

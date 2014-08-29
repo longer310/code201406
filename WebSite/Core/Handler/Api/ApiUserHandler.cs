@@ -215,7 +215,7 @@ namespace Backstage.Handler
             account.RoleType = RoleType.User;
             account.SellerId = sellerid;
             //保存用户
-            AccountHelper.UpdateUser(account);
+            AccountHelper.SaveAccount(account);
 
             ReturnCorrectMsg("注册成功");
         }
@@ -261,7 +261,7 @@ namespace Backstage.Handler
             //修改登录次数
             user.TotalLoginCount++;
             user.LastLoginTime = DateTime.Now;
-            AccountHelper.UpdateUser(user);
+            AccountHelper.SaveAccount(user);
 
             //返回信息
             ReturnCorrectData(data);
@@ -290,7 +290,7 @@ namespace Backstage.Handler
                 user.Sex = (SexType)sex;
                 user.SellerId = sellerid;
 
-                var id = AccountHelper.UpdateUser(user);
+                var id = AccountHelper.SaveAccount(user);
                 user.Id = id;
                 if (id == 0)
                 {
@@ -324,7 +324,7 @@ namespace Backstage.Handler
             //修改登录次数
             user.TotalLoginCount++;
             user.LastLoginTime = DateTime.Now;
-            AccountHelper.UpdateUser(user);
+            AccountHelper.SaveAccount(user);
 
             //返回信息
             ReturnCorrectData(data);
@@ -370,7 +370,7 @@ namespace Backstage.Handler
             //user.Money += money;
             //user.TotalRecharge += money;
             //保存用户信息
-            //AccountHelper.UpdateUser(user);
+            //AccountHelper.SaveAccount(user);
 
             //返回信息 为充值记录的id
             ReturnCorrectData(new IntegralData(rid));
@@ -705,7 +705,7 @@ namespace Backstage.Handler
             user.Address = address;
 
             //保存收获信息
-            AccountHelper.UpdateUser(user);
+            AccountHelper.SaveAccount(user);
 
             ReturnCorrectMsg("编辑成功");
         }
@@ -912,7 +912,7 @@ namespace Backstage.Handler
             }
 
             user.Pwd = newpwd;
-            AccountHelper.UpdateUser(user);
+            AccountHelper.SaveAccount(user);
 
             ReturnCorrectMsg("修改密码成功");
         }
@@ -947,7 +947,7 @@ namespace Backstage.Handler
 
             user.Phone = verificationCode.Phone;
             //保存用户
-            AccountHelper.UpdateUser(user);
+            AccountHelper.SaveAccount(user);
 
             ReturnCorrectMsg("更改绑定号码成功");
         }
@@ -1046,7 +1046,7 @@ namespace Backstage.Handler
             user.UserName = username;
             if (nickname != "")
                 user.NickName = nickname;
-            AccountHelper.UpdateUser(user);
+            AccountHelper.SaveAccount(user);
 
             //返回
             ReturnCorrectMsg("更新会员资料成功");
@@ -1135,7 +1135,7 @@ namespace Backstage.Handler
                 ExtcreditLogHelper.AddExtcreditLog(log);
 
                 user.Integral += log.Extcredit;
-                AccountHelper.UpdateUser(user);
+                AccountHelper.SaveAccount(user);
             }
             else
             {

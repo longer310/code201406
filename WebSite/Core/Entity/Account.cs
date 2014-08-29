@@ -123,7 +123,7 @@ namespace Backstage.Core.Entity
                 if (merchant != null)
                 {
                     merchant.Money += price;
-                    AccountHelper.UpdateUser(merchant);
+                    AccountHelper.SaveAccount(merchant);
                 }
             }
         }

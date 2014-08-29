@@ -362,26 +362,18 @@ namespace Backstage.Handler
             chargeLog.PayName = payMent.Name;
 
             //记录充值记录
-            ChargeLogHelper.AddChargeLog(chargeLog);
+            var rid = ChargeLogHelper.AddChargeLog(chargeLog);
 
-            ExtcreditLog log = new ExtcreditLog();
-            log.UserId = uid;
-            log.SellerId = sellerid;
-            log.SourceId = DateTime.Now.GetUnixTime();
-            log.Extcredit = (int)(money * 1.0 / ParamHelper.ExtcreditCfgData.Charge);
-            log.Type = ExtcreditSourceType.Charge;
 
-            ExtcreditLogHelper.AddExtcreditLog(log);
+            //user.Integral = rid; //log.Extcredit;
 
-            user.Integral += log.Extcredit;
-
-            user.Money += money;
-            user.TotalRecharge += money;
+            //user.Money += money;
+            //user.TotalRecharge += money;
             //保存用户信息
-            AccountHelper.UpdateUser(user);
+            //AccountHelper.UpdateUser(user);
 
             //返回信息 为充值记录的id
-            ReturnCorrectData(new IntegralData(log.Extcredit));
+            ReturnCorrectData(new IntegralData(rid));
         }
         #endregion
 

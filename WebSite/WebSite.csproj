@@ -41,6 +41,9 @@
     <Reference Include="LitJSON">
       <HintPath>Dll\LitJSON.dll</HintPath>
     </Reference>
+    <Reference Include="log4net">
+      <HintPath>Dll\log4net.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="MySql.Data">
       <HintPath>Dll\MySql.Data.dll</HintPath>

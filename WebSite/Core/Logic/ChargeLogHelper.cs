@@ -131,7 +131,7 @@ namespace Backstage.Core.Logic
         /// </summary>
         /// <param name="chargeLog"></param>
         /// <returns></returns>
-        public static bool AddChargeLog(ChargeLog chargeLog)
+        public static int AddChargeLog(ChargeLog chargeLog)
         {
             var cmdText = string.Empty;
             List<MySqlParameter> parameters = new List<MySqlParameter>();
@@ -173,13 +173,29 @@ namespace Backstage.Core.Logic
             {
                 var num = MySqlHelper.ExecuteNonQuery(Utility._gameDbConn, CommandType.Text, cmdText,
                     parameters.ToArray());
-                return num > 0;
+                if (num > 0)
+                {
+                    using (var conn = Utility.ObtainConn(Utility._gameDbConn))
+                    {
+                        cmdText = @"select @@identity";
+                        var reader = MySqlHelper.ExecuteReader(conn, CommandType.Text, cmdText);
+                        if (reader.HasRows)
+                        {
+                            if (reader.Read())
+                            {
+                                num = reader.GetInt32(0);
+                                return num;
+                            }
+                        }
+                    }
+                }
+                return 0;
             }
             catch (System.Exception ex)
             {
                 throw;
             }
-            return false;
+            return 0;
         }
 
         /// <summary>

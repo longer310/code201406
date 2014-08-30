@@ -48,7 +48,5 @@ namespace Backstage.Core.Entity
         /// 1:已提现成功，0:未提现，-1：处理失败
         /// </summary>
         public int Status { get; set; }
-
-
     }
 }

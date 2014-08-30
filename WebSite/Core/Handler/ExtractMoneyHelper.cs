@@ -26,7 +26,7 @@ namespace Backstage.Core.Handler
                     while (reader.Read())
                     {
                         e = new ExtractMoney();
-                        e.Id = (int)reader["Id"];
+                        e.Id = reader.GetInt32(0);
                         e.SellerId = (int)reader["SellerId"];
                         e.CardNumber = (long)reader["CardNumber"];
                         e.Bank = reader["Bank"].ToString();
@@ -55,20 +55,22 @@ namespace Backstage.Core.Handler
         /// <param name="size"></param>
         /// <param name="order">排序sql</param>
         /// <returns></returns>
-        public static PagResults<ExtractMoney> GetPagings(int sellerId, int index, int size, string order = "order by CreateTime desc")
+        public static PagResults<ExtractMoney> GetPagings(int sellerId, int index, int size, string order = "", string sqlwhere = "")
         {
             var results = new PagResults<ExtractMoney>();
             results.Results = new List<ExtractMoney>();
             List<MySqlParameter> parameters = new List<MySqlParameter>();
+            if (order == "")
+                order = "order by CreateTime desc";
 
             string commandText = "";
             if (sellerId != 0)
             {
-                commandText = @"select * from ExtractMoney where sellerId = ?sellerId " + order + " LIMIT ?index,?size";
+                commandText = @"select * from ExtractMoney where sellerId = ?sellerId " + sqlwhere + order + " LIMIT ?index,?size";
                 parameters.Add(new MySqlParameter("?sellerId", sellerId));
             }
             else
-                commandText = @"select * from ExtractMoney " + order + " LIMIT ?index,?size";
+                commandText = @"select * from ExtractMoney " + sqlwhere + order + " LIMIT ?index,?size";
 
             parameters.Add(new MySqlParameter("?index", index));
             parameters.Add(new MySqlParameter("?size", size));
@@ -82,7 +84,7 @@ namespace Backstage.Core.Handler
                     while (reader.Read())
                     {
                         ExtractMoney e = new ExtractMoney();
-                        e.Id = (int)reader["Id"];
+                        e.Id = reader.GetInt32(0);
                         e.SellerId = (int)reader["SellerId"];
                         e.CardNumber = (long)reader["CardNumber"];
                         e.Bank = reader["Bank"].ToString();
@@ -163,7 +165,7 @@ namespace Backstage.Core.Handler
             MySqlHelper.ExecuteNonQuery(connectionString, CommandType.Text, commandText, parameters.ToArray());
         }
 
-        internal static void Update(ExtractMoney item)
+        internal static bool Update(ExtractMoney item)
         {
             string commandText = @"UPDATE ExtractMoney SET
                                         SellerId = ?SellerId,
@@ -190,7 +192,7 @@ namespace Backstage.Core.Handler
             parameters.Add(new MySqlParameter("?Status", item.Status));
             parameters.Add(new MySqlParameter("?Fee", item.Fee));
 
-            MySqlHelper.ExecuteNonQuery(GlobalConfig.DbConn, CommandType.Text, commandText, parameters.ToArray());
+            return MySqlHelper.ExecuteNonQuery(GlobalConfig.DbConn, CommandType.Text, commandText, parameters.ToArray()) > 0;
         }
 
 

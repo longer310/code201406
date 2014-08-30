@@ -113,8 +113,6 @@ namespace Backstage.Core.Handler.Backstage
         {
             var item = new ExtractMoney();
             item.SellerId = GetInt("sellerid");
-
-
             item.Money = GetFloat("money");
             item.Bank = GetString("bank");
             item.CardNumber = GetLong("cardnumber");

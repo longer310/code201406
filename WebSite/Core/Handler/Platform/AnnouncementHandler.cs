@@ -9,6 +9,7 @@ using System.Web.Script.Serialization;
 using System.Xml.Serialization;
 using Backstage.Core;
 using Backstage.Core.Entity;
+using Backstage.Core.Handler;
 using Backstage.Core.Logic;
 using Backstage.View.Dev.Merchant;
 using Backstage.View.User;
@@ -77,9 +78,79 @@ namespace Backstage.Handler
                     DelTempleList(); break;
                 #endregion
 
+                #region 结算管理
+                case "getsettlementlist":
+                    GetSettleMentList(); break;
+                case "updateextractmoney":
+                    UpdateExtractMoney(); break;
+                #endregion
                 default: break;
             }
         }
+
+        #region 结算管理
+        /// <summary>
+        /// 获取结算记录列表
+        /// </summary>
+        private void GetSettleMentList()
+        {
+            var status = GetInt("status");
+            var start = GetInt("start");
+            var limit = GetInt("limit");
+
+            var wheresql = "";
+            if (status == 0)
+            {
+                wheresql = string.Format(" where Status = {0} ", status);
+            }
+            else
+            {
+                wheresql = " where Status <> 0 ";
+            }
+            var result = ExtractMoneyHelper.GetPagings(0, start * limit, limit, "", wheresql);
+
+            var jt = new JsonTransfer();
+            jt.Add("list", result.Results);
+            jt.Add("totalcount", result.TotalCount);
+            Response.Write(jt.ToJson());
+            Response.End();
+        }
+        /// <summary>
+        /// 商户提现确认
+        /// </summary>
+        public void UpdateExtractMoney()
+        {
+            if (CurrentUser.RoleType != RoleType.SuperManage)
+            {
+                ReturnErrorMsg("无权限打款，请联系超级管理员");
+                return;
+            }
+            var status = GetInt("status");
+            var id = GetInt("id");
+            var extractmoney = ExtractMoneyHelper.GetItem(id);
+            if (extractmoney == null)
+            {
+                ReturnErrorMsg("提现id有误");
+                return;
+            }
+            if (status == extractmoney.Status)
+            {
+                ReturnErrorMsg("无状态变化");
+                return;
+            }
+            if (status != 1 && status != -1)
+            {
+                ReturnErrorMsg("修改的状态有误");
+                return;
+            }
+            extractmoney.Status = status;
+
+            if (ExtractMoneyHelper.Update(extractmoney))
+                ReturnCorrectMsg("处理成功");
+            else
+                ReturnErrorMsg("处理失败");
+        }
+        #endregion
 
         #region 公告
         /// <summary>

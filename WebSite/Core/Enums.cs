@@ -385,4 +385,48 @@ namespace Backstage.Core
         /// </summary>
         Success = 10,
     }
+
+    public enum MsgTempleId
+    {
+        /// <summary>
+        /// 商户提现模板
+        /// 尊敬的【{param1}】商家，您有一笔新的提现，提现金额为：{param2}，我们将于{param3}个工作日处理！如非本人操作请及时联系我们！商微平台官网：{param4}
+        /// </summary>
+        MerchantWithdraw = 91002183,
+        /// <summary>
+        /// 订单提醒商户模板
+        /// 尊敬的【{param1}】商家，您有笔新的订单已付款，订单号为：{param2}；请及时处理。后台管理地址为{param3}！
+        /// </summary>
+        OrdersRemindMerchant = 91002182,
+        /// <summary>
+        /// 新增商户短信通知模板
+        /// 尊敬的【{param1}】商家，恭喜您已成为我们平台的签约商户！您的后台管理地址为{param2}，登陆名：{param3}；默认初始密码为：{param4},请及时登陆修改密码！如有问题请联系我们客服，易微平台官网：{param5}
+        /// </summary>
+        AddMerchant = 91002181,
+        /// <summary>
+        /// 预订位置模板
+        /// 【{param4}】提醒您！您{param3}手机号于{param1}预定的{param2}已经成功。我们为您预留15分钟，请您准时到店！
+        /// </summary>
+        ScheduledLocation = 91002180,
+        /// <summary>
+        /// 会员修改密码模板
+        /// 【{param4}】尊敬的{param1}用户，您本次修改密码的验证码为{param2}，本验证码{param3}分钟内有效，如非本人操作，仅及时修改密码！
+        /// </summary>
+        UserModifyPwd = 91002179,
+        /// <summary>
+        /// 订单完成提醒模板
+        /// 【{param4}】提醒您！您{param3}手机号于{param1}预定的{param2}已经成功。我们为您预留15分钟，请您准时到店！
+        /// </summary>
+        OrdersFinish = 91002178,
+        /// <summary>
+        /// 会员注册验证码模板
+        /// 您的注册验证码为{param2}，本验证码{param3}分钟内有效，【{param1}】感谢您的使用
+        /// </summary>
+        UserRegisterCode = 91002177,
+        /// <summary>
+        /// 会员更改绑定号码模板
+        /// 您的验证码为{param2}，此验证码仅用于更改绑定号码，本验证码{param3}分钟内有效。【{param1}】感谢您的使用！
+        /// </summary>
+        UserModifyPhone = 91002176,
+    }
 }

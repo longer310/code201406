@@ -16,6 +16,8 @@ using System.Web;
 using System.Web.Security;
 using Backstage.Core.Entity;
 using MySql.Data.MySqlClient;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace Backstage.Core
 {
@@ -37,8 +39,8 @@ namespace Backstage.Core
         public static string _modifyphone_message = System.Configuration.ConfigurationManager.AppSettings["modifyphone_message"];//注册短信格式
         public static string _message = System.Configuration.ConfigurationManager.AppSettings["message"];//注册短信格式
         public static string _msg_url = System.Configuration.ConfigurationManager.AppSettings["msg_url"];//短信请求地址
-        public static string _msg_getpwd = System.Configuration.ConfigurationManager.AppSettings["msg_getpwd"];//找回密码信息格式
-        public static string _msg_account = System.Configuration.ConfigurationManager.AppSettings["msg_account"];//账号名
+        public static string _app_id = System.Configuration.ConfigurationManager.AppSettings["app_id"];//找回密码信息格式
+        public static string _app_secret = System.Configuration.ConfigurationManager.AppSettings["app_secret"];//账号名
         public static string _msg_password = System.Configuration.ConfigurationManager.AppSettings["msg_password"];//密码
         public static string _msg_sms_type = System.Configuration.ConfigurationManager.AppSettings["msg_sms_type"];//通道ID
         public static string _msg_opensend = System.Configuration.ConfigurationManager.AppSettings["msg_opensend"];//是否开启短信发送验证码
@@ -406,23 +408,68 @@ namespace Backstage.Core
         /// <summary>
         /// 发送短信
         /// </summary>
-        /// <param name="code"></param>
         /// <param name="mobile"></param>
-        /// <param name="message"></param>
-        public static void SendMsg(string code, string mobile, string message)
+        /// <param name="templeId"></param>
+        /// <param name="jsobject"></param>
+        /// <returns></returns>
+        public static string SendMsg(string mobile, MsgTempleId templeId, object jsobject)
         {
-            string content = string.Format(message, code);
-            Encoding encoding = Encoding.GetEncoding("UTF-8");
-            IDictionary<string, string> parameters = new Dictionary<string, string>();
-            parameters.Add("action", "send");            //固定send
-            parameters.Add("userid", "12");             //企业ID
-            parameters.Add("account", _msg_account);    //用户帐号
-            parameters.Add("password", _msg_password);  //用户账号对应的密码
-            parameters.Add("mobile", mobile);           //发信发送的目的号码.多个号码之间用半角逗号隔开
-            parameters.Add("content", content);         //短信的内容，内容需要UTF-8编码
-            parameters.Add("sendTime", "");             //为空立即发送，定时发送格式：2014-10-24 09:08:10
-            parameters.Add("extno", "");                //请先询问配置的通道是否支持扩展子号，如果不支持，请填空。子号只能为数字，且最多5位数。
-            CreatePostHttpResponse(_msg_url, parameters, null, null, encoding, null);
+            var access_token = GetAccessToken();
+            if (access_token == string.Empty) return "获取access_token出错";
+
+            try
+            {
+                string url = "http://api.189.cn/v2/emp/templateSms/sendSms";
+                SortedDictionary<string, string> parameters = new SortedDictionary<string, string>();
+                parameters.Add("app_id", _app_id);
+                parameters.Add("access_token", access_token);
+                parameters.Add("acceptor_tel", mobile);
+                parameters.Add("template_id", templeId.ToString());
+                parameters.Add("template_param", JsonConvert.SerializeObject(jsobject));
+                parameters.Add("timestamp", open189_sign.v1.Utility.GetCurrentDate());
+                string sign = open189_sign.v1.Utility.DoSignature(parameters, _app_secret);
+                parameters.Add("sign", sign);
+                HttpWebResponse response = CreatePostHttpResponse(url, parameters, null, null, Encoding.UTF8, null);
+                StreamReader sr = new StreamReader(response.GetResponseStream(), Encoding.UTF8);
+                string content = sr.ReadToEnd();
+                JObject jo = (JObject)JsonConvert.DeserializeObject(content);
+
+                if (jo.GetValue("res_code").ToString() == "0")
+                    return "发送成功";
+                else return "发送短信失败";
+            }
+            catch (Exception)
+            {
+                return "发送短信失败";
+            }
+        }
+
+        /// <summary>
+        /// 令牌接口 access_token
+        /// </summary>
+        /// <returns></returns>
+        private static string GetAccessToken()
+        {
+            try
+            {
+                string url = "https://oauth.api.189.cn/emp/oauth2/v3/access_token";
+                IDictionary<string, string> parameters = new Dictionary<string, string>();
+                parameters.Add("grant_type", "client_credentials");
+                parameters.Add("app_id", _app_id);
+                parameters.Add("app_secret", _app_secret);
+                HttpWebResponse response = CreatePostHttpResponse(url, parameters, null, null, Encoding.UTF8, null);
+                StreamReader sr = new StreamReader(response.GetResponseStream(), Encoding.UTF8);
+                string content = sr.ReadToEnd();
+                JObject jo = (JObject)JsonConvert.DeserializeObject(content);
+
+                if (jo.GetValue("res_message").ToString() == "Success")
+                    return jo.GetValue("access_token").ToString();
+                else return string.Empty;
+            }
+            catch (Exception)
+            {
+                return string.Empty;
+            }
         }
 
 

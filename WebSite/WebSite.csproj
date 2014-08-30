@@ -51,6 +51,9 @@
     <Reference Include="Newtonsoft.Json">
       <HintPath>Dll\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="open189-sign">
+      <HintPath>Dll\open189-sign.dll</HintPath>
+    </Reference>
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -593,6 +596,7 @@
     <Compile Include="Core\Alipay\AlipayCore.cs" />
     <Compile Include="Core\Alipay\AlipayNotify.cs" />
     <Compile Include="Core\Alipay\RSA.cs" />
+    <Compile Include="Core\Entity\SendMsg.cs" />
     <Compile Include="Core\Entity\Announcement.cs" />
     <Compile Include="Core\Entity\BoxType.cs" />
     <Compile Include="Core\Entity\MerchantStat.cs" />

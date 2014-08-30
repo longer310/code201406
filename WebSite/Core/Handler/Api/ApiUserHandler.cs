@@ -149,6 +149,12 @@ namespace Backstage.Handler
                 ReturnErrorMsg("此电话已注册");
                 return;
             }
+            var merchant = MerchantHelper.GetMerchant(sellerId);
+            if (merchant == null)
+            {
+                ReturnErrorMsg("不存在该商户");
+                return;
+            }
             var verificationCode = VerificationCodeHelper.GetVerificationCode(sellerId, phone);
             bool needgen = false;
             if (verificationCode == null)
@@ -170,7 +176,19 @@ namespace Backstage.Handler
             }
             //发送短信
             if (Utility._msg_opensend == "1")
-                Utility.SendMsg(verificationCode.Code, verificationCode.Phone, Utility._register_message);
+                //Utility.SendMsg(verificationCode.Code, verificationCode.Phone, Utility._register_message);
+            {
+                SendMsgClass3 jsobject = new SendMsgClass3();
+                jsobject.param1 = merchant.Name;
+                jsobject.param2 = verificationCode.Code;
+                jsobject.param3 = "30";
+
+                if (Utility.SendMsg(verificationCode.Phone, MsgTempleId.UserRegisterCode, jsobject) != "发送成功")
+                {
+                    ReturnErrorMsg("短信发送失败");
+                    return;
+                }
+            }
             //保存验证信息
             VerificationCodeHelper.SaveVerificationCode(verificationCode);
 
@@ -977,6 +995,12 @@ namespace Backstage.Handler
                 ReturnErrorMsg("此电话已注册");
                 return;
             }
+            var merchant = MerchantHelper.GetMerchant(sellerId);
+            if (merchant == null)
+            {
+                ReturnErrorMsg("不存在该商户");
+                return;
+            }
             var verificationCode = VerificationCodeHelper.GetVerificationCode(sellerId, phone, uid);
             bool needgen = false;
             if (verificationCode == null)
@@ -999,7 +1023,19 @@ namespace Backstage.Handler
             }
             //发送短信
             if (Utility._msg_opensend == "1")
-                Utility.SendMsg(verificationCode.Code, verificationCode.Phone, Utility._modifyphone_message);
+                //Utility.SendMsg(verificationCode.Code, verificationCode.Phone, Utility._modifyphone_message);
+            {
+                SendMsgClass3 jsobject = new SendMsgClass3();
+                jsobject.param1 = merchant.Name;
+                jsobject.param2 = verificationCode.Code;
+                jsobject.param3 = "30";
+
+                if (Utility.SendMsg(verificationCode.Phone, MsgTempleId.UserModifyPhone, jsobject) != "发送成功")
+                {
+                    ReturnErrorMsg("短信发送失败");
+                    return;
+                }
+            }
             //保存验证信息
             VerificationCodeHelper.SaveVerificationCode(verificationCode);
 

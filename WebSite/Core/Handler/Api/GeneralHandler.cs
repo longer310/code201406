@@ -38,6 +38,12 @@ namespace Backstage.Core.Handler
             {
                 ReturnErrorMsg("手机号码不存在");
             }
+            var merchant = MerchantHelper.GetMerchant(sellerid);
+            if (merchant == null)
+            {
+                ReturnErrorMsg("不存在该商户");
+                return;
+            }
 
             var verificationCode = new VerificationCode();
             verificationCode.Phone = phone;
@@ -47,7 +53,19 @@ namespace Backstage.Core.Handler
             verificationCode.UserId = user.Id;
             VerificationCodeHelper.SaveVerificationCode(verificationCode);
             if (Utility._msg_opensend == "1")
-                Utility.SendMsg(verificationCode.Code, verificationCode.Phone, Utility._modifyphone_message);
+                //Utility.SendMsg(verificationCode.Code, verificationCode.Phone, Utility._modifyphone_message);
+            {
+                SendMsgClass3 jsobject = new SendMsgClass3();
+                jsobject.param1 = merchant.Name;
+                jsobject.param2 = verificationCode.Code;
+                jsobject.param3 = "30";
+
+                if (Utility.SendMsg(verificationCode.Phone, MsgTempleId.UserRegisterCode, jsobject) != "发送成功")
+                {
+                    ReturnErrorMsg("短信发送失败");
+                    return;
+                }
+            }
             ReturnCorrectMsg("请注意查收验证码");
         }
 

@@ -405,6 +405,12 @@ namespace Backstage.Core
         #endregion
 
         #region 发送短信
+        public class SendSmsResponse
+        {
+            public string identifier { get; set; }
+            public string res_code { get; set; }
+            public string res_message { get; set; }
+        }
         /// <summary>
         /// 发送短信
         /// </summary>
@@ -432,9 +438,9 @@ namespace Backstage.Core
                 HttpWebResponse response = CreatePostHttpResponse(url, parameters, null, null, Encoding.UTF8, null);
                 StreamReader sr = new StreamReader(response.GetResponseStream(), Encoding.UTF8);
                 string content = sr.ReadToEnd();
-                JObject jo = (JObject)JsonConvert.DeserializeObject(content);
+                var sendResponse = JsonConvert.DeserializeObject<SendSmsResponse>(content);
 
-                if (jo.GetValue("res_code").ToString() == "0")
+                if (sendResponse.res_code == "0")
                     return "发送成功";
                 else return "发送短信失败";
             }
@@ -444,6 +450,13 @@ namespace Backstage.Core
             }
         }
 
+        public class AccessTokenResponse
+        {
+            public string access_token { get; set; }
+            public string expires_in { get; set; }
+            public string res_code { get; set; }
+            public string res_message { get; set; }
+        }
         /// <summary>
         /// 令牌接口 access_token
         /// </summary>
@@ -460,10 +473,10 @@ namespace Backstage.Core
                 HttpWebResponse response = CreatePostHttpResponse(url, parameters, null, null, Encoding.UTF8, null);
                 StreamReader sr = new StreamReader(response.GetResponseStream(), Encoding.UTF8);
                 string content = sr.ReadToEnd();
-                JObject jo = (JObject)JsonConvert.DeserializeObject(content);
+                var accessTokenResponse = JsonConvert.DeserializeObject<AccessTokenResponse>(content);
 
-                if (jo.GetValue("res_message").ToString() == "Success")
-                    return jo.GetValue("access_token").ToString();
+                if (accessTokenResponse.res_code == "0")
+                    return accessTokenResponse.access_token;
                 else return string.Empty;
             }
             catch (Exception)

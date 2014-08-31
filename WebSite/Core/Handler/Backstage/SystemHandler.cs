@@ -136,22 +136,22 @@ namespace Backstage.Core.Handler.Backstage
             MerchantHelper.SaveMerchant(seller);
 
             //发短信
-            //if (Utility._msg_opensend == "1")
-            ////Utility.SendMsg(verificationCode.Code, verificationCode.Phone, Utility._modifyphone_message);
-            //{
-            //    SendMsgClass4 jsobject = new SendMsgClass4();
-            //    var merchant = MerchantHelper.GetMerchant(item.SellerId);
-            //    jsobject.param1 = merchant.Name;
-            //    jsobject.param2 = item.Money.ToString();
-            //    jsobject.param3 = "1";
-            //    jsobject.param4 = Utility._domainurl;
+            if (Utility._msg_opensend == "1")
+            //Utility.SendMsg(verificationCode.Code, verificationCode.Phone, Utility._modifyphone_message);
+            {
+                SendMsgClass4 jsobject = new SendMsgClass4();
+                var merchant = MerchantHelper.GetMerchant(item.SellerId);
+                jsobject.param1 = merchant.Name;
+                jsobject.param2 = item.Money.ToString();
+                jsobject.param3 = "1";
+                jsobject.param4 = Utility._domainurl;
 
-            //    if (Utility.SendMsg(verificationCode.Phone, MsgTempleId.UserRegisterCode, jsobject) != "发送成功")
-            //    {
-            //        ReturnErrorMsg("短信发送失败");
-            //        return;
-            //    }
-            //}
+                if (Utility.SendMsg(user.Phone, MsgTempleId.UserRegisterCode, jsobject) != "发送成功")
+                {
+                    ReturnErrorMsg("短信发送失败");
+                    return;
+                }
+            }
 
             //提现表更新
             item.Balance = user.Money;

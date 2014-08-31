@@ -12,7 +12,7 @@ namespace Backstage.Core.Handler.Backstage
     {
         public override void ProcessRequest(HttpContext context)
         {
-            base.SetApiName("SystemHandler");
+            base.SetApiName("DevSystemHandler");
             base.ProcessRequest(HttpContext.Current);
             switch (Action)
             {
@@ -32,7 +32,70 @@ namespace Backstage.Core.Handler.Backstage
                     UpdateAdmin(); break;
                 case "deladmin":
                     DeleteAdmin(); break;
+                case "delfastlinks":
+                    DeleteFastlinks(); break;
+                case "createfastlinks":
+                    CreateFastlinks(); break;
+                case "getfastlinkslist":
+                    GetFastlinksList(); break;
+                case "getfastlinksitem":
+                    GetFastlinksItem(); break;
+                case "updatefastlinks":
+                    UpdateFastlinks(); break;
                 default: break;
+            }
+        }
+
+        private void UpdateFastlinks()
+        {
+            int id = GetInt("id");
+            var item = DevSystemHelper.GetFastlinksItem(id);
+            if (item == null)
+                throw new ArgumentNullException("fasklinks为空Id:" + id);
+            item.Title = GetString("title");
+            item.ImgUrl = GetString("imgurl");
+            item.Url = GetString("url");
+            item.CreateTime = DateTime.Now;
+            DevSystemHelper.UpdateFasklinks(item);
+        }
+
+        private void GetFastlinksItem()
+        {
+            var id = GetInt("id");
+            var item = DevSystemHelper.GetFastlinksItem(id);
+            JsonTransfer jt = new JsonTransfer();
+            jt.Add("data", item);
+            Response.Write(DesEncrypt(jt));
+            Response.End();
+        }
+
+        private void GetFastlinksList()
+        {
+            var index = GetInt("start");
+            var size = GetInt("limit");
+            var items = DevSystemHelper.GetPagFastlinks(index * size, size);
+            JsonTransfer jt = new JsonTransfer();
+            jt.Add("data", items);
+            Response.Write(DesEncrypt(jt));
+            Response.End();
+        }
+
+        private void CreateFastlinks()
+        {
+            var item = new Fastlinks();
+            item.Title = GetString("title");
+            item.ImgUrl = GetString("imgurl");
+            item.Url = GetString("url");
+            item.CreateTime = DateTime.Now;
+            DevSystemHelper.CreateFastlinks(item);
+        }
+
+        private void DeleteFastlinks()
+        {
+            var ids = Utility.GetListint("ids");
+            foreach (var id in ids)
+            {
+                DevSystemHelper.DeleteFastlinks(id);
             }
         }
 

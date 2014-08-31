@@ -33,16 +33,16 @@
                         <li class="active"><a href="pay_api.html">支付接口列表</a></li>
                         <li><a href="pay_api_add.html">添加支付接口</a></li>
                     </ul>
-					<form action="#" method="get" class="form-horizontal" id="j-image-addForm" />
+					<form action="#" method="get" class="form-horizontal" id="j-addForm" />
 						<div class="control-group">
-							<label class="control-label">名称</label>
+							<label class="control-label">支付名称</label>
 							<div class="controls">
-								<input type="text" id="j-image-title" />
+								<input type="text" id="j-title" />
 							</div>
 						</div>
 
 						<div class="control-group">
-							<label class="control-label">活动图片</label>
+							<label class="control-label">支付Logo</label>
 							<div class="controls">
 								
 								<a class="btn btn-info" href="javascript:;" id="j-btn-imageUpload"><i class="icon-folder-open icon-white"></i> 本地上传</a>
@@ -57,11 +57,42 @@
 						</div>
 
 						<div class="control-group">
-							<label class="control-label">内容</label>
+							<label class="control-label">支付描述</label>
 							<div class="controls">
-								<textarea rows="4"></textarea>
+								<textarea rows="4" id="j-desc"></textarea>
 							</div>
 						</div>
+
+						<div class="control-group">
+							<label class="control-label">支付宝用户账号</label>
+							<div class="controls">
+								<input type="text" id="j-account" />
+							</div>
+						</div>
+
+						<div class="control-group">
+							<label class="control-label">支付宝安全校验码</label>
+							<div class="controls">
+								<input type="text" id="j-checkcode" />
+							</div>
+						</div>
+
+						<div class="control-group">
+							<label class="control-label">合作者身份ID</label>
+							<div class="controls">
+								<input type="text" id="j-identity" />
+							</div>
+						</div>
+
+						<div class="control-group">
+							<label class="control-label">支付宝账号类型</label>
+							<div class="controls">
+								<select id="j-accounttype">
+									<option>使用担保交易接口</option>
+								</select>
+							</div>
+						</div>
+
 						<div class="form-actions">
 							<button type="reset" class="btn"><i class="icon-refresh"></i> 清除重置</button>
 							<button type="submit" class="btn btn-primary"><i class="icon-ok icon-white"></i> 完成保存</button>
@@ -85,7 +116,6 @@
         <script src="../public/js/common.js"></script>
 
         <!--页面js-->
-        <script src="../public/js/ue.pager.js"></script>
 
         <script charset="utf-8" src="../public/kindeditor/kindeditor-min.js"></script>
 		<script charset="utf-8" src="../public/kindeditor/lang/zh_CN.js"></script>
@@ -148,9 +178,9 @@
 
 
 					//绑定提交表单
-					$("#j-image-addForm").bind("submit", function(){
+					$("#j-addForm").bind("submit", function(){
 						var save_data = {
-							title : $.trim($("#j-image-title").val()),
+							title : $.trim($("#j-title").val()),
 							thumbnail : $('#j-img-placehold').attr("src")
 
 						}
@@ -161,7 +191,7 @@
 					});
 
 					//绑定重置表单
-					$("#j-image-addForm").bind("reset", function(){
+					$("#j-addForm").bind("reset", function(){
 	    				mpage.setEditFormData();
 						return false;
 					});
@@ -192,8 +222,7 @@
         			var mpage = this,
         				detail = mpage.detailData;
 
-        			$("#j-image-title").val(detail.title);
-    				$("#j-image-thumbnails").html("").hide();
+        			$("#j-title").val(detail.title);
         			$('#j-img-placehold').attr("src", detail.thumbnail);
         		}
     		}

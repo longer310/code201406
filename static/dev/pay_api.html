@@ -37,24 +37,6 @@
 						</ul>
 					</div>
 				</div>
-
-				<div class="widget-footer">
-					<div class="pagination alternate" id="j-pagination">
-						<ul class="page-main">
-							<li class="disabled"><a href="#">首页</a></li>
-							<li class="disabled"><a href="#">上一页</a></li>
-							<li class="active">
-								<a href="#">1</a>
-							</li>
-							<li><a href="#">2</a></li>
-							<li><a href="#">3</a></li>
-							<li><a href="#">4</a></li>
-							<li><a href="#">下一页</a></li>
-							<li><a href="#">末页</a></li>
-							<li class="page-info"><b class="text-info">1</b>/8页 共<b class="text-info">18</b>条记录</li>
-						</ul>
-					</div>
-				</div>
 			</div>
 
 			<div id="footer">
@@ -139,29 +121,6 @@
 						};
 						
 						$("#j-list").html( $("#j-tmpl-listitem").tmpl(json.result) );
-
-						ue.pager({
-							//target : $(".list_pager"),//放置分页的元素
-							pagerTarget : $("#j-pagination ul"),
-							first : '<li><a href="#">首页</a></li>',
-							firstDisabled : '<li class="disabled"><a href="#">首页</a></li>',
-							last : '<li><a href="#">末页</a></li>',
-							lastDisabled : '<li class="disabled"><a href="#">末页</a></li>',
-							prev : '<li><a href="#">上一页</a></li>',
-							prevDisabled : '<li class="disabled"><a href="#">上一页</a></li>',
-							next : '<li><a href="#">下一页</a></li>',
-							nextDisabled : '<li class="disabled"><a href="#">下一页</a></li>',
-							current : '<li class="active"><a href="#">@{page}</a></li>',
-							page : '<li><a href="#">@{page}</a></li>',
-							tip : '<li class="page-info"><b class="text-info">@{nowPage}</b>/@{pageCount}页 共<b class="text-info">@{count}</b>条记录</li>',
-							now : p,//当前页
-							maxPage : 5,//显示的最多页数
-							per : 8,//每页显示几个
-							count : json.result.count,
-							onchange : function(page){//切换页数回调函数
-								mpage.getImageList(page);
-							}
-						});
 
 						//绑定单个删除
 	        			$("#j-list .j-btn-del").bind("click", function(){

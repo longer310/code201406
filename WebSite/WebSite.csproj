@@ -560,6 +560,8 @@
     <Content Include="View\Dev\Merchant\Meredit.aspx" />
     <Content Include="View\Dev\Merchant\Mertypelist.aspx" />
     <Content Include="View\Dev\Settlement\Settlement.aspx" />
+    <Content Include="View\Dev\System\FastLinks.aspx" />
+    <Content Include="View\Dev\System\SystemInfo.aspx" />
     <Content Include="View\Dev\Temple\AddTemple.aspx" />
     <Content Include="View\Dev\Temple\Templelist.aspx" />
     <Content Include="View\Dev\Temple\EditTemple.aspx" />
@@ -852,6 +854,18 @@
     </Compile>
     <Compile Include="View\Dev\Settlement\Settlement.aspx.designer.cs">
       <DependentUpon>Settlement.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="View\Dev\System\FastLinks.aspx.cs">
+      <DependentUpon>FastLinks.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="View\Dev\System\FastLinks.aspx.designer.cs">
+      <DependentUpon>FastLinks.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="View\Dev\System\SystemInfo.aspx.cs">
+      <DependentUpon>SystemInfo.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="View\Dev\System\SystemInfo.aspx.designer.cs">
+      <DependentUpon>SystemInfo.aspx</DependentUpon>
     </Compile>
     <Compile Include="View\Dev\Temple\AddTemple.aspx.cs">
       <DependentUpon>AddTemple.aspx</DependentUpon>

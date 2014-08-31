@@ -17,42 +17,14 @@
 						</div>
 						<div class="widget-content">
 							<ul class="home-links clearfix">
+                                <%foreach(var item in Fastlinkslist){ %>
 								<li>
-									<a href="" class="thumbnail">
-										<img src="http://placehold.it/40x40" alt="" id="j-sysytem-profile-logo">
-										<span>新增活动</span>
+									<a href="<%=item.Url %>" class="thumbnail">
+										<img src="<%=item.ImgUrl %>" alt="" id="j-sysytem-profile-logo">
+										<span><%=item.Title %></span>
 									</a>
 								</li>
-								<li>
-									<a href="" class="thumbnail">
-										<img src="http://placehold.it/40x40" alt="" id="j-sysytem-profile-logo">
-										<span>新增活动</span>
-									</a>
-								</li>
-								<li>
-									<a href="" class="thumbnail">
-										<img src="http://placehold.it/40x40" alt="" id="j-sysytem-profile-logo">
-										<span>新增活动</span>
-									</a>
-								</li>
-								<li>
-									<a href="" class="thumbnail">
-										<img src="http://placehold.it/40x40" alt="" id="j-sysytem-profile-logo">
-										<span>新增活动</span>
-									</a>
-								</li>
-								<li>
-									<a href="" class="thumbnail">
-										<img src="http://placehold.it/40x40" alt="" id="j-sysytem-profile-logo">
-										<span>新增活动</span>
-									</a>
-								</li>
-								<li>
-									<a href="" class="thumbnail">
-										<img src="http://placehold.it/40x40" alt="" id="j-sysytem-profile-logo">
-										<span>新增活动</span>
-									</a>
-								</li>
+								<%} %>
 							</ul>
 						</div>
 					</div>
@@ -63,8 +35,8 @@
 						</div>
 						<div class="widget-content">
 							<ul class="site-stats row-fluid">
-								<li class="span6"><a href="order_list.html"><i class="icon-shopping-cart"></i> <strong class="text-info">3</strong> <small>提现申请</small></a></li>
-								<li class="span6"><a href="user_list.html"><i class="icon-user"></i> <strong class="text-info">16</strong> <small>即将到期商户</small></a></li>
+								<li class="span6"><a href="<%=DomainUrl %>/View/Dev/Settlement/Settlement.aspx"><i class="icon-shopping-cart"></i> <strong class="text-info">3</strong> <small>提现申请</small></a></li>
+								<li class="span6"><a href="<%=DomainUrl %>/View/Dev/Merchant/Merlist.aspx"><i class="icon-user"></i> <strong class="text-info">16</strong> <small>即将到期商户</small></a></li>
 							</ul>
 						</div>
 					</div>
@@ -108,7 +80,7 @@
 							</div>
 						</div>
 
-						<div class="span3">
+						<%--<div class="span3">
 							<div class="widget-box nest-box" >
 								<div class="widget-title">
 									<span class="icon">
@@ -125,7 +97,7 @@
 									</ul>
 								</div>
 							</div>
-						</div>
+						</div>--%>
 
 						<div class="span3">
 							<div class="widget-box nest-box" >
@@ -196,4 +168,6 @@
 			</div>
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="Footer" runat="server">
+
+
 </asp:Content>

@@ -37,7 +37,7 @@
 
     <div id="sidebar">
         <ul>
-            <li class="active open"><a href="index.html"><i class="icon icon-home"></i><span>首页</span></a></li>
+            <li class="active open"><a href="<%=DomainUrl %>/View/Dev/Index.aspx"><i class="icon icon-home"></i><span>首页</span></a></li>
             <li class="submenu sidebar_merchant">
                 <a href="<%=DomainUrl %>/View/Dev/Merchant/Merlist.aspx"><i class="icon icon-gift"></i><span>商户管理</span> <span class="label">3</span></a>
                 <ul>
@@ -81,11 +81,11 @@
             <li class="submenu sidebar_sys">
                 <a href="#"><i class="icon icon-cog"></i><span>系统设置</span> <span class="label">5</span></a>
                 <ul>
-                    <li><a href="change_pw.html">账户设置</a></li>
+                    <li><a href="<%=DomainUrl %>/View/Dev/UserCenter/List.aspx">账户设置</a></li>
                     <li><a href="profile.html">资料设置</a></li>
                     <li><a href="message.html">友情链接</a></li>
                     <li class="sidebar_payment"><a href="<%=DomainUrl %>/View/Dev/System/Payment.aspx">支付接口</a></li>
-                    <li><a href="resource.html">快捷设置</a></li>
+                    <li><a href="<%=DomainUrl %>/View/Dev/System/FastLinks.aspx">快捷设置</a></li>
                 </ul>
             </li>
         </ul>

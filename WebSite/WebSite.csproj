@@ -601,6 +601,7 @@
     <Compile Include="Core\Alipay\AlipaySubmit.cs" />
     <Compile Include="Core\Alipay\MD5.cs" />
     <Compile Include="Core\Alipay\RSA.cs" />
+    <Compile Include="Core\Entity\Fastlinks.cs" />
     <Compile Include="Core\Entity\SendMsg.cs" />
     <Compile Include="Core\Entity\Announcement.cs" />
     <Compile Include="Core\Entity\BoxType.cs" />
@@ -857,12 +858,14 @@
     </Compile>
     <Compile Include="View\Dev\System\FastLinks.aspx.cs">
       <DependentUpon>FastLinks.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="View\Dev\System\FastLinks.aspx.designer.cs">
       <DependentUpon>FastLinks.aspx</DependentUpon>
     </Compile>
     <Compile Include="View\Dev\System\SystemInfo.aspx.cs">
       <DependentUpon>SystemInfo.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="View\Dev\System\SystemInfo.aspx.designer.cs">
       <DependentUpon>SystemInfo.aspx</DependentUpon>

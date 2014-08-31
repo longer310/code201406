@@ -430,7 +430,7 @@ namespace Backstage.Core
                 parameters.Add("app_id", _app_id);
                 parameters.Add("access_token", access_token);
                 parameters.Add("acceptor_tel", mobile);
-                parameters.Add("template_id", templeId.ToString());
+                parameters.Add("template_id", ((int)templeId).ToString());
                 parameters.Add("template_param", JsonConvert.SerializeObject(jsobject));
                 parameters.Add("timestamp", open189_sign.v1.Utility.GetCurrentDate());
                 string sign = open189_sign.v1.Utility.DoSignature(parameters, _app_secret);
@@ -444,7 +444,7 @@ namespace Backstage.Core
                     return "发送成功";
                 else return "发送短信失败";
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 return "发送短信失败";
             }
@@ -479,7 +479,7 @@ namespace Backstage.Core
                     return accessTokenResponse.access_token;
                 else return string.Empty;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 return string.Empty;
             }

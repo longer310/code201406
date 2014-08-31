@@ -627,6 +627,7 @@ namespace Backstage.Handler
             foreach (var coupon in result.Results)
             {
                 var item = new CouponItem();
+                item.id = coupon.Id;
                 item.title = coupon.Title;
                 item.description = coupon.Description;
                 item.img = coupon.ImgUrl;

@@ -1017,7 +1017,7 @@ namespace Backstage.Handler
             }
             if (orders.Status > OrderStatus.Update)
             {
-                ReturnErrorMsg("已更新订单信息");
+                ReturnErrorMsg("该订单已付款或已完结");
                 return;
             }
 

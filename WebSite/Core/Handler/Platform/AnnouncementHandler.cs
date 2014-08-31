@@ -145,6 +145,16 @@ namespace Backstage.Handler
             }
             extractmoney.Status = status;
 
+            var user = AccountHelper.GetUser(extractmoney.SellerId);
+            if (user == null)
+            {
+                ReturnErrorMsg("不存在该用户");
+                return;
+            }
+            //打款成功
+            user.Money -= extractmoney.Money;
+            AccountHelper.SaveAccount(user);
+
             if (ExtractMoneyHelper.Update(extractmoney))
                 ReturnCorrectMsg("处理成功");
             else

@@ -124,8 +124,9 @@ namespace Backstage.Core.Handler.Backstage
                 throw new ArgumentNullException("user为空：" + item.SellerId);
 
             //目前商户的用户信息分三张表存储
-            user.Money -= item.Money;
-            AccountHelper.SaveAccount(user);
+            //提现确认打款后才扣钱
+            //user.Money -= item.Money;
+            //AccountHelper.SaveAccount(user);
 
             //商家更新
             var seller = MerchantHelper.GetMerchant(item.SellerId);

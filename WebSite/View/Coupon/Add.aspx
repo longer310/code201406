@@ -1,10 +1,10 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/View/merchant.Master" AutoEventWireup="true" CodeBehind="Add.aspx.cs" Inherits="Backstage.View.Coupon.Add" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="Header" runat="server">
-    <!--页面样式-->
-    <link href="../public/kindeditor/themes/default/default.css" type="text/css" rel="stylesheet" />
-    <link href="../public/css/datepicker.css" type="text/css" rel="stylesheet" />
-    <link href="../public/css/select2.css" type="text/css" rel="stylesheet" />
+    		<!--页面样式-->
+		<link href="../../script/kindeditor/themes/default/default.css" type="text/css" rel="stylesheet">
+		<link href="../../css/css/datepicker.css" type="text/css" rel="stylesheet">
+		<link href="../../css/css/select2.css" type="text/css" rel="stylesheet">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="Content" runat="server">
     <div class="widget-box">
@@ -111,11 +111,11 @@
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="Footer" runat="server">
     <!--页面js-->
-    <script src="../public/js/ue.pager.js"></script>
-    <script src="../public/js/bootstrap-datepicker.js"></script>
+    <script src="../../script/js/ue.pager.js"></script>
+    <script src="../../script/js/bootstrap-datepicker.js"></script>
 
-    <script charset="utf-8" src="../public/kindeditor/kindeditor-min.js"></script>
-    <script charset="utf-8" src="../public/kindeditor/lang/zh_CN.js"></script>
+    <script charset="utf-8" src="../../script/kindeditor/kindeditor-min.js"></script>
+    <script charset="utf-8" src="../../script/kindeditor/lang/zh_CN.js"></script>
 
     <script type="text/jquery-tmpl-x" id="j-tmpl-goods-selecteditem">
 			{{each(i, v) goods_selected}}

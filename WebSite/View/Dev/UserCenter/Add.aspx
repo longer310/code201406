@@ -28,8 +28,8 @@
                     <label class="control-label">管理级别</label>
                     <div class="controls">
                         <select id="j-level-list">
-                            <option>普通管理员</option>
-                            <option>超级管理员</option>
+                            <option value="2">普通管理员</option>
+                            <option value="1">超级管理员</option>
                         </select>
                     </div>
                 </div>

@@ -138,7 +138,7 @@
         var MPage = {
             init: function () {
                 var mpage = this;
-
+                var count;
                 //会员设置
                 $("#j-level_condition_type").bind("change", function () {
                     var type = parseInt($("#j-level_condition_type").val()) || 0;
@@ -163,7 +163,7 @@
                 });
 
                 $("#j-add_level").bind("click", function () {
-                    var count = parseInt($("#j-level_count").val()) || 0,
+                    count = parseInt($("#j-level_count").val()) || 0,
                         type = parseInt($("#j-level_condition_type").val()) || 0;
 
                     count++;
@@ -176,10 +176,13 @@
                             }
                         ]
                     });
+                    
+
+
                 });
 
                 $("#j-remove_level").bind("click", function () {
-                    var count = parseInt($("#j-level_count").val()) || 0;
+                    count = parseInt($("#j-level_count").val()) || 0;
                     count--;
                     if (count < 0) {
                         count = 0;
@@ -192,9 +195,19 @@
 
                 //绑定提交表单
                 $("#j-rule_form").bind("submit", function () {
+                    var data = {
 
+                    };
 
-                    alert('提交数据');
+                    $.ajax({
+                        url: "../../Handler/Backstage/DevSystemHandler.ashx?action=addadmin",
+                        type: "POST",
+                        data: save_data,
+                        dataType: "json"
+                        //context: document.body
+                    }).success(function (data) {
+                       
+                    });
                     return false;
                 });
 

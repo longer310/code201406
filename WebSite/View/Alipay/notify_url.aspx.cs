@@ -36,15 +36,20 @@ public partial class notify_url : System.Web.UI.Page
     private static ILog logger = LogManager.GetLogger("notify_url");
     protected void Page_Load(object sender, EventArgs e)
     {
+        logger.Info("支付宝充值回调开始");
+        logger.Info("开始解析参数");
         Dictionary<string, string> sPara = GetRequestPost();
 
         if (sPara.Count > 0)//判断是否有带返回参数
         {
+            logger.Info("判断有带参数");
             Notify aliNotify = new Notify();
+            logger.Info("验证签名");
             bool verifyResult = aliNotify.VerifyNotify(sPara, Request.Form["sign"]);
 
             if (verifyResult)//验证成功
             {
+                logger.Info("签名通过验证");
                 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
                 //请在这里加上商户的业务逻辑程序代码
 
@@ -67,6 +72,7 @@ public partial class notify_url : System.Web.UI.Page
                     //交易状态
                     string trade_status = xmlDoc.SelectSingleNode("/notify/trade_status").InnerText;
 
+                    logger.InfoFormat("out_trade_no:{0},trade_no:{1},trade_status:{2}", out_trade_no, trade_no, trade_status);
                     if (trade_status == "TRADE_FINISHED" || trade_status == "TRADE_SUCCESS")
                     {
                         //判断该笔订单是否在商户网站中已经做过处理
@@ -175,11 +181,13 @@ public partial class notify_url : System.Web.UI.Page
             }
             else//验证失败
             {
+                logger.Info("签名验证失败");
                 Response.Write("fail");
             }
         }
         else
         {
+            logger.Info("无通知参数");
             Response.Write("无通知参数");
         }
     }

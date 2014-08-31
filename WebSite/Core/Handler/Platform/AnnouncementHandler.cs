@@ -84,9 +84,243 @@ namespace Backstage.Handler
                 case "updateextractmoney":
                     UpdateExtractMoney(); break;
                 #endregion
+
+                #region 支付方式
+                case "getpaymentlist":
+                    GetPaymentList(); break;
+                case "delpayment":
+                    DelPayment(); break;
+                case "addpayment":
+                    AddPayment(); break;
+                case "getpayment":
+                    GetPayment(); break;
+                case "updatepayment":
+                    UpdatePayment(); break;
+                case "updatepaymentstatus":
+                    UpdatePaymentStatus(); break;
+                #endregion
                 default: break;
             }
         }
+
+
+        #region 支付方式
+        private void GetPayment()
+        {
+            var id = GetInt("id");
+
+            var payment = PaymentHelper.GetPayment(id);
+            if (payment == null)
+            {
+                ReturnErrorMsg("不存在该支付方式");
+                return;
+            }
+
+            var result = PaymentHelper.GetPayment(id);
+
+            var jt = new JsonTransfer();
+            jt.Add("data", result);
+            Response.Write(jt.ToJson());
+            Response.End();
+        }
+        /// <summary>
+        /// 获得支付方式列表
+        /// </summary>
+        private void GetPaymentList()
+        {
+            var result = PaymentHelper.GetList();
+
+            var jt = new JsonTransfer();
+            jt.Add("list", result);
+            jt.Add("totalcount", result.Count);
+            Response.Write(jt.ToJson());
+            Response.End();
+        }
+
+        private void DelPayment()
+        {
+            var id = GetInt("id");
+
+            var payment = PaymentHelper.GetPayment(id);
+            if (payment == null)
+            {
+                ReturnErrorMsg("不存在该支付方式");
+                return;
+            }
+            if (PaymentHelper.DeletePayment(id))
+                ReturnCorrectMsg("删除成功");
+            else
+                ReturnErrorMsg("删除失败");
+
+        }
+        /// <summary>
+        /// 新增支付方式
+        /// </summary>
+        private void AddPayment()
+        {
+            var name = GetString("name");
+            var description = GetString("description");
+            var imgurl = GetString("imgurl");
+            var account = GetString("account");
+            var privatekey = GetString("privatekey");
+            var pid = GetString("pid");
+            var accounttype = GetInt("accounttype");
+
+            if (string.IsNullOrEmpty(name) || name.Length > 50)
+            {
+                ReturnErrorMsg("支付方式名称不合法");
+                return;
+            }
+            if (string.IsNullOrEmpty(description) || description.Length > 200)
+            {
+                ReturnErrorMsg("支付方式描述不合法");
+                return;
+            }
+            if (string.IsNullOrEmpty(imgurl) || imgurl.Length > 200)
+            {
+                ReturnErrorMsg("支付方式logo不合法");
+                return;
+            }
+            if (string.IsNullOrEmpty(account) || account.Length > 100)
+            {
+                ReturnErrorMsg("支付方式账号不合法");
+                return;
+            }
+            if (string.IsNullOrEmpty(privatekey))
+            {
+                ReturnErrorMsg("支付方式私钥不合法");
+                return;
+            }
+            if (string.IsNullOrEmpty(pid))
+            {
+                ReturnErrorMsg("支付方式PID不合法");
+                return;
+            }
+            if (accounttype == 0)
+            {
+                ReturnErrorMsg("支付方式类型不合法");
+                return;
+            }
+
+            var payment = new Payment();
+            payment.Name = name;
+            payment.Description = description;
+            payment.ImgUrl = imgurl;
+            payment.Account = account;
+            payment.PrivateKey = privatekey;
+            payment.Pid = pid;
+            payment.AccountType = accounttype;
+            payment.Status = 1;
+
+            if (PaymentHelper.SavePayment(payment))
+                ReturnCorrectMsg("新增成功");
+            else
+                ReturnErrorMsg("新增失败");
+        }
+
+        /// <summary>
+        /// 编辑支付方式
+        /// </summary>
+        private void UpdatePayment()
+        {
+            var id = GetInt("id");
+            var name = GetString("name");
+            var description = GetString("description");
+            var imgurl = GetString("imgurl");
+            var account = GetString("account");
+            var privatekey = GetString("privatekey");
+            var pid = GetString("pid");
+            var accounttype = GetInt("accounttype");
+
+
+            if (string.IsNullOrEmpty(name) || name.Length > 50)
+            {
+                ReturnErrorMsg("支付方式名称不合法");
+                return;
+            }
+            if (string.IsNullOrEmpty(description) || description.Length > 200)
+            {
+                ReturnErrorMsg("支付方式描述不合法");
+                return;
+            }
+            if (string.IsNullOrEmpty(imgurl) || imgurl.Length > 200)
+            {
+                ReturnErrorMsg("支付方式logo不合法");
+                return;
+            }
+            if (string.IsNullOrEmpty(account) || account.Length > 100)
+            {
+                ReturnErrorMsg("支付方式账号不合法");
+                return;
+            }
+            if (string.IsNullOrEmpty(privatekey))
+            {
+                ReturnErrorMsg("支付方式私钥不合法");
+                return;
+            }
+            if (string.IsNullOrEmpty(pid))
+            {
+                ReturnErrorMsg("支付方式PID不合法");
+                return;
+            }
+            if (accounttype == 0)
+            {
+                ReturnErrorMsg("支付方式类型不合法");
+                return;
+            }
+
+            var payment = PaymentHelper.GetPayment(id);
+            if (payment == null)
+            {
+                ReturnErrorMsg("不存在该支付方式");
+                return;
+            }
+            payment.Name = name;
+            payment.Description = description;
+            payment.ImgUrl = imgurl;
+            payment.Account = account;
+            payment.PrivateKey = privatekey;
+            payment.Pid = pid;
+            payment.AccountType = accounttype;
+
+            if (PaymentHelper.SavePayment(payment))
+                ReturnCorrectMsg("编辑成功");
+            else
+                ReturnErrorMsg("编辑失败");
+        }
+        /// <summary>
+        /// 更新支付方式是否启用
+        /// </summary>
+        private void UpdatePaymentStatus()
+        {
+            var id = GetInt("id");
+            var status = GetInt("status");
+
+            if (status != 0 && status != 1)
+            {
+                ReturnErrorMsg("支付方式类型不合法");
+                return;
+            }
+
+            var payment = PaymentHelper.GetPayment(id);
+            if (payment == null)
+            {
+                ReturnErrorMsg("不存在该支付方式");
+                return;
+            }
+            if (status == payment.Status)
+            {
+                ReturnErrorMsg("状态未改变");
+                return;
+            }
+            payment.Status = status;
+
+            if (PaymentHelper.SavePayment(payment))
+                ReturnCorrectMsg("新增成功");
+            else
+                ReturnErrorMsg("新增失败");
+        }
+        #endregion
 
         #region 结算管理
         /// <summary>

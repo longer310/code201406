@@ -84,7 +84,7 @@
                     <li><a href="change_pw.html">账户设置</a></li>
                     <li><a href="profile.html">资料设置</a></li>
                     <li><a href="message.html">友情链接</a></li>
-                    <li class="sidebar_payment"><a href="rule.html">支付接口</a></li>
+                    <li class="sidebar_payment"><a href="<%=DomainUrl %>/View/Dev/System/Payment.aspx">支付接口</a></li>
                     <li><a href="resource.html">快捷设置</a></li>
                 </ul>
             </li>

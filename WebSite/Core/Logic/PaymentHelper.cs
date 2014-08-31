@@ -167,5 +167,23 @@ namespace Backstage.Core.Logic
             }
             return false;
         }
+
+        /// <summary>
+        /// 删除支付方式
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public static bool DeletePayment(int id)
+        {
+            var cmdText = String.Format("delete from Payment where Id={0} limit 1;", id);
+            try
+            {
+                return MySqlHelper.ExecuteNonQuery(Utility._gameDbConn, CommandType.Text, cmdText) > 0;
+            }
+            catch (System.Exception ex)
+            {
+                throw;
+            }
+        }
     }
 }

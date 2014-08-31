@@ -157,6 +157,7 @@
     <Content Include="Css\login.css" />
     <Content Include="Css\main.css" />
     <Content Include="Css\style.css" />
+    <Content Include="Global.asax" />
     <Content Include="Script\js\bootstrap-colorpicker.js" />
     <Content Include="Script\js\bootstrap-datepicker.js" />
     <Content Include="Script\js\bootstrap.min.js" />
@@ -560,8 +561,11 @@
     <Content Include="View\Dev\Merchant\Meredit.aspx" />
     <Content Include="View\Dev\Merchant\Mertypelist.aspx" />
     <Content Include="View\Dev\Settlement\Settlement.aspx" />
+    <Content Include="View\Dev\System\AddPayment.aspx" />
     <Content Include="View\Dev\System\FastLinks.aspx" />
+    <Content Include="View\Dev\System\EditPayment.aspx" />
     <Content Include="View\Dev\System\SystemInfo.aspx" />
+    <Content Include="View\Dev\System\Payment.aspx" />
     <Content Include="View\Dev\Temple\AddTemple.aspx" />
     <Content Include="View\Dev\Temple\Templelist.aspx" />
     <Content Include="View\Dev\Temple\EditTemple.aspx" />
@@ -701,6 +705,9 @@
     <Compile Include="Core\SessionHelper.cs" />
     <Compile Include="Core\SqlMapper.cs" />
     <Compile Include="Core\Utility.cs" />
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
     <Compile Include="GlobalConfig.cs" />
     <Compile Include="Login.aspx.cs">
       <DependentUpon>Login.aspx</DependentUpon>
@@ -856,6 +863,13 @@
     <Compile Include="View\Dev\Settlement\Settlement.aspx.designer.cs">
       <DependentUpon>Settlement.aspx</DependentUpon>
     </Compile>
+    <Compile Include="View\Dev\System\AddPayment.aspx.cs">
+      <DependentUpon>AddPayment.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="View\Dev\System\AddPayment.aspx.designer.cs">
+      <DependentUpon>AddPayment.aspx</DependentUpon>
+    </Compile>
     <Compile Include="View\Dev\System\FastLinks.aspx.cs">
       <DependentUpon>FastLinks.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -863,12 +877,26 @@
     <Compile Include="View\Dev\System\FastLinks.aspx.designer.cs">
       <DependentUpon>FastLinks.aspx</DependentUpon>
     </Compile>
+    <Compile Include="View\Dev\System\EditPayment.aspx.cs">
+      <DependentUpon>EditPayment.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="View\Dev\System\EditPayment.aspx.designer.cs">
+      <DependentUpon>EditPayment.aspx</DependentUpon>
+    </Compile>
     <Compile Include="View\Dev\System\SystemInfo.aspx.cs">
       <DependentUpon>SystemInfo.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="View\Dev\System\SystemInfo.aspx.designer.cs">
       <DependentUpon>SystemInfo.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="View\Dev\System\Payment.aspx.cs">
+      <DependentUpon>Payment.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="View\Dev\System\Payment.aspx.designer.cs">
+      <DependentUpon>Payment.aspx</DependentUpon>
     </Compile>
     <Compile Include="View\Dev\Temple\AddTemple.aspx.cs">
       <DependentUpon>AddTemple.aspx</DependentUpon>

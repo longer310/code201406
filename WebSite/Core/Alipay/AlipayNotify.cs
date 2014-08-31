@@ -29,7 +29,7 @@ namespace Com.Alipay
         private string _private_key = "okkcs8za7xeuemhmbpmks2kd7agiqu8e";           //商户的私钥
         private string _public_key = "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCnxj/9qwVfgoUh/y2W89L6BkRAFljhNhgPdyPuBV64bfQNN1PjbCzkIM6qRdKBoLPXmKKMiFYnkd6rAoprih3/PrQEB/VsW8OoM8fxn67UDYuyBTqA23MML9q1+ilIZwBC2AQ2UBVOrFXfFl75p6/B5KsiNG9zpgmLCUYuLkxpLQIDAQAB";            //支付宝的公钥
         private string _input_charset = "utf-8";         //编码格式
-        private string _sign_type = "RSA";             //签名方式
+        private string _sign_type = "0001";             //签名方式
 
         //支付宝消息验证地址
         private string Https_veryfy_url = "https://mapi.alipay.com/gateway.do?service=notify_verify&";

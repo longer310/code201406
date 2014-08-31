@@ -137,6 +137,7 @@ namespace Backstage.Core.Handler.Backstage
 
             //提现表更新
             item.Balance = user.Money;
+            item.UserAccount = user.UserName;//存储商户账户
             ExtractMoneyHelper.Create(item);
         }
 

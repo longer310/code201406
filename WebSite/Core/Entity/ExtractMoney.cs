@@ -27,7 +27,7 @@ namespace Backstage.Core.Entity
         public string AccountName { get; set; }
 
         /// <summary>
-        /// 银行
+        /// 开户行
         /// </summary>
         public string Bank { get; set; }
 
@@ -42,6 +42,10 @@ namespace Backstage.Core.Entity
         public long CardNumber { get; set; }
 
         public DateTime CreateTime { get; set; }
+        /// <summary>
+        /// 商户账户
+        /// </summary>
+        public string UserAccount { get; set; }
 
 
         /// <summary>

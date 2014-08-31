@@ -28,8 +28,9 @@
                         <th>商户账户</th>
                         <th>金额</th>
                         <th>手续费</th>
-                        <th>银行</th>
+                        <th>开户行</th>
                         <th>卡号</th>
+                        <th>开户名</th>
                         <th>提现时间</th>
                         <th>状态</th>
                         <th>操作</th>
@@ -56,11 +57,12 @@
 	        	<tr data-id="${v.Id}">
 					<td><input type="checkbox" class="j-select" /></td>
 					<td style="width:40px;">${v.Id}</td>
-					<td>${v.AccountName}</td>
+					<td>${v.UserAccount}</td>
 					<td><b class="text-info">${v.Money}</b>元</td>
 					<td><b class="text-error">${v.Fee}</b>元</td>
 					<td>${v.Bank}</td>
 					<td>${v.CardNumber}</td>
+					<td>${v.AccountName}</td>
 					<td>${v.CreateTime.ToDate().Format("yyyy-MM-dd hh:mm:ss")}</td>
                     <td class="j-status">
                     <b class="text-error">

@@ -36,6 +36,7 @@ namespace Backstage.Core.Handler
                         e.AccountName = reader["AccountName"].ToString();
                         e.Status = (int)reader["Status"];
                         e.Fee = (float)reader["Fee"];
+                        e.UserAccount = reader["UserAccount"].ToString();
                     }
                 }
             }
@@ -94,6 +95,7 @@ namespace Backstage.Core.Handler
                         e.AccountName = reader["AccountName"].ToString();
                         e.Status = (int)reader["Status"];
                         e.Fee = (float)reader["Fee"];
+                        e.UserAccount = reader["UserAccount"].ToString();
 
                         results.Results.Add(e);
                     }
@@ -136,7 +138,8 @@ namespace Backstage.Core.Handler
         	                                CreateTime,
         	                                AccountName,
         	                                Status,
-        	                                Fee
+        	                                Fee,
+        	                                UserAccount
         	                                )
         	                                VALUES
         	                                ( 
@@ -148,7 +151,8 @@ namespace Backstage.Core.Handler
         	                                ?CreateTime,
         	                                ?AccountName,
         	                                ?Status,
-        	                                ?Fee
+        	                                ?Fee,
+        	                                ?UserAccount
         	                                )";
 
             List<MySqlParameter> parameters = new List<MySqlParameter>();
@@ -161,6 +165,7 @@ namespace Backstage.Core.Handler
             parameters.Add(new MySqlParameter("?AccountName", item.AccountName));
             parameters.Add(new MySqlParameter("?Status", item.Status));
             parameters.Add(new MySqlParameter("?Fee", item.Fee));
+            parameters.Add(new MySqlParameter("?UserAccount", item.UserAccount));
 
             MySqlHelper.ExecuteNonQuery(connectionString, CommandType.Text, commandText, parameters.ToArray());
         }

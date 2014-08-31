@@ -27,11 +27,11 @@ namespace Com.Alipay
         }
 
         /// <summary>
-        /// 除去数组中的空值和签名参数并以字母a到z的顺序排序
+        /// 除去数组中的空值和签名参数
         /// </summary>
         /// <param name="dicArrayPre">过滤前的参数组</param>
         /// <returns>过滤后的参数组</returns>
-        public static Dictionary<string, string> FilterPara(SortedDictionary<string, string> dicArrayPre)
+        public static Dictionary<string, string> FilterPara(Dictionary<string, string> dicArrayPre)
         {
             Dictionary<string, string> dicArray = new Dictionary<string, string>();
             foreach (KeyValuePair<string, string> temp in dicArrayPre)
@@ -41,6 +41,19 @@ namespace Com.Alipay
                     dicArray.Add(temp.Key, temp.Value);
                 }
             }
+
+            return dicArray;
+        }
+
+        /// <summary>
+        /// 根据字母a到z的顺序把参数排序
+        /// </summary>
+        /// <param name="dicArrayPre">排序前的参数组</param>
+        /// <returns>排序后的参数组</returns>
+        public static Dictionary<string, string> SortPara(Dictionary<string, string> dicArrayPre)
+        {
+            SortedDictionary<string, string> dicTemp = new SortedDictionary<string, string>(dicArrayPre);
+            Dictionary<string, string> dicArray = new Dictionary<string, string>(dicTemp);
 
             return dicArray;
         }

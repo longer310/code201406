@@ -2,6 +2,7 @@
 using System.Text;
 using System.IO;
 using System.Net;
+using System.Xml;
 using System;
 using System.Collections.Generic;
 
@@ -23,10 +24,12 @@ namespace Com.Alipay
     public class Notify
     {
         #region 字段
-        private string _partner = "";               //合作身份者ID
-        private string _public_key = "";            //支付宝的公钥
-        private string _input_charset = "";         //编码格式
-        private string _sign_type = "";             //签名方式
+        private string _partner = "2088511724484349";               //合作身份者ID
+        private string _key = "okkcs8za7xeuemhmbpmks2kd7agiqu8e";                   //支付宝MD5私钥
+        private string _private_key = "okkcs8za7xeuemhmbpmks2kd7agiqu8e";           //商户的私钥
+        private string _public_key = "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCnxj/9qwVfgoUh/y2W89L6BkRAFljhNhgPdyPuBV64bfQNN1PjbCzkIM6qRdKBoLPXmKKMiFYnkd6rAoprih3/PrQEB/VsW8OoM8fxn67UDYuyBTqA23MML9q1+ilIZwBC2AQ2UBVOrFXfFl75p6/B5KsiNG9zpgmLCUYuLkxpLQIDAQAB";            //支付宝的公钥
+        private string _input_charset = "utf-8";         //编码格式
+        private string _sign_type = "RSA";             //签名方式
 
         //支付宝消息验证地址
         private string Https_veryfy_url = "https://mapi.alipay.com/gateway.do?service=notify_verify&";
@@ -43,25 +46,73 @@ namespace Com.Alipay
         {
             //初始化基础配置信息
             _partner = Config.Partner.Trim();
+            _key = Config.Key.Trim();
+            _private_key = Config.Private_key.Trim();
             _public_key = Config.Public_key.Trim();
             _input_charset = Config.Input_charset.Trim().ToLower();
             _sign_type = Config.Sign_type.Trim().ToUpper();
         }
 
         /// <summary>
-        ///  验证消息是否是支付宝发出的合法消息
+        ///  验证消息是否是支付宝发出的合法消息，验证callback
         /// </summary>
         /// <param name="inputPara">通知返回参数数组</param>
-        /// <param name="notify_id">通知验证ID</param>
         /// <param name="sign">支付宝生成的签名结果</param>
         /// <returns>验证结果</returns>
-        public bool Verify(SortedDictionary<string, string> inputPara, string notify_id, string sign)
+        public bool VerifyReturn(Dictionary<string, string> inputPara, string sign)
         {
             //获取返回时的签名验证结果
-            bool isSign = GetSignVeryfy(inputPara, sign);
+            bool isSign = GetSignVeryfy(inputPara, sign,true);
+
+            //写日志记录（若要调试，请取消下面两行注释）
+            //string sWord = "isSign=" + isSign.ToString() + "\n 返回回来的参数：" + GetPreSignStr(inputPara) + "\n ";
+            //Core.LogResult(sWord);
+
+            //判断isSign是否为true
+            //isSign不是true，与安全校验码、请求时的参数格式（如：带自定义参数等）、编码格式有关
+            if (isSign)//验证成功
+            {
+                return true;
+            }
+            else//验证失败
+            {
+                return false;
+            }
+        }
+
+        /// <summary>
+        ///  验证消息是否是支付宝发出的合法消息，验证服务器异步通知
+        /// </summary>
+        /// <param name="inputPara">通知返回参数数组</param>
+        /// <param name="sign">支付宝生成的签名结果</param>
+        /// <returns>验证结果</returns>
+        public bool VerifyNotify(Dictionary<string, string> inputPara, string sign)
+        {
+            //解密
+            if (_sign_type == "0001")
+            {
+                inputPara = Decrypt(inputPara);
+            }
+
             //获取是否是支付宝服务器发来的请求的验证结果
             string responseTxt = "true";
-            if (notify_id != null && notify_id != "") { responseTxt = GetResponseTxt(notify_id); }
+            try
+            {
+                //XML解析notify_data数据，获取notify_id
+                string notify_id = "";
+                XmlDocument xmlDoc = new XmlDocument();
+                xmlDoc.LoadXml(inputPara["notify_data"]);
+                notify_id = xmlDoc.SelectSingleNode("/notify/notify_id").InnerText;
+
+                if (notify_id != "") { responseTxt = GetResponseTxt(notify_id); }
+            }
+            catch(Exception e)
+            {
+                responseTxt = e.ToString();
+            }
+
+            //获取返回时的签名验证结果
+            bool isSign = GetSignVeryfy(inputPara, sign, false);
 
             //写日志记录（若要调试，请取消下面两行注释）
             //string sWord = "responseTxt=" + responseTxt + "\n isSign=" + isSign.ToString() + "\n 返回回来的参数：" + GetPreSignStr(inputPara) + "\n ";
@@ -85,12 +136,15 @@ namespace Com.Alipay
         /// </summary>
         /// <param name="inputPara">通知返回参数数组</param>
         /// <returns>待签名字符串</returns>
-        private string GetPreSignStr(SortedDictionary<string, string> inputPara)
+        public string GetPreSignStr(Dictionary<string, string> inputPara)
         {
             Dictionary<string, string> sPara = new Dictionary<string, string>();
 
             //过滤空值、sign与sign_type参数
             sPara = Core.FilterPara(inputPara);
+
+            //根据字母a到z的顺序把参数排序
+            sPara = Core.SortPara(sPara);
 
             //获取待签名字符串
             string preSignStr = Core.CreateLinkString(sPara);
@@ -99,17 +153,60 @@ namespace Com.Alipay
         }
 
         /// <summary>
+        /// 解密
+        /// </summary>
+        /// <param name="inputPara">要解密数据</param>
+        /// <returns>解密后结果</returns>
+        public Dictionary<string, string> Decrypt(Dictionary<string, string> inputPara)
+        {
+            try
+            {
+                inputPara["notify_data"] = RSAFromPkcs8.decryptData(inputPara["notify_data"], _private_key, _input_charset);
+            }
+            catch (Exception e) { }
+
+            return inputPara;
+        }
+
+        /// <summary>
+        /// 异步通知时，对参数做固定排序
+        /// </summary>
+        /// <param name="dicArrayPre">排序前的参数组</param>
+        /// <returns>排序后的参数组</returns>
+        private Dictionary<string, string> SortNotifyPara(Dictionary<string, string> dicArrayPre)
+        {
+            Dictionary<string, string> sPara = new Dictionary<string, string>();
+            sPara.Add("service", dicArrayPre["service"]);
+            sPara.Add("v", dicArrayPre["v"]);
+            sPara.Add("sec_id", dicArrayPre["sec_id"]);
+            sPara.Add("notify_data", dicArrayPre["notify_data"]);
+
+            return sPara;
+        }
+
+        /// <summary>
         /// 获取返回时的签名验证结果
         /// </summary>
         /// <param name="inputPara">通知返回参数数组</param>
         /// <param name="sign">对比的签名结果</param>
+        /// <param name="isSort">是否对待签名数组排序</param>
         /// <returns>签名验证结果</returns>
-        private bool GetSignVeryfy(SortedDictionary<string, string> inputPara, string sign)
+        private bool GetSignVeryfy(Dictionary<string, string> inputPara, string sign,bool isSort)
         {
             Dictionary<string, string> sPara = new Dictionary<string, string>();
 
             //过滤空值、sign与sign_type参数
             sPara = Core.FilterPara(inputPara);
+
+            if (isSort)
+            {
+                //根据字母a到z的顺序把参数排序
+                sPara = Core.SortPara(sPara);
+            }
+            else
+            {
+                sPara = SortNotifyPara(sPara);
+            }
             
             //获取待签名字符串
             string preSignStr = Core.CreateLinkString(sPara);
@@ -120,7 +217,13 @@ namespace Com.Alipay
             {
                 switch (_sign_type)
                 {
+                    case "MD5":
+                        isSgin = AlipayMD5.Verify(preSignStr, sign, _key, _input_charset);
+                        break;
                     case "RSA":
+                        isSgin = RSAFromPkcs8.verify(preSignStr, sign, _public_key, _input_charset);
+                        break;
+                    case "0001":
                         isSgin = RSAFromPkcs8.verify(preSignStr, sign, _public_key, _input_charset);
                         break;
                     default:

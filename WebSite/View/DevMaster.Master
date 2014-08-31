@@ -78,13 +78,13 @@
                 <a href="<%=DomainUrl %>/View/Dev/Ad/Ad.aspx"><i class="icon icon-bullhorn"></i><span>广告设置</span></a>
             </li>
 
-            <li class="submenu">
+            <li class="submenu sidebar_sys">
                 <a href="#"><i class="icon icon-cog"></i><span>系统设置</span> <span class="label">5</span></a>
                 <ul>
                     <li><a href="change_pw.html">账户设置</a></li>
                     <li><a href="profile.html">资料设置</a></li>
                     <li><a href="message.html">友情链接</a></li>
-                    <li><a href="rule.html">支付接口</a></li>
+                    <li class="sidebar_payment"><a href="rule.html">支付接口</a></li>
                     <li><a href="resource.html">快捷设置</a></li>
                 </ul>
             </li>

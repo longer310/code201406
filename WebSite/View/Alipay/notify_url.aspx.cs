@@ -36,12 +36,12 @@ public partial class notify_url : System.Web.UI.Page
     private static ILog logger = LogManager.GetLogger("notify_url");
     protected void Page_Load(object sender, EventArgs e)
     {
-        SortedDictionary<string, string> sPara = GetRequestPost();
+        Dictionary<string, string> sPara = GetRequestPost();
 
         if (sPara.Count > 0)//判断是否有带返回参数
         {
             Notify aliNotify = new Notify();
-            bool verifyResult = aliNotify.Verify(sPara, Request.Form["notify_id"], Request.Form["sign"]);
+            bool verifyResult = aliNotify.VerifyNotify(sPara, Request.Form["sign"]);
 
             if (verifyResult)//验证成功
             {
@@ -53,7 +53,7 @@ public partial class notify_url : System.Web.UI.Page
                 //获取支付宝的通知返回参数，可参考技术文档中服务器异步通知参数列表
 
                 //解密（如果是RSA签名需要解密，如果是MD5签名则下面一行清注释掉）
-                //sPara = aliNotify.Decrypt(sPara);
+                sPara = aliNotify.Decrypt(sPara);
 
                 //XML解析notify_data数据
                 try
@@ -188,10 +188,10 @@ public partial class notify_url : System.Web.UI.Page
     /// 获取支付宝POST过来通知消息，并以“参数名=参数值”的形式组成数组
     /// </summary>
     /// <returns>request回来的信息组成的数组</returns>
-    public SortedDictionary<string, string> GetRequestPost()
+    public Dictionary<string, string> GetRequestPost()
     {
         int i = 0;
-        SortedDictionary<string, string> sArray = new SortedDictionary<string, string>();
+        Dictionary<string, string> sArray = new Dictionary<string, string>();
         NameValueCollection coll;
         //Load Form variables into NameValueCollection variable.
         coll = Request.Form;

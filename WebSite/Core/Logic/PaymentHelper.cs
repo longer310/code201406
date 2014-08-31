@@ -32,6 +32,12 @@ namespace Backstage.Core.Logic
                         payment.Id = reader.GetInt32(0);
                         payment.Description = reader["Description"].ToString();
                         payment.Name = reader["Name"].ToString();
+                        payment.ImgUrl = reader["ImgUrl"].ToString();
+                        payment.Account = reader["Account"].ToString();
+                        payment.PrivateKey = reader["PrivateKey"].ToString();
+                        payment.Pid = reader["Pid"].ToString();
+                        payment.AccountType = (int)reader["AccountType"];
+                        payment.Status = (int)reader["Status"];
 
                         list.Add(payment);
                     }
@@ -64,6 +70,12 @@ namespace Backstage.Core.Logic
                             payment.Id = reader.GetInt32(0);
                             payment.Description = reader["Description"].ToString();
                             payment.Name = reader["Name"].ToString();
+                            payment.ImgUrl = reader["ImgUrl"].ToString();
+                            payment.Account = reader["Account"].ToString();
+                            payment.PrivateKey = reader["PrivateKey"].ToString();
+                            payment.Pid = reader["Pid"].ToString();
+                            payment.AccountType = (int)reader["AccountType"];
+                            payment.Status = (int)reader["Status"];
                             return payment;
                         }
                     }
@@ -74,6 +86,86 @@ namespace Backstage.Core.Logic
                 throw;
             }
             return null;
+        }
+
+
+
+        /// <summary>
+        /// 保存（新增/修改）支付方式
+        /// </summary>
+        /// <param name="payment"></param>
+        /// <returns></returns>
+        public static bool SavePayment(Payment payment)
+        {
+            var cmdText = string.Empty;
+            List<MySqlParameter> parameters = new List<MySqlParameter>();
+            if (payment.Id > 0)
+            {
+                cmdText = @"UPDATE Payment SET
+                                        Name                    = ?Name        ,
+                                        Description             = ?Description       ,
+                                        ImgUrl                  = ?ImgUrl     ,
+                                        Account                 = ?Account       ,
+                                        PrivateKey              = ?PrivateKey ,
+                                        Pid                     = ?Pid      ,
+                                        AccountType             = ?AccountType       ,
+                                        Status                  = ?Status  
+                                    WHERE
+                                        Id                      =?Id";
+
+                parameters.Add(new MySqlParameter("?Name", payment.Name));
+                parameters.Add(new MySqlParameter("?Description", payment.Description));
+                parameters.Add(new MySqlParameter("?ImgUrl", payment.ImgUrl));
+                parameters.Add(new MySqlParameter("?Account", payment.Account));
+                parameters.Add(new MySqlParameter("?PrivateKey", payment.PrivateKey));
+                parameters.Add(new MySqlParameter("?Pid", payment.Pid));
+                parameters.Add(new MySqlParameter("?AccountType", payment.AccountType));
+                parameters.Add(new MySqlParameter("?Status", payment.Status));
+                parameters.Add(new MySqlParameter("?Id",payment.Id));
+            }
+            else
+            {
+                cmdText = @"insert into Payment
+                                        (
+                                        Name       ,
+                                        Description  ,
+                                        ImgUrl       ,
+                                        Account      ,
+                                        PrivateKey   ,
+                                        Pid          ,
+                                        AccountType  ,
+                                        Status       
+                                        ) 
+                                        values
+                                        (
+                                        ?Name       ,
+                                        ?Description  ,
+                                        ?ImgUrl       ,
+                                        ?Account      ,
+                                        ?PrivateKey   ,
+                                        ?Pid          ,
+                                        ?AccountType  ,
+                                        ?Status       
+                                        )";
+                parameters.Add(new MySqlParameter("?Name", payment.Name));
+                parameters.Add(new MySqlParameter("?Description", payment.Description));
+                parameters.Add(new MySqlParameter("?ImgUrl", payment.ImgUrl));
+                parameters.Add(new MySqlParameter("?Account", payment.Account));
+                parameters.Add(new MySqlParameter("?PrivateKey", payment.PrivateKey));
+                parameters.Add(new MySqlParameter("?Pid", payment.Pid));
+                parameters.Add(new MySqlParameter("?AccountType", payment.AccountType));
+                parameters.Add(new MySqlParameter("?Status", payment.Status));
+            }
+            try
+            {
+                var num = MySqlHelper.ExecuteNonQuery(Utility._gameDbConn, CommandType.Text, cmdText, parameters.ToArray());
+                return num > 0;
+            }
+            catch (System.Exception ex)
+            {
+                throw;
+            }
+            return false;
         }
     }
 }

@@ -26,6 +26,7 @@ namespace Com.Alipay
     {
         #region 字段
         private static string partner = "";
+        private static string key = "";
         private static string private_key = "";
         private static string public_key = "";
         private static string input_charset = "";
@@ -37,23 +38,30 @@ namespace Com.Alipay
             //↓↓↓↓↓↓↓↓↓↓请在这里配置您的基本信息↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓
 
             //合作身份者ID，以2088开头由16位纯数字组成的字符串
-            partner = "2088511724484349";
+            partner = "";
+
+            //交易安全检验码，由数字和字母组成的32位字符串
+            //如果签名方式设置为“MD5”时，请设置该参数
+            key = "";
 
             //商户的私钥
-            private_key = @"okkcs8za7xeuemhmbpmks2kd7agiqu8e";
+            //如果签名方式设置为“0001”时，请设置该参数
+            private_key = @"";
 
-            //支付宝的公钥，无需修改该值
-            public_key = @"MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCnxj/9qwVfgoUh/y2W89L6BkRAFljhNhgPdyPuBV64bfQNN1PjbCzkIM6qRdKBoLPXmKKMiFYnkd6rAoprih3/PrQEB/VsW8OoM8fxn67UDYuyBTqA23MML9q1+ilIZwBC2AQ2UBVOrFXfFl75p6/B5KsiNG9zpgmLCUYuLkxpLQIDAQAB";
+            //支付宝的公钥
+            //如果签名方式设置为“0001”时，请设置该参数
+            public_key = @"";
 
             //↑↑↑↑↑↑↑↑↑↑请在这里配置您的基本信息↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑
 
 
 
-            //字符编码格式 目前支持 gbk 或 utf-8
+            //字符编码格式 目前支持 utf-8
             input_charset = "utf-8";
 
-            //签名方式，选择项：RSA、DSA、MD5
-            sign_type = "RSA";
+            //签名方式，选择项：0001(RSA)、MD5
+            sign_type = "0001";
+            //无线的产品中，签名方式为rsa时，sign_type需赋值为0001而不是RSA
         }
 
         #region 属性
@@ -64,6 +72,15 @@ namespace Com.Alipay
         {
             get { return partner; }
             set { partner = value; }
+        }
+
+        /// <summary>
+        /// 获取或设交易安全校验码
+        /// </summary>
+        public static string Key
+        {
+            get { return key; }
+            set { key = value; }
         }
 
         /// <summary>

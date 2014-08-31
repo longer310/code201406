@@ -31,13 +31,10 @@ namespace Com.Alipay
             byte[] Data = code.GetBytes(content);
             RSACryptoServiceProvider rsa = DecodePemPrivateKey(privateKey);
             SHA1 sh = new SHA1CryptoServiceProvider();
-
-
             byte[] signData = rsa.SignData(Data, sh);
             return Convert.ToBase64String(signData);
-
-
         }
+
         /// <summary>
         /// 验证签名
         /// </summary>

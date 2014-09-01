@@ -91,7 +91,7 @@ namespace Backstage.Core.Handler
                 var time_item = new
                 {
                     name = t.Title,
-                    time = t.BeginTime.ToString("yyyy-MM-dd HH:mm:ss") + "至" + t.EndTime.ToString("yyyy-MM-dd HH:mm:ss"),
+                    time = t.BeginTime.ToString("HH:mm") + "-" + t.EndTime.ToString("HH:mm"),
                     status = t.Status,
                     tid = t.Id
                 };

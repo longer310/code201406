@@ -10,8 +10,10 @@
 		<link rel="stylesheet" href="../public/css/bootstrap-responsive.min.css" />	
 		<link rel="stylesheet" href="../public/css/unicorn.main.css" />
 		<link rel="stylesheet" href="../public/css/unicorn.grey.css" />
+		
 		<!--页面样式-->
 		<link href="../public/kindeditor/themes/default/default.css" type="text/css" rel="stylesheet">
+		<link rel="stylesheet" href="../public/css/colorpicker.css" />
 	</head>
 	<body>
 		<div id="header">
@@ -110,6 +112,14 @@
 								<input type="text" id="j-categroy-title" />
 							</div>
 						</div>
+
+						<div class="control-group">
+							<label class="control-label">分类名称</label>
+							<div class="controls">
+								<input type="text" data-color="#000000" value="#000000" id="j-categroy-color" class="colorpicker input-small" />
+								<span style="background:#000000;width:30px;height:30px; display:inline-block; vertical-align:top;" id="j-categroy-color-preview"><span>
+							</div>
+						</div>
 						
 						<div class="control-group">
 							<label class="control-label">分类图片</label>
@@ -153,6 +163,7 @@
 								<th>序号</th>
 								<th>分类图片</th>
 								<th>名称</th>
+								<th>色块</th>
 								<th>商品数量</th>
 								<th>操作</th>
 							</tr>
@@ -178,6 +189,7 @@
 
         <!--页面js-->
         <script src="../public/js/ue.pager.js"></script>
+        <script src="../public/js/bootstrap-colorpicker.js"></script>
 
         <script charset="utf-8" src="../public/kindeditor/kindeditor-min.js"></script>
 		<script charset="utf-8" src="../public/kindeditor/lang/zh_CN.js"></script>
@@ -194,6 +206,7 @@
 					<td style="width:280px;"><img src="http://placehold.it/90x45" class="j-categroy-thumbnail" style="margin-right:10px;width:90px;height:45px;"><a class="btn btn-info btn-mini j-btn-imageUpload" href="javascript:;"><i class="icon-folder-open icon-white"></i> 本地上传</a>
 								<a class="btn btn-success btn-mini j-btn-imageManager" href="javascript:;"><i class="icon-picture icon-white"></i> 素材库选择</a></td>
 					<td><input type="text" value="水煮活鱼水煮活鱼水煮活鱼" class="j-categroy-title"></td>
+					<td style="width:30px;"><div style="background:#ff6600;width:30px;height:30px;"><div></td>
 					<td>56</td>
 					<td style="width:140px;">
 						<a class="btn btn-primary btn-mini" href="goods_list.html?cid=111"><i class="icon-pencil icon-white"></i> 管理商品</a>
@@ -250,6 +263,13 @@
 								});
 							});
 						});
+					});
+					
+					$('.colorpicker').colorpicker();
+
+					$(".colorpicker").bind("changeColor", function(e){
+						$("#j-categroy-color-preview").css("background", e.color.toHex());
+						$("#j-categroy-color").val(e.color.toHex());
 					});
 
 					mpage.getCategroyList();

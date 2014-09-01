@@ -14,11 +14,13 @@ namespace Backstage.View
     public partial class Index : BasePage
     {
         public MerchantStat MerchantStat;
+        public List<Fastlinks> Fastlinkslist = new List<Fastlinks>();
 
         protected void Page_Load(object sender, EventArgs e)
         {
             MerchantStat = SystemHelper.GetMerchantStat(Int32.Parse(SellerId));
             MerchantStat.AnnouncementContent = AnnouncementHelper.GetNewsItem().Content;
+            Fastlinkslist = DevSystemHelper.GetPagFastlinks(0, 0).Results.ToList();
             
         }
     }

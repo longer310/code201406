@@ -40,7 +40,7 @@ namespace WebSite.View
             get
             {
                 var sellerId = GetString("sellerId");
-                if (sellerId != null)
+                if (sellerId != null && sellerId.Length > 0)
                     return sellerId;
                 return Merchant.Id.ToString();
             }

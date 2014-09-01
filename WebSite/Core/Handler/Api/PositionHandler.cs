@@ -134,6 +134,7 @@ namespace Backstage.Core.Handler
                 //userPosition.UserId = account.Id;
                 //userPosition.NickName = account.NickName;
 
+
                 var position = PositionHelper.GetItem(userPosition.PositionId);
                 var timeline = PositionHelper.GetTimeLine(userPosition.TimeId);
                 if (timeline.Status == 1)

@@ -24,42 +24,14 @@
                 </div>
                 <div class="widget-content">
                     <ul class="home-links clearfix">
-                        <li>
-                            <a href="" class="thumbnail">
-                                <img src="http://placehold.it/40x40" alt="" id="j-sysytem-profile-logo">
-                                <span>新增活动</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="" class="thumbnail">
-                                <img src="http://placehold.it/40x40" alt="" id="j-sysytem-profile-logo">
-                                <span>新增活动</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="" class="thumbnail">
-                                <img src="http://placehold.it/40x40" alt="" id="j-sysytem-profile-logo">
-                                <span>新增活动</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="" class="thumbnail">
-                                <img src="http://placehold.it/40x40" alt="" id="j-sysytem-profile-logo">
-                                <span>新增活动</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="" class="thumbnail">
-                                <img src="http://placehold.it/40x40" alt="" id="j-sysytem-profile-logo">
-                                <span>新增活动</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="" class="thumbnail">
-                                <img src="http://placehold.it/40x40" alt="" id="j-sysytem-profile-logo">
-                                <span>新增活动</span>
-                            </a>
-                        </li>
+                        <%foreach(var item in Fastlinkslist){ %>
+								<li>
+									<a href="<%=item.Url %>" class="thumbnail">
+										<img src="<%=item.ImgUrl %>" alt="" id="j-sysytem-profile-logo">
+										<span><%=item.Title %></span>
+									</a>
+								</li>
+								<%} %>
                     </ul>
                 </div>
             </div>

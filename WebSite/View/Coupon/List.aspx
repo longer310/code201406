@@ -200,8 +200,6 @@
                         ids.push($item.attr("data-gid"));
                     });
 
-                    console.log(ids);
-
                     if (ids.length > 0) {
                         Common.confirm({
                             title: "下架确认提示",
@@ -343,14 +341,11 @@
                                     dataType: "json"
                                 }).success(function (data) {
                                     alert("下架成功");
-                                    if (type != 2)
-                                        //删除成功后刷新本页
-                                        $item.remove();
+                                    window.location.reload();
                                 });
                             },
                             cancel: function () {
                                 //执行取消回调
-                                alert('执行取消回调');
                             }
                         });
                         return false;

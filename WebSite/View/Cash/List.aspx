@@ -7,7 +7,7 @@
 					<span class="icon">
 						<i class="icon-cog"></i>
 					</span>
-					<h5>推送服务</h5>
+					<h5>提现管理</h5>
 					<div class="buttons">
 						<a href="cash_add.html" class="btn btn-primary btn-mini"><i class="icon-share-alt icon-white"></i> 提现</a>
 					</div>

@@ -195,19 +195,19 @@
 
                 //绑定提交表单
                 $("#j-rule_form").bind("submit", function () {
-                    var data = {
+                    //var data = {
 
-                    };
+                    //};
 
-                    $.ajax({
-                        url: "../../Handler/Backstage/DevSystemHandler.ashx?action=addadmin",
-                        type: "POST",
-                        data: save_data,
-                        dataType: "json"
-                        //context: document.body
-                    }).success(function (data) {
+                    //$.ajax({
+                    //    url: "../../Handler/Backstage/DevSystemHandler.ashx?action=addadmin",
+                    //    type: "POST",
+                    //    data: save_data,
+                    //    dataType: "json"
+                    //    //context: document.body
+                    //}).success(function (data) {
                        
-                    });
+                    //});
                     return false;
                 });
 

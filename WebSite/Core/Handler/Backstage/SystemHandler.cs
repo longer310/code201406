@@ -262,8 +262,22 @@ namespace Backstage.Core.Handler.Backstage
 
         private void UpdateSellerInfo()
         {
+            var sellerId = GetInt("sellerid");
+            var merchant = MerchantHelper.GetMerchant(sellerId);
+            if (merchant == null)
+                throw new ArgumentNullException("merchant");
 
-            throw new NotImplementedException();
+            merchant.Name = GetString("title");
+            merchant.LogoUrl = GetString("logourl");
+            merchant.Phone = GetString("phone");
+            merchant.ManagerPhone = GetString("managephone");
+            merchant.Address = GetString("address");
+            merchant.WinXinAccount = GetString("weixin");
+            merchant.Qq = GetString("qq");
+            merchant.Email = GetString("email");
+            merchant.Description = GetString("content");
+
+            MerchantHelper.SaveMerchant(merchant);
         }
 
 

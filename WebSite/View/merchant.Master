@@ -36,7 +36,7 @@
 
     <div id="sidebar">
         <ul>
-            <li class="active open"><a href="#"><i class="icon icon-home"></i><span>首页</span></a></li>
+            <li class="active open"><a href="<%=DomainUrl %>/View/Index.aspx"><i class="icon icon-home"></i><span>首页</span></a></li>
             <li class="submenu">
                 <a href="#"><i class="icon icon-gift"></i><span>活动管理</span> <span class="label">2</span></a>
                 <ul>
@@ -75,7 +75,6 @@
             <li class="submenu">
                 <a href="#"><i class="icon icon-hdd"></i><span>数据库统计</span> <span class="label">4</span></a>
                 <ul>
-                    <li><a href="#">访问量统计</a></li>
                     <li><a href="#">销量统计</a></li>
                     <li><a href="#">充值量统计</a></li>
                     <li><a href="#">数据备份导出</a></li>
@@ -84,11 +83,10 @@
             <li class="submenu">
                 <a href="#"><i class="icon icon-cog"></i><span>系统设置</span> <span class="label">6</span></a>
                 <ul>
-                    <li><a href="#">登录设置</a></li>
-                    <li><a href="#">资料设置</a></li>
-                    <li><a href="#">推送服务</a></li>
-                    <li><a href="#">规则设置</a></li>
-                    <li><a href="#">提现管理</a></li>
+                    <li><a href="<%=DomainUrl %>/View/System/SellerInFo.aspx">资料设置</a></li>
+                    <li><a href="<%=DomainUrl %>/View/Push/List.aspx">推送服务</a></li>
+                    <li><a href="<%=DomainUrl %>/View/System/Rules.aspx">规则设置</a></li>
+                    <li><a href="<%=DomainUrl %>/View/Cash/List.aspx">提现管理</a></li>
                 </ul>
             </li>
         </ul>

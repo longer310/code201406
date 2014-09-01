@@ -61,8 +61,6 @@
 			                        <td style="width:16.66%"><span class="text-info"><%=Seller.CreateTime.ToString("yyyy-MM-dd HH:mm:ss") %></span></td>
 			                        <th style="width:16.66%">服务期至：</th>
 			                        <td style="width:16.66%"><span class="text-error"><%=Seller.ServerEndTime.ToString("yyyy-MM-dd HH:mm:ss") %></td>
-			                        <th style="width:16.66%">签约模式：</th>
-			                        <td style="width:16.66%"><span class="text-info"></span></td>
 			                    </tr>
 			                </tbody>
 			            </table>
@@ -70,46 +68,31 @@
 			            <div class="control-group">
 							<label class="control-label">微信公众号</label>
 							<div class="controls">
-								<input type="text" id="j-sysytem-profile-wechat_id" />
-							</div>
-						</div>
-						<div class="control-group">
-							<label class="control-label">微信二维码</label>
-							<div class="controls">
-								
-								<a class="btn btn-info" href="javascript:;" id="j-btn-imageUpload_qrcode"><i class="icon-folder-open icon-white"></i> 本地上传</a>
-								<a class="btn btn-success" href="javascript:;" id="j-btn-imageManager_qrcode"><i class="icon-picture icon-white"></i> 素材库选择</a>
-								<span class="help-inline">上传过的图片可以直接从素材库选择</span>
-								<div class="clearfix" style="margin-top:10px;">
-									<span class="thumbnail pull-left">
-										<img src="http://placehold.it/128x128" alt="" id="j-sysytem-profile-qrcode">
-									</span>
-								</div>
+								<input type="text" id="j-sysytem-profile-wechat_id" value="<%=Seller.WinXinAccount %>" />
 							</div>
 						</div>
 
 						<div class="control-group">
 							<label class="control-label">服务QQ号</label>
 							<div class="controls">
-								<input type="text" id="j-sysytem-profile-qq" />
+								<input type="text" id="j-sysytem-profile-qq" value="<%=Seller.Qq %>" />
 							</div>
 						</div>
 
 						<div class="control-group">
 							<label class="control-label">Email</label>
 							<div class="controls">
-								<input type="text" id="j-sysytem-profile-email" />
+								<input type="text" id="j-sysytem-profile-email" value="<%=Seller.Email %>" />
 							</div>
 						</div>
 
 						<div class="control-group">
 							<label class="control-label">商户说明</label>
 							<div class="controls">
-								<textarea name="content" style="height:400px;visibility:hidden;"></textarea>
+								<textarea name="content" style="height:400px;visibility:hidden;"><%=Seller.Description %></textarea>
 							</div>
 						</div>
 						<div class="form-actions">
-							<button type="reset" class="btn"><i class="icon-refresh"></i> 清除重置</button>
 							<button type="submit" class="btn btn-primary"><i class="icon-ok icon-white"></i> 完成保存</button>
 						</div>
 					</form>
@@ -177,26 +160,32 @@
                     //绑定提交表单
                     $("#j-sysytem-profile-form").bind("submit", function () {
                         var save_data = {
-                            title: $.trim($("#j-sysytem-profile-title").val()),
-                            ticket_id: $("#j-sysytem-profile-selected").attr("data-id"),
-                            thumbnail: $('#j-img-placehold').attr("src"),
+                            title: $.trim($("#j-sysytem-profile-name").val()),
+                            logourl: $.trim($("#j-sysytem-profile-logo").attr("src")),
+                            phone: $.trim($("#j-sysytem-profile-phone").val()),
+                            managephone: $.trim($("#j-sysytem-profile-admin_phone").val()),
+                            address: $.trim($("#j-sysytem-profile-address").val()),
+                            weixin: $.trim($("#j-sysytem-profile-wechat_id").val()),
+                            qq: $.trim($("#j-sysytem-profile-qq").val()),
+                            email: $.trim($("#j-sysytem-profile-email").val()),
                             content: text_editor.html()
-
                         }
 
-                        console.log(save_data);
-                        alert('提交数据')
+                        $.ajax({
+                            url: "../../Handler/Backstage/SystemHandler.ashx?action=sellerinfo&sellerid=" + sellerId,
+                            data: save_data,
+                            type: "POST",
+                            dataType: "json"
+                            //context: document.body
+                        }).success(function (data) {
+                            alert("修改成功");
+                            window.setTimeout(function () {
+                                window.location.reload();
+                            }, 2000);
+                        });
                         return false;
                     });
 
-                    //绑定重置表单
-                    $("#j-sysytem-profile-form").bind("reset", function () {
-                        $("#j-sysytem-profile-title").val('');
-                        $("#j-sysytem-profile-selected").removeAttr("data-id").val('');
-                        $('#j-img-placehold').attr("src", 'http://placehold.it/128x128');
-                        mpage.text_editor.html('');
-                        return false;
-                    });
                 }
             }
 

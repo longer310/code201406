@@ -98,7 +98,7 @@
             orderByType: 0, //升降序 默认是降序
             maxpage: 5, //最多显示的页数
             start: 1, //页码
-            limit: 3, //一页条数
+            limit: 10, //一页条数
             hander: "<%=DomainUrl %>/Handler/Platform/AnnouncementHandler.ashx?action=",
 
             init: function () {

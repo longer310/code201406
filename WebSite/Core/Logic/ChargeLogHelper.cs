@@ -211,7 +211,7 @@ namespace Backstage.Core.Logic
 
             cmdText = @"update ChargeLog set Status=?Status,UpdateStatusTime=?UpdateStatusTime where Id=?Id;";
 
-            parameters.Add(new MySqlParameter("?Id", status));
+            parameters.Add(new MySqlParameter("?Status", status));
             parameters.Add(new MySqlParameter("?UpdateStatusTime", DateTime.Now));
             parameters.Add(new MySqlParameter("?Id", id));
 

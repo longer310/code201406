@@ -79,13 +79,14 @@
 				    <td style="width:104px;"><input type="text" class="input-small j-preprice" value="${v.OriginalPrice}" ></td>
 				    <td>${v.Sales}</td>
 				    <td>${v.CommentCount} / ${v.BrowseCount}</td>
-				    <td style="width:200px;">
+				    <td style="width:250px;">
 					    <div class="pull-left" style="height:45px;">
 						    <label class="checkbox"><input type="checkbox" {{if v.IsRecommend>0}} checked="checked" {{/if}}  class="j-isrecommend"> 推荐</label>
 						    <label class="checkbox"><input type="checkbox" {{if v.IsHot>0}} checked="checked" {{/if}} class="j-ishot"> 热销</label>
 					    </div>
 
 					    <div class="pull-right">
+                            <a href="javascript:void(0);" onclick="MPage.saveSingleGoods(this)" class="btn btn-primary btn-mini j-btn-saveItem"><i class="icon-ok icon-white"></i>保存</a>
 						    <a class="btn btn-primary btn-mini" href="<%=DomainUrl %>/view/goods/item.aspx?id=${v.Id}&sellerId=<%=SellerId%>"><i class="icon-pencil icon-white"></i> 编辑</a>
 						    <a class="btn btn-danger btn-mini j-btn-del" href="javascript:void(0);" onclick="MPage.delSingleGoods(${v.Id})"><i class="icon-remove icon-white"></i> 删除</a>
 					    </div>
@@ -104,9 +105,10 @@
         var sellerId = '<%=SellerId%>';
         var MPage = {
             hander: "<%=DomainUrl %>/Handler/Merchant/GoodsHandler.ashx?sellerId=" + sellerId + "&action=",
+            cid: 0,
             maxpage: 5,     //最多显示的页数
             start: 0,       //页码
-            limit: 3,       //一页条数
+            limit: 10,       //一页条数
             type: 0,         //当前产品类型
             init: function () {
                 var mpage = this;
@@ -114,6 +116,10 @@
                 //去掉之前选中打开的项 选中产品列表
                 $("#sidebar li").removeClass("active open");
                 $("#sidebar .sidebar_goods").addClass("active open").find(".sidebar_goodslist").addClass("active");
+
+                /\?cid=(\d+)/.test(document.location.href);
+                var cid = RegExp.$1;
+                if (cid != "")mpage.cid = cid;
 
                 mpage.getGoodsList(1, 0);
 
@@ -202,6 +208,22 @@
                 });
             },
 
+            saveSingleGoods: function (obj) {
+                var mpage = this;
+                var $item = $(obj).parents("tr");
+                var data_save = [];
+                data_save.push(
+                {
+                    Id: $item.attr("data-gid"),
+                    Nowprice: $item.find(".j-price").val(),
+                    OriginalPrice: $item.find(".j-preprice").val(),
+                    IsRecommend: $item.find(".j-isrecommend").attr("checked") ? 1 : 0,
+                    IsHot: $item.find(".j-ishot").attr("checked") ? 1 : 0
+                });
+
+                mpage.saveGoods(data_save);
+            },
+
             //获取商品列表 start：页码 type：tab 类型
             getGoodsList: function (start, type) {
                 var mpage = this;
@@ -209,7 +231,7 @@
                 mpage.type = type;
 
                 $("#j-btn-selectAll").removeAttr("checked");
-                $.post(mpage.hander + "getGoodsList", { start: mpage.start - 1, limit: mpage.limit, type: mpage.type }, function (data) {
+                $.post(mpage.hander + "getGoodsList", { cid: MPage.cid, start: mpage.start - 1, limit: mpage.limit, type: mpage.type }, function (data) {
                     if (!data.error) {
                         $("#j-goods-list").html($("#j-tmpl-goods-listitem").tmpl(data));
                         mpage.showPager(data.totalcount);
@@ -245,7 +267,7 @@
                     return false;
                 });
             },
-            
+
             //分页 totalCount：总数
             showPager: function (totalCount) {
                 var mpage = this;
@@ -303,7 +325,7 @@
                     }
                 }, "JSON");
             },
-            
+
             //保存修改的列表 data:json修改串
             saveGoods: function (data_save) {
                 var mpage = this;

@@ -1,5 +1,5 @@
-$(function(){
-	var alert_tmpl = '\
+$(function () {
+    var alert_tmpl = '\
 		<div id="j-modalAlert" class="modal hide">\
 			<div class="modal-header">\
 				<button data-dismiss="modal" class="close" type="button">×</button>\
@@ -13,7 +13,7 @@ $(function(){
 			</div>\
 		</div>';
 
-	var confirm_tmpl = '\
+    var confirm_tmpl = '\
 		<div id="j-modalConfirm" class="modal hide">\
 			<div class="modal-header">\
 				<button data-dismiss="modal" class="close" type="button">×</button>\
@@ -28,92 +28,92 @@ $(function(){
 			</div>\
 		</div>';
 
-	var tip_tip = '<div class="alert hide modal-tip" id="j-tip">\
+    var tip_tip = '<div class="alert hide modal-tip" id="j-tip">\
 						<a class="close j-btn-close" href="javascript:;">×</a>\
 						<p class="j-content"></p>\
 					</div>';
 
-	$("body").append(alert_tmpl);
-	$("body").append(confirm_tmpl);
-	$("body").append(tip_tip);
+    $("body").append(alert_tmpl);
+    $("body").append(confirm_tmpl);
+    $("body").append(tip_tip);
 });
 
 var Common = {
-	alert : function (options){
-		options = options || {};
+    alert: function (options) {
+        options = options || {};
 
 
-		$("#j-modalAlert .j-title").html(options.title);
-		$("#j-modalAlert .j-content").html(options.content);
+        $("#j-modalAlert .j-title").html(options.title);
+        $("#j-modalAlert .j-content").html(options.content);
         $('#j-modalAlert').modal('show');
 
-        $("#j-modalAlert .j-btn-confirm").unbind("click").bind("click", function(){
-        	$('#j-modalAlert').modal('hide');
+        $("#j-modalAlert .j-btn-confirm").unbind("click").bind("click", function () {
+            $('#j-modalAlert').modal('hide');
             (typeof options.confirm === "function") && options.confirm();
             return false;
         });
 
         $("#j-modalAlert").height("auto");
-		var height = $("#j-modalAlert").height();
-		$("#j-modalAlert").css({
-			height : height,
-			"margin-top" : -height / 2
-		});
-	},
+        var height = $("#j-modalAlert").height();
+        $("#j-modalAlert").css({
+            height: height,
+            "margin-top": -height / 2
+        });
+    },
 
-	confirm : function(options){
-		options = options || {};
+    confirm: function (options) {
+        options = options || {};
 
-		$("#j-modalConfirm .j-title").html(options.title);
-		$("#j-modalConfirm .j-content").html(options.content);
+        $("#j-modalConfirm .j-title").html(options.title);
+        $("#j-modalConfirm .j-content").html(options.content);
         $('#j-modalConfirm').modal('show');
 
-        $("#j-modalConfirm .j-btn-confirm").unbind("click").bind("click", function(){
-        	$('#j-modalConfirm').modal('hide');
+        $("#j-modalConfirm .j-btn-confirm").unbind("click").bind("click", function () {
+            $('#j-modalConfirm').modal('hide');
             (typeof options.confirm === "function") && options.confirm();
             return false;
         });
 
-        $("#j-modalConfirm .j-btn-cancel").unbind("click").bind("click", function(){
-        	$('#j-modalConfirm').modal('hide');
+        $("#j-modalConfirm .j-btn-cancel").unbind("click").bind("click", function () {
+            $('#j-modalConfirm').modal('hide');
             (typeof options.cancel === "function") && options.cancel();
             return false;
         });
 
         $("#j-modalConfirm").height("auto");
-		var height = $("#j-modalConfirm").height();
-		$("#j-modalConfirm").css({
-			height : height,
-			"margin-top" : -height / 2
-		});
-	},
+        var height = $("#j-modalConfirm").height();
+        $("#j-modalConfirm").css({
+            height: height,
+            "margin-top": -height / 2
+        });
+    },
 
-	tip: function (options) {
-	    options = options || {};
-	    var type = options.type || "info";
-	    var delay = options.delay || 3000;
+    tip: function (options) {
+        options = options || {};
+        var type = options.type || "info";
+        var delay = options.delay || 3000;
 
-	    $("#j-tip .j-content").html(options.content);
+        $("#j-tip .j-content").html(options.content);
 
-	    $('#j-tip')[0].className = 'alert alert-' + type;
+        $('#j-tip')[0].className = 'alert modal-tip alert-' + type;
 
-	    $("#j-tip").height("auto");
+        $("#j-tip").height("auto");
 
-	    $("#j-tip .j-btn-close").unbind("click").bind("click", function () {
-	        $('#j-tip')[0].className = 'alert hide';
-	        return false;
-	    });
+        $("#j-tip .j-btn-close").unbind("click").bind("click", function () {
+            $('#j-tip')[0].className = 'alert hide modal-tip';
+            return false;
+        });
 
-	    setTimeout(function () {
-	        $('#j-tip')[0].className = 'alert hide';
-	    }, delay);
+        setTimeout(function () {
+            $('#j-tip')[0].className = 'alert hide modal-tip';
+        }, delay);
 
-	    var height = $("#j-tip").height();
-	    $("#j-tip").css({
-	        height: height,
-	        "margin-top": -height / 2
-	    });
-	}
+        var height = $("#j-tip").height();
+        $("#j-tip").css({
+            height: height,
+            "margin-top": -height / 2
+        });
+    }
 }
 
 var Route = {
@@ -122,7 +122,7 @@ var Route = {
     FILENAME: 4,
     ALL: 7,
 
-    parse: function(url) {
+    parse: function (url) {
         var _this = this;
         var a = document.createElement('a');
 
@@ -148,7 +148,7 @@ var Route = {
         return route;
     },
 
-    split: function(route, pattern) {
+    split: function (route, pattern) {
         var _this = this;
         var pattern = pattern || _this.SEARCH,
             param = {},
@@ -178,7 +178,7 @@ var Route = {
         return param;
     },
 
-    splitKeyValue: function(search, gap, equal) {
+    splitKeyValue: function (search, gap, equal) {
         var arg, args, param = {},
             gap = gap || '&',
             equal = equal || '=';
@@ -194,7 +194,7 @@ var Route = {
         return param;
     },
 
-    format: function(url, param, filter) {
+    format: function (url, param, filter) {
         var _this = this,
             param_arr = [],
             filter = filter || [],
@@ -219,10 +219,10 @@ var Route = {
             }
         }
 
-        return base_url + (param_arr.length > 0 ? '?' + param_arr.join('&') : '');
+        return base_url + (param_arr.length > 0 ? '?' + param_arr.join('&') : '')
     },
 
-    goto: function(url, param, filter) {
+    goto: function (url, param, filter) {
         url = Route.format(url, param, filter);
 
         var loading = document.createElement("div");
@@ -236,23 +236,24 @@ var Route = {
         load_iframe.frameBorder = 0;
         load_iframe.id = "load_iframe";
 
-        load_iframe.onload = function() {
+        load_iframe.onload = function () {
             document.location.href = url;
         }
 
-        load_iframe.onerror = function() {
+        load_iframe.onerror = function () {
             alert("加载失败，请重试");
             document.body.removeChild(load_iframe, document.body);
             document.body.removeChild(loading, document.body);
         }
 
 
-        setTimeout(function() {
+
+        setTimeout(function () {
             load_iframe.src = url;
             document.body.appendChild(load_iframe);
         }, 1000);
     }
-};
+}
 
 //全局格式化公用方法，别删除呀！
 var Str = {

@@ -216,7 +216,7 @@ namespace Backstage.Handler
         public void GetGoodsList()
         {
             int cid = GetInt("cid");
-            int order = GetInt("order");
+            //int order = GetInt("order");
             int start = GetInt("start");
             int limit = GetInt("limit");
             int type = GetInt("type");
@@ -235,22 +235,22 @@ namespace Backstage.Handler
                     default: break;
                 }
             }
-            switch (order)
-            {
-                case 1:
-                    shoppingcartql += " order by Sales asc "; break;
-                case -1:
-                    shoppingcartql += " order by Sales desc "; break;
-                case 2:
-                    shoppingcartql += " order by CreateTime asc "; break;
-                case -2:
-                    shoppingcartql += " order by CreateTime desc "; break;
-                case 3:
-                    shoppingcartql += " order by Nowprice asc "; break;
-                case -3:
-                    shoppingcartql += " order by Nowprice desc "; break;
-                default: break;
-            }
+            //switch (order)
+            //{
+            //    case 1:
+            //        shoppingcartql += " order by Sales asc "; break;
+            //    case -1:
+            //        shoppingcartql += " order by Sales desc "; break;
+            //    case 2:
+            //        shoppingcartql += " order by CreateTime asc "; break;
+            //    case -2:
+            //        shoppingcartql += " order by CreateTime desc "; break;
+            //    case 3:
+            //        shoppingcartql += " order by Nowprice asc "; break;
+            //    case -3:
+            //        shoppingcartql += " order by Nowprice desc "; break;
+            //    default: break;
+            //}
             var goodsresult = GoodsHelper.GetGoodsList(CurSellerId, wheresql, shoppingcartql, start * limit, limit, 1);
 
             var jt = new JsonTransfer();
@@ -347,7 +347,7 @@ namespace Backstage.Handler
             if (id > 0)
             {
                 goods = GoodsHelper.GetGoods(id);
-                if (goods.SellerId != CurSellerId)
+                if (goods.SellerId != CurSellerId && CurrentUser.RoleType >= RoleType.Merchant)
                 {
                     ReturnErrorMsg("没有权限修改改该商户产品");
                     return;
@@ -374,7 +374,7 @@ namespace Backstage.Handler
             var num = GoodsHelper.SaveGoods(goods);
             if (num > 0)
                 if (id > 0) ReturnCorrectMsg("编辑成功");
-                else ReturnCorrectMsg(num.ToString());
+                else ReturnCorrectMsg("添加成功");
             else
                 if (id > 0) ReturnErrorMsg("添加失败");
                 else ReturnErrorMsg("编辑失败");

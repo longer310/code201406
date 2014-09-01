@@ -62,7 +62,7 @@
             cid: 0,//当前分类 默认是全部分类
             maxpage: 5,     //最多显示的页数
             start: 1,       //页码
-            limit: 3,       //一页条数
+            limit: 10,       //一页条数
 
             init: function() {
                 var mpage = this;

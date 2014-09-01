@@ -1,4 +1,5 @@
-﻿using Backstage.Core.Handler;
+﻿using Backstage.Core;
+using Backstage.Core.Handler;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +11,7 @@ using Backstage.Core;
 
 namespace WebSite.View.Dev
 {
-    public partial class Index : System.Web.UI.Page
+    public partial class Index : BasePage
     {
         public List<Fastlinks>  Fastlinkslist= new List<Fastlinks>();
         public string DomainUrl = Utility._domainurl;

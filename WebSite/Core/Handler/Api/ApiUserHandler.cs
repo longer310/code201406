@@ -229,6 +229,7 @@ namespace Backstage.Handler
             var account = new Account();
             account.Phone = phone;
             account.UserName = username;
+            account.NickName = username;//默认等于用户名
             account.Pwd = password;
             account.RoleType = RoleType.User;
             account.SellerId = sellerid;

@@ -46,6 +46,7 @@ namespace Backstage.Core
         public static string _msg_opensend = System.Configuration.ConfigurationManager.AppSettings["msg_opensend"];//是否开启短信发送验证码
         public static string _userdefaulthead = System.Configuration.ConfigurationManager.AppSettings["userdefaulthead"];//用户默认头像
         public static string _domainurl = System.Configuration.ConfigurationManager.AppSettings["domainurl"];//域名头
+        public static string _onlydomainurl = System.Configuration.ConfigurationManager.AppSettings["onlydomainurl"];//域名头
         #endregion
 
         #region 判断是否具有权限
@@ -568,6 +569,20 @@ namespace Backstage.Core
                 }
             }
             return request.GetResponse() as HttpWebResponse;
+        }
+        #endregion
+
+        #region 手机端接口处理图片
+        /// <summary>
+        /// 获得手机端需要的图片地址
+        /// </summary>
+        /// <param name="url"></param>
+        /// <returns></returns>
+        public static string GetPhoneNeedUrl(string url)
+        {
+            if (url.StartsWith("/bg/File"))
+                url = _onlydomainurl + url;
+            return url;
         }
         #endregion
     }

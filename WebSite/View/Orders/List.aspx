@@ -62,11 +62,6 @@
         </div>
     </div>
 
-    <div id="footer">
-        <p>关于淘宝合作伙伴营销中心廉正举报联系客服开放平台诚征英才联系我们网站地图法律声明© 2003-2014 Taobao.com 版权所有</p>
-        <p>网络文化经营许可证：文网文[2010]040号|增值电信业务经营许可证：浙B2-20080224-1|信息网络传播视听节目许可证：1109364号 </p>
-    </div>
-
     <!--页面js-->
     <script type="text/javascript" src="<%=DomainUrl %>/Script/js/ue.pager.js"></script>
     <script type="text/jquery-tmpl-x" id="j-tmpl-order-listitem">
@@ -125,7 +120,7 @@
             hander: "<%=DomainUrl %>/Handler/Merchant/OrdersHandler.ashx?sellerId=" + sellerId + "&action=",
             maxpage: 5,     //最多显示的页数
             start: 0,       //页码
-            limit: 3,       //一页条数
+            limit: 10,       //一页条数
             type: 0,         //当前产品类型
             init: function () {
                 var mpage = this;

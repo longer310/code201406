@@ -256,7 +256,7 @@ namespace Backstage.Core.Logic
                 parameters.Add(new MySqlParameter("?Nowprice", goods.Nowprice));
                 parameters.Add(new MySqlParameter("?OriginalPrice", goods.OriginalPrice));
                 parameters.Add(new MySqlParameter("?Score", goods.Score));
-                parameters.Add(new MySqlParameter("?CreateTime", goods.CreateTime));
+                parameters.Add(new MySqlParameter("?CreateTime", DateTime.Now));
                 parameters.Add(new MySqlParameter("?FavCount", goods.FavCount));
                 parameters.Add(new MySqlParameter("?ShareCount", goods.ShareCount));
                 parameters.Add(new MySqlParameter("?Tag", Utility.GetString(goods.TagList)));

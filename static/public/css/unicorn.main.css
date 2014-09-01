@@ -1497,3 +1497,7 @@ ul.inline>li,ol.inline>li{
 	width: 100%;
 }
 
+.thumbnail img{
+	min-width: 150px;
+}
+

@@ -14,7 +14,7 @@ namespace WebSite.View.Dev
         public List<Fastlinks>  Fastlinkslist= new List<Fastlinks>();
         protected void Page_Load(object sender, EventArgs e)
         {
-            Fastlinkslist = DevSystemHelper.GetPagFastlinks(0, 0).Results.ToList();
+            //Fastlinkslist = DevSystemHelper.GetPagFastlinks(0, 0).Results.ToList();
 
         }
     }

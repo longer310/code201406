@@ -613,7 +613,6 @@
     <Compile Include="Core\Entity\Push.cs" />
     <Compile Include="Core\Entity\Temple.cs" />
     <Compile Include="Core\Entity\Timeline.cs" />
-    <Compile Include="Core\Handler\DevSystemHelper.cs" />
     <Compile Include="Core\Logic\TempleHelper.cs" />
     <Compile Include="Core\PlatBasePage.cs">
       <SubType>ASPXCodeBehind</SubType>

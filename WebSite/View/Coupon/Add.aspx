@@ -26,10 +26,8 @@
             <div class="control-group">
                 <label class="control-label">有效期</label>
                 <div class="controls">
-                    <input type="text" data-date="12-02-2012" data-date-format="dd-mm-yyyy" value="12-02-2012" class="input-medium j-datepicker" id="j-ticket-expire_date" />
-                    <label class="checkbox inline">
-                        <input type="checkbox" id="j-ticket-date_forever">
-                        长期有效</label>
+                    <input type="text" data-date="12-02-2014" data-date-format="dd-mm-yyyy" value="12-02-2014" class="input-medium j-datepicker" id="j-ticket-expire_date" />
+                    
                 </div>
             </div>
 

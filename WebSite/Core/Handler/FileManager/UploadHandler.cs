@@ -20,6 +20,8 @@ namespace Backstage.Handler
         public override void ProcessRequest(HttpContext context)
         {
             RoleType = RoleType.ThirdUser; //需商家管理权限
+            ImageType imgType = (ImageType)Convert.ToInt32(context.Request.QueryString["type"]);
+
             base.ProcessRequest(HttpContext.Current);
 
             //String aspxUrl = context.Request.Path.Substring(0, context.Request.Path.LastIndexOf("/") + 1);
@@ -114,7 +116,7 @@ namespace Backstage.Handler
 
             var addId = 0;
             //添加商户图片
-            if (dirName == "image")
+            if (imgType == ImageType.Img)
             {
                 //TODO:暂时这么添加 图片名称及图片描述 这个后面再根据需求定怎么赋初值 后面应该加上图片类型！（上传）
                 var sm = new SourceMaterial();
@@ -123,6 +125,7 @@ namespace Backstage.Handler
                 sm.Url = fileUrl;
                 sm.Description = Path.GetFileNameWithoutExtension(fileName);
                 sm.CreateTime = DateTime.Now;
+                sm.ImageType = ImageType.Img;
                 addId = SourceMaterialHelper.Create(sm);
             }
 

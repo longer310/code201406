@@ -161,6 +161,14 @@
 							}
 						});
 						
+						if(type == 1){
+							$("#j-list").parents("table").find("th").last().hide();
+							$("#j-list").find(".j-btn-pay").parents("td").hide();
+						} else {
+							$("#j-list").parents("table").find("th").last().show();
+							$("#j-list").find(".j-btn-pay").parents("td").show();
+						}
+
 						//绑定提款
 	        			$("#j-list .j-btn-pay").bind("click", function(){
 	        				var $item = $(this).parents("tr");

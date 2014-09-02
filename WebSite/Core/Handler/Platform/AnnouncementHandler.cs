@@ -386,6 +386,11 @@ namespace Backstage.Handler
                 return;
             }
             //打款成功
+            if (user.Money < extractmoney.Money)
+            {
+                ReturnErrorMsg("提现失败，金额不足");
+                return;
+            }
             user.Money -= extractmoney.Money;
             AccountHelper.SaveAccount(user);
 

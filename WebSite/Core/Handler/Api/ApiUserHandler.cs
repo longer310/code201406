@@ -631,7 +631,7 @@ namespace Backstage.Handler
                 item.id = coupon.Id;
                 item.title = coupon.Title;
                 item.description = coupon.Description;
-                item.img = coupon.ImgUrl;
+                item.img = Utility.GetPhoneNeedUrl(coupon.ImgUrl);
                 item.expiry = coupon.Expiry.GetUnixTime();
                 item.sellerid = sellerid;
                 item.status = coupon.Status;
@@ -814,7 +814,7 @@ namespace Backstage.Handler
                 item.createtime = c.CreateTime.GetUnixTime();
                 item.type = (int)c.Type;
                 item.content = c.Content;
-                item.img = c.Img;
+                item.img = Utility.GetPhoneNeedUrl(c.Img);
                 item.title = c.Title;
 
                 data.commmentlist.Add(item);
@@ -1126,7 +1126,7 @@ namespace Backstage.Handler
             data.username = user.UserName;
             data.nickname = user.NickName;
             data.phone = user.Phone;
-            data.avatar = user.Avatar;
+            data.avatar = Utility.GetPhoneNeedUrl(user.Avatar);
             data.sex = (int)user.Sex;
             data.money = user.Money;
             data.integral = user.Integral;
@@ -1264,7 +1264,7 @@ namespace Backstage.Handler
                     var o = new MyFavoriteItem()
                     {
                         gid = goods.Id,
-                        img = goods.LogoUrl,
+                        img = Utility.GetPhoneNeedUrl(goods.LogoUrl),
                         title = goods.Title,
                         nowprice = goods.Nowprice,
                         originalprice = goods.OriginalPrice,
@@ -1317,7 +1317,7 @@ namespace Backstage.Handler
                     item.id = coupon.Id;
                     item.title = coupon.Title;
                     item.description = coupon.Description;
-                    item.img = coupon.ImgUrl;
+                    item.img = Utility.GetPhoneNeedUrl(coupon.ImgUrl);
                     item.expiry = coupon.Expiry.GetUnixTime();
                     item.sellerid = sellerid;
 

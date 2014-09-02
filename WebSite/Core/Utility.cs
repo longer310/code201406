@@ -584,6 +584,18 @@ namespace Backstage.Core
                 url = _onlydomainurl + url;
             return url;
         }
+        public static List<string> GetPhoneNeedUrlList(List<string> urls)
+        {
+            var list = new List<string>();
+            foreach (var url in urls)
+            {
+                var itemurl = "";
+                if (url.StartsWith("/bg/File"))
+                    itemurl = _onlydomainurl + url;
+                list.Add(itemurl);
+            }
+            return list;
+        }
         #endregion
     }
 }

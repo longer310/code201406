@@ -78,6 +78,10 @@ namespace Backstage.Core.Entity
         /// </summary>
         public int CouponId { get; set; }
         /// <summary>
+        /// 电子券标题
+        /// </summary>
+        public string CouponTitle { get; set; }
+        /// <summary>
         /// 电子券优惠价格
         /// </summary>
         public float CtotalPrice { get; set; }

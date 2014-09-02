@@ -226,7 +226,7 @@ namespace Backstage.Core.Handler
                 {
                     couponid = r.Id,
                     title = r.Title,
-                    img = r.ImgUrl,
+                    img = Utility.GetPhoneNeedUrl(r.ImgUrl),
                     extcredit = r.Extcredit,
                     expiry = r.Expiry.GetUnixTime(),
                     description = r.Description,

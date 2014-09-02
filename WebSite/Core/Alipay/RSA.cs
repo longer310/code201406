@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.IO;
 using System.Security.Cryptography;
+using log4net;
 
 namespace Com.Alipay
 {
@@ -18,6 +19,7 @@ namespace Com.Alipay
     /// </summary>
     public sealed class RSAFromPkcs8
     {
+        private static ILog logger = LogManager.GetLogger("RSAFromPkcs8");
         /// <summary>
         /// 签名
         /// </summary>
@@ -45,18 +47,27 @@ namespace Com.Alipay
         /// <returns></returns>
         public static bool verify(string content, string signedString, string publicKey, string input_charset)
         {
-            bool result = false;
+            try
+            {
+                bool result = false;
 
-            Encoding code = Encoding.GetEncoding(input_charset);
-            byte[] Data = code.GetBytes(content);
-            byte[] data = Convert.FromBase64String(signedString);
-            RSAParameters paraPub = ConvertFromPublicKey(publicKey);
-            RSACryptoServiceProvider rsaPub = new RSACryptoServiceProvider();
-            rsaPub.ImportParameters(paraPub);
+                Encoding code = Encoding.GetEncoding(input_charset);
+                byte[] Data = code.GetBytes(content);
+                byte[] data = Convert.FromBase64String(signedString);
+                RSAParameters paraPub = ConvertFromPublicKey(publicKey);
+                RSACryptoServiceProvider rsaPub = new RSACryptoServiceProvider();
+                rsaPub.ImportParameters(paraPub);
 
-            SHA1 sh = new SHA1CryptoServiceProvider();
-            result = rsaPub.VerifyData(Data, sh, data);
-            return result;
+                SHA1 sh = new SHA1CryptoServiceProvider();
+                result = rsaPub.VerifyData(Data, sh, data);
+                return result;
+            }
+            catch (Exception exc)
+            {
+                logger.ErrorFormat("异常：{0})", exc.Message);
+                return false;
+                throw;
+            }
         }
 
         /// <summary>

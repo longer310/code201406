@@ -6,6 +6,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using Backstage.Core;
 using Backstage.Core.Entity;
+using Backstage.Core.Logic;
 
 namespace WebSite.View
 {
@@ -14,7 +15,6 @@ namespace WebSite.View
     /// </summary>
     public class MerchantMasterBasePage : System.Web.UI.MasterPage
     {
-
         public string GetString(string paramName)
         {
             string defaultVale = "";
@@ -29,11 +29,6 @@ namespace WebSite.View
             }
             return p1;
         }
-        public Account Merchant
-        {
-            get { return AccountHelper.GetCurUser(); }
-        }
-        public string DomainUrl { get { return Utility._domainurl; } }
 
         public string SellerId
         {
@@ -45,18 +40,53 @@ namespace WebSite.View
                 return Merchant.Id.ToString();
             }
         }
+        public Merchant Merchant
+        {
+            get
+            {
+                int id = Account.Id;
+                if (!string.IsNullOrEmpty(GetString("sellerId")))
+                {
+                    if (Utility.IsNum(SellerId))
+                    {
+                        id = Convert.ToInt32(SellerId);
+                    }
+                }
+                return MerchantHelper.GetMerchant(id);
+            }
+        }
+        public Account Account
+        {
+            get
+            {
+                if (!string.IsNullOrEmpty(GetString("sellerId")))
+                {
+                    if (Utility.IsNum(SellerId))
+                    {
+                        return AccountHelper.GetUser(Convert.ToInt32(SellerId));
+                    }
+                }
+                return AccountHelper.GetCurUser();
+            }
+        }
+        public string DomainUrl { get { return Utility._domainurl; } }
     }
     public partial class MerchantMaster : MerchantMasterBasePage
     {
         public string UserName { get; set; }
         public float Money { get; set; }
+        public string MerchantName { get; set; }
 
         protected void Page_Load(object sender, EventArgs e)
         {
+            if (Account != null)
+            {
+                UserName = Account.UserName;
+                Money = Account.Money;
+            }
             if (Merchant != null)
             {
-                UserName = Merchant.UserName;
-                Money = Merchant.Money;
+                MerchantName = Merchant.Name;
             }
         }
     }

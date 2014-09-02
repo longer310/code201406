@@ -22,8 +22,8 @@
             <table class="table table-bordered table-striped with-check">
                 <thead>
                     <tr>
-                        <th>
-                            <input type="checkbox" id="j-btn-selectAll" name="title-table-checkbox" /></th>
+                        <%--<th>
+                            <input type="checkbox" id="j-btn-selectAll" name="title-table-checkbox" /></th>--%>
                         <th style="width: 40px;">编号</th>
                         <th>商户账户</th>
                         <th>金额</th>
@@ -55,7 +55,7 @@
     <script type="text/jquery-tmpl-x" id="j-tmpl-listitem">
         	{{each(i, v) list}}
 	        	<tr data-id="${v.Id}">
-					<td><input type="checkbox" class="j-select" /></td>
+					<%--<td><input type="checkbox" class="j-select" /></td>--%>
 					<td style="width:40px;">${v.Id}</td>
 					<td>${v.UserAccount}</td>
 					<td><b class="text-info">${v.Money}</b>元</td>
@@ -71,8 +71,8 @@
                         {{else v.Status == -1}}未打款
                         {{/if}}
                     </b></td>
-					<td style="width:60px;">
-						<a class="btn btn-primary btn-mini j-btn-pay" href="javascript:;"><i class="icon-pencil icon-white"></i> 打款</a>
+					<td style="width:80px;">
+						<a class="btn btn-primary btn-mini j-btn-pay" href="javascript:;"><i class="icon-pencil icon-white"></i> 已打款</a>
 					</td>
 				</tr>
 			{{/each}}
@@ -139,6 +139,14 @@
                                 mpage.getExtractMoneyList(page, mpage.status);
                             }
                         });
+
+                        if (status == 1) {
+                            $("#j-list").parents("table").find("th").last().hide();
+                            $("#j-list").find(".j-btn-pay").parents("td").hide();
+                        } else {
+                            $("#j-list").parents("table").find("th").last().show();
+                            $("#j-list").find(".j-btn-pay").parents("td").show();
+                        }
 
                         //绑定提款
                         $("#j-list .j-btn-pay").bind("click", function () {

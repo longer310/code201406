@@ -55,7 +55,7 @@ namespace Backstage.Core.Handler
                 var d = new
                 {
                     pid = r.Id,
-                    img = r.Url,
+                    img = Utility.GetPhoneNeedUrl(r.Url),
                     title = r.Title
                 };
                 data.Add(d);
@@ -79,7 +79,7 @@ namespace Backstage.Core.Handler
             {
                 pid = sm.Id,
                 title = sm.Title,
-                img = sm.Url,
+                img = Utility.GetPhoneNeedUrl(sm.Url),
                 description = sm.Description,
                 views = sm.Views,
                 commentnum = sm.Commentnum
@@ -183,7 +183,7 @@ namespace Backstage.Core.Handler
                     throw new ArgumentNullException(string.Format("userId:{0}", cm.UserId));
                 var result = new ComentsForApi
                 {
-                    Avatar = user.Avatar,
+                    Avatar = Utility.GetPhoneNeedUrl(user.Avatar),
                     UserName = user.UserName,
                     Sex = (int)user.Sex,
                     Dateline = cm.CreateTime.GetUnixTime(),

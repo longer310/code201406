@@ -160,9 +160,9 @@
                 <div class="widget-content">
 
                     <div class="control-group">
-                        <label class="control-label">活动咨询</label>
+                        <label class="control-label">活动资讯</label>
                         <div class="controls">
-                            <input type="text" id="j_name_activity" value="活动咨询" />
+                            <input type="text" id="j_name_activity" value="活动资讯" />
                         </div>
                     </div>
 

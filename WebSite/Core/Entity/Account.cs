@@ -110,8 +110,9 @@ namespace Backstage.Core.Entity
             Discount = 10;//默认不打折
         }
 
-        public void Concume(float price)
+        public bool Concume(float price)
         {
+            if (Money < price) return false;
             Money -= price;
             TotalConsume += price;
             TotalOrdersCount++;//完成付款的订单数
@@ -126,6 +127,7 @@ namespace Backstage.Core.Entity
                     AccountHelper.SaveAccount(merchant);
                 }
             }
+            return true;
         }
     }
 }

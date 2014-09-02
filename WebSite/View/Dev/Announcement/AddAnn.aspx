@@ -57,6 +57,7 @@
                     $.post(mpage.hander + "addAnnouncemment", { content: content }, function (data) {
                         if (!data.error) {
                             Common.tip({ type: "success", content: data.success });
+                            window.location.href = "<%=DomainUrl %>/View/Dev/Announcement/Annlist.aspx";
                         } else {
                             Common.tip({ type: "error", content: data.error });
                         }

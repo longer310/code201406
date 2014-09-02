@@ -5,6 +5,7 @@ using System.Net;
 using System.Xml;
 using System;
 using System.Collections.Generic;
+using log4net;
 
 namespace Com.Alipay
 {
@@ -23,13 +24,14 @@ namespace Com.Alipay
     /// </summary>
     public class Notify
     {
+        private static ILog logger = LogManager.GetLogger("Notify");
         #region 字段
         private string _partner = "2088511724484349";               //合作身份者ID
         private string _key = "okkcs8za7xeuemhmbpmks2kd7agiqu8e";                   //支付宝MD5私钥
         private string _private_key = "okkcs8za7xeuemhmbpmks2kd7agiqu8e";           //商户的私钥
         private string _public_key = "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCnxj/9qwVfgoUh/y2W89L6BkRAFljhNhgPdyPuBV64bfQNN1PjbCzkIM6qRdKBoLPXmKKMiFYnkd6rAoprih3/PrQEB/VsW8OoM8fxn67UDYuyBTqA23MML9q1+ilIZwBC2AQ2UBVOrFXfFl75p6/B5KsiNG9zpgmLCUYuLkxpLQIDAQAB";            //支付宝的公钥
         private string _input_charset = "utf-8";         //编码格式
-        private string _sign_type = "0001";             //签名方式
+        private string _sign_type = "RSA";             //签名方式
 
         //支付宝消息验证地址
         private string Https_veryfy_url = "https://mapi.alipay.com/gateway.do?service=notify_verify&";
@@ -62,7 +64,7 @@ namespace Com.Alipay
         public bool VerifyReturn(Dictionary<string, string> inputPara, string sign)
         {
             //获取返回时的签名验证结果
-            bool isSign = GetSignVeryfy(inputPara, sign,true);
+            bool isSign = GetSignVeryfy(inputPara, sign, true);
 
             //写日志记录（若要调试，请取消下面两行注释）
             //string sWord = "isSign=" + isSign.ToString() + "\n 返回回来的参数：" + GetPreSignStr(inputPara) + "\n ";
@@ -100,19 +102,22 @@ namespace Com.Alipay
             {
                 //XML解析notify_data数据，获取notify_id
                 string notify_id = "";
-                XmlDocument xmlDoc = new XmlDocument();
-                xmlDoc.LoadXml(inputPara["notify_data"]);
-                notify_id = xmlDoc.SelectSingleNode("/notify/notify_id").InnerText;
+                //XmlDocument xmlDoc = new XmlDocument();
+                //xmlDoc.LoadXml(inputPara["notify_data"]);
+                notify_id = inputPara["notify_id"];//xmlDoc.SelectSingleNode("/notify/notify_id").InnerText;
 
                 if (notify_id != "") { responseTxt = GetResponseTxt(notify_id); }
+                logger.InfoFormat("responseTxt：{0}，notify_id：{1})", responseTxt, notify_id);
             }
-            catch(Exception e)
+            catch (Exception exc)
             {
-                responseTxt = e.ToString();
+                logger.ErrorFormat("异常：{0})", exc.Message);
+                responseTxt = exc.ToString();
             }
 
             //获取返回时的签名验证结果
-            bool isSign = GetSignVeryfy(inputPara, sign, false);
+            bool isSign = GetSignVeryfy(inputPara, sign, true);
+            logger.InfoFormat("isSign：{0})", isSign);
 
             //写日志记录（若要调试，请取消下面两行注释）
             //string sWord = "responseTxt=" + responseTxt + "\n isSign=" + isSign.ToString() + "\n 返回回来的参数：" + GetPreSignStr(inputPara) + "\n ";
@@ -191,47 +196,58 @@ namespace Com.Alipay
         /// <param name="sign">对比的签名结果</param>
         /// <param name="isSort">是否对待签名数组排序</param>
         /// <returns>签名验证结果</returns>
-        private bool GetSignVeryfy(Dictionary<string, string> inputPara, string sign,bool isSort)
+        private bool GetSignVeryfy(Dictionary<string, string> inputPara, string sign, bool isSort)
         {
-            Dictionary<string, string> sPara = new Dictionary<string, string>();
-
-            //过滤空值、sign与sign_type参数
-            sPara = Core.FilterPara(inputPara);
-
-            if (isSort)
+            try
             {
-                //根据字母a到z的顺序把参数排序
-                sPara = Core.SortPara(sPara);
+                Dictionary<string, string> sPara = new Dictionary<string, string>();
+
+                //过滤空值、sign与sign_type参数
+                sPara = Core.FilterPara(inputPara);
+
+                if (isSort)
+                {
+                    //根据字母a到z的顺序把参数排序
+                    sPara = Core.SortPara(sPara);
+                }
+                else
+                {
+                    sPara = SortNotifyPara(sPara);
+                }
+
+                //获取待签名字符串
+                string preSignStr = Core.CreateLinkString(sPara);
+                logger.InfoFormat("preSignStr:{0}",preSignStr);
+                //获得签名验证结果
+                bool isSgin = false;
+                if (!string.IsNullOrEmpty(sign))
+                {
+                    logger.InfoFormat("_sign_type:{0}", _sign_type);
+                    switch (_sign_type)
+                    {
+                        case "MD5":
+                            isSgin = AlipayMD5.Verify(preSignStr, sign, _key, _input_charset);
+                            break;
+                        case "RSA":
+                            isSgin = RSAFromPkcs8.verify(preSignStr, sign, _public_key, _input_charset);
+                            break;
+                        case "0001":
+                            isSgin = RSAFromPkcs8.verify(preSignStr, sign, _public_key, _input_charset);
+                            break;
+                        default:
+                            break;
+                    }
+                }
+
+                return isSgin;
             }
-            else
+            catch (Exception exc)
             {
-                sPara = SortNotifyPara(sPara);
+                logger.ErrorFormat("异常：{0})", exc.Message);
+                return false;
+                throw;
             }
             
-            //获取待签名字符串
-            string preSignStr = Core.CreateLinkString(sPara);
-
-            //获得签名验证结果
-            bool isSgin = false;
-            if (sign != null && sign != "")
-            {
-                switch (_sign_type)
-                {
-                    case "MD5":
-                        isSgin = AlipayMD5.Verify(preSignStr, sign, _key, _input_charset);
-                        break;
-                    case "RSA":
-                        isSgin = RSAFromPkcs8.verify(preSignStr, sign, _public_key, _input_charset);
-                        break;
-                    case "0001":
-                        isSgin = RSAFromPkcs8.verify(preSignStr, sign, _public_key, _input_charset);
-                        break;
-                    default:
-                        break;
-                }
-            }
-
-            return isSgin;
         }
 
         /// <summary>

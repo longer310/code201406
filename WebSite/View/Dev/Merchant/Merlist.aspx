@@ -193,6 +193,12 @@
 
                         $("#j-shop-category-tab").html(tmpl);
 
+                        //解析url中的id
+                        /\?mid=(\d+)/.test(document.location.href);
+                        var mid = RegExp.$1;
+                        $("#j-shop-category-tab li").removeClass("active");
+                        $("#j-shop-category-tab li[data-id=" +mid+ "]").addClass("active");
+
                         //绑定tab
                         $('#j-shop-category-tab a').bind("click", function (e) {
                             var id = $(this).parent().attr("data-id");

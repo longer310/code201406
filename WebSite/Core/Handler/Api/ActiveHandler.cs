@@ -58,7 +58,7 @@ namespace Backstage.Core.Handler
                     throw new ArgumentNullException(string.Format("userId:{0}", cm.UserId));
                 var result = new ComentsForApi
                 {
-                    Avatar = user.Avatar,
+                    Avatar = Utility.GetPhoneNeedUrl(user.Avatar),
                     UserName = user.UserName,
                     Sex = (int)user.Sex,
                     Dateline = cm.CreateTime.GetUnixTime(),
@@ -88,7 +88,7 @@ namespace Backstage.Core.Handler
             c.Content = msg;
             c.Type = CommentType.Avtive;
             //冗余两个字段
-            c.Img = active.CoverImgUrl;
+            c.Img = Utility.GetPhoneNeedUrl(active.CoverImgUrl);
             c.Title = active.Title;
 
             try
@@ -135,7 +135,7 @@ namespace Backstage.Core.Handler
             {
                 newid = item.Id,
                 title = item.Title,
-                img = item.CoverImgUrl,
+                img = Utility.GetPhoneNeedUrl(item.CoverImgUrl),
                 summary = item.Summary,
                 dateline = item.CreateTime.GetUnixTime(),
                 Views = item.Views,
@@ -165,7 +165,7 @@ namespace Backstage.Core.Handler
                 {
                     newid = r.Id,
                     title = r.Title,
-                    img = r.CoverImgUrl,
+                    img = Utility.GetPhoneNeedUrl(r.CoverImgUrl),
                     dateline = r.CreateTime.GetUnixTime(),
                     summary = r.Summary,
                     Views = r.Views,

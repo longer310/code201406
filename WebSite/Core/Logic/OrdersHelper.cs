@@ -61,6 +61,7 @@ namespace Backstage.Core.Logic
                         orders.SellerId = (int)reader["SellerId"];
                         orders.Ccontent = reader["Ccontent"].ToString();
                         orders.Boxno = (int)reader["Boxno"];
+                        orders.CouponTitle = reader["CouponTitle"].ToString();
 
                         result.Results.Add(orders);
                     }
@@ -131,6 +132,7 @@ namespace Backstage.Core.Logic
                             orders.SellerId = (int)reader["SellerId"];
                             orders.Ccontent = reader["Ccontent"].ToString();
                             orders.Boxno = (int)reader["Boxno"];
+                            orders.CouponTitle = reader["CouponTitle"].ToString();
                             return orders;
                         }
                     }
@@ -180,7 +182,8 @@ namespace Backstage.Core.Logic
                                         SellerId                      = ?SellerId        ,
                                         Ccontent                      = ?Ccontent        ,
                                         CreateTime                  = ?CreateTime    ,
-                                        Boxno                  = ?Boxno    
+                                        Boxno                  = ?Boxno    ,
+                                        CouponTitle                  = ?CouponTitle    
                                     WHERE
                                         Id = ?Id";
                 parameters.Add(new MySqlParameter("?Id", orders.Id));
@@ -204,11 +207,12 @@ namespace Backstage.Core.Logic
                 parameters.Add(new MySqlParameter("?LinkMan", orders.LinkMan));
                 parameters.Add(new MySqlParameter("?Mobile", orders.Mobile));
                 parameters.Add(new MySqlParameter("?Remark", orders.Remark));
-                parameters.Add(new MySqlParameter("?Status", orders.Status));
+                parameters.Add(new MySqlParameter("?Status", (int)orders.Status));
                 parameters.Add(new MySqlParameter("?CreateTime", orders.CreateTime));
                 parameters.Add(new MySqlParameter("?SellerId", orders.SellerId));
                 parameters.Add(new MySqlParameter("?Ccontent", orders.Ccontent));
                 parameters.Add(new MySqlParameter("?Boxno", orders.Boxno));
+                parameters.Add(new MySqlParameter("?CouponTitle", orders.CouponTitle));
             }
             else
             {
@@ -237,7 +241,8 @@ namespace Backstage.Core.Logic
                                         Status         ,
                                         SellerId       ,
                                         Ccontent       ,
-                                        CreateTime    
+                                        CreateTime    ,
+                                        CouponTitle    
                                         ) 
                                         values
                                         (
@@ -264,7 +269,8 @@ namespace Backstage.Core.Logic
                                         ?Status        ,
                                         ?SellerId      ,
                                         ?Ccontent      ,
-                                        ?CreateTime 
+                                        ?CreateTime ,
+                                        ?CouponTitle 
                                         )";
                 parameters.Add(new MySqlParameter("?UserId", orders.UserId));
                 parameters.Add(new MySqlParameter("?Gids", Utility.GetString(orders.GidList)));
@@ -286,10 +292,11 @@ namespace Backstage.Core.Logic
                 parameters.Add(new MySqlParameter("?LinkMan", orders.LinkMan));
                 parameters.Add(new MySqlParameter("?Mobile", orders.Mobile));
                 parameters.Add(new MySqlParameter("?Remark", orders.Remark));
-                parameters.Add(new MySqlParameter("?Status", orders.Status));
+                parameters.Add(new MySqlParameter("?Status", (int)orders.Status));
                 parameters.Add(new MySqlParameter("?CreateTime", orders.CreateTime));
                 parameters.Add(new MySqlParameter("?SellerId", orders.SellerId));
                 parameters.Add(new MySqlParameter("?Ccontent", orders.Ccontent));
+                parameters.Add(new MySqlParameter("?CouponTitle", orders.CouponTitle));
             }
             try
             {

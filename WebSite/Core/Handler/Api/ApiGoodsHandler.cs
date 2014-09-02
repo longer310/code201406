@@ -142,7 +142,7 @@ namespace Backstage.Handler
             foreach (var gad in gads)
             {
                 var s = new TSlideItem();
-                s.img = gad.LogoUrl;
+                s.img = Utility.GetPhoneNeedUrl(gad.LogoUrl);
                 s.title = gad.Title;
                 s.type = (int)CommentType.Goods;
                 s.typeid = gad.Id;
@@ -154,7 +154,7 @@ namespace Backstage.Handler
             foreach (var aad in aads)
             {
                 var s = new TSlideItem();
-                s.img = aad.CoverImgUrl;
+                s.img = Utility.GetPhoneNeedUrl(aad.CoverImgUrl);
                 s.title = aad.Title;
                 s.type = (int)CommentType.Avtive;
                 s.typeid = aad.Id;
@@ -166,7 +166,7 @@ namespace Backstage.Handler
             foreach (var pad in pads)
             {
                 var s = new TSlideItem();
-                s.img = pad.Url;
+                s.img = Utility.GetPhoneNeedUrl(pad.Url);
                 s.title = pad.Title;
                 s.type = (int)CommentType.Img;
                 s.typeid = pad.Id;
@@ -180,18 +180,18 @@ namespace Backstage.Handler
             var data = new HomeData();
             foreach (var l in list)
             {
-                data.slide.Add(new SlideItem() { img = l.img, title = l.title, type = l.type, typeid = l.typeid });
+                data.slide.Add(new SlideItem() { img = Utility.GetPhoneNeedUrl(l.img), title = l.title, type = l.type, typeid = l.typeid });
             }
 
             var pcfg = ParamHelper.PlatformCfgData;
-            data.ad = new AdItem() { img = pcfg.PhoneAd.PicUrl, url = pcfg.PhoneAd.JumpUrl };
+            data.ad = new AdItem() { img = Utility.GetPhoneNeedUrl(pcfg.PhoneAd.PicUrl), url = pcfg.PhoneAd.JumpUrl };
 
             if (merchant.MerType == MerchantTypes.Food)
             {
                 var glist = GoodsHelper.GetGoodsList(sellerid, " and IsHot = 1 ", "", 0, 8).Results;
                 foreach (var gl in glist)
                 {
-                    data.hots.Add(new HotItem() { img = gl.LogoUrl, gid = gl.Id });
+                    data.hots.Add(new HotItem() { img = Utility.GetPhoneNeedUrl(gl.LogoUrl), gid = gl.Id });
                 }
             }
             else if (merchant.MerType == MerchantTypes.Night)
@@ -199,7 +199,7 @@ namespace Backstage.Handler
                 var mlist = SourceMaterialHelper.GetList(sellerid, 0, 8);
                 foreach (var gl in mlist)
                 {
-                    data.hots.Add(new HotItem() { img = gl.Url, gid = gl.Id });
+                    data.hots.Add(new HotItem() { img = Utility.GetPhoneNeedUrl(gl.Url), gid = gl.Id });
                 }
             }
 
@@ -316,7 +316,7 @@ namespace Backstage.Handler
                 gitem.title = goods.Title;
                 //var pic = picList.FirstOrDefault(o => o.Id == goods.Logo);
                 //if (pic != null) gitem.img = pic.Url;
-                gitem.img = goods.LogoUrl;
+                gitem.img = Utility.GetPhoneNeedUrl(goods.LogoUrl);
                 gitem.nowprice = goods.Nowprice;
                 gitem.originalprice = goods.OriginalPrice;
                 gitem.sales = goods.Sales;
@@ -387,7 +387,7 @@ namespace Backstage.Handler
             //{
             //    data.images.Add(sourceMaterial.Url);
             //}
-            data.images = goods.ImageUrlList;
+            data.images = Utility.GetPhoneNeedUrlList(goods.ImageUrlList);
             data.gid = gid;
             data.title = goods.Title;
             data.nowprice = goods.Nowprice;
@@ -468,7 +468,7 @@ namespace Backstage.Handler
                 var user = userlist.FirstOrDefault(o => o.Id == comment.UserId);
                 if (user != null)
                 {
-                    item.avatar = user.Avatar;
+                    item.avatar = Utility.GetPhoneNeedUrl(user.Avatar);
                     item.username = user.UserName;
                     item.sex = (int)user.Sex;
                 }
@@ -746,7 +746,7 @@ namespace Backstage.Handler
                     item.originalprice = goods.OriginalPrice;
                     item.title = goods.Title;
                     item.content = goods.Content;
-                    item.img = goods.LogoUrl;
+                    item.img = Utility.GetPhoneNeedUrl(goods.LogoUrl);
 
                     item.totalprice = goods.Nowprice * shoppingCart.Num;
 
@@ -846,6 +846,7 @@ namespace Backstage.Handler
             public float totalprice { get; set; }//实际应付
             public int extcredit { get; set; }//可获积分
             public int couponid { get; set; }//优惠券id
+            public string coupontitle { get; set; }//优惠券名称
             public string ccontent { get; set; }//优惠券说明
             public float stotalprice { get; set; }//合计（商品总计）
             public string remark { get; set; }//订单备注
@@ -877,7 +878,7 @@ namespace Backstage.Handler
                 for (int i = 0; i < gidlist.Count; i++)
                 {
                     var item = new OrderGoddsItem();
-                    item.img = imglist[i];
+                    item.img = Utility.GetPhoneNeedUrl(imglist[i]);
                     item.gid = gidlist[i];
                     item.title = titlelist[i];
                     item.content = contentlist[i];
@@ -899,6 +900,7 @@ namespace Backstage.Handler
                 totalprice = orders.TotalPrice;
                 extcredit = (int)(orders.TotalPrice * 1.0 / ParamHelper.ExtcreditCfgData.Consume);
                 couponid = orders.CouponId;
+                coupontitle = orders.CouponTitle;
                 ccontent = orders.Ccontent;
                 stotalprice = orders.StotalPrice;
                 remark = orders.Remark;
@@ -1060,6 +1062,7 @@ namespace Backstage.Handler
 
                     orders.TotalPrice -= discount;
                     orders.CtotalPrice = discount;
+                    orders.CouponTitle = coupon.Title;
                     if (orders.TotalPrice < 0) orders.TotalPrice = 0;
                 }
             }
@@ -1115,9 +1118,15 @@ namespace Backstage.Handler
                         ReturnErrorMsg("余额不足");
                         return;
                     }
-                    user.Money -= orders.TotalPrice;
-                    user.TotalConsume += orders.TotalPrice;
-                    user.TotalOrdersCount++;//完成付款的订单数
+                    user.Concume(orders.TotalPrice);
+                    //user.Money -= orders.TotalPrice;
+                    //user.TotalConsume += orders.TotalPrice;
+                    //user.TotalOrdersCount++;//完成付款的订单数
+                }
+                else
+                {
+                    ReturnErrorMsg("不是通过此接口改变订单状态为已付款（非账户余额付款）");
+                    return;
                 }
 
                 var payMent = new Payment();

@@ -58,7 +58,7 @@ namespace Com.Alipay
             input_charset = "utf-8";
 
             //签名方式，选择项：0001(RSA)、MD5
-            sign_type = "0001";
+            sign_type = "RSA";
             //无线的产品中，签名方式为rsa时，sign_type需赋值为0001而不是RSA
         }
 

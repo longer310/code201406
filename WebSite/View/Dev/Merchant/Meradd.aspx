@@ -161,9 +161,9 @@
                 <div class="widget-content">
 
                     <div class="control-group">
-                        <label class="control-label">活动咨询</label>
+                        <label class="control-label">活动资讯</label>
                         <div class="controls">
-                            <input type="text" id="j_name_activity" value="活动咨询" />
+                            <input type="text" id="j_name_activity" value="活动资讯" />
                         </div>
                     </div>
 
@@ -503,7 +503,7 @@
                 $("#j-profile-wechat_id").val("");
                 $("#j-profile-qq").val("");
                 $("#j-profile-email").val("");
-                $("#j_name_activity").val("活动咨询");
+                $("#j_name_activity").val("活动资讯");
                 $("#j_name_goods").val("商品展示");
                 $("#j_name_appointment").val("快速预约");
                 $("#j_name_img").val("图片墙");

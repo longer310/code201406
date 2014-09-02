@@ -39,9 +39,9 @@
                 <a href="javascript:void(0);" id="reset" class="btn "><i class="icon-refresh"></i>清除重置</a>
                 <a href="javascript:void(0);" id="save" class="btn btn-primary"><i class="icon-ok icon-white"></i>完成保存</a>
             </div>
-            </div>
-			
         </div>
+
+    </div>
     </div>
 
     <div class="widget-box">
@@ -81,7 +81,7 @@
         var Shop_Category = [
             {
                 id: 0,
-                name: "所有模版"
+                name: "所有模块"
             },
             {
                 id: 1,
@@ -120,8 +120,9 @@
                         {{else v.TypeId == 3}}企业类
                         {{/if}}
                     </td>
-					<td style="width:140px;">
-						<a class="btn btn-primary btn-mini" href="<%=DomainUrl %>/view/dev/merchant/merlist.aspx"><i class="icon-pencil icon-white"></i> 管理商户</a>
+					<td style="width:200px;">
+						<a href="javascript:void(0);" onclick="MPage.saveSingleMerType(this)" class="btn btn-primary btn-mini j-btn-saveItem"><i class="icon-ok icon-white"></i>保存</a>
+						<a class="btn btn-primary btn-mini" href="<%=DomainUrl %>/view/dev/merchant/merlist.aspx?mid=${v.Id}"><i class="icon-pencil icon-white"></i> 管理商户</a>
 						<a class="btn btn-danger btn-mini j-btn-del" href=""><i class="icon-remove icon-white"></i> 删除</a>
 					</td>
 				</tr>
@@ -131,207 +132,229 @@
     <script type="text/javascript">
         var MPage = {
             hander: "<%=DomainUrl %>/Handler/Platform/AnnouncementHandler.ashx?action=",
-                init: function () {
-                    var mpage = this;
+            init: function () {
+                var mpage = this;
 
-                    //去掉之前选中打开的项 选中产品列表
-                    $("#sidebar li").removeClass("active open");
-                    $("#sidebar .sidebar_merchant").addClass("active open").find(".sidebar_mertype").addClass("active");
+                //去掉之前选中打开的项 选中产品列表
+                $("#sidebar li").removeClass("active open");
+                $("#sidebar .sidebar_merchant").addClass("active open").find(".sidebar_mertype").addClass("active");
 
-                    mpage.showCategroyList();
+                mpage.showCategroyList();
 
-                    mpage.getCategroyList();
+                mpage.getCategroyList();
 
-                    //绑定全选
-                    $("#j-btn-selectAll").bind("change", function () {
-                        if ($(this).attr("checked")) {
-                            $("#j-categroy-list .j-select:checkbox").attr("checked", "checked");
-                        } else {
-                            $("#j-categroy-list .j-select:checkbox").removeAttr("checked");
+                //绑定全选
+                $("#j-btn-selectAll").bind("change", function () {
+                    if ($(this).attr("checked")) {
+                        $("#j-categroy-list .j-select:checkbox").attr("checked", "checked");
+                    } else {
+                        $("#j-categroy-list .j-select:checkbox").removeAttr("checked");
+                    }
+
+                    return false;
+                });
+
+                //绑定批量删除
+                $("#j-btn-delSelected").bind("click", function () {
+                    var $checked = $("#j-categroy-list .j-select:checked");
+
+                    var ids = [];
+                    $checked.each(function () {
+                        var $item = $(this).parents("tr");
+                        var count = $item.find(".j-categroy-count").html();
+                        if (count > 0) {
+                            Common.tip({ type: "error", content: "删除失败，该分类下还有商户" });
+                            return false;
                         }
 
-                        return false;
+                        ids.push($item.attr("data-cid"));
                     });
 
-                    //绑定批量删除
-                    $("#j-btn-delSelected").bind("click", function () {
-                        var $checked = $("#j-categroy-list .j-select:checked");
+                    if (ids.length > 0) {
+                        Common.confirm({
+                            title: "删除确认提示",
+                            content: "您确定要删除当前选择的所有数据吗？",
+                            confirm: function () {
+                                mpage.delMerTypeList(ids.join(','));
+                            },
+                            cancel: function () {
+                                //执行取消回调
+                                alert('执行取消回调');
+                            }
+                        });
+                    } else {
+                        Common.alert({
+                            title: "提示",
+                            content: "请至少选择一项",
+                            confirm: function () {
+                                //执行确认回调
+                                alert('执行确认回调');
+                            }
+                        });
+                    }
 
-                        var ids = [];
-                        $checked.each(function () {
+                    return false;
+                });
+
+                //绑定批量保存
+                $("#j-btn-saveAll").bind("click", function () {
+                    var $checked = $("#j-categroy-list .j-select:checked");
+
+                    var data_save = [];
+
+                    $checked.each(function () {
+                        var $item = $(this).parents("tr");
+                        data_save.push(
+                        {
+                            Id: $item.attr("data-cid"),
+                            Name: $item.find(".j-categroy-title").val()
+                        });
+                    });
+
+                    if (data_save.length > 0) {
+                        Common.confirm({
+                            title: "保存确认提示",
+                            content: "您确定要保存当前选择的所有修改吗？",
+                            confirm: function () {
+                                $.post(mpage.hander + "saveMerchantTypeList", { data_save: JSON.stringify(data_save) }, function (data) {
+                                    if (!data.error) {
+                                        Common.tip({ type: "success", content: data.success });
+                                        //添加成功后重新获取分类列表
+                                        mpage.getCategroyList();
+                                    } else {
+                                        Common.tip({ type: "error", content: data.error });
+                                    }
+                                }, "JSON");
+                            }
+                        });
+                    } else {
+                        Common.alert({
+                            title: "提示",
+                            content: "请至少选择一项",
+                            confirm: function () {
+                                //执行确认回调
+                                alert('执行确认回调');
+                            }
+                        });
+                    }
+
+                    return false;
+                });
+
+                //绑定提交表单
+                $("#save").bind("click", function () {
+                    var name = $.trim($("#j-title").val());
+                    var typeid = $('#j-list').val();
+                    if (name == "") {
+                        Common.tip({ type: "error", content: "请添加新分类名称" });
+                        return false;
+                    }
+                    if (typeid == 0) {
+                        Common.tip({ type: "error", content: "请选择所属模块" });
+                        return false;
+                    }
+                    $.post(mpage.hander + "addMerchantType", { name: name, typeid: typeid }, function (data) {
+                        if (!data.error) {
+                            Common.tip({ type: "success", content: data.success });
+                            //添加成功后重新获取分类列表
+                            mpage.getCategroyList();
+                        } else {
+                            Common.tip({ type: "error", content: data.error });
+                        }
+                    }, "JSON");
+                    return false;
+                });
+
+                //绑定重置表单
+                $("#j-categroy-addForm").bind("reset", function () {
+                    $("#j-title").val("");
+                    $('#j-list').val(0);
+                    return false;
+                });
+            },
+
+            saveSingleMerType: function (obj) {
+                var mpage = this;
+                var data_save = [];
+
+                var $item = $(obj).parents("tr");
+                data_save.push(
+                {
+                    Id: $item.attr("data-cid"),
+                    Name: $item.find(".j-categroy-title").val()
+                });
+
+                $.post(mpage.hander + "saveMerchantTypeList", { data_save: JSON.stringify(data_save) }, function (data) {
+                    if (!data.error) {
+                        Common.tip({ type: "success", content: data.success });
+                        //添加成功后重新获取分类列表
+                        mpage.getCategroyList();
+                    } else {
+                        Common.tip({ type: "error", content: data.error });
+                    }
+                }, "JSON");
+            },
+
+            getCategroyList: function () {
+                var mpage = this;
+
+                $("#j-btn-selectAll").removeAttr("checked");
+                $.post(mpage.hander + "getMerchantTypeList", { type: 1 }, function (data) {
+                    if (!data.error) {
+                        $("#j-categroy-list").html($("#j-tmpl-categroy-listitem").tmpl(data));
+
+                        //绑定单个删除
+                        $("#j-categroy-list .j-btn-del").bind("click", function () {
                             var $item = $(this).parents("tr");
+                            var id = $item.attr("data-cid");
                             var count = $item.find(".j-categroy-count").html();
                             if (count > 0) {
                                 Common.tip({ type: "error", content: "删除失败，该分类下还有商户" });
                                 return false;
                             }
 
-                            ids.push($item.attr("data-cid"));
-                        });
-
-                        if (ids.length > 0) {
                             Common.confirm({
                                 title: "删除确认提示",
-                                content: "您确定要删除当前选择的所有数据吗？",
-                                confirm: function () {
-                                    mpage.delMerTypeList(ids.join(','));
-                                },
-                                cancel: function () {
-                                    //执行取消回调
-                                    alert('执行取消回调');
-                                }
-                            });
-                        } else {
-                            Common.alert({
-                                title: "提示",
-                                content: "请至少选择一项",
+                                content: "您确定要删除当前分类？",
                                 confirm: function () {
                                     //执行确认回调
-                                    alert('执行确认回调');
+                                    mpage.delMerTypeList(id);
                                 }
                             });
-                        }
-
-                        return false;
-                    });
-
-                    //绑定批量保存
-                    $("#j-btn-saveAll").bind("click", function () {
-                        var $checked = $("#j-categroy-list .j-select:checked");
-
-                        var data_save = [];
-
-                        $checked.each(function () {
-                            var $item = $(this).parents("tr");
-                            data_save.push(
-        					{
-        					    Id: $item.attr("data-cid"),
-        					    Name: $item.find(".j-categroy-title").val()
-        					});
+                            return false;
                         });
 
-                        if (data_save.length > 0) {
-                            Common.confirm({
-                                title: "保存确认提示",
-                                content: "您确定要保存当前选择的所有修改吗？",
-                                confirm: function () {
-                                    $.post(mpage.hander + "saveMerchantTypeList", { data_save: JSON.stringify(data_save) }, function (data) {
-                                        if (!data.error) {
-                                            Common.tip({ type: "success", content: data.success });
-                                            //添加成功后重新获取分类列表
-                                            mpage.getCategroyList();
-                                        } else {
-                                            Common.tip({ type: "error", content: data.error });
-                                        }
-                                    }, "JSON");
-                                }
-                            });
-                        } else {
-                            Common.alert({
-                                title: "提示",
-                                content: "请至少选择一项",
-                                confirm: function () {
-                                    //执行确认回调
-                                    alert('执行确认回调');
-                                }
-                            });
-                        }
+                    } else {
+                        Common.tip({ type: "error", content: data.error });
+                    }
+                }, "JSON");
+            },
 
-                        return false;
-                    });
+            showCategroyList: function () {
+                var mpage = this;
 
-                    //绑定提交表单
-                    $("#save").bind("click", function () {
-                        var name = $.trim($("#j-title").val());
-                        var typeid = $('#j-list').val();
-                        if (name == "") {
-                            Common.tip({ type: "error", content: "请添加新分类名称" });
-                            return false;
-                        }
-                        if (typeid == 0) {
-                            Common.tip({ type: "error", content: "请选择所属模块" });
-                            return false;
-                        }
-                        $.post(mpage.hander + "addMerchantType", { name: name, typeid: typeid }, function (data) {
-                            if (!data.error) {
-                                Common.tip({ type: "success", content: data.success });
-                                //添加成功后重新获取分类列表
-                                mpage.getCategroyList();
-                            } else {
-                                Common.tip({ type: "error", content: data.error });
-                            }
-                        }, "JSON");
-                        return false;
-                    });
+                $("#j-list").html($("#j-tmpl-optionitem").tmpl({
+                    list: Shop_Category
+                }));
+            },
 
-                    //绑定重置表单
-                    $("#j-categroy-addForm").bind("reset", function () {
-                        $("#j-title").val("");
-                        $('#j-list').val(0);
-                        return false;
-                    });
-                },
-
-                getCategroyList: function () {
-                    var mpage = this;
-
-                    $("#j-btn-selectAll").removeAttr("checked");
-                    $.post(mpage.hander + "getMerchantTypeList", { type: 1 }, function (data) {
-                        if (!data.error) {
-                            $("#j-categroy-list").html($("#j-tmpl-categroy-listitem").tmpl(data));
-
-                            //绑定单个删除
-                            $("#j-categroy-list .j-btn-del").bind("click", function () {
-                                var $item = $(this).parents("tr");
-                                var id = $item.attr("data-cid");
-                                var count = $item.find(".j-categroy-count").html();
-                                if (count > 0) {
-                                    Common.tip({ type: "error", content: "删除失败，该分类下还有商户" });
-                                    return false;
-                                }
-
-                                Common.confirm({
-                                    title: "删除确认提示",
-                                    content: "您确定要删除当前分类？",
-                                    confirm: function () {
-                                        //执行确认回调
-                                        mpage.delMerTypeList(id);
-                                    }
-                                });
-                                return false;
-                            });
-
-                        } else {
-                            Common.tip({ type: "error", content: data.error });
-                        }
-                    }, "JSON");
-                },
-
-                showCategroyList: function () {
-                    var mpage = this;
-
-                    $("#j-list").html($("#j-tmpl-optionitem").tmpl({
-                        list: Shop_Category
-                    }));
-                },
-
-                //删除商户类型列表
-                delMerTypeList: function (ids) {
-                    var mpage = this;
-                    $.post(mpage.hander + "delMerchantTypeList", { ids: ids }, function (data) {
-                        if (!data.error) {
-                            Common.tip({ type: "success", content: data.success });
-                            mpage.getCategroyList(mpage.start);
-                        } else {
-                            Common.tip({ type: "error", content: data.error });
-                        }
-                    }, "JSON");
-                }
+            //删除商户类型列表
+            delMerTypeList: function (ids) {
+                var mpage = this;
+                $.post(mpage.hander + "delMerchantTypeList", { ids: ids }, function (data) {
+                    if (!data.error) {
+                        Common.tip({ type: "success", content: data.success });
+                        mpage.getCategroyList(mpage.start);
+                    } else {
+                        Common.tip({ type: "error", content: data.error });
+                    }
+                }, "JSON");
             }
+        }
 
-            $(function () {
-                MPage.init();
-            });
+        $(function () {
+            MPage.init();
+        });
 
         </script>
 </asp:Content>

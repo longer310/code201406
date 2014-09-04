@@ -647,7 +647,8 @@
                 $.post(mpage.hander + "saveMerchant", { data_save: JSON.stringify(data_save) }, function (data) {
                     if (!data.error) {
                         Common.tip({ type: "success", content: data.success });
-                        mpage.getDetail();//再次获取 重置。
+                        window.location.href = "<%=DomainUrl %>/View/Dev/Merchant/Merlist.aspx";
+                        //mpage.getDetail();//再次获取 重置。
                     } else {
                         Common.tip({ type: "error", content: data.error });
                     }

@@ -62,8 +62,8 @@
 					<td>${v.UserName}</td>
 					<td>${v.NickName}</td>
 					<td>
-                        {{if v.RoleType % 10 == 0}}普通用户
-                        {{else}}超级用户
+                        {{if v.RoleType % 10 == 0}}普通会员
+                        {{else}}超级会员
                         {{/if}}
                     </td>
 					<td>

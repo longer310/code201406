@@ -559,6 +559,10 @@
                     Common.tip({ type: "error", content: "商户登录名不能为空" });
                     return;
                 }
+                if (data_save.Mid == 0) {
+                    Common.tip({ type: "error", content: "请选择商户类型" });
+                    return;
+                }
                 if (data_save.LogoUrl == "" ||
                     data_save.LogoUrl == "http://placehold.it/128x128") {
                     Common.tip({ type: "error", content: "商户logo不能为空" });
@@ -600,6 +604,7 @@
                 $.post(mpage.hander + "saveMerchant", { data_save: JSON.stringify(data_save) }, function (data) {
                     if (!data.error) {
                         Common.tip({ type: "success", content: data.success });
+                        window.location.href = "<%=DomainUrl %>/View/Dev/Merchant/Merlist.aspx";
                     } else {
                         Common.tip({ type: "error", content: data.error });
                     }

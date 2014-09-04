@@ -156,7 +156,7 @@
                                 clickFn: function (url, title) {
                                     mpage.addThumbnail([{
                                         Url: url,
-                                        IsLogo: 0
+                                        IsLogo: $("#j-goods-thumbnails li").length == 0 ? 1 : 0
                                     }]);
                                     image_editor.hideDialog();
                                 }
@@ -173,7 +173,7 @@
                                 clickFn: function (url, title, width, height, border, align) {
                                     mpage.addThumbnail([{
                                         Url: url,
-                                        IsLogo: 0
+                                        IsLogo: $("#j-goods-thumbnails li").length == 0 ? 1 : 0
                                     }]);
                                     image_editor.hideDialog();
                                 }
@@ -283,9 +283,11 @@
                     if (!data.error) {
                         if (mpage.gid > 0) {
                             Common.tip({ type: "success", content: data.success });
+                            window.location.href = "<%=DomainUrl %>/View/Goods/List.aspx?sellerId=" + sellerId;
                         } else {
-                            mpage.gid = data.success;//新增商品赋值
+                            //mpage.gid = data.success;//新增商品赋值
                             Common.tip({ type: "success", content: data.success });
+                            window.location.href = "<%=DomainUrl %>/View/Goods/List.aspx?sellerId=" + sellerId;
                         }
                     } else {
                         if (mpage.gid > 0) {

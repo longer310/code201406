@@ -180,6 +180,7 @@
                     function (data) {
                         if (!data.error) {
                             Common.tip({ type: "success", content: data.success });
+                            window.location.href = "<%=DomainUrl %>/View/User/User.aspx?sellerId=" + sellerId;
                         } else {
                             Common.tip({ type: "error", content: data.error });
                             //Common.alert({
@@ -193,9 +194,9 @@
             }
         };
 
-        $(function () {
-            MPage.init();
-        });
+            $(function () {
+                MPage.init();
+            });
 
         </script>
 </asp:Content>

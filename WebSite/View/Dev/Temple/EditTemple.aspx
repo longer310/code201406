@@ -180,6 +180,7 @@
                 $.post(mpage.hander + "updateTemple", { id: mpage.templeid, logourl: logourl, name: name, typeid: typeid }, function(data) {
                     if (!data.error) {
                         Common.tip({ type: "success", content: data.success });
+                        window.location.href = "<%=DomainUrl %>/View/Dev/Temple/Templelist.aspx";
                     } else {
                         Common.tip({ type: "error", content: data.error });
                     }

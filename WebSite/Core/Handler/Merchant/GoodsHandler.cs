@@ -72,6 +72,7 @@ namespace Backstage.Handler
         {
             var name = GetString("name");
             var imageUrl = GetString("imageUrl");
+            var color = GetString("color");
             //var index = GetInt("index");
 
             var maxIndex = GoodsCategoriesHelper.GetMaxIndex(CurSellerId);
@@ -81,6 +82,7 @@ namespace Backstage.Handler
             goodsCategories.SellerId = CurSellerId;
             goodsCategories.Index = index;
             goodsCategories.ImageUrl = imageUrl;
+            goodsCategories.Color = color;
             if (GoodsCategoriesHelper.SaveGoodsCategories(goodsCategories))
                 ReturnCorrectMsg("添加成功");
             else

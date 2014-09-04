@@ -185,7 +185,8 @@ namespace Backstage.Core.Logic
                                                    Name,
                                                    SellerId,
                                                    Count,
-                                                   ImageUrl
+                                                   ImageUrl,
+                                                   Color
                                                    ) 
                                                    values 
                                                    (
@@ -193,13 +194,15 @@ namespace Backstage.Core.Logic
                                                    ?Name,
                                                    ?SellerId,
                                                    ?Count,
-                                                   ?ImageUrl
+                                                   ?ImageUrl,
+                                                   ?Color
                                                    )";
                 parameters.Add(new MySqlParameter("?Index", goodsCategories.Index));
                 parameters.Add(new MySqlParameter("?Name", goodsCategories.Name));
                 parameters.Add(new MySqlParameter("?SellerId", goodsCategories.SellerId));
                 parameters.Add(new MySqlParameter("?Count", goodsCategories.Count));
                 parameters.Add(new MySqlParameter("?ImageUrl", goodsCategories.ImageUrl));
+                parameters.Add(new MySqlParameter("?Color", goodsCategories.Color));
             }
             try
             {

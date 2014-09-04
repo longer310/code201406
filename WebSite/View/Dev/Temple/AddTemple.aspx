@@ -161,10 +161,11 @@
                 var logourl = $('#j-img-placehold').attr("src");
                 $.post(mpage.hander + "addTemple", { typeid: typeid, name: name, logourl: logourl }, function (data) {
                     if (!data.error) {
-                        $("#j-list").val("0");
-                        $("#j-title").val("");
-                        $('#j-img-placehold').attr("src", "http://placehold.it/128x128");
+                        //$("#j-list").val("0");
+                        //$("#j-title").val("");
+                        //$('#j-img-placehold').attr("src", "http://placehold.it/128x128");
                         Common.tip({ type: "success", content: data.success });
+                        window.location.href = "<%=DomainUrl %>/View/Dev/Temple/Templelist.aspx";
                     } else {
                         Common.tip({ type: "error", content: data.error });
                     }

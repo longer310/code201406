@@ -45,6 +45,7 @@ namespace Backstage.Core.Handler.Backstage
             active.CoverImgUrl = GetString("thumbnail");
             active.Description = GetString("content");
             active.Summary = active.Description.Length > 20 ? active.Description.Substring(0, 20) : active.Description;
+            active.CreateTime = DateTime.Now;
             ActiveHelper.Create(active);
         }
 

@@ -219,6 +219,7 @@
                     dataType: "json"
                     //context: document.body
                 }).success(function (data) {
+                    console.log(data);
                     json.result.count = data.data.TotalCount;
                     json.result.list = data.data.Results;
                     $("#j-ticket-list").html($("#j-tmpl-ticket-listitem").tmpl(json.result));

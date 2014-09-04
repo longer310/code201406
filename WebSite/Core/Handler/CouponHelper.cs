@@ -250,6 +250,7 @@ namespace Backstage.Core.Handler
         internal static void Update(Coupon coupon)
         {
             string commandText = @"UPDATE coupon SET
+                                        SellerId = ?SellerId,
                                         ImgId = ?ImgId,
                                         ImgUrl = ?ImgUrl,
                                         Title = ?Title,
@@ -284,6 +285,8 @@ namespace Backstage.Core.Handler
             parameters.Add(new MySqlParameter("?DownloadTimes", coupon.DownloadTimes));
             parameters.Add(new MySqlParameter("?UsedTimes", coupon.UsedTimes));
             parameters.Add(new MySqlParameter("?Enabled", coupon.Enabled));
+            parameters.Add(new MySqlParameter("?SellerId", coupon.SellerId));
+
 
             MySqlHelper.ExecuteNonQuery(GlobalConfig.DbConn, CommandType.Text, commandText, parameters.ToArray());
 
@@ -366,7 +369,8 @@ namespace Backstage.Core.Handler
             	                                Views,
             	                                DownloadTimes,
                                                 UsedTimes,
-                                                Enabled
+                                                Enabled,
+                                                SellerId
             	                                )
             	                                VALUES
             	                                ( 
@@ -383,7 +387,8 @@ namespace Backstage.Core.Handler
             	                                ?Views,
             	                                ?DownloadTimes,
                                                 ?UsedTimes,
-                                                ?Enabled
+                                                ?Enabled,
+                                                ?SellerId
             	                                )";
 
             List<MySqlParameter> parameters = new List<MySqlParameter>();
@@ -401,6 +406,7 @@ namespace Backstage.Core.Handler
             parameters.Add(new MySqlParameter("?DownloadTimes", coupon.DownloadTimes));
             parameters.Add(new MySqlParameter("?UsedTimes", coupon.UsedTimes));
             parameters.Add(new MySqlParameter("?Enabled", coupon.Enabled));
+            parameters.Add(new MySqlParameter("?SellerId", coupon.SellerId));
 
             MySqlHelper.ExecuteNonQuery(connectionString, CommandType.Text, commandText, parameters.ToArray());
         }

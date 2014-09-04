@@ -40,7 +40,7 @@ namespace Backstage.Core.Handler.Backstage
             var item = CouponHelper.GetItem(id);
             item.Title = GetString("title");
             var expiry = GetString("expire_date");
-            item.Expiry = expiry != "-1" ? GetTime("expire_date"): DateTime.Now.AddDays(1);
+            item.Expiry = expiry != "-1" ? GetTime("expire_date") : DateTime.Now.AddDays(1);
             item.ImgUrl = GetString("thumbnail");
             item.Extcredit = GetInt("score");
             item.FullMoney = GetInt("total");
@@ -67,7 +67,7 @@ namespace Backstage.Core.Handler.Backstage
             item.Enabled = 1;
             item.GoodsIds = Utility.GetListint(GetString("goods_selected"));
             item.Description = GetString("content");
-            item.Summary = item.Description.Substring(0, 20);
+            item.Summary = item.Description.Length > 20 ? item.Description.Substring(0, 20) : item.Description;
 
             CouponHelper.CreateCoupon(item);
         }
@@ -87,6 +87,7 @@ namespace Backstage.Core.Handler.Backstage
                     id = item.Id,
                     title = item.Title
                 };
+                data.Results.Add(o);
             }
             JsonTransfer jt = new JsonTransfer();
             jt.Add("data", data);
@@ -285,7 +286,7 @@ namespace Backstage.Core.Handler.Backstage
             JsonTransfer jt = new JsonTransfer();
             jt.AddSuccessParam();
             jt.Add("data", data);
-            Response.Write(DesEncrypt(jt).ToLower());
+            Response.Write(DesEncrypt(jt));
             Response.End();
         }
     }

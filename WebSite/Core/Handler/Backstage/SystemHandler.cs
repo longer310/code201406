@@ -5,11 +5,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using log4net;
 
 namespace Backstage.Core.Handler.Backstage
 {
     public class SystemHandler : BaseApiHandler
     {
+        private static ILog logger = LogManager.GetLogger("SystemHandler");
         public override void ProcessRequest(HttpContext context)
         {
             base.SetApiName("SystemHandler");
@@ -144,10 +146,12 @@ namespace Backstage.Core.Handler.Backstage
                 jsobject.param1 = merchant.Name;
                 jsobject.param2 = item.Money.ToString();
                 jsobject.param3 = "1";
-                jsobject.param4 = Utility._domainurl;
+                jsobject.param4 = Utility._3vurl;
 
-                if (Utility.SendMsg(user.Phone, MsgTempleId.UserRegisterCode, jsobject) != "发送成功")
+                if (Utility.SendMsg(merchant.Phone, MsgTempleId.MerchantWithdraw, jsobject) != "发送成功")
                 {
+                    logger.InfoFormat("短信模板：{0},Phone:{3},发送失败merchantId：{1},Name:{2}",
+                        (int) MsgTempleId.MerchantWithdraw, merchant.Id, merchant.Name, merchant.Phone);
                     ReturnErrorMsg("短信发送失败");
                     return;
                 }

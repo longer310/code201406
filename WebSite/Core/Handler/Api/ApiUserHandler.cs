@@ -73,6 +73,9 @@ namespace Backstage.Handler
                 case "modifypwd"://修改密码 7.16
                     ModifyPwd();
                     break;
+                case "getmodifypwdcode"://获取修改密码验证码 7.26
+                    GetModifyPwdCode();
+                    break;
                 case "modifyphone"://更改绑定号码 7.17
                     ModifyPhone();
                     break;
@@ -100,27 +103,9 @@ namespace Backstage.Handler
                 case "modifymerchant"://更新商户信息 7.25
                     ModifyMerchant();
                     break;
-                //case "addpaypalrecord":// 支付宝同步返回接口 11
-                //    AddPaypalRecord();
-                //    break;
                 default: break;
             }
         }
-
-        //private void AddPaypalRecord()
-        //{
-        //    var orderid = GetInt("orderid");
-        //    var status = GetString("status");
-        //    var trade_no = GetString("trade_no");
-
-        //    var paypalRecord = new PaypalRecord();
-        //    paypalRecord.OrderId = orderid;
-        //    paypalRecord.Status = status;
-        //    paypalRecord.Trade_no = trade_no;
-        //    if(PaypalRecordHelper.AddPaypalRecord(paypalRecord))
-        //        ReturnCorrectMsg("同步成功");
-        //    else ReturnErrorMsg("同步失败");
-        //}
 
         #region 返回积分的公用类
         public class IntegralData
@@ -178,7 +163,7 @@ namespace Backstage.Handler
             }
             //发送短信
             if (Utility._msg_opensend == "1")
-                //Utility.SendMsg(verificationCode.Code, verificationCode.Phone, Utility._register_message);
+            //Utility.SendMsg(verificationCode.Code, verificationCode.Phone, Utility._register_message);
             {
                 SendMsgClass3 jsobject = new SendMsgClass3();
                 jsobject.param1 = merchant.Name;
@@ -187,6 +172,8 @@ namespace Backstage.Handler
 
                 if (Utility.SendMsg(verificationCode.Phone, MsgTempleId.UserRegisterCode, jsobject) != "发送成功")
                 {
+                    logger.InfoFormat("短信模板：{0},Phone:{3},发送失败VerificationCodeId：{1},SellerId:{2}",
+                                       (int)MsgTempleId.UserRegisterCode, verificationCode.Id, verificationCode.SellerId, verificationCode.Phone);
                     ReturnErrorMsg("短信发送失败");
                     return;
                 }
@@ -220,13 +207,23 @@ namespace Backstage.Handler
                 ReturnErrorMsg("已存在该昵称或电话号码的用户");
                 return;
             }
-
-            if (!VerificationCodeHelper.JudgyVerificationCode(sellerid, phone, code))
+            var verificationCode = VerificationCodeHelper.GetVerificationCode(sellerid, phone);
+            if (verificationCode == null)
             {
-                ReturnErrorMsg("验证码错误或已过期");
+                ReturnErrorMsg("无验证码");
                 return;
             }
-
+            if (verificationCode.Code != code)
+            {
+                ReturnErrorMsg("验证码错误");
+                return;
+            }
+            //if (!VerificationCodeHelper.JudgyVerificationCode(sellerid, phone, code))
+            if (verificationCode.ExpiredTime <= DateTime.Now)
+            {
+                ReturnErrorMsg("验证码已过期,请重新发送请求");
+                return;
+            }
 
             var account = new Account();
             account.Phone = phone;
@@ -237,6 +234,10 @@ namespace Backstage.Handler
             account.SellerId = sellerid;
             //保存用户
             AccountHelper.SaveAccount(account);
+
+            //设置验证码已过期
+            verificationCode.ExpiredTime = DateTime.Now;
+            VerificationCodeHelper.SaveVerificationCode(verificationCode);
 
             ReturnCorrectMsg("注册成功");
         }
@@ -900,26 +901,45 @@ namespace Backstage.Handler
         #region 修改密码 7.16
         public void ModifyPwd()
         {
-            var uid = GetInt("uid");
+            var phone = GetString("phone");
             var sellerid = GetInt("sellerid");
             var oldpwd = GetString("oldpwd");
             var newpwd = GetString("newpwd");
+            var code = GetString("code");
 
-            var user = AccountHelper.GetUser(uid);
+            var user = AccountHelper.GetUserByPhone(phone, sellerid);
             if (user == null)
             {
-                ReturnErrorMsg(string.Format("不存在Id={0}的用户", uid));
+                ReturnErrorMsg("不存在该用户");
                 return;
             }
-            if (user.SellerId != sellerid)
-            {
-                ReturnErrorMsg("商户无此用户");
-                return;
-            }
+            //if (user.SellerId != sellerid)
+            //{
+            //    ReturnErrorMsg("商户无此用户");
+            //    return;
+            //}
             var merchant = MerchantHelper.GetMerchant(sellerid);
             if (merchant == null)
             {
                 ReturnErrorMsg("该商户不存在");
+                return;
+            }
+
+            var verificationCode = VerificationCodeHelper.GetVerificationCode(sellerid, phone);
+            if (verificationCode == null)
+            {
+                ReturnErrorMsg("无验证码");
+                return;
+            }
+            if (verificationCode.Code != code)
+            {
+                ReturnErrorMsg("验证码错误");
+                return;
+            }
+            //if (!VerificationCodeHelper.JudgyVerificationCode(sellerid, phone, code))
+            if (verificationCode.ExpiredTime <= DateTime.Now)
+            {
+                ReturnErrorMsg("验证码已过期,请重新发送请求");
                 return;
             }
 
@@ -942,24 +962,99 @@ namespace Backstage.Handler
             user.Pwd = newpwd;
             if (AccountHelper.SaveAccount(user) > 0)
             {
-                //发送短信给会员
-                SendMsgClass4 jsobject = new SendMsgClass4();
-                jsobject.param1 = user.UserName;
-                jsobject.param2 = "";
-                jsobject.param3 = "30";
-                jsobject.param4 = merchant.Name;
+                //if (Utility._msg_opensend == "1")
+                //{
+                //    //发送短信给会员
+                //    SendMsgClass4 jsobject = new SendMsgClass4();
+                //    jsobject.param1 = user.UserName;
+                //    jsobject.param2 = "";
+                //    jsobject.param3 = "30";
+                //    jsobject.param4 = merchant.Name;
 
-                if (Utility.SendMsg(merchant.Phone, MsgTempleId.UserModifyPwd, jsobject) != "发送成功")
-                {
-                    logger.InfoFormat("短信模板：{0}发送失败MerchantId：{1},UserId:{2}",
-                        (int)MsgTempleId.UserModifyPwd, merchant.Id, user.Id);
-                }
+                //    if (Utility.SendMsg(merchant.Phone, MsgTempleId.UserModifyPwd, jsobject) != "发送成功")
+                //    {
+                //        logger.InfoFormat("短信模板：{0}发送失败MerchantId：{1},UserId:{2}",
+                //            (int)MsgTempleId.UserModifyPwd, merchant.Id, user.Id);
+                //    }
+                //}
+                //设置验证码过期
+                verificationCode.ExpiredTime = DateTime.Now;
+                VerificationCodeHelper.SaveVerificationCode(verificationCode);
+
                 ReturnCorrectMsg("修改密码成功");
             }
             else
             {
                 ReturnCorrectMsg("修改密码失败");
             }
+        }
+        #endregion
+
+        #region 获取修改密码验证码 7.26
+        private void GetModifyPwdCode()
+        {
+            var phone = GetString("phone");
+            var sellerId = GetInt("sellerid");
+
+            if (string.IsNullOrEmpty(phone))
+            {
+                ReturnErrorMsg("phone参数没传");
+                return;
+            }
+            var user = AccountHelper.FindUserByPhone(phone);
+            if (user == null)
+            {
+                ReturnErrorMsg("此电话未注册");
+                return;
+            }
+            var merchant = MerchantHelper.GetMerchant(sellerId);
+            if (merchant == null)
+            {
+                ReturnErrorMsg("不存在该商户");
+                return;
+            }
+            var verificationCode = VerificationCodeHelper.GetVerificationCode(sellerId, phone);
+            bool needgen = false;
+            if (verificationCode == null)
+            {
+                verificationCode = new VerificationCode();
+                verificationCode.Phone = phone;
+                verificationCode.SellerId = sellerId;
+                needgen = true;
+            }
+            else
+            {
+                if (verificationCode.ExpiredTime < DateTime.Now)
+                    needgen = true;
+            }
+            if (needgen)
+            {//重新生成验证码 和 过期时间
+                verificationCode.Code = Utility.GetVerificationCode(6);
+                verificationCode.ExpiredTime = DateTime.Now.AddMinutes(30);
+            }
+            //发送短信
+            //Utility.SendMsg(verificationCode.Code, verificationCode.Phone, Utility._register_message);
+            if (Utility._msg_opensend == "1")
+            {
+                SendMsgClass4 jsobject = new SendMsgClass4();
+                jsobject.param1 = user.UserName;
+                jsobject.param2 = verificationCode.Code;
+                jsobject.param3 = "30";
+                jsobject.param4 = merchant.Name;
+
+                if (Utility.SendMsg(verificationCode.Phone, MsgTempleId.UserModifyPwd, jsobject) != "发送成功")
+                {
+                    logger.InfoFormat("短信模板：{0}发送失败Phone：{1},SellerId:{2}",
+                        (int)MsgTempleId.UserModifyPwd, phone, sellerId);
+                    ReturnErrorMsg("短信发送失败");
+                    return;
+                }
+            }
+            //保存验证信息
+            VerificationCodeHelper.SaveVerificationCode(verificationCode);
+
+            //返回
+            ReturnCorrectMsg("验证码已发送");
         }
         #endregion
 
@@ -1055,7 +1150,7 @@ namespace Backstage.Handler
             }
             //发送短信
             if (Utility._msg_opensend == "1")
-                //Utility.SendMsg(verificationCode.Code, verificationCode.Phone, Utility._modifyphone_message);
+            //Utility.SendMsg(verificationCode.Code, verificationCode.Phone, Utility._modifyphone_message);
             {
                 SendMsgClass3 jsobject = new SendMsgClass3();
                 jsobject.param1 = merchant.Name;
@@ -1064,6 +1159,9 @@ namespace Backstage.Handler
 
                 if (Utility.SendMsg(verificationCode.Phone, MsgTempleId.UserModifyPhone, jsobject) != "发送成功")
                 {
+                    logger.InfoFormat("短信模板：{0},Phone:{3},发送失败VerificationCodeId：{1},SellerId:{2}",
+                        (int) MsgTempleId.UserModifyPhone, verificationCode.Id, verificationCode.SellerId,
+                        verificationCode.Phone);
                     ReturnErrorMsg("短信发送失败");
                     return;
                 }

@@ -13,11 +13,13 @@ using Backstage.Core.Handler;
 using Backstage.Core.Logic;
 using Backstage.View.Dev.Merchant;
 using Backstage.View.User;
+using log4net;
 
 namespace Backstage.Handler
 {
     public class AnnouncementHandler : BaseHandler
     {
+        private static ILog logger = LogManager.GetLogger("AnnouncementHandler");
         public override void ProcessRequest(HttpContext context)
         {
             //FreeActions = ",saveGoodsList,";
@@ -824,6 +826,20 @@ namespace Backstage.Handler
                 MerchantTypeHelper.UpdateMerchantCount(changeCountList);
                 if (id == 0)
                 {
+                    //发送短信给商户
+                    SendMsgClass5 jsobject = new SendMsgClass5();
+                    jsobject.param1 = merchant.Name;
+                    jsobject.param2 = Utility._domainurl + "/view/dev/Index.aspx";
+                    jsobject.param3 = user.UserName;
+                    jsobject.param4 = user.Pwd;
+                    jsobject.param5 = Utility._3vurl;
+
+                    if (Utility.SendMsg(merchant.Phone, MsgTempleId.AddMerchant, jsobject) != "发送成功")
+                    {
+                        logger.InfoFormat("短信模板：{0}发送失败merchantId：{1},Name:{2}",
+                            (int)MsgTempleId.AddMerchant, merchant.Id, merchant.Name);
+                    }
+
                     ReturnCorrectMsg("添加成功");
                 }
                 else

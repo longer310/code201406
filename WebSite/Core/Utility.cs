@@ -47,6 +47,7 @@ namespace Backstage.Core
         public static string _userdefaulthead = System.Configuration.ConfigurationManager.AppSettings["userdefaulthead"];//用户默认头像
         public static string _domainurl = System.Configuration.ConfigurationManager.AppSettings["domainurl"];//域名头
         public static string _onlydomainurl = System.Configuration.ConfigurationManager.AppSettings["onlydomainurl"];//域名头
+        public static string _3vurl = System.Configuration.ConfigurationManager.AppSettings["3vurl"];//3V平台官网
         #endregion
 
         #region 判断是否具有权限

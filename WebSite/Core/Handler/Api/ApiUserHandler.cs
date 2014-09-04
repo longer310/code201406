@@ -12,11 +12,13 @@ using Backstage.Core;
 using Backstage.Core.Entity;
 using Backstage.Core.Handler;
 using Backstage.Core.Logic;
+using log4net;
 
 namespace Backstage.Handler
 {
     public class ApiUserHandler : BaseApiHandler
     {
+        private static ILog logger = LogManager.GetLogger("ApiUserHandler");
         public override void ProcessRequest(HttpContext context)
         {
             base.SetApiName("ApiUserHandler");
@@ -914,6 +916,12 @@ namespace Backstage.Handler
                 ReturnErrorMsg("商户无此用户");
                 return;
             }
+            var merchant = MerchantHelper.GetMerchant(sellerid);
+            if (merchant == null)
+            {
+                ReturnErrorMsg("该商户不存在");
+                return;
+            }
 
             if (!user.Pwd.Equals(oldpwd))
             {
@@ -932,9 +940,26 @@ namespace Backstage.Handler
             }
 
             user.Pwd = newpwd;
-            AccountHelper.SaveAccount(user);
+            if (AccountHelper.SaveAccount(user) > 0)
+            {
+                //发送短信给会员
+                SendMsgClass4 jsobject = new SendMsgClass4();
+                jsobject.param1 = user.UserName;
+                jsobject.param2 = "";
+                jsobject.param3 = "30";
+                jsobject.param4 = merchant.Name;
 
-            ReturnCorrectMsg("修改密码成功");
+                if (Utility.SendMsg(merchant.Phone, MsgTempleId.UserModifyPwd, jsobject) != "发送成功")
+                {
+                    logger.InfoFormat("短信模板：{0}发送失败MerchantId：{1},UserId:{2}",
+                        (int)MsgTempleId.UserModifyPwd, merchant.Id, user.Id);
+                }
+                ReturnCorrectMsg("修改密码成功");
+            }
+            else
+            {
+                ReturnCorrectMsg("修改密码失败");
+            }
         }
         #endregion
 
@@ -967,9 +992,14 @@ namespace Backstage.Handler
 
             user.Phone = verificationCode.Phone;
             //保存用户
-            AccountHelper.SaveAccount(user);
-
-            ReturnCorrectMsg("更改绑定号码成功");
+            if (AccountHelper.SaveAccount(user) > 0)
+            {
+                ReturnCorrectMsg("更改绑定号码成功");
+            }
+            else
+            {
+                ReturnCorrectMsg("更改绑定号码失败");
+            }
         }
         #endregion
 

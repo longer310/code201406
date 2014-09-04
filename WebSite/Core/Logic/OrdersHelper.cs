@@ -5,12 +5,15 @@ using System.Linq;
 using System.Web;
 using Backstage.Core.Entity;
 using Backstage.Model;
+using log4net;
+using log4net.Repository.Hierarchy;
 using MySql.Data.MySqlClient;
 
 namespace Backstage.Core.Logic
 {
     public static class OrdersHelper
     {
+        private static ILog logger = LogManager.GetLogger("OrdersHelper");
         public static PagResults<Orders> GetOrdersList(string wheresql = "",
             string ordersql = "", int start = 0, int limit = 0, int gettotal = 1)
         {
@@ -137,7 +140,7 @@ namespace Backstage.Core.Logic
                         }
                     }
                 }
-                
+
             }
             catch (System.Exception ex)
             {
@@ -213,6 +216,28 @@ namespace Backstage.Core.Logic
                 parameters.Add(new MySqlParameter("?Ccontent", orders.Ccontent));
                 parameters.Add(new MySqlParameter("?Boxno", orders.Boxno));
                 parameters.Add(new MySqlParameter("?CouponTitle", orders.CouponTitle));
+
+                if (orders.Status == OrderStatus.Pay)
+                {//订单付款  通知商户 有两个地方有
+                    var merchant = MerchantHelper.GetMerchant(orders.SellerId);
+                    if (merchant != null)
+                    {
+                        SendMsgClass3 jsobject = new SendMsgClass3();
+                        jsobject.param1 = merchant.Name;
+                        jsobject.param2 = orders.Id.ToString();
+                        jsobject.param3 = Utility._domainurl + "/view/dev/Index.aspx";
+
+                        if (Utility.SendMsg(merchant.Phone, MsgTempleId.OrdersRemindMerchant, jsobject) != "发送成功")
+                        {
+                            logger.InfoFormat("短信模板：{0}发送失败OrdersId：{1},SellerId:{2}",
+                                (int)MsgTempleId.OrdersRemindMerchant, orders.Id, orders.SellerId);
+                        }
+                    }
+                    else
+                    {
+                        logger.InfoFormat("订单查找商户失败OrdersId：{0},SellerId:{1}", orders.Id, orders.SellerId);
+                    }
+                }
             }
             else
             {

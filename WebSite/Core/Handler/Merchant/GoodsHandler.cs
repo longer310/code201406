@@ -124,6 +124,8 @@ namespace Backstage.Handler
             public string Name { get; set; }
             [XmlElement("ImageUrl")]
             public string ImageUrl { get; set; }
+            [XmlElement("Color")]
+            public string Color { get; set; }
         }
         /// <summary>
         /// 修改商品列表
@@ -156,6 +158,7 @@ namespace Backstage.Handler
                 goodsCategories.Index = changeGoodsCategoriese.Index;
                 goodsCategories.Name = changeGoodsCategoriese.Name;
                 goodsCategories.ImageUrl = changeGoodsCategoriese.ImageUrl;
+                goodsCategories.Color = changeGoodsCategoriese.Color;
 
                 saveList.Add(goodsCategories);
             }

@@ -26,7 +26,7 @@
 				<label class="control-label">分类背景色</label>
 				<div class="controls">
 					<input type="text" data-color="#000000" value="#000000" id="j-categroy-color" class="colorpicker input-small" />
-					<span style="background:#000000;width:30px;height:30px; display:inline-block; vertical-align:top;" id="j-categroy-color-preview"></span>
+					<span style="background:#000000;width:30px;height:30px; display:inline-block; vertical-align:top;" class="j-categroy-color-preview"></span>
 				</div>
 			</div>
             <div class="control-group">
@@ -106,9 +106,12 @@
                         <i class="icon-picture icon-white"></i> 素材库选择
                     </a>
                 </td>
-			    <td><input type="text" value="${v.Name}" class="j-categroy-title"></td>
-			    <td style="width:30px;"><div style="background:${v.Color};width:30px;height:30px;"><div></td>
-				<td>${v.Count}</td>
+			    <td style="width:80px;"><input type="text" value="${v.Name}" class="j-categroy-title"></td>
+                <td style="width:110px;">
+                    <input type="text" data-color="#000000" value="${v.Color}" class="colorpicker" style="width:60px;" />
+					<span style="background:${v.Color};width:30px;height:30px; display:inline-block; vertical-align:top;" class="j-categroy-color-preview"><span>
+                </td>
+				<td style="width:50px;">${v.Count}</td>
 			    <td style="width:200px;">
 				    <a href="javascript:void(0);" onclick="MPage.saveSingleCategroy(this)" class="btn btn-primary btn-mini j-btn-saveItem"><i class="icon-ok icon-white"></i>保存</a>
 					<a class="btn btn-primary btn-mini" href="<%=DomainUrl %>/view/goods/list.aspx?cid=${v.Id}&sellerId=<%=SellerId%>"><i class="icon-pencil icon-white"></i> 管理商品</a>
@@ -179,11 +182,11 @@
                     });
                 });
 
-                $('.colorpicker').colorpicker();
+                $('.colorpicker:input').colorpicker();
 
-                $(".colorpicker").bind("changeColor", function (e) {
-                    $("#j-categroy-color-preview").css("background", e.color.toHex());
-                    $("#j-categroy-color").val(e.color.toHex());
+                $(".colorpicker:input").bind("changeColor", function (e) {
+                    $(this).parent().find(".j-categroy-color-preview").css("background", e.color.toHex());
+                    $(this).val(e.color.toHex());
                 });
 
                 mpage.getCategroyList();
@@ -252,7 +255,8 @@
                     Id: $item.attr("data-cid"),
                     Index: parseInt($item.find(".j-categroy-index").html()),
                     Name: $item.find(".j-categroy-title").val(),
-                    ImageUrl: $item.find(".j-categroy-thumbnail").attr("src")
+                    ImageUrl: $item.find(".j-categroy-thumbnail").attr("src"),
+                    Color: $item.find(".colorpicker").val()
                 });
 
                 $.post(mpage.hander + "saveGoodsCategoriesList", { data_save: JSON.stringify(data_save) }, function (data) {
@@ -280,7 +284,8 @@
                         Id: $item.attr("data-cid"),
                         Index: parseInt($item.find(".j-categroy-index").html()),
                         Name: $item.find(".j-categroy-title").val(),
-                        ImageUrl: $item.find(".j-categroy-thumbnail").attr("src")
+                        ImageUrl: $item.find(".j-categroy-thumbnail").attr("src"),
+                        Color: $item.find(".colorpicker").val()
                     });
                 });
 
@@ -315,7 +320,6 @@
                 var name = $.trim($("#j-categroy-title").val());
                 var imageUrl = $('#j-img-placehold').attr("src");
                 var color = $.trim($('#j-categroy-color').val());
-                alert(color);
 
                 $.post(mpage.hander + "addGoodsCategories", { name: name, imageUrl: imageUrl,color:color }, function (data) {
                     if (!data.error) {
@@ -414,6 +418,12 @@
                             $("#j-categroy-list .j-categroy-up").removeClass("disabled").first().addClass("disabled");
                             $("#j-categroy-list .j-categroy-down").removeClass("disabled").last().addClass("disabled");
                             return false;
+                        });
+
+                        $('.colorpicker:input').colorpicker();
+                        $(".colorpicker:input").unbind("changeColor").bind("changeColor", function (e) {
+                            $(this).parent().find(".j-categroy-color-preview").css("background", e.color.toHex());
+                            $(this).val(e.color.toHex());
                         });
 
                     } else {

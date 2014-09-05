@@ -97,7 +97,7 @@
 				    <span class="j-categroy-index">${v.Index}</span>
 				    <a class="btn btn-mini {{if i == list.length - 1}}disabled{{/if}} j-categroy-down" href="javascript:;"><i class="icon icon-arrow-down"></i></a>
 			    </td>
-			    <td style="width:280px;">
+			    <td style="width:300px;">
                     <img src="${v.ImageUrl}" class="j-categroy-thumbnail" style="margin-right:10px;width:90px;height:45px;">
                     <a class="btn btn-info btn-mini j-btn-imageUpload" href="javascript:;">
                         <i class="icon-folder-open icon-white"></i> 本地上传
@@ -106,12 +106,12 @@
                         <i class="icon-picture icon-white"></i> 素材库选择
                     </a>
                 </td>
-			    <td style="width:80px;"><input type="text" value="${v.Name}" class="j-categroy-title"></td>
-                <td style="width:110px;">
-                    <input type="text" data-color="#000000" value="${v.Color}" class="colorpicker" style="width:60px;" />
+			    <td style="width:110px;"><input style="width:100px;" type="text" value="${v.Name}" class="j-categroy-title"></td>
+                <td>
+                    <input style="width:60px;" type="text" data-color="#000000" value="${v.Color}" class="colorpicker" style="width:60px;" />
 					<span style="background:${v.Color};width:30px;height:30px; display:inline-block; vertical-align:top;" class="j-categroy-color-preview"><span>
                 </td>
-				<td style="width:50px;">${v.Count}</td>
+				<td>${v.Count}</td>
 			    <td style="width:200px;">
 				    <a href="javascript:void(0);" onclick="MPage.saveSingleCategroy(this)" class="btn btn-primary btn-mini j-btn-saveItem"><i class="icon-ok icon-white"></i>保存</a>
 					<a class="btn btn-primary btn-mini" href="<%=DomainUrl %>/view/goods/list.aspx?cid=${v.Id}&sellerId=<%=SellerId%>"><i class="icon-pencil icon-white"></i> 管理商品</a>

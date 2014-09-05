@@ -248,7 +248,7 @@
 									clickFn : function(url, title) {
 										mpage.addThumbnail([{
 											url : url,
-											islogo : 0
+											islogo : $("#j-goods-thumbnails li").length == 0 ? 1 : 0
 										}]);
 										image_editor.hideDialog();
 									}
@@ -265,7 +265,7 @@
 									clickFn : function(url, title, width, height, border, align) {
 										mpage.addThumbnail([{
 											url : url,
-											islogo : 0
+											islogo : $("#j-goods-thumbnails li").length == 0 ? 1 : 0
 										}]);
 										image_editor.hideDialog();
 									}

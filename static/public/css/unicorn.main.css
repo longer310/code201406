@@ -1448,6 +1448,11 @@ ul.inline>li,ol.inline>li{
 	display: block;
 	padding: 10px;
 }
+
+.home-links li a img{
+	width: 40px;
+	min-width: inherit;
+}
 .home-links li span{
 	margin-top: 5px;
 	display: block;
@@ -1499,5 +1504,9 @@ ul.inline>li,ol.inline>li{
 
 .thumbnail img{
 	min-width: 150px;
+}
+
+.alert-info {
+	color: #EE0C0C;
 }
 

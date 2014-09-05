@@ -117,7 +117,7 @@
 							<label class="control-label">分类名称</label>
 							<div class="controls">
 								<input type="text" data-color="#000000" value="#000000" id="j-categroy-color" class="colorpicker input-small" />
-								<span style="background:#000000;width:30px;height:30px; display:inline-block; vertical-align:top;" id="j-categroy-color-preview"><span>
+								<span style="background:#000000;width:30px;height:30px; display:inline-block; vertical-align:top;" class="j-categroy-color-preview"><span>
 							</div>
 						</div>
 						
@@ -206,7 +206,8 @@
 					<td style="width:280px;"><img src="http://placehold.it/90x45" class="j-categroy-thumbnail" style="margin-right:10px;width:90px;height:45px;"><a class="btn btn-info btn-mini j-btn-imageUpload" href="javascript:;"><i class="icon-folder-open icon-white"></i> 本地上传</a>
 								<a class="btn btn-success btn-mini j-btn-imageManager" href="javascript:;"><i class="icon-picture icon-white"></i> 素材库选择</a></td>
 					<td><input type="text" value="水煮活鱼水煮活鱼水煮活鱼" class="j-categroy-title"></td>
-					<td style="width:30px;"><div style="background:#ff6600;width:30px;height:30px;"><div></td>
+					<td style="width:110px;"><input type="text" data-color="#000000" value="#000000" class="colorpicker" style="width:60px;" />
+								<span style="background:#000000;width:30px;height:30px; display:inline-block; vertical-align:top;" class="j-categroy-color-preview"><span></td>
 					<td>56</td>
 					<td style="width:140px;">
 						<a class="btn btn-primary btn-mini" href="goods_list.html?cid=111"><i class="icon-pencil icon-white"></i> 管理商品</a>
@@ -265,11 +266,11 @@
 						});
 					});
 					
-					$('.colorpicker').colorpicker();
+					$('.colorpicker:input').colorpicker();
 
-					$(".colorpicker").bind("changeColor", function(e){
-						$("#j-categroy-color-preview").css("background", e.color.toHex());
-						$("#j-categroy-color").val(e.color.toHex());
+					$(".colorpicker:input").bind("changeColor", function(e){
+						$(this).parent().find(".j-categroy-color-preview").css("background", e.color.toHex());
+						$(this).val(e.color.toHex());
 					});
 
 					mpage.getCategroyList();
@@ -513,6 +514,12 @@
 							$("#j-categroy-list .j-categroy-up").removeClass("disabled").first().addClass("disabled");
 							$("#j-categroy-list .j-categroy-down").removeClass("disabled").last().addClass("disabled");
 							return false;
+						});
+
+						$('.colorpicker:input').colorpicker();
+						$(".colorpicker:input").unbind("changeColor").bind("changeColor", function(e){
+							$(this).parent().find(".j-categroy-color-preview").css("background", e.color.toHex());
+							$(this).val(e.color.toHex());
 						});
 					//});
 	

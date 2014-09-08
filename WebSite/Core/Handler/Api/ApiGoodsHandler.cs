@@ -226,7 +226,7 @@ namespace Backstage.Handler
             public int cid { get; set; }
             public string title { get; set; }
             public string img { get; set; }
-            //public string color { get; set; }
+            public string color { get; set; }
             public CategoriesItem()
             {
                 title = "";
@@ -304,8 +304,8 @@ namespace Backstage.Handler
                 CategoriesItem citem = new CategoriesItem();
                 citem.cid = goodsCategoriese.Id;
                 citem.title = goodsCategoriese.Name;
-                citem.img = goodsCategoriese.ImageUrl;
-                //citem.color = goodsCategoriese.Color;
+                citem.img = Utility.GetPhoneNeedUrl(goodsCategoriese.ImageUrl);
+                citem.color = goodsCategoriese.Color;
 
                 data.categories.Add(citem);
             }

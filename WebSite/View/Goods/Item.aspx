@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/View/merchant.Master" AutoEventWireup="true" CodeBehind="Item.aspx.cs" Inherits="Backstage.View.Goods.Item" %>
+﻿<%@ Page Title="" Language="C#" EnableEventValidation="false" MasterPageFile="~/View/merchant.Master" AutoEventWireup="true" CodeBehind="Item.aspx.cs" Inherits="Backstage.View.Goods.Item" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="Header" runat="server">
     <link href="<%=DomainUrl %>/Script/kindeditor/themes/default/default.css" type="text/css" rel="stylesheet">
@@ -297,7 +297,6 @@
                         }
                     }
                 }, "JSON");
-                return true;
             },
 
             getGoodsDetail: function () {

@@ -289,6 +289,7 @@ namespace Backstage.Core
         {
             try
             {
+                if (string.IsNullOrEmpty(str)) return new List<int>();
                 return str.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries).Select(p => Convert.ToInt32(p)).ToList();
             }
             catch (Exception)
@@ -300,6 +301,7 @@ namespace Backstage.Core
         {
             try
             {
+                if (string.IsNullOrEmpty(str)) return new List<float>();
                 return str.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries).Select(p => float.Parse(p)).ToList();
             }
             catch (Exception)
@@ -311,6 +313,7 @@ namespace Backstage.Core
         {
             try
             {
+                if (string.IsNullOrEmpty(str)) return new List<string>();
                 return str.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries).ToList();
             }
             catch (Exception)

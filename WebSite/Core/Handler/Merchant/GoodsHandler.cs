@@ -381,8 +381,8 @@ namespace Backstage.Handler
                 if (id > 0) ReturnCorrectMsg("编辑成功");
                 else ReturnCorrectMsg("添加成功");
             else
-                if (id > 0) ReturnErrorMsg("添加失败");
-                else ReturnErrorMsg("编辑失败");
+                if (id > 0) ReturnErrorMsg("编辑失败");
+                else ReturnErrorMsg("添加失败");
         }
 
         [Serializable]

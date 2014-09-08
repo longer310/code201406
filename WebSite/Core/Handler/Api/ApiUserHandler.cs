@@ -885,7 +885,7 @@ namespace Backstage.Handler
 
             if (!CheckUserByIdAndSellerId(uid, sellerid)) return;
 
-            string wheresql = string.Format(" where Status > 0 and UserId={0} and SellerId={1} ", uid, sellerid);
+            string wheresql = string.Format(" where Status >= 0 and UserId={0} and SellerId={1} ", uid, sellerid);
             var orderslist = OrdersHelper.GetOrdersList(wheresql, "", start * limit, limit, 0);
             var data = new OrdersListData();
             foreach (var orderse in orderslist.Results)

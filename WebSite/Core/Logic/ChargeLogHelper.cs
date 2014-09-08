@@ -22,7 +22,7 @@ namespace Backstage.Core.Logic
                 limitsql;
 
             List<MySqlParameter> parameters = new List<MySqlParameter>();
-            if (start != 0)
+            if (limit != 0)
             {
                 parameters.Add(new MySqlParameter("?start", start));
                 parameters.Add(new MySqlParameter("?limit", limit));

@@ -209,10 +209,11 @@
 					<div class="control-group">
 						<label class="control-label">跳转至</label>
 						<div class="controls">
-								<input class="j-wifi-goto" type="text" value="${v.url}">
-							</div>
+							<input class="j-wifi-goto" type="text" value="${v.url}">
 						</div>
 					</div>
+
+					<a title="删除广告" href="javascript:;" class="j-btn-del btn btn-mini" style="position:absolute; right:10px; top:10px;"><i class="icon-remove"></i> 删除</a>
 				</div>
 			{{/each}}
 		</script>
@@ -328,6 +329,16 @@
         				mpage.removeLevel();
         			});
 
+        			$(".j-btn-del").bind("click", function(){
+        				var count = parseInt($("#j-wifi_count").val()) || 0;
+        				count--;
+        				if(count < 0){
+        					count = 0;
+        				}
+        				$("#j-wifi_count").val(count);
+        				mpage.removeLevel( $(this).parents(".j-wifi-ad_item").index());
+        			});
+
 					//绑定提交表单
 					$("#j-ad-addForm").bind("submit", function(){
 						
@@ -341,8 +352,13 @@
         			$("#j-wifi-ad").append( $("#j-tmpl-wifi-ad-item").tmpl(data) );
         		},
 
-        		removeLevel : function(){
-        			$("#j-wifi-ad .j-wifi-ad_item").last().remove();
+        		removeLevel : function(index){
+        			if(typeof index == "number"){
+        				$("#j-wifi-ad .j-wifi-ad_item").eq(index).remove();
+        			} else {
+        				$("#j-wifi-ad .j-wifi-ad_item").last().remove();
+        			}
+        			
         		}
     		}
 

@@ -201,7 +201,7 @@
 					</span>
 					<div class="clearfix" style="margin-top:5px;">
 						<label class="radio pull-left"><input type="radio" name="islogo" class="j-goods-islogo" {{if v.islogo}}checked="checked"{{/if}}> 设为logo</label>
-						<a title="删除图片" href="javascript:;" class="pull-right j-btn-delThumbnail"><i class="icon-remove"></i></a>
+						<a title="删除图片" href="javascript:;" class="pull-right j-btn-delThumbnail btn-mini"><i class="icon-remove"></i> 删除</a>
 					</div>
 				</li>
 			{{/each}}
@@ -297,6 +297,10 @@
 						$(this).parents("li").remove();
 						if( $("#j-goods-tags li").length == 0){
 							$("#j-goods-tags").hide();
+						} else {
+							if($("#j-goods-thumbnails .j-goods-islogo:checked").length == 0){
+								$("#j-goods-thumbnails .j-goods-islogo").eq(0).attr("checked", "checked");
+							}
 						}
 						return false;
 					});

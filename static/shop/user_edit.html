@@ -155,11 +155,12 @@
 
                     <tr>
                         <th>折　　扣：</th>
-                        <td><span class="text-info"><input type="text" value="9" class="text-input" style="width:30px;" id="j-user-discount"> 折</span></td>
+                        <td><span class="text-info"><input type="text" value="${userLevel.discount}" class="text-input" readonly="readonly" style="width:30px;" id="j-user-discount"> 折</span></td>
                         <th>会员类型：</th>
                         <td><select id="j-user-type">
-                        	<option value="1">普通会员</option>
-                        	<option value="2">高级会员</option>
+                        	{{each(i, v) userLevels}}
+                        		<option value="${v.id}" data-discount="${v.discount}" {{if userLevel.id == v.id}}selected="selected"{{/if}}>${v.name}</option>
+                        	{{/each}}
                         </select></td>
 					</dl></td>
                     </tr>
@@ -240,11 +241,35 @@
 						code : 0,
 						msg : "", 
 						result : {
+							userLevel : {
+								id : 2,
+								name : "高级会员",
+								discount : 7.0
+							},
 
+							userLevels : [
+								{
+									id : 1,
+									name : "普通会员",
+									discount : 9.0
+								},
+
+								{
+									id : 2,
+									name : "高级会员",
+									discount : 7.0
+								}
+							]
 						}
 					};
 
-					$("#j-user-detail").html( $("#j-tmpl-user-detail").tmpl(json.result) )
+					$("#j-user-detail").html( $("#j-tmpl-user-detail").tmpl(json.result) );
+
+					$("#j-user-type").bind("change", function(){
+						var discount = $(this).find("option:checked").attr("data-discount");
+
+						$("#j-user-discount").val(discount);
+					});
 				}
     		}
 

@@ -24,30 +24,39 @@
                 </div>
                 <div class="widget-content">
                     <ul class="home-links clearfix">
-                        <%foreach(var item in Fastlinkslist){ %>
 								<li>
-									<a href="<%=item.Url %>" class="thumbnail">
-										<img src="<%=item.ImgUrl %>" alt="" id="j-sysytem-profile-logo">
-										<span><%=item.Title %></span>
+									<a href="" class="thumbnail">
+										<span>新增活动</span>
 									</a>
 								</li>
-								<%} %>
-                    </ul>
+								<li>
+									<a href="" class="thumbnail">
+										<span>新增产品 </span>
+									</a>
+								</li>
+								<li>
+									<a href="" class="thumbnail">
+										<span>分类管理</span>
+									</a>
+								</li>
+								<li>
+									<a href="" class="thumbnail">
+										<span>新增图片墙</span>
+									</a>
+								</li>
+								<li>
+									<a href="" class="thumbnail">
+										<span>新增电子券</span>
+									</a>
+								</li>
+								<li>
+									<a href="" class="thumbnail">
+										<span>提现管理</span>
+									</a>
+								</li>
+							</ul>
                 </div>
             </div>
-
-           <%-- <div class="widget-box nest-box">
-                <div class="widget-title">
-                    <h5>未处理信息</h5>
-                </div>
-                <div class="widget-content">
-                    <ul class="site-stats row-fluid">
-                        <li class="span4"><a href="order_list.html"><i class="icon-shopping-cart"></i><strong class="text-info">3</strong> <small>待确认新订单</small></a></li>
-                        <li class="span4"><a href="user_list.html"><i class="icon-user"></i><strong class="text-info">16</strong> <small>新增会员</small></a></li>
-                        <li class="span4"><a href="comment_list.html"><i class="icon-comment"></i><strong class="text-info">259</strong> <small>新留言</small></a></li>
-                    </ul>
-                </div>
-            </div>--%>
 
             <div class="row-fluid">
                 <div class="span3">

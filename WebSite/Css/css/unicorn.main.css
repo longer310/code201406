@@ -1429,8 +1429,6 @@ ul.inline>li,ol.inline>li{
 
 .alert .alert-heading{
 	font-size: 14px;
-    color:black;
-    font-weight:bold;
 }
 
 
@@ -1456,10 +1454,12 @@ ul.inline>li,ol.inline>li{
 	min-width: inherit;
 }
 .home-links li span{
-	margin-top: 5px;
 	display: block;
 }
 
+.home-links li .thumbnail{
+	background: #eee;
+}
 .nest-box{
 	margin: 0 0 15px;
 }

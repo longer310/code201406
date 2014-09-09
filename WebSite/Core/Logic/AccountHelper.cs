@@ -427,9 +427,9 @@ namespace Backstage.Core
         }
 
 
-        public static Account FindUserByPhone(string phone)
+        public static Account FindUserByPhone(string phone,int sellerId)
         {
-            var sql = String.Format("select * from account where Phone='{0}' and Status=0 limit 1;", phone);
+            var sql = String.Format("select * from account where Phone='{0}' and SellerId={1} and Status=0 limit 1;", phone,sellerId);
             try
             {
                 using (var conn = Utility.ObtainConn(Utility._gameDbConn))

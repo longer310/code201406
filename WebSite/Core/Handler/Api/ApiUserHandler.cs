@@ -130,7 +130,7 @@ namespace Backstage.Handler
                 ReturnErrorMsg("phone参数没传");
                 return;
             }
-            var user = AccountHelper.FindUserByPhone(phone);
+            var user = AccountHelper.FindUserByPhone(phone,sellerId);
             if (user != null)
             {
                 ReturnErrorMsg("此电话已注册");
@@ -265,7 +265,7 @@ namespace Backstage.Handler
                 return;
             }
 
-            var user = AccountHelper.FindUserByPhone(phone);
+            var user = AccountHelper.FindUserByPhone(phone,sellerid);
             if (user == null)
             {
                 ReturnErrorMsg("该用户不存在");
@@ -1001,7 +1001,7 @@ namespace Backstage.Handler
                 ReturnErrorMsg("phone参数没传");
                 return;
             }
-            var user = AccountHelper.FindUserByPhone(phone);
+            var user = AccountHelper.FindUserByPhone(phone,sellerId);
             if (user == null)
             {
                 ReturnErrorMsg("此电话未注册");
@@ -1116,7 +1116,7 @@ namespace Backstage.Handler
                 ReturnErrorMsg("传参错误，电话为空");
                 return;
             }
-            var euser = AccountHelper.FindUserByPhone(phone);
+            var euser = AccountHelper.FindUserByPhone(phone,sellerId);
             if (euser != null)
             {
                 ReturnErrorMsg("此电话已注册");

@@ -166,6 +166,9 @@ namespace Backstage.Core
         public static IList<Account> GetUserList(IList<int> uids)
         {
             IList<Account> list = new List<Account>();
+            if (uids.Count < 1)
+                return list;
+            
 
             string ids_string = "(";
             foreach (var uid in uids)

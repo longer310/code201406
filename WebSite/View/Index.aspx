@@ -25,32 +25,32 @@
                 <div class="widget-content">
                     <ul class="home-links clearfix">
 								<li>
-									<a href="" class="thumbnail">
+									<a href="<%=DomainUrl %>/View/Active/Add.aspx?sellerId=<%=SellerId%>"" class="thumbnail">
 										<span>新增活动</span>
 									</a>
 								</li>
 								<li>
-									<a href="" class="thumbnail">
+									<a href="<%=DomainUrl %>/View/Goods/Item.aspx?sellerId=<%=SellerId%>" class="thumbnail">
 										<span>新增产品 </span>
 									</a>
 								</li>
 								<li>
-									<a href="" class="thumbnail">
+									<a href="<%=DomainUrl %>/View/Goods/Categroy.aspx?sellerId=<%=SellerId%>" class="thumbnail">
 										<span>分类管理</span>
 									</a>
 								</li>
 								<li>
-									<a href="" class="thumbnail">
+									<a href="<%=DomainUrl %>/View/SourceMaterial/Add.aspx?sellerId=<%=SellerId%>" class="thumbnail">
 										<span>新增图片墙</span>
 									</a>
 								</li>
 								<li>
-									<a href="" class="thumbnail">
+									<a href="<%=DomainUrl %>/View/Coupon/Add.aspx?sellerId=<%=SellerId%>" class="thumbnail">
 										<span>新增电子券</span>
 									</a>
 								</li>
 								<li>
-									<a href="" class="thumbnail">
+									<a href="<%=DomainUrl %>/View/Cash/List.aspx" class="thumbnail">
 										<span>提现管理</span>
 									</a>
 								</li>

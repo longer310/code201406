@@ -189,27 +189,28 @@ namespace Backstage.Core.Handler
                     throw;
                 }
             }
-            string moneyCmd = @"select count(totalprice) from orders where sellerid=?sellerId and status = 2";
-            parameters.Clear();
-            parameters.Add(new MySqlParameter("?sellerId", sellerId));
-            try
-            {
+            return s;
+            //string moneyCmd = @"select count(totalprice) from orders where sellerid=?sellerId and status = 2";
+            //parameters.Clear();
+            //parameters.Add(new MySqlParameter("?sellerId", sellerId));
+            //try
+            //{
 
-                using (var conn = Utility.ObtainConn(Utility._gameDbConn))
-                {
-                    MySqlDataReader reader = MySqlHelper.ExecuteReader(conn, CommandType.Text, moneyCmd, parameters.ToArray());
-                    while (reader.Read())
-                    {
-                        m.MoneyCount = reader.GetInt32(0);
-                    }
-                }
+            //    using (var conn = Utility.ObtainConn(Utility._gameDbConn))
+            //    {
+            //        MySqlDataReader reader = MySqlHelper.ExecuteReader(conn, CommandType.Text, moneyCmd, parameters.ToArray());
+            //        while (reader.Read())
+            //        {
+            //            m.MoneyCount = reader.GetInt32(0);
+            //        }
+            //    }
 
-            }
-            catch (System.Exception ex)
-            {
-                throw;
-            }
-            return m;
+            //}
+            //catch (System.Exception ex)
+            //{
+            //    throw;
+            //}
+            //return m;
         }
     }
 }

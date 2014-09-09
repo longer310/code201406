@@ -160,7 +160,7 @@
                     }
                 }
                 $.ajax({
-                    url: "../../Handler/Backstage/SourceMaterialHandler.ashx?action=getitem&sellerid=" + sellerId + "&pid=" + image_id,
+                    url: "../../Handler/Backstage/SourceMaterialHandler.ashx?action=getitem&pid=" + image_id,
                     type: "GET",
                     dataType: "json"
                     //context: document.body

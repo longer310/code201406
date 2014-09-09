@@ -56,9 +56,6 @@
                             <label class="inline">充值获得比例：1元=</label>
                             <input type="text" value="3" class="input-small" id="j-charge" />
                             分 
-
-									
-
                             <label class="inline" style="margin-left: 20px;">留言评论获得：</label>
                             <input type="text" value="3" class="input-small" id="j-comment" />
                             分 

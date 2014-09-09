@@ -113,18 +113,18 @@
                 var text_editor,
                     image_editor;
                 KindEditor.ready(function (K) {
-                    //文本编辑器
+
                     mpage.text_editor = text_editor = K.create('textarea[name="content"]', {
-                        uploadJson: '../../script/kindeditor/php/upload_json.php',
+                        uploadJson: '../../Handler/FileManager/UploadHandler.ashx?type=2',
                         allowFileManager: true
                     });
 
                     //图片上传编辑
-                    image_editor = K.editor({
-                        uploadJson: '../../script/kindeditor/php/upload_json.php',
-                        fileManagerJson: '../../script/kindeditor/php/file_manager_json.php'
+                    mpage.image_editor = image_editor = K.editor({
+                        uploadJson: '../../Handler/FileManager/UploadHandler.ashx?type=2',
+                        fileManagerJson: '../../Handler/FileManager/FileManagerHandler.ashx?type=2',
                     });
-
+                   
                     //图片上传绑定
                     K('#j-btn-imageManager').click(function () {
                         image_editor.loadPlugin('filemanager', function () {

@@ -202,7 +202,7 @@ namespace Backstage.Handler
                 return;
             }
 
-            if (AccountHelper.JudgeUser(phone, username))
+            if (AccountHelper.JudgeUser(phone, username,sellerid))
             {
                 ReturnErrorMsg("已存在该昵称或电话号码的用户");
                 return;

@@ -622,12 +622,13 @@ namespace Backstage.Core
             return null;
         }
 
-        public static bool JudgeUser(string phone, string username)
+        public static bool JudgeUser(string phone, string username,int sellerId)
         {
-            var sql = @"select * from account where username=?username or phone=?phone limit 1;";
+            var sql = @"select * from account where sellerId=?sellerId and (username=?username or phone=?phone) limit 1;";
             List<MySqlParameter> parameters = new List<MySqlParameter>();
             parameters.Add(new MySqlParameter("?username", username));
             parameters.Add(new MySqlParameter("?phone", phone));
+            parameters.Add(new MySqlParameter("?sellerId", sellerId));
             try
             {
                 using (var conn = Utility.ObtainConn(Utility._gameDbConn))

@@ -20,6 +20,7 @@ namespace Backstage.Core.Handler.Backstage
         {
             base.SetApiName("ActiveHandler");
             base.ProcessRequest(HttpContext.Current);
+            
             switch (Action)
             {
                 case "getlist":
@@ -71,7 +72,7 @@ namespace Backstage.Core.Handler.Backstage
             int sellerId = GetInt("sellerid");
 
             PagResults<SourceMaterial> data = SourceMaterialHelper.GetPaging(pageIndex * pageSize, pageSize, sellerId);
-
+            
             JsonTransfer jt = new JsonTransfer();
             jt.AddSuccessParam();
             jt.Add("data", data);

@@ -148,5 +148,68 @@ namespace Backstage.Core.Handler
 
             MySqlHelper.ExecuteNonQuery(GlobalConfig.DbConn, CommandType.Text, commandText, parameters.ToArray());
         }
+
+        internal static SystemStat GetSystemStat()
+        {
+            SystemStat s = new SystemStat();
+            string[] statString = new string[] { "account", "active", "goods", "material", "orders" };
+            List<MySqlParameter> parameters = new List<MySqlParameter>();
+            foreach (var stat in statString)
+            {
+                string commandText = string.Format(@"select count(*) from {0}", stat);
+
+                try
+                {
+                    using (var conn = Utility.ObtainConn(Utility._gameDbConn))
+                    {
+                        MySqlDataReader reader = MySqlHelper.ExecuteReader(conn, CommandType.Text, commandText, parameters.ToArray());
+                        while (reader.Read())
+                        {
+                            switch (stat)
+                            {
+                                case "account":
+                                    s.UserCount = reader.GetInt32(0); break;
+                                case "active":
+                                    s.ActiveCount = reader.GetInt32(0); break;
+                                case "goods":
+                                    s.GoodsCount = reader.GetInt32(0); break;
+                                case "material":
+                                    s.ImgCount = reader.GetInt32(0); break;
+                                case "orders":
+                                    s.OrderNumber = reader.GetInt32(0); break;
+                                default:
+                                    break;
+                            }
+                        }
+                    }
+
+                }
+                catch (System.Exception ex)
+                {
+                    throw;
+                }
+            }
+            string moneyCmd = @"select count(totalprice) from orders where sellerid=?sellerId and status = 2";
+            parameters.Clear();
+            parameters.Add(new MySqlParameter("?sellerId", sellerId));
+            try
+            {
+
+                using (var conn = Utility.ObtainConn(Utility._gameDbConn))
+                {
+                    MySqlDataReader reader = MySqlHelper.ExecuteReader(conn, CommandType.Text, moneyCmd, parameters.ToArray());
+                    while (reader.Read())
+                    {
+                        m.MoneyCount = reader.GetInt32(0);
+                    }
+                }
+
+            }
+            catch (System.Exception ex)
+            {
+                throw;
+            }
+            return m;
+        }
     }
 }

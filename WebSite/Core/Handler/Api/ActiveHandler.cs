@@ -137,6 +137,7 @@ namespace Backstage.Core.Handler
                 title = item.Title,
                 img = Utility.GetPhoneNeedUrl(item.CoverImgUrl),
                 summary = item.Summary,
+                descrition = item.Description,
                 dateline = item.CreateTime.GetUnixTime(),
                 Views = item.Views,
                 Commentnum = item.Commentnum
@@ -168,6 +169,7 @@ namespace Backstage.Core.Handler
                     img = Utility.GetPhoneNeedUrl(r.CoverImgUrl),
                     dateline = r.CreateTime.GetUnixTime(),
                     summary = r.Summary,
+                    descrition = r.Description,
                     Views = r.Views,
                     Commentnum = r.Commentnum
                 };

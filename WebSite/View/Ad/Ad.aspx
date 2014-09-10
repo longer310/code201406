@@ -79,22 +79,22 @@
                 <div class="form-actions">
                     <a href="javascript:void(0);" id="savewifiad" class="btn btn-primary"><i class="icon-ok icon-white"></i>完成保存</a>
                 </div>
-            
 
+
+            </div>
         </div>
-    </div>
 
-    <div id="footer">
-        <p>关于淘宝合作伙伴营销中心廉正举报联系客服开放平台诚征英才联系我们网站地图法律声明© 2003-2014 Taobao.com 版权所有</p>
-        <p>网络文化经营许可证：文网文[2010]040号|增值电信业务经营许可证：浙B2-20080224-1|信息网络传播视听节目许可证：1109364号 </p>
-    </div>
+        <div id="footer">
+            <p>关于淘宝合作伙伴营销中心廉正举报联系客服开放平台诚征英才联系我们网站地图法律声明© 2003-2014 Taobao.com 版权所有</p>
+            <p>网络文化经营许可证：文网文[2010]040号|增值电信业务经营许可证：浙B2-20080224-1|信息网络传播视听节目许可证：1109364号 </p>
+        </div>
 
-    <!--页面js-->
-    <script src="<%=DomainUrl %>/Script/js/ue.pager.js"></script>
-    <script type="text/javascript" charset="utf-8" src="<%=DomainUrl %>/Script/kindeditor/kindeditor-min.js"></script>
-    <script type="text/javascript" charset="utf-8" src="<%=DomainUrl %>/Script/kindeditor/lang/zh_CN.js"></script>
+        <!--页面js-->
+        <script src="<%=DomainUrl %>/Script/js/ue.pager.js"></script>
+        <script type="text/javascript" charset="utf-8" src="<%=DomainUrl %>/Script/kindeditor/kindeditor-min.js"></script>
+        <script type="text/javascript" charset="utf-8" src="<%=DomainUrl %>/Script/kindeditor/lang/zh_CN.js"></script>
 
-    <script type="text/jquery-tmpl-x" id="j-tmpl-wifi-ad-item">
+        <script type="text/jquery-tmpl-x" id="j-tmpl-wifi-ad-item">
 		{{each(i, v) WifiAds}}
 			<div style="border:1px solid #cdcdcd; background-color:#efefef;position:relative; margin-bottom:10px;" class="j-wifi-ad_item" data-id="${v.id}">
 				<div class="control-group">
@@ -114,17 +114,18 @@
 				<div class="control-group">
 					<label class="control-label">跳转至</label>
 					<div class="controls">
-							<input class="j-wifi-goto" type="text" value="${v.JumpUrl}">
-						</div>
+						<input class="j-wifi-goto" type="text" value="${v.JumpUrl}">
 					</div>
 				</div>
+                <a title="删除广告" href="javascript:;" class="j-btn-del btn btn-mini" style="position:absolute; right:10px; top:10px;"><i class="icon-remove"></i> 删除</a>
 			</div>
+                </div>
 		{{/each}}
 	</script>
 
-    <script>
-        var MPage = {
-            hander: "<%=DomainUrl %>/Handler/Merchant/UserHandler.ashx?action=",
+        <script>
+            var MPage = {
+                hander: "<%=DomainUrl %>/Handler/Merchant/UserHandler.ashx?action=",
             init: function () {
                 var mpage = this;
 
@@ -254,6 +255,16 @@
                             }
                         ]
                     });
+
+                    $(".j-btn-del").bind("click", function () {
+                        var count = parseInt($("#j-wifi_count").val()) || 0;
+                        count--;
+                        if (count < 0) {
+                            count = 0;
+                        }
+                        $("#j-wifi_count").val(count);
+                        mpage.removeLevel($(this).parents(".j-wifi-ad_item").index());
+                    });
                 });
 
                 $("#j-remove_ad").bind("click", function () {
@@ -281,7 +292,6 @@
                     mpage.saveInfo(0);
                 });
             },
-
             addLevel: function (data) {
                 var mpage = this;
 
@@ -318,10 +328,25 @@
                         });
                     });
                 });
+
+                $(".j-btn-del").bind("click", function () {
+                    var count = parseInt($("#j-wifi_count").val()) || 0;
+                    count--;
+                    if (count < 0) {
+                        count = 0;
+                    }
+                    $("#j-wifi_count").val(count);
+                    mpage.removeLevel($(this).parents(".j-wifi-ad_item").index());
+                });
             },
 
-            removeLevel: function () {
-                $("#j-wifi-ad .j-wifi-ad_item").last().remove();
+            removeLevel: function (index) {
+                if (typeof index == "number") {
+                    if (index < 0) return;
+                    $("#j-wifi-ad .j-wifi-ad_item").eq(index).remove();
+                } else {
+                    $("#j-wifi-ad .j-wifi-ad_item").last().remove();
+                }
             }
         };
 

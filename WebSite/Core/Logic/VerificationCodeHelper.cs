@@ -10,13 +10,16 @@ namespace Backstage.Core.Logic
 {
     public static class VerificationCodeHelper
     {
-        public static VerificationCode GetVerificationCode(int sellerId, string phone,int uid=0)
+        public static VerificationCode GetVerificationCode(int sellerId, string phone = "", int uid = 0)
         {
-            var cmdText = @"select * from VerificationCode where SellerId=?SellerId and Phone =?Phone and UserId=?UserId limit 1;";
+            string wheresql = string.Empty;
+            if (phone.Length > 0) wheresql = " and Phone =?Phone ";
+            if (uid > 0) wheresql = " and UserId=?UserId ";
+            var cmdText = @"select * from VerificationCode where SellerId=?SellerId  limit 1;";
             List<MySqlParameter> parameters = new List<MySqlParameter>();
             parameters.Add(new MySqlParameter("?SellerId", sellerId));
-            parameters.Add(new MySqlParameter("?Phone", phone));
-            parameters.Add(new MySqlParameter("?UserId", uid));
+            if (phone.Length > 0) parameters.Add(new MySqlParameter("?Phone", phone));
+            if (uid > 0) parameters.Add(new MySqlParameter("?UserId", uid));
             try
             {
                 using (var conn = Utility.ObtainConn(Utility._gameDbConn))
@@ -114,12 +117,14 @@ namespace Backstage.Core.Logic
             {
                 cmdText = @"update VerificationCode set 
                                             ExpiredTime=?ExpiredTime, 
-                                            Code=?Code
+                                            Code=?Code, 
+                                            UserId=?UserId
                                         where 
                                             Id=?Id;";
                 parameters.Add(new MySqlParameter("?Id", verificationCode.Id));
                 parameters.Add(new MySqlParameter("?ExpiredTime", verificationCode.ExpiredTime));
                 parameters.Add(new MySqlParameter("?Code", verificationCode.Code));
+                parameters.Add(new MySqlParameter("?UserId", verificationCode.UserId));
             }
             else
             {

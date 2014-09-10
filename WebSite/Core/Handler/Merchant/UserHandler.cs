@@ -7,6 +7,7 @@ using System.Web.Script.Serialization;
 using System.Xml.Serialization;
 using Backstage.Core;
 using Backstage.Core.Entity;
+using Backstage.Core.Handler;
 using Backstage.Core.Logic;
 using Backstage.View.User;
 
@@ -76,6 +77,11 @@ namespace Backstage.Handler
             Response.End();
         }
 
+        public class RetUserDetail
+        {
+            public Account User { get; set; }
+            public List<UserLevel> UserLevels { get; set; }
+        }
         /// <summary>
         /// 获取用户详情
         /// </summary>
@@ -93,9 +99,12 @@ namespace Backstage.Handler
                 ReturnErrorMsg("无权访问该商户");
                 return;
             }
+            var data = new RetUserDetail();
+            data.User = user;
+            data.UserLevels = SystemHelper.GetUserLevels(user.SellerId).ToList();
 
             var jt = new JsonTransfer();
-            jt.Add("data", user);
+            jt.Add("data", data);
             Response.Write(jt.ToJson());
             Response.End();
         }

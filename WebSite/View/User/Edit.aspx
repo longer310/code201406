@@ -41,13 +41,13 @@
         	<table class="table table-striped table-bordered">
                 <tbody>
                 	<tr>
-                		<td rowspan="3" style="text-align:center; width:120px;"><img style="max-width:100px;min-width:100px;max-height:100px;min-height:100px;" src="${Avatar}" /></td>
+                		<td rowspan="3" style="text-align:center; width:120px;"><img style="max-width:100px;min-width:100px;max-height:100px;min-height:100px;" src="${User.Avatar}" /></td>
                 		<th>会员账号：</th>
-                        <td><span class="text-info">${UserName}</span></td>
+                        <td><span class="text-info">${User.UserName}</span></td>
                         <th>性　　别：</th>
                         <td>
                             <span class="text-info">
-                                {{if Sex == 0}}男
+                                {{if User.Sex == 0}}男
                                 {{else}}女
                                 {{/if}}
                             </span>
@@ -55,18 +55,21 @@
                 	</tr>
                     <tr>
                         <th>昵　　称：</th>
-                        <td><span class="text-info">${NickName}</span></td>
+                        <td><span class="text-info">${User.NickName}</span></td>
                         <th>手机号码：</th>
-                        <td><span class="text-info">${Phone}</span></td>
+                        <td><span class="text-info">${User.Phone}</span></td>
                     </tr>
 
                     <tr>
                         <th>折　　扣：</th>
-                        <td><span class="text-info"><input type="text" value="${Discount}" class="text-input" style="width:30px;" id="j-user-discount"> 折</span></td>
+                        <td><span class="text-info"><input type="text" value="${User.Discount}" readonly="readonly" class="text-input" style="width:30px;" id="j-user-discount"> 折</span></td>
                         <th>会员类型：</th>
                         <td><select id="j-user-type">
-                        	<option {{if RoleType%10==0}}selected="selected"{{/if}} value="0">普通会员</option>
-                        	<option {{if RoleType%10==1}}selected="selected"{{/if}} value="1">高级会员</option>
+                        	<%--<option data-discount="10" {{if RoleType%10==0}}selected="selected"{{/if}} value="0">普通会员</option>
+                        	<option data-discount="8" {{if RoleType%10==1}}selected="selected"{{/if}} value="1">高级会员</option>--%>
+                            {{each(i, v) UserLevels}}
+                        		<option value="${v.Id}" data-discount="${v.Discount}" {{if User.RoleType%10 == v.Id}}selected="selected"{{/if}}>${v.Title}</option>
+                        	{{/each}}
                         </select></td>
 					</dl></td>
                     </tr>
@@ -78,11 +81,11 @@
                 <tbody>
                     <tr>
                     	<th style="width:16.66%">收货地址：</th>
-                        <td style="width:16.66%"><span class="text-info">${Address}</span></td>
+                        <td style="width:16.66%"><span class="text-info">${User.Address}</span></td>
                         <th style="width:16.66%">联系人：</th>
-                        <td style="width:16.66%"><span class="text-info">${LinkMan}</td>
+                        <td style="width:16.66%"><span class="text-info">${User.LinkMan}</td>
                         <th style="width:16.66%">联系电话：</th>
-                        <td style="width:16.66%"><span class="text-info">${Phone}</span></td>
+                        <td style="width:16.66%"><span class="text-info">${User.Phone}</span></td>
                     </tr>
                 </tbody>
             </table>
@@ -91,29 +94,29 @@
                 <tbody>
                     <tr>
                         <th style="width:16.66%">账户余额：</th>
-                        <td style="width:16.66%"><b class="text-error">${Money}</b>元</td>
+                        <td style="width:16.66%"><b class="text-error">${User.Money}</b>元</td>
                         <th style="width:16.66%">累计登陆次数：</th>
-                        <td style="width:16.66%"><b class="text-error">${TotalLoginCount}</b>次</td>
+                        <td style="width:16.66%"><b class="text-error">${User.TotalLoginCount}</b>次</td>
                         <th style="width:16.66%">累计消费金额：</th>
-                        <td style="width:16.66%"><b class="text-error">${TotalConsume}</b>元</td>
+                        <td style="width:16.66%"><b class="text-error">${User.TotalConsume}</b>元</td>
                     </tr>
 
                     <tr>
                         <th style="width:16.66%">积分：</th>
-                        <td style="width:16.66%"><b class="text-error">${Integral}</b>分</td>
+                        <td style="width:16.66%"><b class="text-error">${User.Integral}</b>分</td>
                         <th style="width:16.66%">最近登录时间：</th>
-                        <td style="width:16.66%"><span class="text-info">${LastLoginTime.ToDate().Format("yyyy-MM-dd hh:mm:ss")}</span></td>
+                        <td style="width:16.66%"><span class="text-info">${User.LastLoginTime.ToDate().Format("yyyy-MM-dd hh:mm:ss")}</span></td>
                         <th style="width:16.66%">累计充值金额：</th>
-                        <td style="width:16.66%"><b class="text-error">${TotalRecharge}</b>元</td>
+                        <td style="width:16.66%"><b class="text-error">${User.TotalRecharge}</b>元</td>
                     </tr>
 
                     <tr>
                         <th style="width:16.66%"></th>
                         <td style="width:16.66%"></td>
                         <th style="width:16.66%">注册日期：</th>
-                        <td style="width:16.66%"><span class="text-info">${RegisterTime.ToDate().Format("yyyy-MM-dd hh:mm:ss")}</span></td>
+                        <td style="width:16.66%"><span class="text-info">${User.RegisterTime.ToDate().Format("yyyy-MM-dd hh:mm:ss")}</span></td>
                         <th style="width:16.66%">累计订单数：</th>
-                        <td style="width:16.66%"><b class="text-error">${TotalOrdersCount}</b>次</td>
+                        <td style="width:16.66%"><b class="text-error">${User.TotalOrdersCount}</b>次</td>
                     </tr>
 
                 </tbody>
@@ -122,7 +125,7 @@
             <div class="control-group">
 				<label class="control-label">用户备注</label>
 				<div class="controls">
-					<textarea id="j_user_remark">${Remark}</textarea>
+					<textarea id="j_user_remark">${User.Remark}</textarea>
 				</div>
 			</div>
         </script>
@@ -159,6 +162,12 @@
                 $.post(mpage.hander + "getUserDetail", { userid: userid }, function (data) {
                     if (!data.error) {
                         $("#j-user-detail").html($("#j-tmpl-user-detail").tmpl(data.data));
+                        
+                        $("#j-user-type").bind("change", function () {
+                            var discount = $(this).find("option:checked").attr("data-discount");
+
+                            $("#j-user-discount").val(discount);
+                        });
                     } else {
                         Common.tip({ type: "error", content: data.error });
                         //Common.alert({

@@ -282,7 +282,7 @@ namespace Backstage.Handler
                 ReturnErrorMsg("参数有误");
                 return;
             }
-            var wheresql = string.Format(" and Id in({0})", gids);
+            var wheresql = string.Format(" and a.Id in({0})", gids);
             var goodsresult = GoodsHelper.GetGoodsList(CurSellerId, wheresql);
             if (goodsresult.Results.Count != gidList.Count)
             {

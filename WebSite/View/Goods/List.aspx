@@ -35,6 +35,7 @@
                         <th>原价</th>
                         <th>已售</th>
                         <th>评论/浏览</th>
+						<th>分类</th>
                         <th>操作</th>
                     </tr>
                 </thead>
@@ -79,6 +80,7 @@
 				    <td style="width:104px;"><input type="text" class="input-small j-preprice" value="${v.OriginalPrice}" ></td>
 				    <td>${v.Sales}</td>
 				    <td>${v.CommentCount} / ${v.BrowseCount}</td>
+					<td>${v.Cname}</td>
 				    <td style="width:250px;">
 					    <div class="pull-left" style="height:45px;">
 						    <label class="checkbox"><input type="checkbox" {{if v.IsRecommend>0}} checked="checked" {{/if}}  class="j-isrecommend"> 推荐</label>

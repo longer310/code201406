@@ -38,6 +38,10 @@ namespace Backstage.Core.Entity
         /// </summary>
         public int Cid { get; set; }
         /// <summary>
+        /// 产品分类名称
+        /// </summary>
+        public string Cname { get; set; }
+        /// <summary>
         /// 现价
         /// </summary>
         public float Nowprice { get; set; }

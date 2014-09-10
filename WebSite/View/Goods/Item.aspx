@@ -80,7 +80,7 @@
             </div>
             <div class="form-actions">
                 <a href="javascript:void(0);" id="reset" class="btn"><i class="icon-refresh"></i>清除重置</a>
-                <a href="javascript:void(0);"  id="save" class="btn btn-primary"><i class="icon-ok icon-white"></i>完成保存</a>
+                <a href="javascript:void(0);" id="save" class="btn btn-primary"><i class="icon-ok icon-white"></i>完成保存</a>
             </div>
         </div>
     </div>
@@ -99,7 +99,7 @@
 			</span>
 			<div class="clearfix" style="margin-top:5px;">
 				<label class="radio pull-left"><input type="radio" name="islogo" class="j-goods-islogo" {{if v.IsLogo}}checked="checked"{{/if}}> 设为logo</label>
-				<a title="删除图片" href="javascript:;" class="pull-right j-btn-delThumbnail"><i class="icon-remove"></i></a>
+				<a title="删除图片" href="javascript:;" class="pull-right j-btn-delThumbnail btn-mini"><i class="icon-remove"></i>删除</a>
 			</div>
 		</li>
 	{{/each}}
@@ -197,6 +197,10 @@
                     $(this).parents("li").remove();
                     if ($("#j-goods-thumbnails li").length == 0) {
                         $("#j-goods-thumbnails").hide();
+                    } else {
+                        if ($("#j-goods-thumbnails .j-goods-islogo:checked").length == 0) {
+                            $("#j-goods-thumbnails .j-goods-islogo").eq(0).attr("checked", "checked");
+                        }
                     }
                     return false;
                 });
@@ -221,7 +225,7 @@
                 $("#save").bind("click", function () {
                     mpage.saveGoods();
                 });
-                
+
                 $("#reset").bind("click", function () {
                     mpage.setGoodsFormData();
                     return false;

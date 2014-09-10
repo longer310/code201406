@@ -37,6 +37,7 @@ namespace Backstage.Core.Handler
             if (user == null)
             {
                 ReturnErrorMsg("手机号码不存在");
+                return;
             }
             var merchant = MerchantHelper.GetMerchant(sellerid);
             if (merchant == null)
@@ -50,7 +51,7 @@ namespace Backstage.Core.Handler
             verificationCode.SellerId = sellerid;
             verificationCode.Code = Utility.GetVerificationCode(6);
             verificationCode.ExpiredTime = DateTime.Now.AddMinutes(30);
-            verificationCode.UserId = user.Id;
+            //verificationCode.UserId = user.Id;
             VerificationCodeHelper.SaveVerificationCode(verificationCode);
             if (Utility._msg_opensend == "1")
                 //Utility.SendMsg(verificationCode.Code, verificationCode.Phone, Utility._modifyphone_message);
@@ -80,8 +81,9 @@ namespace Backstage.Core.Handler
             if (user == null)
             {
                 ReturnErrorMsg("手机号码不存在");
+                return;
             }
-            var verificationCode = VerificationCodeHelper.GetVerificationCode(sellerid, phone, user.Id);
+            var verificationCode = VerificationCodeHelper.GetVerificationCode(sellerid, phone);
 
             if (verificationCode.ExpiredTime < DateTime.Now)
                 ReturnErrorMsg("验证码已经过期了");

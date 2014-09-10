@@ -30,7 +30,7 @@ namespace Backstage.Core.Handler
                         ul.Id = reader.GetInt32(0);
 
                         ul.SellerId = (int)reader["SellerId"];
-                        ul.CreateTime = (DateTime)reader["CreateTime"];
+                        //ul.CreateTime = (DateTime)reader["CreateTime"];
                         ul.Discount = (int)reader["Discount"];
                         ul.NeedMoney = (int)reader["NeedMoney"];
                         ul.Title = reader["Title"].ToString();

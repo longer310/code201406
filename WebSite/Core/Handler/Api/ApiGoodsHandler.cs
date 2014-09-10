@@ -188,7 +188,7 @@ namespace Backstage.Handler
 
             if (merchant.MerType == MerchantTypes.Food)
             {
-                var glist = GoodsHelper.GetGoodsList(sellerid, " and IsHot = 1 ", "", 0, 8).Results;
+                var glist = GoodsHelper.GetGoodsList(sellerid, " and a.IsHot = 1 ", "", 0, 8).Results;
                 foreach (var gl in glist)
                 {
                     data.hots.Add(new HotItem() { img = Utility.GetPhoneNeedUrl(gl.LogoUrl), gid = gl.Id });
@@ -726,7 +726,7 @@ namespace Backstage.Handler
             var wheresql = string.Format(" where UserId = {0} ", uid);
             var list = ShoppingCartHelper.GetShoppingCartList(wheresql).Results;
             if (list.Count > 0)
-                wheresql = string.Format(" and Id in({0}) ",
+                wheresql = string.Format(" and a.Id in({0}) ",
                     Utility.GetString(list.Select(o => o.Gid).Distinct().ToList()));
             else wheresql = string.Empty;
             var glist = GoodsHelper.GetGoodsList(user.SellerId, wheresql).Results;
@@ -786,7 +786,7 @@ namespace Backstage.Handler
                 ReturnErrorMsg("参数错误");
                 return;
             }
-            var goodslist = GoodsHelper.GetGoodsList(sellerId, string.Format(" and Id in({0}) ", gids)).Results;
+            var goodslist = GoodsHelper.GetGoodsList(sellerId, string.Format(" and a.Id in({0}) ", gids)).Results;
             if (goodslist.Count == 0)
             {
                 ReturnErrorMsg("找不到添加的商品");

@@ -29,7 +29,7 @@ namespace Backstage.Core.Logic
             result.Results = new List<Goods>();
             if (ordersql == "") ordersql = " order by CreateTime desc ";
             string limitsql = limit != 0 ? " LIMIT ?start,?limit" : string.Empty;
-            var cmdText = @"select * from Goods where SellerId=?SellerId " + wheresql + ordersql + limitsql;
+            var cmdText = @"select a.*,b.Name Cname from Goods a join GoodsCategories b on a.Cid=b.Id where a.SellerId=?SellerId " + wheresql + ordersql + limitsql;
 
             List<MySqlParameter> parameters = new List<MySqlParameter>();
             if (!string.IsNullOrEmpty(limitsql))
@@ -68,6 +68,7 @@ namespace Backstage.Core.Logic
                         goods.BrowseCount = (int)reader["BrowseCount"];
                         goods.IsHot = (int)reader["IsHot"];
                         goods.IsRecommend = (int)reader["IsRecommend"];
+                        goods.Cname = reader["Cname"].ToString();
 
                         result.Results.Add(goods);
                     }

@@ -76,6 +76,9 @@ namespace Backstage.Handler
                 case "getmodifypwdcode"://获取修改密码验证码 7.26
                     GetModifyPwdCode();
                     break;
+                case "resetpwd"://获取修改密码验证码 7.27
+                    ResetPwd();
+                    break;
                 case "modifyphone"://更改绑定号码 7.17
                     ModifyPhone();
                     break;
@@ -901,45 +904,26 @@ namespace Backstage.Handler
         #region 修改密码 7.16
         public void ModifyPwd()
         {
-            var phone = GetString("phone");
+            var id = GetInt("id");
             var sellerid = GetInt("sellerid");
             var oldpwd = GetString("oldpwd");
             var newpwd = GetString("newpwd");
-            var code = GetString("code");
 
-            var user = AccountHelper.GetUserByPhone(phone, sellerid);
+            var user = AccountHelper.GetUser(id);//AccountHelper.GetUserByPhone(phone, sellerid);
             if (user == null)
             {
                 ReturnErrorMsg("不存在该用户");
                 return;
             }
-            //if (user.SellerId != sellerid)
-            //{
-            //    ReturnErrorMsg("商户无此用户");
-            //    return;
-            //}
+            if (user.SellerId != sellerid)
+            {
+                ReturnErrorMsg("商户无此用户");
+                return;
+            }
             var merchant = MerchantHelper.GetMerchant(sellerid);
             if (merchant == null)
             {
                 ReturnErrorMsg("该商户不存在");
-                return;
-            }
-
-            var verificationCode = VerificationCodeHelper.GetVerificationCode(sellerid, phone);
-            if (verificationCode == null)
-            {
-                ReturnErrorMsg("无验证码");
-                return;
-            }
-            if (verificationCode.Code != code)
-            {
-                ReturnErrorMsg("验证码错误");
-                return;
-            }
-            //if (!VerificationCodeHelper.JudgyVerificationCode(sellerid, phone, code))
-            if (verificationCode.ExpiredTime <= DateTime.Now)
-            {
-                ReturnErrorMsg("验证码已过期,请重新发送请求");
                 return;
             }
 
@@ -948,7 +932,7 @@ namespace Backstage.Handler
                 ReturnErrorMsg("原密码错误");
                 return;
             }
-            if (oldpwd.Equals(newpwd))
+            if (user.Pwd.Equals(newpwd))
             {
                 ReturnErrorMsg("密码未改变");
                 return;
@@ -962,25 +946,6 @@ namespace Backstage.Handler
             user.Pwd = newpwd;
             if (AccountHelper.SaveAccount(user) > 0)
             {
-                //if (Utility._msg_opensend == "1")
-                //{
-                //    //发送短信给会员
-                //    SendMsgClass4 jsobject = new SendMsgClass4();
-                //    jsobject.param1 = user.UserName;
-                //    jsobject.param2 = "";
-                //    jsobject.param3 = "30";
-                //    jsobject.param4 = merchant.Name;
-
-                //    if (Utility.SendMsg(merchant.Phone, MsgTempleId.UserModifyPwd, jsobject) != "发送成功")
-                //    {
-                //        logger.InfoFormat("短信模板：{0}发送失败MerchantId：{1},UserId:{2}",
-                //            (int)MsgTempleId.UserModifyPwd, merchant.Id, user.Id);
-                //    }
-                //}
-                //设置验证码过期
-                verificationCode.ExpiredTime = DateTime.Now;
-                VerificationCodeHelper.SaveVerificationCode(verificationCode);
-
                 ReturnCorrectMsg("修改密码成功");
             }
             else
@@ -990,7 +955,7 @@ namespace Backstage.Handler
         }
         #endregion
 
-        #region 获取修改密码验证码 7.26
+        #region 获取重置密码验证码 7.26
         private void GetModifyPwdCode()
         {
             var phone = GetString("phone");
@@ -1055,6 +1020,70 @@ namespace Backstage.Handler
 
             //返回
             ReturnCorrectMsg("验证码已发送");
+        }
+        #endregion
+
+        #region 重置密码 7.27
+        public void ResetPwd()
+        {
+            var phone = GetString("phone");
+            var sellerid = GetInt("sellerid");
+            var newpwd = GetString("newpwd");
+            var code = GetString("code");
+
+            var user = AccountHelper.GetUserByPhone(phone, sellerid);
+            if (user == null)
+            {
+                ReturnErrorMsg("不存在该用户");
+                return;
+            }
+            var merchant = MerchantHelper.GetMerchant(sellerid);
+            if (merchant == null)
+            {
+                ReturnErrorMsg("该商户不存在");
+                return;
+            }
+
+            var verificationCode = VerificationCodeHelper.GetVerificationCode(sellerid, phone);
+            if (verificationCode == null)
+            {
+                ReturnErrorMsg("无验证码");
+                return;
+            }
+            if (verificationCode.Code != code)
+            {
+                ReturnErrorMsg("验证码错误");
+                return;
+            }
+            if (verificationCode.ExpiredTime <= DateTime.Now)
+            {
+                ReturnErrorMsg("验证码已过期,请重新发送请求");
+                return;
+            }
+            if (user.Pwd.Equals(newpwd))
+            {
+                ReturnErrorMsg("密码未改变");
+                return;
+            }
+            if (newpwd.Length < 3 || newpwd.Length > 20)
+            {
+                ReturnErrorMsg("密码长度为3~20个字符");
+                return;
+            }
+
+            user.Pwd = newpwd;
+            if (AccountHelper.SaveAccount(user) > 0)
+            {
+                //设置验证码过期
+                verificationCode.ExpiredTime = DateTime.Now;
+                VerificationCodeHelper.SaveVerificationCode(verificationCode);
+
+                ReturnCorrectMsg("重置密码成功");
+            }
+            else
+            {
+                ReturnCorrectMsg("重置密码失败");
+            }
         }
         #endregion
 
@@ -1128,7 +1157,7 @@ namespace Backstage.Handler
                 ReturnErrorMsg("不存在该商户");
                 return;
             }
-            var verificationCode = VerificationCodeHelper.GetVerificationCode(sellerId, phone, uid);
+            var verificationCode = VerificationCodeHelper.GetVerificationCode(sellerId, "", uid);
             bool needgen = false;
             if (verificationCode == null)
             {
@@ -1384,7 +1413,7 @@ namespace Backstage.Handler
             data.num = favorite.GidList.Count;
             if (gidList.Count > 0)
             {
-                var wheresql = string.Format(" and Id in({0})", Utility.GetString(gidList));
+                var wheresql = string.Format(" and a.Id in({0})", Utility.GetString(gidList));
                 var goodslist = GoodsHelper.GetGoodsList(user.SellerId, wheresql).Results;
                 foreach (var goods in goodslist)
                 {

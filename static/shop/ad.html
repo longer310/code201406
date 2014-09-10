@@ -329,7 +329,7 @@
         				mpage.removeLevel();
         			});
 
-        			$(".j-btn-del").bind("click", function(){
+        			$(document).delegate(".j-btn-del", "click", function(){
         				var count = parseInt($("#j-wifi_count").val()) || 0;
         				count--;
         				if(count < 0){

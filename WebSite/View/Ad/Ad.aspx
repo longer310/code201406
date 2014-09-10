@@ -299,7 +299,7 @@
                 $("#j-wifi-ad").append($("#j-tmpl-wifi-ad-item").tmpl(data));
 
                 //图片上传绑定
-                $('#j-wifi-ad .j-btn-imageManager').bind("click", function () {
+                $('#j-wifi-ad .j-btn-imageManager').unbind("click").bind("click", function () {
                     var $item = $(this).parents(".controls");
 
                     mpage.image_editor.loadPlugin('filemanager', function () {
@@ -315,7 +315,7 @@
                 });
 
                 //从资料库选择图片
-                $('#j-wifi-ad .j-btn-imageUpload').bind("click", function () {
+                $('#j-wifi-ad .j-btn-imageUpload').unbind("click").bind("click", function () {
                     var $item = $(this).parents(".controls");
 
                     mpage.image_editor.loadPlugin('image', function () {
@@ -329,7 +329,7 @@
                     });
                 });
 
-                $(".j-btn-del").bind("click", function () {
+                $(".j-btn-del").unbind("click").bind("click", function () {
                     var count = parseInt($("#j-wifi_count").val()) || 0;
                     count--;
                     if (count < 0) {

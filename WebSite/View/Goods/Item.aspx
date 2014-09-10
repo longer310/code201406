@@ -99,7 +99,7 @@
 			</span>
 			<div class="clearfix" style="margin-top:5px;">
 				<label class="radio pull-left"><input type="radio" name="islogo" class="j-goods-islogo" {{if v.IsLogo}}checked="checked"{{/if}}> 设为logo</label>
-				<a title="删除图片" href="javascript:;" class="pull-right j-btn-delThumbnail btn-mini"><i class="icon-remove"></i>删除</a>
+				<a title="删除图片" href="javascript:;" class="pull-right j-btn-delThumbnail btn btn-mini"><i class="icon-remove"></i> 删除</a>
 			</div>
 		</li>
 	{{/each}}

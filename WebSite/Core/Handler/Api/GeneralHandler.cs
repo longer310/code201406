@@ -21,12 +21,53 @@ namespace Backstage.Core.Handler
                     Verificate_Wifi(); break;
                 case "updateweixin":
                     UpdateWeixin(); break;
+                case "getindexad":
+                    GetIndexAd(); break;
+                case "getwifiad":
+                    GetWifiAd(); break;
                 case "getpwdvercode":
                     GetPwdVerCode(); break;
                 case "updatepwd":
                     UpdatePwd(); break;
                 default: break;
             }
+        }
+
+        private void GetWifiAd()
+        {
+            var sellerId = GetInt("sellerid");
+            var merchant = MerchantHelper.GetMerchant(sellerId);
+            var cfg = ParamHelper.MerchantCfgData;
+             var ad = cfg.WifiAds.FirstOrDefault();
+            var data = new
+            {
+                img = ad.PicUrl,
+                time = cfg.WifiAdStayTime,
+                imglocationUrl = ad.JumpUrl
+            };
+            JsonTransfer jt = new JsonTransfer();
+            jt.AddSuccessParam();
+            jt.Add("data", data);
+            Response.Write(DesEncrypt(jt).ToLower());
+            Response.End();
+        }
+
+        private void GetIndexAd()
+        {
+            var sellerId = GetInt("sellerid");
+            var merchant = MerchantHelper.GetMerchant(sellerId);
+            var cfg = ParamHelper.MerchantCfgData;
+            var data = new
+            {
+                img = cfg.LoginAdUrl,
+                time = cfg.LoginAdStayTime
+            };
+            JsonTransfer jt = new JsonTransfer();
+            jt.AddSuccessParam();
+            jt.Add("data", data);
+            Response.Write(DesEncrypt(jt).ToLower());
+            Response.End();
+
         }
 
         private void GetPwdVerCode()
@@ -54,7 +95,7 @@ namespace Backstage.Core.Handler
             //verificationCode.UserId = user.Id;
             VerificationCodeHelper.SaveVerificationCode(verificationCode);
             if (Utility._msg_opensend == "1")
-                //Utility.SendMsg(verificationCode.Code, verificationCode.Phone, Utility._modifyphone_message);
+            //Utility.SendMsg(verificationCode.Code, verificationCode.Phone, Utility._modifyphone_message);
             {
                 SendMsgClass3 jsobject = new SendMsgClass3();
                 jsobject.param1 = merchant.Name;

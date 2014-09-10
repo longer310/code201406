@@ -198,12 +198,14 @@ namespace Backstage.Handler
 
             var cfg = ParamHelper.MerchantCfgData;
             if (type == 0)
-            {//登录页广告设置
+            {
+                //登录页广告设置
                 cfg.LoginAdStayTime = staytime;
                 cfg.LoginAdUrl = imgs;
             }
             else
-            {//wifi广告
+            {
+                //wifi广告
                 cfg.WifiAdStayTime = staytime;
                 var list = Utility.GetListstring(imgs);
                 var jumplist = Utility.GetListstring(jumpurls);

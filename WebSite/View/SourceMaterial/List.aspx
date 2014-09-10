@@ -79,6 +79,10 @@
             var MPage = {
                 init: function () {
                     var mpage = this;
+                    //去掉之前选中打开的项 选中产品列表
+                    $("#sidebar li").removeClass("active open");
+                    $("#sidebar .sidebaer_imgs").addClass("active open").find(".sidebaer_imgs").addClass("active");
+
                     mpage.getImageList(1);
 
                     //绑定全选

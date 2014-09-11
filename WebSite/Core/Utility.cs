@@ -52,12 +52,16 @@ namespace Backstage.Core
         public static string _3vurl = System.Configuration.ConfigurationManager.AppSettings["3vurl"];//3V平台官网
 
 
-        public static string _machine_code = System.Configuration.ConfigurationManager.AppSettings["machine_code"];//无线打印机终端号
-        public static string _machine_key = System.Configuration.ConfigurationManager.AppSettings["machine_key"];//无线打印机密钥
-        public static string _machine_apikey = System.Configuration.ConfigurationManager.AppSettings["machine_apikey"];//用户id（管理中心系统集成里 http://my.10ss.net/index.php?a=Apisystem）
-        public static string _machine_partner = System.Configuration.ConfigurationManager.AppSettings["machine_partner"];//apikey（管理中心系统集成里）
-        public static string _machine_apiurl = System.Configuration.ConfigurationManager.AppSettings["machine_apiurl"];//machine_apiurl（易联接口请求地址）
-        public static string _machinemsg_opensend = System.Configuration.ConfigurationManager.AppSettings["machinemsg_opensend"];//machinemsg_opensend（是否开启这个功能）
+        //无线打印机终端号
+        public static string _machine_code = System.Configuration.ConfigurationManager.AppSettings["machine_code"];
+        //无线打印机密钥
+        public static string _machine_key = System.Configuration.ConfigurationManager.AppSettings["machine_key"];
+        //apikey（管理中心系统集成里）
+        public static string _machine_apikey = System.Configuration.ConfigurationManager.AppSettings["machine_apikey"];
+        //用户id（管理中心系统集成里 http://my.10ss.net/index.php?a=Apisystem）
+        public static string _machine_partner = System.Configuration.ConfigurationManager.AppSettings["machine_partner"];
+        //machine_apiurl（易联接口请求地址）
+        public static string _machine_apiurl = System.Configuration.ConfigurationManager.AppSettings["machine_apiurl"];
         #endregion
 
         #region 判断是否具有权限

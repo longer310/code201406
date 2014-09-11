@@ -188,6 +188,23 @@ namespace Backstage.Core.Entity
         public long CardNumber { get; set; }
 
         public DateTime CreateTime { get; set; }
+        
+        /// <summary>
+        /// 登录页广告停留时间（秒）
+        /// </summary>
+        public int LoginAdStayTime { get; set; }
+        /// <summary>
+        /// 登录页广告图片地址
+        /// </summary>
+        public string LoginAdUrl { get; set; }
+        /// <summary>
+        /// wifi广告停留时间（秒）
+        /// </summary>
+        public int WifiAdStayTime { get; set; }
+        /// <summary>
+        /// wifi广告图片列表
+        /// </summary>
+        public List<PicJumpItem> WifiAds { get; set; }
 
         public Merchant()
         {
@@ -216,6 +233,23 @@ namespace Backstage.Core.Entity
             CreateTime = DateTime.Now;
             CnameList = new List<string>();
             Sid = 1;//默认一个签约id
+        }
+    }
+    public class PicJumpItem
+    {
+        /// <summary>
+        /// 图片本身url
+        /// </summary>
+        public string PicUrl { get; set; }
+        /// <summary>
+        /// 图片点击后跳转的页面url
+        /// </summary>
+        public string JumpUrl { get; set; }
+
+        public PicJumpItem()
+        {
+            PicUrl = "";
+            JumpUrl = "";
         }
     }
 }

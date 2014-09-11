@@ -271,6 +271,41 @@
                     }
                 });
 
+                if (title == "") {
+                    Common.tip({ type: "error", content: "商品标题不能为空" });
+                    return;
+                }
+
+                if (imgUrls.length == 0) {
+                    Common.tip({ type: "error", content: "不能没有商品图片" });
+                    return;
+                }
+
+                if (logoUrl == "") {
+                    Common.tip({ type: "error", content: "还未设置logo图片" });
+                    return;
+                }
+
+                if (nowPrice == "") {
+                    Common.tip({ type: "error", content: "现价不能为空" });
+                    return;
+                }
+
+                if (originalPrice == "") {
+                    Common.tip({ type: "error", content: "原价不能为空" });
+                    return;
+                }
+
+                if (nowPrice > originalPrice) {
+                    Common.tip({ type: "error", content: "原价应不小于现价" });
+                    return;
+                }
+
+                if (content == "") {
+                    Common.tip({ type: "error", content: "商品描述不能为空" });
+                    return;
+                }
+
                 //获取所有的标签
                 $("#j-goods-tags .j-goods-tag").each(function () {
                     var tag = $.trim($(this).val());

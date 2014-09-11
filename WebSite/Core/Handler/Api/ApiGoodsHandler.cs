@@ -900,12 +900,8 @@ namespace Backstage.Handler
                 var merchant = MerchantHelper.GetMerchant(orders.SellerId);
                 if (merchant != null)
                 {
-                    var merchantCfg = ParamHelper.GetMerchantCfgData(orders.SellerId, merchant.Name);
-                    if (merchantCfg != null)
-                    {
-                        sendprice = merchantCfg.SendPrice;
-                        freesendprice = merchantCfg.FreeSendPrice;
-                    }
+                    sendprice = merchant.Freight;
+                    freesendprice = merchant.NeedToFreeFreight;
                 }
                 
                 totalprice = orders.TotalPrice;

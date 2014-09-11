@@ -219,13 +219,13 @@ namespace Backstage.Core.Logic
 
                 if (orders.Status == OrderStatus.Pay)
                 {
-                    if (Utility._machinemsg_opensend == "1")
+                    var merchant = MerchantHelper.GetMerchant(orders.SellerId);
+                    if (merchant.HasPrint == 1)
                     {
                         
                     }
                     if (Utility._msg_opensend == "1")
                     {
-                        var merchant = MerchantHelper.GetMerchant(orders.SellerId);
                         if (merchant != null)
                         {
                             //订单付款  通知商户 有两个地方有

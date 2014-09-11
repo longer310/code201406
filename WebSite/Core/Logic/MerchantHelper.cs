@@ -72,6 +72,11 @@ namespace Backstage.Core.Logic
                             merchant.CardNumber = (long)reader["CardNumber"];
                             merchant.Bank = reader["Bank"].ToString();
 
+                            merchant.LoginAdStayTime = (int)reader["LoginAdStayTime"];
+                            merchant.LoginAdUrl = reader["LoginAdUrl"].ToString();
+                            merchant.WifiAdStayTime = (int)reader["WifiAdStayTime"];
+                            merchant.WifiAds = JsonTransfer.DeserializeObject<List<PicJumpItem>>(reader["WifiAds"].ToString());
+
                             //获取商户基础类型
                             var merchanttype = MerchantTypeHelper.GetMerchantType(merchant.Mid);
                             if (merchanttype != null)
@@ -141,7 +146,11 @@ namespace Backstage.Core.Logic
                                         CnameList                     = ?CnameList   ,    
                                         AccountName                         = ?AccountName              ,
                                         CardNumber                         = ?CardNumber              ,
-                                        Bank                     = ?Bank        
+                                        Bank                     = ?Bank        ,
+                                        LoginAdStayTime          = ?LoginAdStayTime        ,
+                                        LoginAdUrl               = ?LoginAdUrl             ,
+                                        WifiAdStayTime           = ?WifiAdStayTime         ,
+                                        WifiAds                  = ?WifiAds                
 
                                     WHERE
                                         Id = ?Id";
@@ -191,6 +200,11 @@ namespace Backstage.Core.Logic
                 parameters.Add(new MySqlParameter("?CardNumber", merchant.CardNumber));
                 parameters.Add(new MySqlParameter("?Bank", merchant.Bank));
 
+                parameters.Add(new MySqlParameter("?LoginAdStayTime", merchant.LoginAdStayTime));
+                parameters.Add(new MySqlParameter("?LoginAdUrl", merchant.LoginAdUrl));
+                parameters.Add(new MySqlParameter("?WifiAdStayTime", merchant.WifiAdStayTime));
+                parameters.Add(new MySqlParameter("?WifiAds", JsonTransfer.SerializeObject(merchant.WifiAds)));
+
 
             }
             else
@@ -238,7 +252,11 @@ namespace Backstage.Core.Logic
                                         CnameList          ,
                                         AccountName              ,
                                         CardNumber              ,
-                                        Bank          
+                                        Bank          ,
+                                        LoginAdStayTime          ,
+                                        LoginAdUrl               ,
+                                        WifiAdStayTime           ,
+                                        WifiAds                  
                                         ) 
                                         values
                                         (
@@ -283,7 +301,11 @@ namespace Backstage.Core.Logic
                                         ?CnameList          ,
                                         ?AccountName              ,
                                         ?CardNumber              ,
-                                        ?Bank          
+                                        ?Bank          ,
+                                        ?LoginAdStayTime          ,
+                                        ?LoginAdUrl               ,
+                                        ?WifiAdStayTime           ,
+                                        ?WifiAds                  
                                         )";
                 parameters.Add(new MySqlParameter("?Id", merchant.Id));
                 parameters.Add(new MySqlParameter("?Name", merchant.Name));
@@ -328,6 +350,11 @@ namespace Backstage.Core.Logic
                 parameters.Add(new MySqlParameter("?AccountName", merchant.AccountName));
                 parameters.Add(new MySqlParameter("?CardNumber", merchant.CardNumber));
                 parameters.Add(new MySqlParameter("?Bank", merchant.Bank));
+
+                parameters.Add(new MySqlParameter("?LoginAdStayTime", merchant.LoginAdStayTime));
+                parameters.Add(new MySqlParameter("?LoginAdUrl", merchant.LoginAdUrl));
+                parameters.Add(new MySqlParameter("?WifiAdStayTime", merchant.WifiAdStayTime));
+                parameters.Add(new MySqlParameter("?WifiAds", JsonTransfer.SerializeObject(merchant.WifiAds)));
             }
             try
             {
@@ -417,6 +444,11 @@ namespace Backstage.Core.Logic
                         merchant.AccountName = reader["AccountName"].ToString();
                         merchant.CardNumber = (long)reader["CardNumber"];
                         merchant.Bank = reader["Bank"].ToString();
+
+                        merchant.LoginAdStayTime = (int)reader["LoginAdStayTime"];
+                        merchant.LoginAdUrl = reader["LoginAdUrl"].ToString();
+                        merchant.WifiAdStayTime = (int)reader["WifiAdStayTime"];
+                        merchant.WifiAds = JsonTransfer.DeserializeObject<List<PicJumpItem>>(reader["WifiAds"].ToString());
 
                         result.Results.Add(merchant);
                     }

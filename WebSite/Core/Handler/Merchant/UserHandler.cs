@@ -179,10 +179,10 @@ namespace Backstage.Handler
                 ReturnErrorMsg("不存在改id的商户");
                 return;
             }
-            var cfg = ParamHelper.GetMerchantCfgData(CurSellerId, merchant.Name);//ParamHelper.MerchantCfgData;
+            //var cfg = ParamHelper.GetMerchantCfgData(CurSellerId, merchant.Name);//ParamHelper.MerchantCfgData;
 
             var jt = new JsonTransfer();
-            jt.Add("data", cfg);
+            jt.Add("data", merchant);
             Response.Write(jt.ToJson());
             Response.End();
         }
@@ -208,17 +208,17 @@ namespace Backstage.Handler
                 ReturnErrorMsg("不存在改id的商户");
                 return;
             }
-            var cfg = ParamHelper.GetMerchantCfgData(CurSellerId, merchant.Name);
+            //var cfg = ParamHelper.GetMerchantCfgData(CurSellerId, merchant.Name);
             if (type == 0)
             {
                 //登录页广告设置
-                cfg.LoginAdStayTime = staytime;
-                cfg.LoginAdUrl = imgs;
+                merchant.LoginAdStayTime = staytime;
+                merchant.LoginAdUrl = imgs;
             }
             else
             {
                 //wifi广告
-                cfg.WifiAdStayTime = staytime;
+                merchant.WifiAdStayTime = staytime;
                 var list = Utility.GetListstring(imgs);
                 var jumplist = Utility.GetListstring(jumpurls);
                 if (list.Count == 0 || jumplist.Count == 0 || list.Count != jumplist.Count)
@@ -226,20 +226,21 @@ namespace Backstage.Handler
                     ReturnErrorMsg("传参有误");
                     return;
                 }
-                cfg.WifiAds = new List<ParamHelper.PicJumpItem>();
+                merchant.WifiAds = new List<PicJumpItem>();
                 var i = 0;
                 foreach (var str in list)
                 {
-                    var pitem = new ParamHelper.PicJumpItem();
+                    var pitem = new PicJumpItem();
                     pitem.PicUrl = str;
                     pitem.JumpUrl = jumplist[i];
-                    cfg.WifiAds.Add(pitem);
+                    merchant.WifiAds.Add(pitem);
                     i++;
                 }
             }
 
             //ParamHelper.SaveParamvalue("MerchantCfg", cfg);
-            ParamHelper.UpdateMerchantCfg(CurSellerId, cfg);
+            //ParamHelper.UpdateMerchantCfg(CurSellerId, cfg);
+            MerchantHelper.SaveMerchant(merchant);
 
             ReturnCorrectMsg("更改成功");
         }

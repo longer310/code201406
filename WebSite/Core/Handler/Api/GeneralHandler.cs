@@ -42,15 +42,15 @@ namespace Backstage.Core.Handler
                 ReturnErrorMsg("不存在改id的商户");
                 return;
             }
-            var cfg = ParamHelper.GetMerchantCfgData(sellerId, merchant.Name);//ParamHelper.MerchantCfgData;
-            var ads = cfg.WifiAds;
+            //var cfg = ParamHelper.GetMerchantCfgData(sellerId, merchant.Name);//ParamHelper.MerchantCfgData;
+            var ads = merchant.WifiAds;
             var data = new List<object>();
             foreach(var ad in ads)
             {
                 var d = new
                 {
                     img = ad.PicUrl,
-                    time = cfg.WifiAdStayTime,
+                    time = merchant.WifiAdStayTime,
                     imglocationUrl = ad.JumpUrl
                 };
                 data.Add(d);
@@ -71,11 +71,11 @@ namespace Backstage.Core.Handler
                 ReturnErrorMsg("不存在改id的商户");
                 return;
             }
-            var cfg = ParamHelper.GetMerchantCfgData(sellerId, merchant.Name);//ParamHelper.MerchantCfgData;
+            //var cfg = ParamHelper.GetMerchantCfgData(sellerId, merchant.Name);//ParamHelper.MerchantCfgData;
             var data = new
             {
-                img = cfg.LoginAdUrl,
-                time = cfg.LoginAdStayTime
+                img = merchant.LoginAdUrl,
+                time = merchant.LoginAdStayTime
             };
             JsonTransfer jt = new JsonTransfer();
             jt.AddSuccessParam();

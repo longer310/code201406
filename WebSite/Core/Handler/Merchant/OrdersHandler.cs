@@ -200,12 +200,12 @@ namespace Backstage.Handler
             data.Remark = orders.Remark;
             data.TotalPrice = orders.TotalPrice;
             data.StotalPrice = orders.StotalPrice;
-            data.SendPrice = 5;
-            var merchantCfg = ParamHelper.GetMerchantCfgData(orders.SellerId, merchant.Name);
-            if (merchantCfg != null)
-            {
-                data.SendPrice = merchantCfg.SendPrice;
-            }
+            data.SendPrice = merchant.Freight;
+            //var merchantCfg = ParamHelper.GetMerchantCfgData(orders.SellerId, merchant.Name);
+            //if (merchantCfg != null)
+            //{
+            //    data.SendPrice = merchantCfg.SendPrice;
+            //}
 
             var i = 0;
             foreach (var url in orders.ImgList)

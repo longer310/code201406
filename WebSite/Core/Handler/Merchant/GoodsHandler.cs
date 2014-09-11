@@ -102,6 +102,11 @@ namespace Backstage.Handler
                 return;
             }
             var goodsCategoriesList = GoodsCategoriesHelper.GetList(CurSellerId, string.Format(" and Id in({0})", ids));
+            if (goodsCategoriesList.Results.Count(o => o.Count > 0) > 0)
+            {
+                ReturnErrorMsg("不能删除有商品的分类");
+                return;
+            }
             if (goodsCategoriesList.Results.Count != idList.Count)
             {
                 ReturnErrorMsg("没有权限删除其他商户分类或分类不存在");

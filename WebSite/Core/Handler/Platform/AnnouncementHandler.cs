@@ -505,11 +505,11 @@ namespace Backstage.Handler
                     ReturnErrorMsg("传参有误");
                     return;
                 }
-                cfg.MerchantAds = new List<ParamHelper.PicJumpItem>();
+                cfg.MerchantAds = new List<PicJumpItem>();
                 var i = 0;
                 foreach (var str in list)
                 {
-                    var pitem = new ParamHelper.PicJumpItem();
+                    var pitem = new PicJumpItem();
                     pitem.PicUrl = str;
                     pitem.JumpUrl = jumplist[i];
                     cfg.MerchantAds.Add(pitem);

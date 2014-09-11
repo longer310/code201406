@@ -217,48 +217,56 @@ namespace Backstage.Core.Logic
                 parameters.Add(new MySqlParameter("?Boxno", orders.Boxno));
                 parameters.Add(new MySqlParameter("?CouponTitle", orders.CouponTitle));
 
-                if (orders.Status == OrderStatus.Pay && Utility._msg_opensend == "1")
+                if (orders.Status == OrderStatus.Pay)
                 {
-                    var merchant = MerchantHelper.GetMerchant(orders.SellerId);
-                    if (merchant != null)
+                    if (Utility._machinemsg_opensend == "1")
                     {
-                        //订单付款  通知商户 有两个地方有
-                        SendMsgClass3 jsobject = new SendMsgClass3();
-                        jsobject.param1 = merchant.Name;
-                        jsobject.param2 = orders.Id.ToString();
-                        jsobject.param3 = Utility._domainurl + "/view/dev/Index.aspx";
-
-                        if (Utility.SendMsg(merchant.Phone, MsgTempleId.OrdersRemindMerchant, jsobject) != "发送成功")
+                        
+                    }
+                    if (Utility._msg_opensend == "1")
+                    {
+                        var merchant = MerchantHelper.GetMerchant(orders.SellerId);
+                        if (merchant != null)
                         {
-                            logger.InfoFormat("短信模板：{0},Phone:{3},发送失败OrdersId：{1},SellerId:{2}",
-                                (int)MsgTempleId.OrdersRemindMerchant, orders.Id, orders.SellerId, merchant.Phone);
-                        }
+                            //订单付款  通知商户 有两个地方有
+                            SendMsgClass3 jsobject = new SendMsgClass3();
+                            jsobject.param1 = merchant.Name;
+                            jsobject.param2 = orders.Id.ToString();
+                            jsobject.param3 = Utility._domainurl + "/view/dev/Index.aspx";
 
-                        //通知会员
-                        var user = AccountHelper.GetUser(orders.UserId);
-                        if (user != null)
-                        {
-                            SendMsgClass4 jsobject2 = new SendMsgClass4();
-                            jsobject2.param1 = user.UserName;
-                            jsobject2.param2 = orders.Id.ToString();
-                            jsobject2.param3 = orders.TotalPrice.ToString();
-                            jsobject2.param4 = merchant.Name;
-
-                            if (Utility.SendMsg(user.Phone, MsgTempleId.OrdersFinish, jsobject2) != "发送成功")
+                            if (Utility.SendMsg(merchant.Phone, MsgTempleId.OrdersRemindMerchant, jsobject) != "发送成功")
                             {
                                 logger.InfoFormat("短信模板：{0},Phone:{3},发送失败OrdersId：{1},SellerId:{2}",
-                                    (int)MsgTempleId.OrdersFinish, orders.Id, orders.SellerId, user.Phone);
+                                    (int)MsgTempleId.OrdersRemindMerchant, orders.Id, orders.SellerId, merchant.Phone);
+                            }
+
+                            //通知会员
+                            var user = AccountHelper.GetUser(orders.UserId);
+                            if (user != null)
+                            {
+                                SendMsgClass4 jsobject2 = new SendMsgClass4();
+                                jsobject2.param1 = user.UserName;
+                                jsobject2.param2 = orders.Id.ToString();
+                                jsobject2.param3 = orders.TotalPrice.ToString();
+                                jsobject2.param4 = merchant.Name;
+
+                                if (Utility.SendMsg(user.Phone, MsgTempleId.OrdersFinish, jsobject2) != "发送成功")
+                                {
+                                    logger.InfoFormat("短信模板：{0},Phone:{3},发送失败OrdersId：{1},SellerId:{2}",
+                                        (int)MsgTempleId.OrdersFinish, orders.Id, orders.SellerId, user.Phone);
+                                }
+                            }
+                            else
+                            {
+                                logger.InfoFormat("订单查找用户失败OrdersId：{0},UserId:{1}", orders.Id, orders.UserId);
                             }
                         }
                         else
                         {
-                            logger.InfoFormat("订单查找用户失败OrdersId：{0},UserId:{1}", orders.Id, orders.UserId);
+                            logger.InfoFormat("订单查找商户失败OrdersId：{0},SellerId:{1}", orders.Id, orders.SellerId);
                         }
                     }
-                    else
-                    {
-                        logger.InfoFormat("订单查找商户失败OrdersId：{0},SellerId:{1}", orders.Id, orders.SellerId);
-                    }
+                    
                 }
             }
             else

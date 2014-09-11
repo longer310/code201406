@@ -15,6 +15,7 @@ using System.Text;
 using System.Web;
 using System.Web.Security;
 using Backstage.Core.Entity;
+using log4net;
 using MySql.Data.MySqlClient;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -23,6 +24,7 @@ namespace Backstage.Core
 {
     public static class Utility
     {
+        private static ILog logger = LogManager.GetLogger("Utility");
         #region 配置参数
         public static string _gameDbConn = System.Configuration.ConfigurationManager.AppSettings["gamedbconn"];//帐号db
         public static string _gameConn = System.Configuration.ConfigurationManager.AppSettings["gameconn"];//游戏db
@@ -48,6 +50,14 @@ namespace Backstage.Core
         public static string _domainurl = System.Configuration.ConfigurationManager.AppSettings["domainurl"];//域名头
         public static string _onlydomainurl = System.Configuration.ConfigurationManager.AppSettings["onlydomainurl"];//域名头
         public static string _3vurl = System.Configuration.ConfigurationManager.AppSettings["3vurl"];//3V平台官网
+
+
+        public static string _machine_code = System.Configuration.ConfigurationManager.AppSettings["machine_code"];//无线打印机终端号
+        public static string _machine_key = System.Configuration.ConfigurationManager.AppSettings["machine_key"];//无线打印机密钥
+        public static string _machine_apikey = System.Configuration.ConfigurationManager.AppSettings["machine_apikey"];//用户id（管理中心系统集成里 http://my.10ss.net/index.php?a=Apisystem）
+        public static string _machine_partner = System.Configuration.ConfigurationManager.AppSettings["machine_partner"];//apikey（管理中心系统集成里）
+        public static string _machine_apiurl = System.Configuration.ConfigurationManager.AppSettings["machine_apiurl"];//machine_apiurl（易联接口请求地址）
+        public static string _machinemsg_opensend = System.Configuration.ConfigurationManager.AppSettings["machinemsg_opensend"];//machinemsg_opensend（是否开启这个功能）
         #endregion
 
         #region 判断是否具有权限
@@ -599,6 +609,68 @@ namespace Backstage.Core
                 list.Add(itemurl);
             }
             return list;
+        }
+        #endregion
+
+        #region 无线打印发送
+        public static bool SendPrinterData(string content)
+        {
+            try
+            {
+                SortedDictionary<string, string> parameters = new SortedDictionary<string, string>();
+                parameters.Add("partner", _machine_partner);
+                parameters.Add("machine_code", _machine_code);
+                parameters.Add("mkey", _machine_key);
+                parameters.Add("apikey", _machine_apikey);
+                parameters.Add("content", content);
+                string sign = getMachineSign(parameters);
+                parameters.Add("sign", sign);
+                HttpWebResponse response = CreatePostHttpResponse(_machine_apiurl, parameters, null, null, Encoding.UTF8,
+                    null);
+                StreamReader sr = new StreamReader(response.GetResponseStream(), Encoding.UTF8);
+                string retContent = sr.ReadToEnd();
+                var sendResponse = JsonConvert.DeserializeObject<SendSmsResponse>(retContent);
+
+                if (sendResponse.res_code == "0")
+                    return true;
+                else return false;
+            }
+            catch (Exception exc)
+            {
+                logger.ErrorFormat("无线打印数据出错：{0}", exc.Message);
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// 创建本次调用的签名
+        /// </summary>       
+        /// <param name="parameters">parameters，参数列表</param>
+        /// <param name="preKey">preKey，apikey的值</param>
+        /// <param name="secKey">secKey，终端密钥的值</param>
+        /// <returns>String，签名</returns>
+        private static String getMachineSign(IDictionary<string, string> parameters)
+        {
+            // 第一步：把字典按Key的字母顺序排序
+            IDictionary<string, string> sortedParams = new SortedDictionary<string, string>(parameters);
+            IEnumerator<KeyValuePair<string, string>> dem = sortedParams.GetEnumerator();
+
+            // 第二步：把所有参数名和参数值串在一起
+            StringBuilder query = new StringBuilder("");
+            while (dem.MoveNext())
+            {
+                string key = dem.Current.Key;
+                string value = dem.Current.Value;
+                if (!string.IsNullOrEmpty(key) && !string.IsNullOrEmpty(value) && key != "sign")
+                {
+                    query.Append(key).Append(value);
+                }
+            }
+            string source = query.ToString();
+            source = _machine_apikey + source + _machine_key;
+            //System.Console.Out.WriteLine("source:" + source);
+            return System.Web.Security.FormsAuthentication.HashPasswordForStoringInConfigFile(source, "MD5").ToUpper();
+            //return MD5(source);
         }
         #endregion
     }

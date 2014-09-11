@@ -8,6 +8,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using Backstage.Core.Entity;
 using Backstage.Core;
+using Backstage.Core.Logic;
 
 namespace WebSite.View.Dev
 {
@@ -15,10 +16,12 @@ namespace WebSite.View.Dev
     {
         public List<Fastlinks>  Fastlinkslist= new List<Fastlinks>();
         public string DomainUrl = Utility._domainurl;
+        public SystemStat SystemStat;
 
         protected void Page_Load(object sender, EventArgs e)
         {
             Fastlinkslist = DevSystemHelper.GetPagFastlinks(0, 0).Results.ToList();
+            SystemStat = DevSystemHelper.GetSystemStat();
 
         }
     }

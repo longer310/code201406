@@ -52,10 +52,10 @@
 								</div>
 								<div class="widget-content">
 									<ul class="site-stats">
-										<li><strong>3家</strong> <small>今日</small></li>
+										<%--<li><strong>3家</strong> <small>今日</small></li>
 										<li><strong>16家</strong> <small>本月</small></li>
-										<li><strong>16家</strong> <small>季度</small></li>
-										<li><strong>259家</strong> <small>历史</small></li>
+										<li><strong>16家</strong> <small>季度</small></li>--%>
+										<li><strong><%=SystemStat.MerchantCount %>家</strong> <small>历史</small></li>
 									</ul>
 								</div>
 							</div>
@@ -71,10 +71,7 @@
 								</div>
 								<div class="widget-content">
 									<ul class="site-stats">
-										<li><strong>3名</strong> <small>今日</small></li>
-										<li><strong>16名</strong> <small>本月</small></li>
-										<li><strong>16名</strong> <small>季度</small></li>
-										<li><strong>259名</strong> <small>历史</small></li>
+										<li><strong><%=SystemStat.UserCount %>名</strong> <small>历史</small></li>
 									</ul>
 								</div>
 							</div>

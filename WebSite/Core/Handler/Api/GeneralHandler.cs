@@ -43,12 +43,17 @@ namespace Backstage.Core.Handler
                 return;
             }
             var cfg = ParamHelper.GetMerchantCfgData(sellerId, merchant.Name);//ParamHelper.MerchantCfgData;
-             var ad = cfg.WifiAds.FirstOrDefault();
-            var data = new
+            var ads = cfg.WifiAds;
+            var data = new List<object>();
+            foreach(var ad in ads)
             {
-                img = ad.PicUrl,
-                time = cfg.WifiAdStayTime,
-                imglocationUrl = ad.JumpUrl
+                var d = new
+                {
+                    img = ad.PicUrl,
+                    time = cfg.WifiAdStayTime,
+                    imglocationUrl = ad.JumpUrl
+                };
+                data.Add(d);
             };
             JsonTransfer jt = new JsonTransfer();
             jt.AddSuccessParam();

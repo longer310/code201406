@@ -231,7 +231,7 @@ namespace Backstage.Core.Handler.Backstage
 
         private void GetItem()
         {
-            int cid = GetInt("couponid");
+            int cid = GetInt("id");
             var item = CouponHelper.GetItem(cid);
             var data = new
             {

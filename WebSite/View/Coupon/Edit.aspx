@@ -12,7 +12,7 @@
             <span class="icon">
                 <i class="icon-tags"></i>
             </span>
-            <h5>新增电子券</h5>
+            <h5>编辑电子券</h5>
         </div>
         <div class="widget-content">
             <form action="#" method="get" class="form-horizontal" id="j-ticket-addForm" />
@@ -111,11 +111,11 @@
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="Footer" runat="server">
     <!--页面js-->
-    <script src="../public/js/ue.pager.js"></script>
-    <script src="../public/js/bootstrap-datepicker.js"></script>
+    <script src="../../script/js/ue.pager.js"></script>
+    <script src="../../script/js/bootstrap-datepicker.js"></script>
 
-    <script charset="utf-8" src="../public/kindeditor/kindeditor-min.js"></script>
-    <script charset="utf-8" src="../public/kindeditor/lang/zh_CN.js"></script>
+    <script charset="utf-8" src="../../script/kindeditor/kindeditor-min.js"></script>
+    <script charset="utf-8" src="../../script/kindeditor/lang/zh_CN.js"></script>
 
     <script type="text/jquery-tmpl-x" id="j-tmpl-goods-selecteditem">
 			{{each(i, v) goods_selected}}
@@ -146,8 +146,8 @@
                     //文本编辑器
                     mpage.text_editor = text_editor = K.create('textarea[name="content"]', {
                         uploadJson: '<%=DomainUrl %>/Handler/FileManager/UploadHandler.ashx?type=3',
-                        allowFileManager: true
-                    });
+                         allowFileManager: true
+                     });
 
                     //图片上传编辑
                     mpage.image_editor = image_editor = K.editor({
@@ -263,7 +263,7 @@
                 });
             },
 
-            getTicketDetail: function () {
+            getTicketDetail: function (id) {
                 var mpage = this;
 
                 //$.getJSON("", { id: ticket_id}， function(json){
@@ -294,9 +294,17 @@
                         content: 'asfasfsadfas'
                     }
                 }
-
-                mpage.detailData = json.result;
-                mpage.setFormData();
+                $.ajax({
+                    url: "../../Handler/Backstage/CouponHandler.ashx?action=getitem&id="+id,
+                    type: "Get",
+                    dataType: "json"
+                    //context: document.body
+                }).success(function (data) {
+                    json.result = data.data;
+                    mpage.detailData = json.result;
+                    mpage.setFormData();
+                });
+                
                 //});
             },
 

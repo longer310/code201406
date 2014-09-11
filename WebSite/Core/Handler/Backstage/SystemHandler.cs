@@ -161,6 +161,7 @@ namespace Backstage.Core.Handler.Backstage
             item.Balance = user.Money;
             item.UserAccount = user.UserName;//存储商户账户
             ExtractMoneyHelper.Create(item);
+            ReturnCorrectMsg("提现申请成功，请耐心等待后台人员处理");
         }
 
 

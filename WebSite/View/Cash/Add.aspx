@@ -148,7 +148,7 @@
                     }).success(function (data) {
                         if (data != null)
                         {
-
+                            alert(data.msg);
                         }
                     });
 

@@ -173,7 +173,13 @@ namespace Backstage.Handler
         /// </summary>
         public void GetAdCfg()
         {
-            var cfg = ParamHelper.MerchantCfgData;
+            var merchant = MerchantHelper.GetMerchant(CurSellerId);
+            if (merchant == null)
+            {
+                ReturnErrorMsg("不存在改id的商户");
+                return;
+            }
+            var cfg = ParamHelper.GetMerchantCfgData(CurSellerId, merchant.Name);//ParamHelper.MerchantCfgData;
 
             var jt = new JsonTransfer();
             jt.Add("data", cfg);
@@ -196,7 +202,13 @@ namespace Backstage.Handler
                 return;
             }
 
-            var cfg = ParamHelper.MerchantCfgData;
+            var merchant = MerchantHelper.GetMerchant(CurSellerId);
+            if (merchant == null)
+            {
+                ReturnErrorMsg("不存在改id的商户");
+                return;
+            }
+            var cfg = ParamHelper.GetMerchantCfgData(CurSellerId, merchant.Name);
             if (type == 0)
             {
                 //登录页广告设置
@@ -226,7 +238,8 @@ namespace Backstage.Handler
                 }
             }
 
-            ParamHelper.SaveParamvalue("MerchantCfg", cfg);
+            //ParamHelper.SaveParamvalue("MerchantCfg", cfg);
+            ParamHelper.UpdateMerchantCfg(CurSellerId, cfg);
 
             ReturnCorrectMsg("更改成功");
         }

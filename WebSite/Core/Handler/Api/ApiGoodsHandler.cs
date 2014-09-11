@@ -895,8 +895,19 @@ namespace Backstage.Handler
                 orderpeople = orders.OrderPeople;
                 ordertype = (int)orders.OrderType;
                 status = (int)orders.Status;
-                sendprice = ParamHelper.MerchantCfgData.SendPrice;
-                freesendprice = ParamHelper.MerchantCfgData.FreeSendPrice;
+                sendprice = 5;
+                freesendprice = 100;
+                var merchant = MerchantHelper.GetMerchant(orders.SellerId);
+                if (merchant != null)
+                {
+                    var merchantCfg = ParamHelper.GetMerchantCfgData(orders.SellerId, merchant.Name);
+                    if (merchantCfg != null)
+                    {
+                        sendprice = merchantCfg.SendPrice;
+                        freesendprice = merchantCfg.FreeSendPrice;
+                    }
+                }
+                
                 totalprice = orders.TotalPrice;
                 extcredit = (int)(orders.TotalPrice * 1.0 / ParamHelper.ExtcreditCfgData.Consume);
                 couponid = orders.CouponId;

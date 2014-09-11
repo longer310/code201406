@@ -176,6 +176,12 @@ namespace Backstage.Handler
                 ReturnErrorMsg("无权访问订单");
                 return;
             }
+            var merchant = MerchantHelper.GetMerchant(orders.SellerId);
+            if (merchant == null)
+            {
+                ReturnErrorMsg("不存在该id商户");
+                return;
+            }
             if (orders.GidList.Count != orders.ImgList.Count || orders.ImgList.Count != orders.TitleList.Count || orders.TitleList.Count != orders.NumList.Count || orders.NumList.Count != orders.NowPriceList.Count)
             {
                 ReturnErrorMsg("订单数据出错");
@@ -194,7 +200,12 @@ namespace Backstage.Handler
             data.Remark = orders.Remark;
             data.TotalPrice = orders.TotalPrice;
             data.StotalPrice = orders.StotalPrice;
-            data.SendPrice = ParamHelper.MerchantCfgData.SendPrice;
+            data.SendPrice = 5;
+            var merchantCfg = ParamHelper.GetMerchantCfgData(orders.SellerId, merchant.Name);
+            if (merchantCfg != null)
+            {
+                data.SendPrice = merchantCfg.SendPrice;
+            }
 
             var i = 0;
             foreach (var url in orders.ImgList)
@@ -250,7 +261,7 @@ namespace Backstage.Handler
                 return;
             }
 
-            if(OrdersHelper.SetOrdersListDelivered(orderidList))
+            if (OrdersHelper.SetOrdersListDelivered(orderidList))
                 ReturnCorrectMsg("设置成功");
             else
                 ReturnErrorMsg("设置失败");

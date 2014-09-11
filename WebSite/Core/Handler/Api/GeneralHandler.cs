@@ -37,7 +37,12 @@ namespace Backstage.Core.Handler
         {
             var sellerId = GetInt("sellerid");
             var merchant = MerchantHelper.GetMerchant(sellerId);
-            var cfg = ParamHelper.MerchantCfgData;
+            if (merchant == null)
+            {
+                ReturnErrorMsg("不存在改id的商户");
+                return;
+            }
+            var cfg = ParamHelper.GetMerchantCfgData(sellerId, merchant.Name);//ParamHelper.MerchantCfgData;
              var ad = cfg.WifiAds.FirstOrDefault();
             var data = new
             {
@@ -56,7 +61,12 @@ namespace Backstage.Core.Handler
         {
             var sellerId = GetInt("sellerid");
             var merchant = MerchantHelper.GetMerchant(sellerId);
-            var cfg = ParamHelper.MerchantCfgData;
+            if (merchant == null)
+            {
+                ReturnErrorMsg("不存在改id的商户");
+                return;
+            }
+            var cfg = ParamHelper.GetMerchantCfgData(sellerId, merchant.Name);//ParamHelper.MerchantCfgData;
             var data = new
             {
                 img = cfg.LoginAdUrl,

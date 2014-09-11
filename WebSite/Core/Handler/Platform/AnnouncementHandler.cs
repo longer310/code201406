@@ -517,7 +517,7 @@ namespace Backstage.Handler
                 }
             }
 
-            ParamHelper.SaveParamvalue("PlatformCfg", cfg);
+            ParamHelper.UpdateParamvalue("PlatformCfg", cfg);
 
             ReturnCorrectMsg("更改成功");
         }

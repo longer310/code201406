@@ -184,6 +184,7 @@ namespace Backstage.Core.Handler.Backstage
                     Balance = item.Balance,
                     Bank = item.Bank,
                     CardNumber = item.CardNumber,
+                    Status = item.Status == 1 ? "提现成功" : "未提现",
                     SellerId = item.SellerId
                 };
                 data.Results.Add(d);

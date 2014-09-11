@@ -286,7 +286,7 @@ namespace Backstage.Core.Handler.Backstage
             JsonTransfer jt = new JsonTransfer();
             jt.AddSuccessParam();
             jt.Add("data", data);
-            Response.Write(DesEncrypt(jt));
+            Response.Write(DesEncrypt(jt).ToLower());
             Response.End();
         }
     }

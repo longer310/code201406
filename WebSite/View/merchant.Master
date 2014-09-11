@@ -30,7 +30,7 @@
             <dd><span class="muted">可提现金额：</span><b class="text-error">￥<%=Money %></b></dd>
         </dl>
         <ul class="nav btn-group">
-            <li class="btn btn-inverse"><a title="" href="#"><i class="icon icon-share"></i><span class="text">提现</span></a></li>
+            <li class="btn btn-inverse"><a title="" href="<%=DomainUrl %>/View/Cash/List.aspx"><i class="icon icon-share"></i><span class="text">提现</span></a></li>
             <li class="btn btn-inverse"><a title="" href="javascript:void(0);" onclick="page.alertlogout();"><i class="icon icon-off"></i><span class="text">退出登陆</span></a></li>
         </ul>
     </div>
@@ -84,10 +84,10 @@
             <li class="submenu sadebaer_infos">
                 <a href="#"><i class="icon icon-cog"></i><span>系统设置</span> <span class="label">6</span></a>
                 <ul>
-                    <li><a href="<%=DomainUrl %>/View/System/SellerInFo.aspx">资料设置</a></li>
-                    <li><a href="<%=DomainUrl %>/View/Push/List.aspx">推送服务</a></li>
-                    <li><a href="<%=DomainUrl %>/View/System/Rules.aspx">规则设置</a></li>
-                    <li><a href="<%=DomainUrl %>/View/Cash/List.aspx">提现管理</a></li>
+                    <li><a href="<%=DomainUrl %>/View/System/SellerInFo.aspx?sellerId=<%=SellerId %>">资料设置</a></li>
+                    <li><a href="<%=DomainUrl %>/View/Push/List.aspx?sellerId=<%=SellerId %>">推送服务</a></li>
+                    <li><a href="<%=DomainUrl %>/View/System/Rules.aspx?sellerId=<%=SellerId %>">规则设置</a></li>
+                    <li><a href="<%=DomainUrl %>/View/Cash/List.aspx?sellerId=<%=SellerId %>">提现管理</a></li>
                 </ul>
             </li>
         </ul>

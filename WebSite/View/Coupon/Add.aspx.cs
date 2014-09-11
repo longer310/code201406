@@ -10,11 +10,8 @@ namespace Backstage.View.Coupon
 {
     public partial class Add : BasePage
     {
-        public string SellerId = "";
-
         protected void Page_Load(object sender, EventArgs e)
         {
-            SellerId = Request.QueryString["sellerid"].ToString();
         }
     }
 }

@@ -12,11 +12,8 @@ namespace Backstage.View.Coupon
     {
         public string Id = "";
 
-        public string SellerId = "";
-
         protected void Page_Load(object sender, EventArgs e)
         {
-            SellerId = Request.QueryString["sellerid"].ToString();
             Id = Request.QueryString["id"].ToString();
         }
     }

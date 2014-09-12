@@ -124,7 +124,7 @@
     <script type="text/jquery-tmpl-x" id="j-tmpl-orderDetail-footer">
         	<div class="muted pull-right text-right">
 				<p><span class="label label-info">合计</span> <b class="text-error ">${StotalPrice}</b>元</p>
-                {{if Type == 0}}
+                {{if Type != 0}}
 				    <p><b class="text-error">+</b> <span class="label label-info">配送费</span> <b class="text-error">${SendPrice}</b>元</p>
                 {{/if}}
                 {{if CtotalPrice > 0}}

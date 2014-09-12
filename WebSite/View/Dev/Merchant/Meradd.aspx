@@ -369,6 +369,9 @@
                         Template_List = data.templelist;
                         Sign_List = data.signlist;
                         mpage.showSubCategoryList();
+
+                        $("#j_user_createtime").html(data.nowdate);
+                        $("#j_mer_serverendtime").html(data.serverdata);
                     } else {
                         Common.tip({ type: "error", content: data.error });
                     }
@@ -550,6 +553,7 @@
                     $("#j_name_img").val().trim(),
                     $("#j_name_box").val().trim()
                 ];
+                
 
                 if (data_save.Name == "") {
                     Common.tip({ type: "error", content: "商户名称不能为空" });
@@ -566,6 +570,10 @@
                 if (data_save.LogoUrl == "" ||
                     data_save.LogoUrl == "http://placehold.it/128x128") {
                     Common.tip({ type: "error", content: "商户logo不能为空" });
+                    return;
+                }
+                if (data_save.CreateTime >= data_save.ServerEndTime) {
+                    Common.tip({ type: "error", content: "服务期截止时间不能小于等于入驻时间" });
                     return;
                 }
                 if (data_save.DevName == "") {

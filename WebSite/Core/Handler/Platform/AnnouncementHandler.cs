@@ -886,9 +886,13 @@ namespace Backstage.Handler
             var tresult = TempleHelper.GetList();
             var signlist = ParamHelper.PlatformCfgData.SignList;
             var jt = new JsonTransfer();
+            var nowdate = DateTime.Now.ToString("yyyy-MM-d");
+            var serverdata = DateTime.Now.AddYears(1).ToString("yyyy-MM-d"); ;
             jt.Add("mertypelist", result);
             jt.Add("templelist", tresult.Results);
             jt.Add("signlist", signlist);
+            jt.Add("nowdate", nowdate);
+            jt.Add("serverdata", serverdata);
 
             Response.Write(jt.ToJson());
             Response.End();

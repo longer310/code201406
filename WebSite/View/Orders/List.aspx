@@ -19,8 +19,8 @@
             <ul class="nav nav-tabs" id="j-order-tab">
                 <li><a href="#">所有订单</a></li>
                 <li><a href="#">已付款订单</a></li>
-                <li><a href="#">待发货订单</a></li>
-                <li><a href="#">已发货订单</a></li>
+                <%--<li><a href="#">待发货订单</a></li>
+                <li><a href="#">已发货订单</a></li>--%>
                 <li><a href="#">已完成订单</a></li>
             </ul>
             <table class="table table-bordered table-striped with-check">

@@ -1018,6 +1018,12 @@ namespace Backstage.Handler
                 ReturnErrorMsg("参数出错");
                 return;
             }
+            var merchant = MerchantHelper.GetMerchant(orders.SellerId);
+            if (merchant == null)
+            {
+                ReturnErrorMsg("商户不存在");
+                return;
+            }
             var payMent = PaymentHelper.GetPayment(pid);
             if (payMent == null)
             {
@@ -1032,6 +1038,10 @@ namespace Backstage.Handler
 
             if (ordertime != default(DateTime)) orders.OrderTime = ordertime;
             orders.OrderType = (OrderType)ordertype;
+            if (orders.OrderType != OrderType.Shop)
+            {
+                orders.TotalPrice += merchant.Freight;
+            }
             if (orderpeople != 0) orders.OrderPeople = orderpeople;
             if (!string.IsNullOrEmpty(address)) orders.Address = address;
             if (!string.IsNullOrEmpty(linkman)) orders.LinkMan = linkman;

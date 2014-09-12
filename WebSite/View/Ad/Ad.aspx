@@ -124,8 +124,9 @@
 	</script>
 
         <script>
+            var sellerId = '<%=SellerId%>';
             var MPage = {
-                hander: "<%=DomainUrl %>/Handler/Merchant/UserHandler.ashx?action=",
+                hander: "<%=DomainUrl %>/Handler/Merchant/UserHandler.ashx?sellerId=" + sellerId + "&action=",
             init: function () {
                 var mpage = this;
 
@@ -354,7 +355,7 @@
             MPage.init();
         });
 
-    </script>
+        </script>
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="Footer" runat="server">
 </asp:Content>

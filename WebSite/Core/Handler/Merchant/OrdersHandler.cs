@@ -61,6 +61,7 @@ namespace Backstage.Handler
             int start = GetInt("start");
             int limit = GetInt("limit");
             var type = (ReqOrderStatus)(GetInt("type") + 1);
+            if (type == ReqOrderStatus.WaitDeliverGoods) type = ReqOrderStatus.End;
 
             var wheresql = "";//string.Format(" where Status={0} ", (int)OrderStatus.Pay)
             switch (type)

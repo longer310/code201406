@@ -622,11 +622,12 @@ namespace Backstage.Core
             return null;
         }
 
-        public static bool JudgeUser(string phone, string username,int sellerId)
+        public static bool JudgeUser(string phone,int sellerId)//, string username
         {
-            var sql = @"select * from account where sellerId=?sellerId and (username=?username or phone=?phone) and Status >= 0 limit 1;";
+            //(username=?username or 
+            var sql = @"select * from account where sellerId=?sellerId and phone=?phone and Status >= 0 limit 1;";
             List<MySqlParameter> parameters = new List<MySqlParameter>();
-            parameters.Add(new MySqlParameter("?username", username));
+            //parameters.Add(new MySqlParameter("?username", username));
             parameters.Add(new MySqlParameter("?phone", phone));
             parameters.Add(new MySqlParameter("?sellerId", sellerId));
             try

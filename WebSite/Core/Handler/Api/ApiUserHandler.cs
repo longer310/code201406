@@ -194,20 +194,20 @@ namespace Backstage.Handler
         {
             var phone = GetString("phone");
             var code = GetString("code");
-            var username = GetString("username");
+            //var username = GetString("username");
             var password = GetString("password");
             var sellerid = GetInt("sellerid");
-
-            if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(phone) || string.IsNullOrEmpty(code) ||
+            //string.IsNullOrEmpty(username) || 
+            if (string.IsNullOrEmpty(phone) || string.IsNullOrEmpty(code) ||
                 string.IsNullOrEmpty(password) || sellerid == 0)
             {
                 ReturnErrorMsg("参数有误");
                 return;
             }
 
-            if (AccountHelper.JudgeUser(phone, username,sellerid))
+            if (AccountHelper.JudgeUser(phone,sellerid))//, username
             {
-                ReturnErrorMsg("已存在该昵称或电话号码的用户");
+                ReturnErrorMsg("已存在该电话号码的用户");
                 return;
             }
             var verificationCode = VerificationCodeHelper.GetVerificationCode(sellerid, phone);
@@ -230,8 +230,8 @@ namespace Backstage.Handler
 
             var account = new Account();
             account.Phone = phone;
-            account.UserName = username;
-            account.NickName = username;//默认等于用户名
+            account.UserName = phone;
+            account.NickName = phone;//默认等于phone
             account.Pwd = password;
             account.RoleType = RoleType.User;
             account.SellerId = sellerid;

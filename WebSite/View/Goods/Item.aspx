@@ -295,9 +295,8 @@
                     Common.tip({ type: "error", content: "原价不能为空" });
                     return;
                 }
-
-                if (nowPrice > originalPrice) {
-                    Common.tip({ type: "error", content: "原价应不小于现价" });
+                if (parseInt(nowPrice) > parseInt(originalPrice)) {
+                    Common.tip({ type: "error", content: "原价应大于等于现价" });
                     return;
                 }
 

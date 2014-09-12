@@ -104,8 +104,8 @@
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="Footer" runat="server">
     <!--页面js-->
-    <script charset="utf-8" src="../public/kindeditor/kindeditor-min.js"></script>
-    <script charset="utf-8" src="../public/kindeditor/lang/zh_CN.js"></script>
+    <script charset="utf-8" src="../../script/kindeditor/kindeditor-min.js"></script>
+    <script charset="utf-8" src="../../script/kindeditor/lang/zh_CN.js"></script>
 
     <script type="text/javascript">
         var MPage = {

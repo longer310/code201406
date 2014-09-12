@@ -49,7 +49,7 @@ namespace Backstage.Core.Handler
             {
                 var d = new
                 {
-                    img = ad.PicUrl,
+                    img = Utility.GetPhoneNeedUrl(ad.PicUrl),
                     time = merchant.WifiAdStayTime,
                     imglocationUrl = ad.JumpUrl
                 };
@@ -74,7 +74,7 @@ namespace Backstage.Core.Handler
             //var cfg = ParamHelper.GetMerchantCfgData(sellerId, merchant.Name);//ParamHelper.MerchantCfgData;
             var data = new
             {
-                img = merchant.LoginAdUrl,
+                img = Utility.GetPhoneNeedUrl(merchant.LoginAdUrl),
                 time = merchant.LoginAdStayTime
             };
             JsonTransfer jt = new JsonTransfer();

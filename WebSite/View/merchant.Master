@@ -74,7 +74,7 @@
                 <a href="<%=DomainUrl %>/View/Ad/Ad.aspx?sellerId=<%=SellerId%>"><i class="icon icon-bullhorn"></i><span>广告设置</span></a>
             </li>
             <li class="submenu sadebaer_dbs">
-                <a href="#"><i class="icon icon-hdd"></i><span>数据库统计</span> <span class="label">4</span></a>
+                <a href="#"><i class="icon icon-hdd"></i><span>数据库统计</span> <span class="label">3</span></a>
                 <ul>
                     <li><a href="#">销量统计</a></li>
                     <li><a href="#">充值量统计</a></li>
@@ -82,7 +82,7 @@
                 </ul>
             </li>
             <li class="submenu sadebaer_infos">
-                <a href="#"><i class="icon icon-cog"></i><span>系统设置</span> <span class="label">6</span></a>
+                <a href="#"><i class="icon icon-cog"></i><span>系统设置</span> <span class="label">5</span></a>
                 <ul>
                     <li><a href="<%=DomainUrl %>/View/System/SellerPwdEdit.aspx?sellerId=<%=SellerId %>">登陆设置</a></li>
                     <li><a href="<%=DomainUrl %>/View/System/SellerInFo.aspx?sellerId=<%=SellerId %>">资料设置</a></li>

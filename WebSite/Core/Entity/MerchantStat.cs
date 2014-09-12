@@ -47,7 +47,15 @@ namespace Backstage.Core.Entity
 
         public int OrderNumber { get; set; }
 
-        public int MoneyCount { get; set; }
+        /// <summary>
+        /// 订单金额
+        /// </summary>
+        public float MoneyCount { get; set; }
+
+        /// <summary>
+        /// 分类商家统计
+        /// </summary>
+        public Dictionary<string,string> CategoryStat { get; set; }
 
         /// <summary>
         /// 公告信息

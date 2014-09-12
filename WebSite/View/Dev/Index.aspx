@@ -106,10 +106,7 @@
 								</div>
 								<div class="widget-content">
 									<ul class="site-stats">
-										<li><strong>3元</strong> <small>今日</small></li>
-										<li><strong>16元</strong> <small>本月</small></li>
-										<li><strong>16元</strong> <small>季度</small></li>
-										<li><strong>259元</strong> <small>历史</small></li>
+										<li><strong><%=SystemStat.MoneyCount %>元</strong> <small>历史</small></li>
 									</ul>
 								</div>
 							</div>

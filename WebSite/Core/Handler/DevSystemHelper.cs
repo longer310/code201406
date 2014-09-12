@@ -152,11 +152,13 @@ namespace Backstage.Core.Handler
         internal static SystemStat GetSystemStat()
         {
             SystemStat s = new SystemStat();
-            string[] statString = new string[] { "account", "active", "goods", "material", "orders" };
+            string[] statString = new string[] { "account", "active", "goods", "material", "orders","money" };
             List<MySqlParameter> parameters = new List<MySqlParameter>();
             foreach (var stat in statString)
             {
                 string commandText = string.Format(@"select count(*) from {0}", stat);
+                if (stat == "money")
+                    commandText = string.Format(@"select count(TotalPrice) from orders where Status=2");
 
                 try
                 {
@@ -177,6 +179,8 @@ namespace Backstage.Core.Handler
                                     s.ImgCount = reader.GetInt32(0); break;
                                 case "orders":
                                     s.OrderNumber = reader.GetInt32(0); break;
+                                case "money":
+                                    s.MoneyCount = reader.GetFloat(0);break;
                                 default:
                                     break;
                             }

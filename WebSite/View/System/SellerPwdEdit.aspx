@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/View/merchant.Master" AutoEventWireup="true" CodeBehind="SellerPwdEdit.aspx.cs" Inherits="Backstage.View.System.SalePwdEdit" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/View/merchant.Master" AutoEventWireup="true" CodeBehind="SellerPwdEdit.aspx.cs" Inherits="Backstage.View.System.SellerPwdEdit" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="Header" runat="server">
     <link href="../public/kindeditor/themes/default/default.css" type="text/css" rel="stylesheet">
 </asp:Content>
@@ -15,7 +15,7 @@
 						<div class="control-group">
 							<label class="control-label">登陆账号</label>
 							<div class="controls">
-								<span class="text-error">czonechan</span>
+								<span class="text-error"><%=_UserName %></span>
 							</div>
 						</div>
 						<div class="control-group">
@@ -60,13 +60,23 @@
                     //绑定提交表单
                     $("#j-sysytem-login-changepassw_form").bind("submit", function () {
                         var save_data = {
-                            prepassw: $.trim($("#j-sysytem-login-prepassw").val()),
-                            newpassw: $.trim($("#j-sysytem-login-newpassw").val()),
+                            oldpwd: $.trim($("#j-sysytem-login-prepassw").val()),
+                            newpwd: $.trim($("#j-sysytem-login-newpassw").val()),
                             confirmpassw: $.trim($("#j-sysytem-login-confirmpassw").val())
                         }
-
-                        console.log(save_data);
-                        alert('提交数据')
+                        if (save_data.newpwd != save_data.confirmpassw)
+                        {
+                            alert("两次密码输入不一致");
+                        }
+                        $.ajax({
+                            url: "../../Handler/Backstage/SystemHandler.ashx?action=sellerinfo&sellerid=" + sellerId,
+                            data: save_data,
+                            type: "POST",
+                            dataType: "json"
+                            //context: document.body
+                        }).success(function (data) {
+                            alert(data.msg);
+                        });
                         return false;
                     });
 

@@ -10,6 +10,6 @@
 namespace Backstage.View.System {
     
     
-    public partial class SalePwdEdit {
+    public partial class SellerPwdEdit {
     }
 }

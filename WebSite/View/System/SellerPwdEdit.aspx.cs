@@ -10,9 +10,11 @@ namespace Backstage.View.System
 {
     public partial class SellerPwdEdit : BasePage
     {
+        public string _UserName;
+
         protected void Page_Load(object sender, EventArgs e)
         {
-
+            var seller = CurrentUser.UserName; 
         }
     }
 }

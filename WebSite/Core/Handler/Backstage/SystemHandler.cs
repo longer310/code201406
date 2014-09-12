@@ -42,8 +42,23 @@ namespace Backstage.Core.Handler.Backstage
                     CreatePush(); break;
                 case "editpush":
                     UpdatePush(); break;
+                case "updatepwd":
+                    UpdateMerchantPwd();break;
                 default: break;
             }
+        }
+
+        private void UpdateMerchantPwd()
+        {
+            var oldpwd = GetString("oldpwd");
+            var newpwd = GetString("newpwd");
+
+            var user = AccountHelper.GetCurUser();
+            if (oldpwd != user.Pwd)
+                ReturnErrorMsg("原密码错误，请重新输入");
+            user.Pwd = newpwd;
+            AccountHelper.SaveAccount(user);
+            ReturnCorrectMsg("修改成功");
         }
 
         private void UpdatePush()

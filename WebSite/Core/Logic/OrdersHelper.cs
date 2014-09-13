@@ -222,7 +222,7 @@ namespace Backstage.Core.Logic
                     var merchant = MerchantHelper.GetMerchant(orders.SellerId);
                     if (merchant.HasPrint == 1)
                     {
-                        
+
                     }
                     if (Utility._msg_opensend == "1")
                     {
@@ -266,7 +266,7 @@ namespace Backstage.Core.Logic
                             logger.InfoFormat("订单查找商户失败OrdersId：{0},SellerId:{1}", orders.Id, orders.SellerId);
                         }
                     }
-                    
+
                 }
             }
             else
@@ -355,14 +355,17 @@ namespace Backstage.Core.Logic
             }
             try
             {
-                var num = MySqlHelper.ExecuteNonQuery(Utility._gameDbConn, CommandType.Text, cmdText, parameters.ToArray());
+                using (var conn = Utility.ObtainConn(Utility._gameDbConn))
+                {
+                    var num = MySqlHelper.ExecuteNonQuery(conn, CommandType.Text, cmdText, parameters.ToArray());
 
-                if (orders.Id == 0)
-                {//插入 获得新id
-
-                    using (var conn = Utility.ObtainConn(Utility._gameDbConn))
-                    {
-                        cmdText = @"select @@identity";
+                    if (orders.Id == 0)
+                    {//插入 获得新id
+                        //LAST_INSERT_ID是基于Connection的，只要每个线程都使用独立的Connection对象，LAST_INSERT_ID函数将
+                        //返回该Connection对AUTO_INCREMENT列最新的insert or update*作生成的第一个record的ID。这个值不能
+                        //被其它客户端（Connection）影响，保证了你能够找回自己的 ID 而不用担心其它客户端的活动，而且不需
+                        //要加锁。
+                        cmdText = @"select LAST_INSERT_ID();";
                         var reader = MySqlHelper.ExecuteReader(conn, CommandType.Text, cmdText);
                         if (reader.HasRows)
                         {
@@ -372,8 +375,8 @@ namespace Backstage.Core.Logic
                             }
                         }
                     }
+                    return num;
                 }
-                return num;
             }
             catch (System.Exception ex)
             {

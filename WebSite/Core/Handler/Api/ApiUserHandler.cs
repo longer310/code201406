@@ -966,6 +966,11 @@ namespace Backstage.Handler
                 ReturnErrorMsg("phone参数没传");
                 return;
             }
+            if (sellerId <= 0)
+            {
+                ReturnErrorMsg("商户id参数错误");
+                return;
+            }
             var user = AccountHelper.FindUserByPhone(phone,sellerId);
             if (user == null)
             {

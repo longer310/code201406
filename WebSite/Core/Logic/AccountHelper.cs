@@ -168,7 +168,7 @@ namespace Backstage.Core
             IList<Account> list = new List<Account>();
             if (uids.Count < 1)
                 return list;
-            
+
 
             string ids_string = "(";
             foreach (var uid in uids)
@@ -358,12 +358,12 @@ namespace Backstage.Core
 
             try
             {
-                var num = MySqlHelper.ExecuteNonQuery(Utility._gameDbConn, CommandType.Text, cmdText, parameters.ToArray());
-                if (account.Id == 0)
+                using (var conn = Utility.ObtainConn(Utility._gameDbConn))
                 {
-                    using (var conn = Utility.ObtainConn(Utility._gameDbConn))
+                    var num = MySqlHelper.ExecuteNonQuery(conn, CommandType.Text, cmdText, parameters.ToArray());
+                    if (account.Id == 0)
                     {
-                        cmdText = @"select @@identity";
+                        cmdText = @"select LAST_INSERT_ID();";
                         var reader = MySqlHelper.ExecuteReader(conn, CommandType.Text, cmdText);
                         if (reader.HasRows)
                         {
@@ -373,8 +373,8 @@ namespace Backstage.Core
                             }
                         }
                     }
+                    return num;
                 }
-                return num;
             }
             catch (Exception ex)
             {
@@ -427,9 +427,9 @@ namespace Backstage.Core
         }
 
 
-        public static Account FindUserByPhone(string phone,int sellerId)
+        public static Account FindUserByPhone(string phone, int sellerId)
         {
-            var sql = String.Format("select * from account where Phone='{0}' and SellerId={1} and Status=0 limit 1;", phone,sellerId);
+            var sql = String.Format("select * from account where Phone='{0}' and SellerId={1} and Status=0 limit 1;", phone, sellerId);
             try
             {
                 using (var conn = Utility.ObtainConn(Utility._gameDbConn))
@@ -622,7 +622,7 @@ namespace Backstage.Core
             return null;
         }
 
-        public static bool JudgeUser(string phone,int sellerId)//, string username
+        public static bool JudgeUser(string phone, int sellerId)//, string username
         {
             //(username=?username or 
             var sql = @"select * from account where sellerId=?sellerId and phone=?phone and Status >= 0 limit 1;";
@@ -791,6 +791,6 @@ namespace Backstage.Core
                 return null;
             return GetEntityFromString(userData);
         }
-     
+
     }
 }

@@ -269,13 +269,13 @@ namespace Backstage.Core.Logic
             }
             try
             {
-                var num = MySqlHelper.ExecuteNonQuery(Utility._gameDbConn, CommandType.Text, cmdText, parameters.ToArray());
-                if (goods.Id == 0)
-                {//插入 获得新id
+                using (var conn = Utility.ObtainConn(Utility._gameDbConn))
+                {
+                    var num = MySqlHelper.ExecuteNonQuery(conn, CommandType.Text, cmdText, parameters.ToArray());
+                    if (goods.Id == 0)
+                    {//插入 获得新id
 
-                    using (var conn = Utility.ObtainConn(Utility._gameDbConn))
-                    {
-                        cmdText = @"select @@identity";
+                        cmdText = @"select LAST_INSERT_ID();";
                         var reader = MySqlHelper.ExecuteReader(conn, CommandType.Text, cmdText);
                         if (reader.HasRows)
                         {
@@ -285,8 +285,8 @@ namespace Backstage.Core.Logic
                             }
                         }
                     }
+                    return num;
                 }
-                return num;
             }
             catch (System.Exception ex)
             {

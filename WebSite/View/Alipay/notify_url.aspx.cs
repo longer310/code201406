@@ -36,14 +36,14 @@ public partial class notify_url : System.Web.UI.Page
     private static ILog logger = LogManager.GetLogger("notify_url");
     protected void Page_Load(object sender, EventArgs e)
     {
-        logger.Info("支付宝充值回调开始");
+        logger.Info("支付宝充值回调开始notify_url");
         logger.Info("开始解析参数");
         Dictionary<string, string> sPara = GetRequestPost();
 
         if (sPara.Count > 0)//判断是否有带返回参数
         {
             logger.Info("判断有带参数");
-            Notify aliNotify = new Notify();
+            AlipayXmlNotify aliNotify = new AlipayXmlNotify();
             var sign = Request.Form["sign"];
             logger.InfoFormat("验证签名:{0}", sign);
             bool verifyResult = aliNotify.VerifyNotify(sPara, sign);
@@ -57,7 +57,6 @@ public partial class notify_url : System.Web.UI.Page
 
                 //——请根据您的业务逻辑来编写程序（以下代码仅作参考）——
                 //获取支付宝的通知返回参数，可参考技术文档中服务器异步通知参数列表
-
                 //解密（如果是RSA签名需要解密，如果是MD5签名则下面一行清注释掉）
                 sPara = aliNotify.Decrypt(sPara);
 

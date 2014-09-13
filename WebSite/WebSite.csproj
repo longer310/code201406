@@ -602,6 +602,7 @@
   <ItemGroup>
     <Compile Include="Core\Alipay\AlipayConfig.cs" />
     <Compile Include="Core\Alipay\AlipayCore.cs" />
+    <Compile Include="Core\Alipay\AlipayXmlNotify.cs" />
     <Compile Include="Core\Alipay\AlipayNotify.cs" />
     <Compile Include="Core\Alipay\AlipaySubmit.cs" />
     <Compile Include="Core\Alipay\MD5.cs" />

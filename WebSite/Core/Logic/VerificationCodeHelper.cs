@@ -15,7 +15,7 @@ namespace Backstage.Core.Logic
             string wheresql = string.Empty;
             if (phone.Length > 0) wheresql = " and Phone =?Phone ";
             if (uid > 0) wheresql = " and UserId=?UserId ";
-            var cmdText = @"select * from VerificationCode where SellerId=?SellerId  limit 1;";
+            var cmdText = @"select * from VerificationCode where SellerId=?SellerId " + wheresql + " limit 1;";
             List<MySqlParameter> parameters = new List<MySqlParameter>();
             parameters.Add(new MySqlParameter("?SellerId", sellerId));
             if (phone.Length > 0) parameters.Add(new MySqlParameter("?Phone", phone));

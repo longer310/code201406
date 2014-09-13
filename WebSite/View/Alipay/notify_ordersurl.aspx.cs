@@ -37,7 +37,7 @@ public partial class notify_ordersurl : System.Web.UI.Page
     private static ILog logger = LogManager.GetLogger("notify_ordersurl");
     protected void Page_Load(object sender, EventArgs e)
     {
-        logger.Info("支付宝订单付款回调开始");
+        logger.Info("支付宝订单付款回调开始notify_ordersurl");
         logger.Info("开始解析参数");
         Dictionary<string, string> sPara = GetRequestPost();
 

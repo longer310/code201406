@@ -171,13 +171,13 @@ namespace Backstage.Core.Logic
             parameters.Add(new MySqlParameter("?UpdateStatusTime", chargeLog.UpdateStatusTime));
             try
             {
-                var num = MySqlHelper.ExecuteNonQuery(Utility._gameDbConn, CommandType.Text, cmdText,
-                    parameters.ToArray());
-                if (num > 0)
+                using (var conn = Utility.ObtainConn(Utility._gameDbConn))
                 {
-                    using (var conn = Utility.ObtainConn(Utility._gameDbConn))
+                    var num = MySqlHelper.ExecuteNonQuery(conn, CommandType.Text, cmdText,
+                        parameters.ToArray());
+                    if (num > 0)
                     {
-                        cmdText = @"select @@identity";
+                        cmdText = @"select LAST_INSERT_ID();";
                         var reader = MySqlHelper.ExecuteReader(conn, CommandType.Text, cmdText);
                         if (reader.HasRows)
                         {
@@ -188,8 +188,8 @@ namespace Backstage.Core.Logic
                             }
                         }
                     }
+                    return 0;
                 }
-                return 0;
             }
             catch (System.Exception ex)
             {

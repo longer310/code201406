@@ -226,12 +226,14 @@ namespace Backstage.Core
             parameters.Add(new MySqlParameter("?SellerId", sm.SellerId));
             parameters.Add(new MySqlParameter("?CreateTime", sm.CreateTime));
             parameters.Add(new MySqlParameter("?ImageType", sm.ImageType));
-            MySqlHelper.ExecuteNonQuery(connectionString, CommandType.Text, commandText, parameters.ToArray());
 
-            var id = 0;
+
             using (var conn = Utility.ObtainConn(Utility._gameDbConn))
             {
-                commandText = @"select @@identity";
+                MySqlHelper.ExecuteNonQuery(conn, CommandType.Text, commandText, parameters.ToArray());
+
+                var id = 0;
+                commandText = @"select LAST_INSERT_ID();";
                 var reader = MySqlHelper.ExecuteReader(conn, CommandType.Text, commandText);
                 if (reader.HasRows)
                 {
@@ -240,9 +242,9 @@ namespace Backstage.Core
                         id = reader.GetInt32(0);
                     }
                 }
+                return id;
             }
 
-            return id;
         }
 
         public static void Update(SourceMaterial sm)

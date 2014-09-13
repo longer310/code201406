@@ -85,6 +85,8 @@ namespace Backstage.Handler
 
             public List<HotItem> hots { get; set; }
 
+            public string phone { get; set; }
+
             public HomeData()
             {
                 slide = new List<SlideItem>();
@@ -202,6 +204,8 @@ namespace Backstage.Handler
                     data.hots.Add(new HotItem() { img = Utility.GetPhoneNeedUrl(gl.Url), gid = gl.Id });
                 }
             }
+
+            data.phone = merchant.Phone;
 
             //返回信息
             ReturnCorrectData(data);

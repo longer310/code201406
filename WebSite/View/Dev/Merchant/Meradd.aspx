@@ -151,6 +151,20 @@
                             <input type="text" id="j-profile-email" />
                         </div>
                     </div>
+
+                    <div class="control-group">
+                        <label class="control-label">IOS地址</label>
+                        <div class="controls">
+                            <input type="text" id="j-profile-iosurl" />
+                        </div>
+                    </div>
+
+                    <div class="control-group">
+                        <label class="control-label">安卓地址</label>
+                        <div class="controls">
+                            <input type="text" id="j-profile-androidurl" />
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -546,6 +560,8 @@
                 data_save.WinXinAccount = $("#j-profile-wechat_id").val().trim();
                 data_save.Qq = $("#j-profile-qq").val().trim();
                 data_save.Email = $("#j-profile-email").val().trim();
+                data_save.IosUrl = $("#j-profile-iosurl").val().trim();
+                data_save.AndroidUrl = $("#j-profile-androidurl").val().trim();
                 data_save.CnameList = [
                     $("#j_name_activity").val().trim(),
                     $("#j_name_goods").val().trim(),
@@ -606,6 +622,14 @@
                 }
                 if (data_save.Email == "") {
                     Common.tip({ type: "error", content: "Email不能为空" });
+                    return;
+                }
+                if (data_save.IosUrl == "") {
+                    Common.tip({ type: "error", content: "Ios地址不能为空" });
+                    return;
+                }
+                if (data_save.AndroidUrl == "") {
+                    Common.tip({ type: "error", content: "安卓地址不能为空" });
                     return;
                 }
 

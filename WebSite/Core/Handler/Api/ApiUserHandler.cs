@@ -666,6 +666,37 @@ namespace Backstage.Handler
             public int sourceid { get; set; }
             public float extcredit { get; set; }
             public int type { get; set; }
+            public string typename
+            {
+                get
+                {
+                    var name = string.Empty;
+                    switch ((ExtcreditSourceType)type)
+                    {
+                        case ExtcreditSourceType.BuyCoupon:
+                            name = "购买优惠券"; break;
+                        case ExtcreditSourceType.Charge:
+                            name = "充值"; break;
+                        case ExtcreditSourceType.Register:
+                            name = "签到"; break;
+                        case ExtcreditSourceType.Consume:
+                            name = "消费"; break;
+                        case ExtcreditSourceType.ShareGoods:
+                            name = "分享商品"; break;
+                        case ExtcreditSourceType.ShareActive:
+                            name = "分享活动"; break;
+                        case ExtcreditSourceType.CommentGoods:
+                            name = "评论商品"; break;
+                        case ExtcreditSourceType.CommentActive:
+                            name = "评论活动"; break;
+                        case ExtcreditSourceType.CommentImg:
+                            name = "评论图片墙"; break;
+                        case ExtcreditSourceType.CommentCoupon:
+                            name = "评论优惠卷"; break;
+                    }
+                    return name;
+                }
+            }
         }
         public void GetExtcreditLog()
         {
@@ -787,6 +818,7 @@ namespace Backstage.Handler
             public int id { get; set; }
             public int createtime { get; set; }
             public int type { get; set; }
+            public int typeid { get; set; }
             public string content { get; set; }
             public string img { get; set; }
             public string title { get; set; }
@@ -819,6 +851,7 @@ namespace Backstage.Handler
                 item.id = c.Id;
                 item.createtime = c.CreateTime.GetUnixTime();
                 item.type = (int)c.Type;
+                item.typeid = c.TypeId;
                 item.content = c.Content;
                 item.img = Utility.GetPhoneNeedUrl(c.Img);
                 item.title = c.Title;

@@ -736,6 +736,10 @@ namespace Backstage.Handler
             public string Qq { get; set; }
             [XmlElement("Email")]
             public string Email { get; set; }
+            [XmlElement("IosUrl")]
+            public string IosUrl { get; set; }
+            [XmlElement("AndroidUrl")]
+            public string AndroidUrl { get; set; }
             [XmlElement("CnameList")]
             public List<string> CnameList { get; set; }
         }
@@ -812,6 +816,8 @@ namespace Backstage.Handler
             merchant.WinXinAccount = merchantinfo.WinXinAccount;
             merchant.Qq = merchantinfo.Qq;
             merchant.Email = merchantinfo.Email;
+            merchant.IosUrl = merchantinfo.IosUrl;
+            merchant.AndroidUrl = merchantinfo.AndroidUrl;
             if (string.IsNullOrEmpty(merchantinfo.CnameList[0])) merchantinfo.CnameList[0] = "活动咨询";
             if (string.IsNullOrEmpty(merchantinfo.CnameList[1])) merchantinfo.CnameList[1] = "商品展示";
             if (string.IsNullOrEmpty(merchantinfo.CnameList[2])) merchantinfo.CnameList[2] = "快速预约";

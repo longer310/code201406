@@ -28,10 +28,10 @@ namespace Com.Alipay
         #region 字段
         private string _partner = "2088511724484349";               //合作身份者ID
         private string _key = "okkcs8za7xeuemhmbpmks2kd7agiqu8e";                   //支付宝MD5私钥
-        private string _private_key = "okkcs8za7xeuemhmbpmks2kd7agiqu8e";           //商户的私钥
-        private string _public_key = "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDHBWWopLDUIf6tPvdPxQ7f5Mpk U0SJzgw6C+A8y2+wLttcNIGGPoBWWhPKbeheW3wYpmJwfZUwXtPjP1Ysn0WGDr2+ rEsoHGa4r/MJlqPBtlhZnz/5tHJ0I8kOe1MQlFYwGiURWqgEyujSN5rrqrM3ySiq vljlvC69T0HzBKsgTwIDAQAB";            //支付宝的公钥
+        private string _private_key = @"MIICdgIBADANBgkqhkiG9w0BAQEFAASCAmAwggJcAgEAAoGBAMcFZaiksNQh/q0+90/FDt/kymRTRInODDoL4DzLb7Au21w0gYY+gFZaE8pt6F5bfBimYnB9lTBe0+M/ViyfRYYOvb6sSygcZriv8wmWo8G2WFmfP/m0cnQjyQ57UxCUVjAaJRFaqATK6NI3muuqszfJKKq+WOW8Lr1PQfMEqyBPAgMBAAECgYAk/zzZr9vrY3JrlFP3MUPFnUt+gPgxwesF82U5B/x4PQ2sQ1p8sSu8YbxiGjJjMBCOqIeOL9pHBqnPCdwkKWuL3wLL7oNqMiqBrUdEkcEhON2AocIuirBI1E3dMDtbpKLDBOkz+djbo3vnwxf0m9Vh7wsp5m+OayvieQHLASm+AQJBAPWlm0F9VqIUz6BSq2yDOsq38RC30WjH05JZLmjb1KzOUm0dfau+PnfQuyHO6OPcMaSy0uxVA8s302Fj9iN2T08CQQDPaLlWb2nZ3y7u89rwSO9wSWeVrh8S2e/2pDqiuo/Z3SS6MzO3YoaLFP8BIEy/G30mhH1+kDsQCUP4vwkcMd8BAkAQOtLZLtjMeKeHJi8hSkJWJnUM77gsPheicbX5Q5z3leIoR2yILleePvI+N5d3hpLZGN+KsctAX/3dT2dxzF1NAkEAsadq8O1XhmXTpps7Ugu3A7/sONo/BX+lOearzszsAFmaZt8Kki6TPbhLQGSxOBRMm1xqvai+3lqBXSQMopjZAQJASAjwID3PBvk58khEQLIBYrY72eN2yaQMInsr8zEXzcn9R85GuPgxDb0AHNZU/83XpSaEX7xb9ijlXTFvy8w7ZQ==";           //商户的私钥
+        private string _public_key = @"MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQC7pe69qNZ9it2T9Ix80u330SEv37L/4u2PzLMmipt/ugl17T9G6rLmbwGAu6kOjclEDC6+S1A/nBhVvLPUCdYZcqYk5thLYCNE2sg83BhO/v2ICKT0FqVINNTIq8dSFg5o8DIUY5JGGBnEOGmR/OWURb6SRGtqlEJIoKfjomE9aQIDAQAB";            //支付宝的公钥
         private string _input_charset = "utf-8";         //编码格式
-        private string _sign_type = "RSA";             //签名方式
+        private string _sign_type = "0001";             //签名方式
 
         //支付宝消息验证地址
         private string Https_veryfy_url = "https://mapi.alipay.com/gateway.do?service=notify_verify&";
@@ -47,12 +47,12 @@ namespace Com.Alipay
         public AlipayXmlNotify()
         {
             //初始化基础配置信息
-            _partner = Config.Partner.Trim();
-            _key = Config.Key.Trim();
-            _private_key = Config.Private_key.Trim();
-            _public_key = Config.Public_key.Trim();
-            _input_charset = Config.Input_charset.Trim().ToLower();
-            _sign_type = Config.Sign_type.Trim().ToUpper();
+            //_partner = Config.Partner.Trim();
+            //_key = Config.Key.Trim();
+            //_private_key = Config.Private_key.Trim();
+            //_public_key = Config.Public_key.Trim();
+            //_input_charset = Config.Input_charset.Trim().ToLower();
+            //_sign_type = Config.Sign_type.Trim().ToUpper();
         }
 
         /// <summary>
@@ -90,8 +90,9 @@ namespace Com.Alipay
         /// <returns>验证结果</returns>
         public bool VerifyNotify(Dictionary<string, string> inputPara, string sign)
         {
+            logger.InfoFormat("_sign_type:{0}", _sign_type);
             //解密
-            if (_sign_type == "RSA")
+            if (_sign_type == "0001")
             {
                 inputPara = Decrypt(inputPara);
             }
@@ -103,7 +104,9 @@ namespace Com.Alipay
                 //XML解析notify_data数据，获取notify_id
                 string notify_id = "";
                 XmlDocument xmlDoc = new XmlDocument();
-                xmlDoc.LoadXml(inputPara["notify_data"]);
+                var notify_data = inputPara["notify_data"];
+                logger.InfoFormat("notify_data:{0}", notify_data);
+                xmlDoc.LoadXml(notify_data);
                 notify_id = xmlDoc.SelectSingleNode("/notify/notify_id").InnerText;
 
                 if (notify_id != "") { responseTxt = GetResponseTxt(notify_id); }
@@ -166,9 +169,17 @@ namespace Com.Alipay
         {
             try
             {
-                inputPara["notify_data"] = RSAFromPkcs8.decryptData(inputPara["notify_data"], _private_key, _input_charset);
+                var dd = inputPara["notify_data"];
+                logger.InfoFormat("Decrypt,之前：{0}", dd);
+                var dr = RSAFromPkcs8.decryptData(dd, _private_key, _input_charset);
+                logger.InfoFormat("Decrypt,之后：{0}",  dr);
+                inputPara["notify_data"] = dr;
             }
-            catch (Exception e) { }
+            catch (Exception exc)
+            {
+                logger.InfoFormat("DecryptException:{0}", exc.Message);
+                throw;
+            }
 
             return inputPara;
         }
@@ -217,12 +228,11 @@ namespace Com.Alipay
 
                 //获取待签名字符串
                 string preSignStr = Core.CreateLinkString(sPara);
-                logger.InfoFormat("preSignStr:{0}",preSignStr);
+                logger.InfoFormat("preSignStr:{0}", preSignStr);
                 //获得签名验证结果
                 bool isSgin = false;
                 if (!string.IsNullOrEmpty(sign))
                 {
-                    logger.InfoFormat("_sign_type:{0}", _sign_type);
                     switch (_sign_type)
                     {
                         case "MD5":
@@ -247,7 +257,7 @@ namespace Com.Alipay
                 return false;
                 throw;
             }
-            
+
         }
 
         /// <summary>
@@ -257,6 +267,7 @@ namespace Com.Alipay
         /// <returns>验证结果</returns>
         private string GetResponseTxt(string notify_id)
         {
+            logger.InfoFormat("partner:{0},notify_id:{1}", _partner, notify_id);
             string veryfy_url = Https_veryfy_url + "partner=" + _partner + "&notify_id=" + notify_id;
 
             //获取远程服务器ATN结果，验证是否是支付宝服务器发来的请求

@@ -79,22 +79,30 @@ namespace Com.Alipay
         /// <returns>解密结果</returns>
         public static string decryptData(string resData, string privateKey, string input_charset)
         {
-            byte[] DataToDecrypt = Convert.FromBase64String(resData);
-            List<byte> result = new List<byte>();
-
-            for (int j = 0; j < DataToDecrypt.Length / 128; j++)
+            try
             {
-                byte[] buf = new byte[128];
-                for (int i = 0; i < 128; i++)
+                byte[] DataToDecrypt = Convert.FromBase64String(resData);
+                List<byte> result = new List<byte>();
+
+                for (int j = 0; j < DataToDecrypt.Length / 128; j++)
                 {
-                    buf[i] = DataToDecrypt[i + 128 * j];
+                    byte[] buf = new byte[128];
+                    for (int i = 0; i < 128; i++)
+                    {
+                        buf[i] = DataToDecrypt[i + 128 * j];
+                    }
+                    result.AddRange(decrypt(buf, privateKey, input_charset));
                 }
-                result.AddRange(decrypt(buf, privateKey, input_charset));
+                byte[] source = result.ToArray();
+                char[] asciiChars = new char[Encoding.GetEncoding(input_charset).GetCharCount(source, 0, source.Length)];
+                Encoding.GetEncoding(input_charset).GetChars(source, 0, source.Length, asciiChars, 0);
+                return new string(asciiChars);
             }
-            byte[] source = result.ToArray();
-            char[] asciiChars = new char[Encoding.GetEncoding(input_charset).GetCharCount(source, 0, source.Length)];
-            Encoding.GetEncoding(input_charset).GetChars(source, 0, source.Length, asciiChars, 0);
-            return new string(asciiChars);
+            catch (Exception exc)
+            {
+                logger.InfoFormat("decryptDataException:{0}", exc.Message);
+                return "";
+            }
         }
 
         private static byte[] decrypt(byte[] data, string privateKey, string input_charset)
@@ -112,15 +120,19 @@ namespace Com.Alipay
         private static RSACryptoServiceProvider DecodePemPrivateKey(String pemstr)
         {
             byte[] pkcs8privatekey;
+            //logger.InfoFormat("DecodePemPrivateKey pemstr:{0}", pemstr);
             pkcs8privatekey = Convert.FromBase64String(pemstr);
             if (pkcs8privatekey != null)
             {
-
+                //logger.InfoFormat("rsa not null");
                 RSACryptoServiceProvider rsa = DecodePrivateKeyInfo(pkcs8privatekey);
                 return rsa;
             }
             else
+            {
+                logger.InfoFormat("rsa is null");
                 return null;
+            }
         }
 
         private static RSACryptoServiceProvider DecodePrivateKeyInfo(byte[] pkcs8)
@@ -134,6 +146,7 @@ namespace Com.Alipay
             BinaryReader binr = new BinaryReader(mem);    //wrap Memory Stream with BinaryReader for easy reading
             byte bt = 0;
             ushort twobytes = 0;
+            //logger.InfoFormat("twobytes:{0}", twobytes);
 
             try
             {
@@ -148,19 +161,23 @@ namespace Com.Alipay
 
 
                 bt = binr.ReadByte();
+                //logger.InfoFormat("bt:{0}", bt);
                 if (bt != 0x02)
                     return null;
 
                 twobytes = binr.ReadUInt16();
 
+                //logger.InfoFormat("twobytes:{0}", twobytes);
                 if (twobytes != 0x0001)
                     return null;
 
                 seq = binr.ReadBytes(15);		//read the Sequence OID
+                //logger.InfoFormat("seq:{0}", seq);
                 if (!CompareBytearrays(seq, SeqOID))	//make sure Sequence for OID is correct
                     return null;
 
                 bt = binr.ReadByte();
+                //logger.InfoFormat("bt:{0}", bt);
                 if (bt != 0x04)	//expect an Octet string 
                     return null;
 
@@ -177,8 +194,9 @@ namespace Com.Alipay
                 return rsacsp;
             }
 
-            catch (Exception)
+            catch (Exception exc)
             {
+                logger.InfoFormat("DecodePrivateKeyInfo error:{0}", exc.Message);
                 return null;
             }
 
@@ -189,13 +207,21 @@ namespace Com.Alipay
 
         private static bool CompareBytearrays(byte[] a, byte[] b)
         {
+            //logger.InfoFormat("a.length:{0},b.length:{1}", a.Length, b.Length);
             if (a.Length != b.Length)
                 return false;
             int i = 0;
+            foreach (var b1 in a)
+            {
+                //logger.InfoFormat("ba:{0}", b1);
+            }
             foreach (byte c in a)
             {
                 if (c != b[i])
+                {
+                    //logger.InfoFormat("c:{0},b[i]:{1},i:{2}", c, b[i], i);
                     return false;
+                }
                 i++;
             }
             return true;

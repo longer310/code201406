@@ -31,12 +31,12 @@ using log4net;
 /// 该页面调试工具请使用写文本函数logResult。
 /// 如果没有收到该页面返回的 success 信息，支付宝会在24小时内按一定的时间策略重发通知
 /// </summary>
-public partial class notify_url : System.Web.UI.Page
+public partial class wap_notify_ordersurl : System.Web.UI.Page
 {
-    private static ILog logger = LogManager.GetLogger("notify_url");
+    private static ILog logger = LogManager.GetLogger("wap_notify_ordersurl");
     protected void Page_Load(object sender, EventArgs e)
     {
-        logger.Info("支付宝充值回调开始notify_url");
+        logger.Info("支付宝充值回调开始wap_notify_ordersurl");
         logger.Info("开始解析参数");
         Dictionary<string, string> sPara = GetRequestPost();
 
@@ -63,14 +63,16 @@ public partial class notify_url : System.Web.UI.Page
                 //XML解析notify_data数据
                 try
                 {
-                    //XmlDocument xmlDoc = new XmlDocument();
-                    //xmlDoc.LoadXml(sPara["notify_data"]);
+                    XmlDocument xmlDoc = new XmlDocument();
+                    string notify_data = sPara["notify_data"];
+                    logger.InfoFormat("notify_data:{0}", notify_data);
+                    xmlDoc.LoadXml(notify_data);
                     //商户订单号
-                    string out_trade_no = sPara["out_trade_no"];//xmlDoc.SelectSingleNode("/notify/out_trade_no").InnerText;
+                    string out_trade_no = xmlDoc.SelectSingleNode("/notify/out_trade_no").InnerText;
                     //支付宝交易号
-                    string trade_no = sPara["trade_no"];//xmlDoc.SelectSingleNode("/notify/trade_no").InnerText;
+                    string trade_no = xmlDoc.SelectSingleNode("/notify/trade_no").InnerText;
                     //交易状态
-                    string trade_status = sPara["trade_status"];//xmlDoc.SelectSingleNode("/notify/trade_status").InnerText;
+                    string trade_status = xmlDoc.SelectSingleNode("/notify/trade_status").InnerText;
 
                     logger.InfoFormat("out_trade_no:{0},trade_no:{1},trade_status:{2}", out_trade_no, trade_no, trade_status);
                     if (trade_status == "TRADE_FINISHED" || trade_status == "TRADE_SUCCESS")
@@ -87,43 +89,63 @@ public partial class notify_url : System.Web.UI.Page
                         if (Utility.IsNum(out_trade_no))
                         {
                             var id = Convert.ToInt32(out_trade_no);
-                            var chargeLog = ChargeLogHelper.GetChargeLog(id);
-                            if (chargeLog != null && chargeLog.Status == 0)
+                            var orders = OrdersHelper.GetOrders(id);
+                            if (orders != null && orders.Status < OrderStatus.Pay)
                             {
                                 //添加
-                                var user = AccountHelper.GetUser(chargeLog.UserId);
+                                var user = AccountHelper.GetUser(orders.UserId);
                                 if (user == null)
                                 {
-                                    logger.ErrorFormat("不存在用户Id={0}", chargeLog.UserId);
+                                    logger.ErrorFormat("不存在用户Id={0}", orders.UserId);
                                 }
                                 else
                                 {
-                                    ExtcreditLog log = new ExtcreditLog();
-                                    log.UserId = chargeLog.UserId;
-                                    log.SellerId = chargeLog.SellerId;
-                                    log.SourceId = DateTime.Now.GetUnixTime();
-                                    log.Extcredit = (int)(chargeLog.Money * 1.0 / ParamHelper.ExtcreditCfgData.Charge);
-                                    log.Type = ExtcreditSourceType.Charge;
+                                    var payMent = new Payment();
+                                    if (orders.Pid > 0)
+                                        PaymentHelper.GetPayment(orders.Pid);
+
+                                    var chargeLog = new ChargeLog();
+                                    chargeLog.UserId = orders.UserId;
+                                    chargeLog.Money = -orders.TotalPrice;
+                                    chargeLog.Pid = orders.Pid;
+                                    chargeLog.SellerId = orders.SellerId;
+                                    chargeLog.OrderId = orders.Id.ToString();
+                                    chargeLog.PayName = payMent.Id == 0 ? "账户余额" : payMent.Name;
+                                    //记录消费记录
+                                    ChargeLogHelper.AddChargeLog(chargeLog);
+
+                                    //积分获得
+                                    var log = new ExtcreditLog();
+                                    log.UserId = orders.UserId;
+                                    log.SellerId = user.SellerId;
+                                    log.SourceId = orders.Id;
+                                    log.Extcredit = (int)(orders.TotalPrice * 1.0 / ParamHelper.ExtcreditCfgData.Consume);
+                                    log.Type = ExtcreditSourceType.Consume;
+                                    log.CreateTime = DateTime.Now;
 
                                     ExtcreditLogHelper.AddExtcreditLog(log);
 
-                                    user.Integral = log.Extcredit;
-                                    user.Money += chargeLog.Money;
-                                    user.TotalRecharge += chargeLog.Money;
+                                    user.Integral += log.Extcredit;
+
                                     //保存用户信息
                                     AccountHelper.SaveAccount(user);
-                                    //更新充值记录
-                                    ChargeLogHelper.UpdateStatus(RechargeStatus.Success, id);
-                                    logger.ErrorFormat("充值成功;UserId={1},Money={0}", chargeLog.Money, chargeLog.UserId);
+
+                                    //更新订单中商品的销量
+                                    GoodsHelper.UpdateGoodsSales(orders.GidList, orders.NumList);
+
+                                    orders.Status = OrderStatus.Pay;
+                                    OrdersHelper.SaveOrders(orders);
+
+                                    logger.ErrorFormat("订单付款成功;UserId={1},Money={0},OrdersId:{2},Status:{3}", orders.TotalPrice, orders.UserId, orders.Id, (int)orders.Status);
                                 }
                             }
-                            else if (chargeLog == null)
+                            else if (orders == null)
                             {
-                                logger.ErrorFormat("不存在充值记录Id={0}", id);
+                                logger.ErrorFormat("不存在订单记录Id={0}", id);
                             }
                             else
                             {
-                                logger.Error("该充值记录已处理过");
+                                logger.Error("该订单已处理过");
                             }
                         }
                         else
@@ -150,22 +172,21 @@ public partial class notify_url : System.Web.UI.Page
                         if (Utility.IsNum(out_trade_no))
                         {
                             var id = Convert.ToInt32(out_trade_no);
-
-                            //更新充值记录
-                            var chargeLog = ChargeLogHelper.GetChargeLog(id);
-                            if (chargeLog != null)
+                            var orders = OrdersHelper.GetOrders(id);
+                            if (orders != null)
                             {
-                                logger.ErrorFormat("充值失败;UserId={1},Money={0}", chargeLog.Money, chargeLog.UserId);
+                                logger.ErrorFormat("订单付款失败;UserId={1},Money={0}", orders.TotalPrice, orders.UserId);
+                                orders.Status = OrderStatus.Update;
+                                OrdersHelper.SaveOrders(orders);
                             }
                             else
                             {
-                                logger.ErrorFormat("充值失败,充值记录未找到Id:{0}", id);
+                                logger.ErrorFormat("订单付款失败,订单未找到Id:{0}", id);
                             }
-                            ChargeLogHelper.UpdateStatus(RechargeStatus.Fail, id);
                         }
                         else
                         {
-                            logger.ErrorFormat("充值失败,充值id不是int型;Id={0}", out_trade_no);
+                            logger.ErrorFormat("订单付款失败,订单付款id不是int型;Id={0}", out_trade_no);
                         }
                         Response.Write(trade_status);
                     }
@@ -210,7 +231,10 @@ public partial class notify_url : System.Web.UI.Page
         for (i = 0; i < requestItem.Length; i++)
         {
             sArray.Add(requestItem[i], Request.Form[requestItem[i]]);
-            logger.InfoFormat("key:{0},value={1}", requestItem[i], Request.Form[requestItem[i]]);
+            var key = requestItem[i];
+            var value = Request.Form[requestItem[i]];
+            if (key == "notify_data") value = "加密数据不打印出来太多了。。。";
+            logger.InfoFormat("key:{0},value={1}", key, value);
         }
 
         return sArray;

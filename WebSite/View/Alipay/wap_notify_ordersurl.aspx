@@ -1,0 +1,1 @@
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="wap_notify_ordersurl.aspx.cs" Inherits="wap_notify_ordersurl" %>

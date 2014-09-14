@@ -42,7 +42,7 @@ public partial class wap_notify_ordersurl : System.Web.UI.Page
 
         if (sPara.Count > 0)//判断是否有带返回参数
         {
-            logger.Info("判断有带参数");
+            //logger.Info("判断有带参数");
             AlipayXmlNotify aliNotify = new AlipayXmlNotify();
             var sign = Request.Form["sign"];
             logger.InfoFormat("验证签名:{0}", sign);
@@ -58,14 +58,14 @@ public partial class wap_notify_ordersurl : System.Web.UI.Page
                 //——请根据您的业务逻辑来编写程序（以下代码仅作参考）——
                 //获取支付宝的通知返回参数，可参考技术文档中服务器异步通知参数列表
                 //解密（如果是RSA签名需要解密，如果是MD5签名则下面一行清注释掉）
-                sPara = aliNotify.Decrypt(sPara);
+                //sPara = aliNotify.Decrypt(sPara);
 
                 //XML解析notify_data数据
                 try
                 {
                     XmlDocument xmlDoc = new XmlDocument();
                     string notify_data = sPara["notify_data"];
-                    logger.InfoFormat("notify_data:{0}", notify_data);
+                    //logger.InfoFormat("notify_data:{0}", notify_data);
                     xmlDoc.LoadXml(notify_data);
                     //商户订单号
                     string out_trade_no = xmlDoc.SelectSingleNode("/notify/out_trade_no").InnerText;
@@ -136,7 +136,7 @@ public partial class wap_notify_ordersurl : System.Web.UI.Page
                                     orders.Status = OrderStatus.Pay;
                                     OrdersHelper.SaveOrders(orders);
 
-                                    logger.ErrorFormat("订单付款成功;UserId={1},Money={0},OrdersId:{2},Status:{3}", orders.TotalPrice, orders.UserId, orders.Id, (int)orders.Status);
+                                    logger.InfoFormat("订单付款成功;UserId={1},Money={0},OrdersId:{2},Status:{3}", orders.TotalPrice, orders.UserId, orders.Id, (int)orders.Status);
                                 }
                             }
                             else if (orders == null)
@@ -234,7 +234,7 @@ public partial class wap_notify_ordersurl : System.Web.UI.Page
             var key = requestItem[i];
             var value = Request.Form[requestItem[i]];
             if (key == "notify_data") value = "加密数据不打印出来太多了。。。";
-            logger.InfoFormat("key:{0},value={1}", key, value);
+            //logger.InfoFormat("key:{0},value={1}", key, value);
         }
 
         return sArray;

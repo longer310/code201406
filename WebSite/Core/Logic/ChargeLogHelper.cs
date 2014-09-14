@@ -203,16 +203,18 @@ namespace Backstage.Core.Logic
         /// </summary>
         /// <param name="status"></param>
         /// <param name="id"></param>
+        /// <param name="orderId"></param>
         /// <returns></returns>
-        public static bool UpdateStatus(RechargeStatus status, int id)
+        public static bool UpdateStatus(RechargeStatus status, int id,string orderId)
         {
             var cmdText = string.Empty;
             List<MySqlParameter> parameters = new List<MySqlParameter>();
 
-            cmdText = @"update ChargeLog set Status=?Status,UpdateStatusTime=?UpdateStatusTime where Id=?Id;";
+            cmdText = @"update ChargeLog set Status=?Status,UpdateStatusTime=?UpdateStatusTime,OrderId=?OrderId where Id=?Id;";
 
             parameters.Add(new MySqlParameter("?Status", status));
             parameters.Add(new MySqlParameter("?UpdateStatusTime", DateTime.Now));
+            parameters.Add(new MySqlParameter("?OrderId", orderId));
             parameters.Add(new MySqlParameter("?Id", id));
 
             try

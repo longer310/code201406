@@ -90,7 +90,7 @@ namespace Com.Alipay
         /// <returns>验证结果</returns>
         public bool VerifyNotify(Dictionary<string, string> inputPara, string sign)
         {
-            logger.InfoFormat("_sign_type:{0}", _sign_type);
+            //logger.InfoFormat("_sign_type:{0}", _sign_type);
             //解密
             if (_sign_type == "0001")
             {
@@ -105,7 +105,7 @@ namespace Com.Alipay
                 string notify_id = "";
                 XmlDocument xmlDoc = new XmlDocument();
                 var notify_data = inputPara["notify_data"];
-                logger.InfoFormat("notify_data:{0}", notify_data);
+                //logger.InfoFormat("notify_data:{0}", notify_data);
                 xmlDoc.LoadXml(notify_data);
                 notify_id = xmlDoc.SelectSingleNode("/notify/notify_id").InnerText;
 
@@ -118,13 +118,13 @@ namespace Com.Alipay
                 responseTxt = exc.ToString();
             }
 
-            //获取返回时的签名验证结果
-            bool isSign = GetSignVeryfy(inputPara, sign, false);
-            logger.InfoFormat("isSign：{0})", isSign);
 
             //写日志记录（若要调试，请取消下面两行注释）
             //string sWord = "responseTxt=" + responseTxt + "\n isSign=" + isSign.ToString() + "\n 返回回来的参数：" + GetPreSignStr(inputPara) + "\n ";
             //Core.LogResult(sWord);
+            //获取返回时的签名验证结果
+            bool isSign = GetSignVeryfy(inputPara, sign, false);
+            logger.InfoFormat("isSign：{0})", isSign);
 
             //判断responsetTxt是否为true，isSign是否为true
             //responsetTxt的结果不是true，与服务器设置问题、合作身份者ID、notify_id一分钟失效有关
@@ -228,7 +228,7 @@ namespace Com.Alipay
 
                 //获取待签名字符串
                 string preSignStr = Core.CreateLinkString(sPara);
-                logger.InfoFormat("preSignStr:{0}", preSignStr);
+                //logger.InfoFormat("preSignStr:{0}", preSignStr);
                 //获得签名验证结果
                 bool isSgin = false;
                 if (!string.IsNullOrEmpty(sign))
@@ -267,7 +267,7 @@ namespace Com.Alipay
         /// <returns>验证结果</returns>
         private string GetResponseTxt(string notify_id)
         {
-            logger.InfoFormat("partner:{0},notify_id:{1}", _partner, notify_id);
+            //logger.InfoFormat("partner:{0},notify_id:{1}", _partner, notify_id);
             string veryfy_url = Https_veryfy_url + "partner=" + _partner + "&notify_id=" + notify_id;
 
             //获取远程服务器ATN结果，验证是否是支付宝服务器发来的请求

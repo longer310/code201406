@@ -42,7 +42,7 @@ public partial class wap_notify_url : System.Web.UI.Page
 
         if (sPara.Count > 0)//判断是否有带返回参数
         {
-            logger.Info("判断有带参数");
+            //logger.Info("判断有带参数");
             AlipayXmlNotify aliNotify = new AlipayXmlNotify();
             var sign = Request.Form["sign"];
             logger.InfoFormat("验证签名:{0}", sign);
@@ -58,14 +58,14 @@ public partial class wap_notify_url : System.Web.UI.Page
                 //——请根据您的业务逻辑来编写程序（以下代码仅作参考）——
                 //获取支付宝的通知返回参数，可参考技术文档中服务器异步通知参数列表
                 //解密（如果是RSA签名需要解密，如果是MD5签名则下面一行清注释掉）
-                sPara = aliNotify.Decrypt(sPara);
+                //sPara = aliNotify.Decrypt(sPara);
 
                 //XML解析notify_data数据
                 try
                 {
                     XmlDocument xmlDoc = new XmlDocument();
                     string notify_data = sPara["notify_data"];
-                    logger.InfoFormat("notify_data:{0}", notify_data);
+                    //logger.InfoFormat("notify_data:{0}", notify_data);
                     xmlDoc.LoadXml(notify_data);
                     //商户订单号
                     string out_trade_no = xmlDoc.SelectSingleNode("/notify/out_trade_no").InnerText;
@@ -100,6 +100,9 @@ public partial class wap_notify_url : System.Web.UI.Page
                                 }
                                 else
                                 {
+                                    //交易金额
+                                    double total_fee = Convert.ToDouble(xmlDoc.SelectSingleNode("/notify/total_fee").InnerText);
+
                                     ExtcreditLog log = new ExtcreditLog();
                                     log.UserId = chargeLog.UserId;
                                     log.SellerId = chargeLog.SellerId;
@@ -109,14 +112,20 @@ public partial class wap_notify_url : System.Web.UI.Page
 
                                     ExtcreditLogHelper.AddExtcreditLog(log);
 
+                                    if (total_fee != chargeLog.Money)
+                                    {
+                                        logger.InfoFormat("total_fee:{0},chargelog.money:{1}",total_fee,chargeLog.Money);
+                                    }
+
                                     user.Integral = log.Extcredit;
                                     user.Money += chargeLog.Money;
                                     user.TotalRecharge += chargeLog.Money;
                                     //保存用户信息
                                     AccountHelper.SaveAccount(user);
                                     //更新充值记录
-                                    ChargeLogHelper.UpdateStatus(RechargeStatus.Success, id);
-                                    logger.ErrorFormat("充值成功;UserId={1},Money={0}", chargeLog.Money, chargeLog.UserId);
+                                    //chargeLog.OrderId = trade_no;   //更新第三方订单id
+                                    ChargeLogHelper.UpdateStatus(RechargeStatus.Success, id, trade_no);
+                                    logger.InfoFormat("充值成功;UserId={1},Money={0},ChargeLogId:{2}", chargeLog.Money, chargeLog.UserId, id);
                                 }
                             }
                             else if (chargeLog == null)
@@ -163,7 +172,7 @@ public partial class wap_notify_url : System.Web.UI.Page
                             {
                                 logger.ErrorFormat("充值失败,充值记录未找到Id:{0}", id);
                             }
-                            ChargeLogHelper.UpdateStatus(RechargeStatus.Fail, id);
+                            ChargeLogHelper.UpdateStatus(RechargeStatus.Fail, id, trade_no);
                         }
                         else
                         {
@@ -215,7 +224,7 @@ public partial class wap_notify_url : System.Web.UI.Page
             var key = requestItem[i];
             var value = Request.Form[requestItem[i]];
             //if (key == "notify_data") value = "加密数据不打印出来太多了。。。";
-            logger.InfoFormat("key:{0},value={1}",key, value );
+            //logger.InfoFormat("key:{0},value={1}", key, value);
         }
 
         return sArray;

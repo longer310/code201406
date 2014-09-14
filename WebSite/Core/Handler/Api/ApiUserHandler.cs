@@ -360,7 +360,7 @@ namespace Backstage.Handler
         public void UserCharge()
         {
             var uid = GetInt("uid");
-            var money = GetInt("money");
+            var money = GetFloat("money");
             var pid = GetInt("pid");
             var sellerid = GetInt("sellerid");
             var orderid = GetString("orderid");//第三方订单号 使用字符串！

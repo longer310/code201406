@@ -5,7 +5,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    
+
     <title></title>
     <%--公用css 注意这里head不能加 runat="server"!!!--%>
     <link rel="stylesheet" type="text/css" href="<%=DomainUrl %>/Css/css/bootstrap.min.css" />
@@ -51,6 +51,15 @@
                     <li class="sidebar_goodslist"><a href="<%=DomainUrl %>/View/Goods/List.aspx?sellerId=<%=SellerId%>">产品列表</a></li>
                     <li class="sidebar_goodsadd"><a href="<%=DomainUrl %>/View/Goods/Item.aspx?sellerId=<%=SellerId%>">新增产品</a></li>
                     <li class="sidebar_categories"><a href="<%=DomainUrl %>/View/Goods/Categroy.aspx?sellerId=<%=SellerId%>">分类管理</a></li>
+                </ul>
+            </li>
+            <li class="submenu active open">
+                <a href="#"><i class="icon icon-tint"></i><span>包厢管理</span><span class="label">3</span></a>
+                <ul>
+                    <li class="active"><a href="pkg_list.html">包厢列表</a></li>
+                    <li><a href="pkg_add.html">新增包厢</a></li>
+                    <li><a href="pkg_categroy.html">分类管理</a></li>
+                    <li><a href="pkg_time.html">时段管理</a></li>
                 </ul>
             </li>
             <li class="sidebar_orders"><a href="<%=DomainUrl %>/View/Orders/List.aspx?sellerId=<%=SellerId%>"><i class="icon icon-shopping-cart"></i><span>订单管理</span></a></li>

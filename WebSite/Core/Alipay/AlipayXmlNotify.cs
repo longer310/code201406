@@ -170,9 +170,9 @@ namespace Com.Alipay
             try
             {
                 var dd = inputPara["notify_data"];
-                logger.InfoFormat("Decrypt,之前：{0}", dd);
+                //logger.InfoFormat("Decrypt,之前：{0}", dd);
                 var dr = RSAFromPkcs8.decryptData(dd, _private_key, _input_charset);
-                logger.InfoFormat("Decrypt,之后：{0}",  dr);
+                //logger.InfoFormat("Decrypt,之后：{0}",  dr);
                 inputPara["notify_data"] = dr;
             }
             catch (Exception exc)

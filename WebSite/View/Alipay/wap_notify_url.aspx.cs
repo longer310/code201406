@@ -112,11 +112,6 @@ public partial class wap_notify_url : System.Web.UI.Page
 
                                     ExtcreditLogHelper.AddExtcreditLog(log);
 
-                                    if (total_fee != chargeLog.Money)
-                                    {
-                                        logger.InfoFormat("total_fee:{0},chargelog.money:{1}",total_fee,chargeLog.Money);
-                                    }
-
                                     user.Integral = log.Extcredit;
                                     user.Money += chargeLog.Money;
                                     user.TotalRecharge += chargeLog.Money;
@@ -125,7 +120,7 @@ public partial class wap_notify_url : System.Web.UI.Page
                                     //更新充值记录
                                     //chargeLog.OrderId = trade_no;   //更新第三方订单id
                                     ChargeLogHelper.UpdateStatus(RechargeStatus.Success, id, trade_no);
-                                    logger.InfoFormat("充值成功;UserId={1},Money={0},ChargeLogId:{2}", chargeLog.Money, chargeLog.UserId, id);
+                                    logger.InfoFormat("充值成功;UserId={1},Money={0},ChargeLogId:{2},total_fee:{3}", chargeLog.Money, chargeLog.UserId, id, total_fee);
                                 }
                             }
                             else if (chargeLog == null)

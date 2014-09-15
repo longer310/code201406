@@ -132,7 +132,6 @@ namespace Backstage.Core.Logic
                         cmdText = @"select count(*) from ChargeLog where SellerId=?SellerId";
                         parameters = new List<MySqlParameter>();
                         parameters.Add(new MySqlParameter("?SellerId", sellerId));
-                        parameters.Add(new MySqlParameter("?UserId", userId));
                         reader = MySqlHelper.ExecuteReader(conn, CommandType.Text, cmdText, parameters.ToArray());
                         if (reader.HasRows)
                         {

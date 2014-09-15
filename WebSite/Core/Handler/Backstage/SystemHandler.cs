@@ -256,7 +256,8 @@ namespace Backstage.Core.Handler.Backstage
 
         private void RechargeStat()
         {
-
+            var sellerId = GetInt("sellerId");
+            
 
             throw new NotImplementedException();
         }
@@ -266,20 +267,6 @@ namespace Backstage.Core.Handler.Backstage
             throw new NotImplementedException();
         }
 
-
-
-        private void GetMsgs()
-        {
-
-
-            throw new NotImplementedException();
-        }
-
-        private void AddSystemMsg()
-        {
-
-            throw new NotImplementedException();
-        }
 
         private void UpdateSellerInfo()
         {

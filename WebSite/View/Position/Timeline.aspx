@@ -10,7 +10,7 @@
 					<h5>添加时段</h5>
 				</div>
 				<div class="widget-content">
-					<form action="#" method="post" class="form-horizontal" id="j-time-addForm" />
+					<form action="#" method="post" class="form-horizontal" id="j-time-addForm" >
 						<div class="control-group">
 							<label class="control-label">时段名称</label>
 							<div class="controls">

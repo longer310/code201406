@@ -68,6 +68,8 @@ namespace Backstage.Core.Handler
                 var coupon = CouponHelper.GetItem(couponid);
                 if (coupon == null)
                     ReturnCorrectMsg(string.Format("优惠券不存在couponid:{0}", couponid));
+                var user = AccountHelper.GetUser(userId);
+
                 var userCoupon = new UserCoupon()
                 {
                     CouponId = couponid,
@@ -80,6 +82,14 @@ namespace Backstage.Core.Handler
                     ReturnErrorMsg("已领取过该优惠券");
                     return;
                 }
+                if (coupon.Extcredit > user.Integral)
+                {
+                    ReturnErrorMsg("积分不足");
+                    return;
+                }
+
+                user.Integral -= coupon.Extcredit;
+                AccountHelper.SaveAccount(user);
                 CouponHelper.CreateUserCoupon(userCoupon);
                 coupon.DownloadTimes++;
                 CouponHelper.Update(coupon);

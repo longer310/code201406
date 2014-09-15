@@ -36,6 +36,8 @@ namespace Backstage.Core.Handler
 
             var cs = PositionHelper.GetListBoxTypes(sid, 0, 0);
             var ps = PositionHelper.GetList(sid, index * size, size, cid, status);
+           
+
 
             var data = new
             {
@@ -57,7 +59,7 @@ namespace Backstage.Core.Handler
                 var r = cs.FirstOrDefault(c => c.Id == item.BoxTypeId);
                 if (r == null)
                     throw new ArgumentNullException(String.Format("包厢分类Id:{0}不存在", item.BoxTypeId));
-
+                //var timelines = PositionHelper.GetTimeLines()
                 var p = new
                 {
                     sid = item.Id,
@@ -107,7 +109,6 @@ namespace Backstage.Core.Handler
                 price = item.Price,
                 des = item.Description,
                 lowest = boxType.Lowest,
-                status = item.Status,
                 timelost = times
             };
 

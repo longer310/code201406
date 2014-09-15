@@ -82,6 +82,76 @@ namespace Backstage.Core.Logic
             return result;
         }
 
+        public static PagResults<ChargeLog> GetChargeLogList(int sellerId,  int start = 0, int limit = 0,
+           int ifgetcount = 0)
+        {
+            var result = new PagResults<ChargeLog>();
+            result.Results = new List<ChargeLog>();
+            string limitsql = start != 0 ? " LIMIT ?start,?limit" : string.Empty;
+            var cmdText =
+                @"select * from ChargeLog where SellerId=?SellerId order by createtime desc " +
+                limitsql;
+
+            List<MySqlParameter> parameters = new List<MySqlParameter>();
+            if (limit != 0)
+            {
+                parameters.Add(new MySqlParameter("?start", start));
+                parameters.Add(new MySqlParameter("?limit", limit));
+            }
+            parameters.Add(new MySqlParameter("?SellerId", sellerId));
+            try
+            {
+                using (var conn = Utility.ObtainConn(Utility._gameDbConn))
+                {
+                    MySqlDataReader reader = MySqlHelper.ExecuteReader(conn, CommandType.Text, cmdText,
+                        parameters.ToArray());
+                    while (reader.Read())
+                    {
+                        ChargeLog ChargeLog = new ChargeLog();
+                        ChargeLog.Id = reader.GetInt32(0);
+                        ChargeLog.SellerId = (int)reader["SellerId"];
+                        ChargeLog.UserId = (int)reader["UserId"];
+                        ChargeLog.Money = (float)reader["Money"];
+                        ChargeLog.Pid = (int)reader["Pid"];
+                        ChargeLog.PayName = reader["PayName"].ToString();
+                        ChargeLog.OrderId = reader["OrderId"].ToString();
+                        ChargeLog.CreateTime = (DateTime)reader["CreateTime"];
+                        ChargeLog.Status = (RechargeStatus)reader["Status"];
+                        ChargeLog.UpdateStatusTime = (DateTime)reader["UpdateStatusTime"];
+
+                        result.Results.Add(ChargeLog);
+                    }
+
+                    if (ifgetcount > 0)
+                    {
+                        //一个函数有两次连接数据库 先把连接断开 然后重连
+                        conn.Close();
+                        conn.Dispose();
+                        conn.Open();
+
+                        cmdText = @"select count(*) from ChargeLog where SellerId=?SellerId";
+                        parameters = new List<MySqlParameter>();
+                        parameters.Add(new MySqlParameter("?SellerId", sellerId));
+                        parameters.Add(new MySqlParameter("?UserId", userId));
+                        reader = MySqlHelper.ExecuteReader(conn, CommandType.Text, cmdText, parameters.ToArray());
+                        if (reader.HasRows)
+                        {
+                            if (reader.Read())
+                            {
+                                result.TotalCount = reader.GetInt32(0);
+                            }
+                        }
+                    }
+                }
+
+            }
+            catch (System.Exception ex)
+            {
+                throw;
+            }
+            return result;
+        }
+
         /// <summary>
         /// 获取充值记录
         /// </summary>

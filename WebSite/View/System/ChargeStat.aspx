@@ -108,85 +108,95 @@
             getDetail: function () {
                 var mpage = this;
 
-                //$.getJSON("", { type : type}， function(json){
-                var json = {
-                    code: 0,
-                    msg: "",
-                    result: {
-                        list: [
-                            {},
-                            {},
-                            {},
-                            {},
-                            {},
-                            {},
-                            {},
-                            {},
-                            {},
-                            {}
-                        ]
-                    }
-                };
+                $.ajax({
+                    url: "../../Handler/Backstage/SystemHandler.ashx?action=getchargestat",
+                    type: "get",
+                    dataType: "json"
+                    //context: document.body
+                }).success(function (data) {
 
-
-
-                //明细图表
-                var randomScalingFactor = function () { return Math.round(Math.random() * 50) };
-                var labels = [];
-                var data = [];
-
-                for (var i = 1; i <= 24; i++) {
-                    labels.push(i);
-                    data.push(randomScalingFactor());
-                }
-
-                var lineChartData = {
-                    labels: labels,
-
-                    datasets: [
-                        {
-                            label: "My First dataset",
-                            fillColor: "rgba(220,220,220,0.2)",
-                            strokeColor: "rgba(220,220,220,1)",
-                            pointColor: "rgba(220,220,220,1)",
-                            pointStrokeColor: "#fff",
-                            pointHighlightFill: "#fff",
-                            pointHighlightStroke: "rgba(220,220,220,1)", scaleSteps: 20,
-                            data: data
+                    //$.getJSON("", { type : type}， function(json){
+                    var json = {
+                        code: 0,
+                        msg: "",
+                        result: {
+                            list: [
+                                {},
+                                {},
+                                {},
+                                {},
+                                {},
+                                {},
+                                {},
+                                {},
+                                {},
+                                {}
+                            ],
+                            count: 0
                         }
-                    ]
+                    };
 
-                }
+                    json.result = data.data.Results;
+                    json.result.count = data.data.TotalCount;
 
-                var ctx = document.getElementById("canvas").getContext("2d");
-                window.myLine = new Chart(ctx).Line(lineChartData, {
-                    responsive: true
+                    //明细图表
+                    var randomScalingFactor = function () { return Math.round(Math.random() * 50) };
+                    var labels = [];
+                    var data = [];
+
+                    for (var i = 1; i <= 24; i++) {
+                        labels.push(i);
+                        data.push(randomScalingFactor());
+                    }
+
+                    var lineChartData = {
+                        labels: labels,
+
+                        datasets: [
+                            {
+                                label: "My First dataset",
+                                fillColor: "rgba(220,220,220,0.2)",
+                                strokeColor: "rgba(220,220,220,1)",
+                                pointColor: "rgba(220,220,220,1)",
+                                pointStrokeColor: "#fff",
+                                pointHighlightFill: "#fff",
+                                pointHighlightStroke: "rgba(220,220,220,1)", scaleSteps: 20,
+                                data: data
+                            }
+                        ]
+
+                    }
+
+                    var ctx = document.getElementById("canvas").getContext("2d");
+                    window.myLine = new Chart(ctx).Line(lineChartData, {
+                        responsive: true
+                    });
+
+                    //总计图表
+                    $("#j-charge-max_analysis").html($("#j-tmpl-charge-max_analysis").tmpl(json.result));
+
+                    $.fn.peity.defaults.bar = {
+                        delimeter: ",",
+                        height: 24,
+                        max: null,
+                        min: 0,
+                        width: 50
+                    };
+
+                    $(".peity_bar_all span").peity("bar", {
+                        colour: "#459D1C"
+                    });
+                    $(".peity_bar_per span").peity("bar", {
+                        colour: "#BA1E20"
+                    });
+                    $(".peity_bar_count span").peity("bar", {
+                        colour: "#090f7f"
+                    });
+
+                    //排行
+                    $("#j-charge-list").html($("#j-tmpl-charge-rankitem").tmpl(json.result));
+                    //});
                 });
-
-                //总计图表
-                $("#j-charge-max_analysis").html($("#j-tmpl-charge-max_analysis").tmpl(json.result));
-
-                $.fn.peity.defaults.bar = {
-                    delimeter: ",",
-                    height: 24,
-                    max: null,
-                    min: 0,
-                    width: 50
-                };
-
-                $(".peity_bar_all span").peity("bar", {
-                    colour: "#459D1C"
-                });
-                $(".peity_bar_per span").peity("bar", {
-                    colour: "#BA1E20"
-                });
-                $(".peity_bar_count span").peity("bar", {
-                    colour: "#090f7f"
-                });
-
-                //排行
-                $("#j-charge-list").html($("#j-tmpl-charge-rankitem").tmpl(json.result));
-                //});
             }
         }
 

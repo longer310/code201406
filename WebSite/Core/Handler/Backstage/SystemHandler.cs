@@ -22,10 +22,6 @@ namespace Backstage.Core.Handler.Backstage
                     GetRules(); break;
                 case "updaterules": //规则更新
                     UpdateRules(); break;
-                case "getsalestat": //获取销售统计
-                    GetSaleStat(); break;
-                case "rechargestat": //获取充值统计
-                    RechargeStat(); break;
                 case "sellerinfo":  //更新商家资料
                     UpdateSellerInfo(); break;
                 case "getcashlist": //获取提现记录
@@ -42,7 +38,9 @@ namespace Backstage.Core.Handler.Backstage
                     CreatePush(); break;
                 case "editpush":
                     UpdatePush(); break;
-                case "getchargestat":
+                case "getsalestat": //获取销售统计
+                    GetSaleStat(); break;
+                case "getchargestat": //获取充值统计
                     GetChargeStat(); break;
                 case "updatepwd":
                     UpdateMerchantPwd(); break;
@@ -63,6 +61,21 @@ namespace Backstage.Core.Handler.Backstage
             Response.Write(DesEncrypt(jt));
             Response.End();
         }
+
+
+        private void GetSaleStat()
+        {
+            var sellerId = GetInt("sellerId");
+            var index = GetInt("index");
+            var size = GetInt("size");
+            var goods = GoodsHelper.GetGoodsList(sellerId, "", "order by CreateTime", index * size, size);
+
+            JsonTransfer jt = new JsonTransfer();
+            jt.Add("data", goods);
+            Response.Write(DesEncrypt(jt));
+            Response.End();
+        }
+
         private void UpdateMerchantPwd()
         {
             var oldpwd = GetString("oldpwd");
@@ -269,17 +282,6 @@ namespace Backstage.Core.Handler.Backstage
             throw new NotImplementedException();
         }
 
-        private void RechargeStat()
-        {
-
-
-            throw new NotImplementedException();
-        }
-
-        private void GetSaleStat()
-        {
-            throw new NotImplementedException();
-        }
 
 
 

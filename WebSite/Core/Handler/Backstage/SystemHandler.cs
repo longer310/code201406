@@ -42,12 +42,27 @@ namespace Backstage.Core.Handler.Backstage
                     CreatePush(); break;
                 case "editpush":
                     UpdatePush(); break;
+                case "getchargestat":
+                    GetChargeStat(); break;
                 case "updatepwd":
-                    UpdateMerchantPwd();break;
+                    UpdateMerchantPwd(); break;
                 default: break;
             }
         }
 
+        private void GetChargeStat()
+        {
+            var sellerId = GetInt("sellerId");
+            //var yearOrMonth = GetInt("isyear");
+            var index = GetInt("index");
+            var size = GetInt("size");
+            var charglogs = ChargeLogHelper.GetChargeLogs(sellerId, index * size, size);
+
+            JsonTransfer jt = new JsonTransfer();
+            jt.Add("data", charglogs);
+            Response.Write(DesEncrypt(jt));
+            Response.End();
+        }
         private void UpdateMerchantPwd()
         {
             var oldpwd = GetString("oldpwd");
@@ -166,7 +181,7 @@ namespace Backstage.Core.Handler.Backstage
                 if (Utility.SendMsg(merchant.Phone, MsgTempleId.MerchantWithdraw, jsobject) != "发送成功")
                 {
                     logger.InfoFormat("短信模板：{0},Phone:{3},发送失败merchantId：{1},Name:{2}",
-                        (int) MsgTempleId.MerchantWithdraw, merchant.Id, merchant.Name, merchant.Phone);
+                        (int)MsgTempleId.MerchantWithdraw, merchant.Id, merchant.Name, merchant.Phone);
                     ReturnErrorMsg("短信发送失败");
                     return;
                 }
@@ -256,8 +271,7 @@ namespace Backstage.Core.Handler.Backstage
 
         private void RechargeStat()
         {
-            var sellerId = GetInt("sellerId");
-            
+
 
             throw new NotImplementedException();
         }
@@ -267,6 +281,20 @@ namespace Backstage.Core.Handler.Backstage
             throw new NotImplementedException();
         }
 
+
+
+        private void GetMsgs()
+        {
+
+
+            throw new NotImplementedException();
+        }
+
+        private void AddSystemMsg()
+        {
+
+            throw new NotImplementedException();
+        }
 
         private void UpdateSellerInfo()
         {

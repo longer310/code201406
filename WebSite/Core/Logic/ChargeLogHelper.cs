@@ -82,7 +82,7 @@ namespace Backstage.Core.Logic
             return result;
         }
 
-        public static PagResults<ChargeLog> GetChargeLogList(int sellerId,  int start = 0, int limit = 0,
+        public static PagResults<ChargeLog> GetChargeLogs(int sellerId,  int start = 0, int limit = 0,
            int ifgetcount = 0)
         {
             var result = new PagResults<ChargeLog>();

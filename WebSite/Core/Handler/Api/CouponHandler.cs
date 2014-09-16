@@ -108,7 +108,7 @@ namespace Backstage.Core.Handler
             int index = GetInt("start");
             int size = GetInt("limit");
             var coupon = CouponHelper.GetItem(cid);
-            var cms = CommentHelper.GetPagings(coupon.SellerId, CommentType.Coupons, cid, index, size);
+            var cms = CommentHelper.GetPagings(coupon.SellerId, CommentType.Coupons, cid, index * size, size);
             var data = new CommentsForApis();
             data.Commentnum = cms.TotalCount;
             if (cms.TotalCount == 0)

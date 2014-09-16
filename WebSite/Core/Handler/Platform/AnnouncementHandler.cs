@@ -740,6 +740,10 @@ namespace Backstage.Handler
             public string IosUrl { get; set; }
             [XmlElement("AndroidUrl")]
             public string AndroidUrl { get; set; }
+            [XmlElement("MachineCode")]
+            public string MachineCode { get; set; }
+            [XmlElement("MachineKey")]
+            public string MachineKey { get; set; }
             [XmlElement("CnameList")]
             public List<string> CnameList { get; set; }
         }
@@ -818,6 +822,8 @@ namespace Backstage.Handler
             merchant.Email = merchantinfo.Email;
             merchant.IosUrl = merchantinfo.IosUrl;
             merchant.AndroidUrl = merchantinfo.AndroidUrl;
+            merchant.MachineCode = merchantinfo.MachineCode;
+            merchant.MachineKey = merchantinfo.MachineKey;
             if (string.IsNullOrEmpty(merchantinfo.CnameList[0])) merchantinfo.CnameList[0] = "活动咨询";
             if (string.IsNullOrEmpty(merchantinfo.CnameList[1])) merchantinfo.CnameList[1] = "商品展示";
             if (string.IsNullOrEmpty(merchantinfo.CnameList[2])) merchantinfo.CnameList[2] = "快速预约";

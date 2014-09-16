@@ -113,7 +113,9 @@ public partial class wap_notify_url : System.Web.UI.Page
                                     ExtcreditLogHelper.AddExtcreditLog(log);
 
                                     user.Integral = log.Extcredit;
-                                    user.Money += chargeLog.Money;
+                                    var money = user.Money + chargeLog.Money;
+                                    logger.InfoFormat("充值之前;Money={0},充值之后:Money:{1}", user.Money, money);
+                                    user.Money = money;
                                     user.TotalRecharge += chargeLog.Money;
                                     //保存用户信息
                                     AccountHelper.SaveAccount(user);

@@ -77,6 +77,9 @@ namespace Backstage.Core.Logic
                             merchant.WifiAdStayTime = (int)reader["WifiAdStayTime"];
                             merchant.WifiAds = JsonTransfer.DeserializeObject<List<PicJumpItem>>(reader["WifiAds"].ToString());
 
+                            merchant.MachineCode = reader["MachineCode"].ToString();
+                            merchant.MachineKey = reader["MachineKey"].ToString();
+
                             //获取商户基础类型
                             var merchanttype = MerchantTypeHelper.GetMerchantType(merchant.Mid);
                             if (merchanttype != null)
@@ -150,7 +153,9 @@ namespace Backstage.Core.Logic
                                         LoginAdStayTime          = ?LoginAdStayTime        ,
                                         LoginAdUrl               = ?LoginAdUrl             ,
                                         WifiAdStayTime           = ?WifiAdStayTime         ,
-                                        WifiAds                  = ?WifiAds                
+                                        WifiAds                  = ?WifiAds              ,
+                                        MachineCode                  = ?MachineCode               ,
+                                        MachineKey                  = ?MachineKey                 
 
                                     WHERE
                                         Id = ?Id";
@@ -205,6 +210,9 @@ namespace Backstage.Core.Logic
                 parameters.Add(new MySqlParameter("?WifiAdStayTime", merchant.WifiAdStayTime));
                 parameters.Add(new MySqlParameter("?WifiAds", JsonTransfer.SerializeObject(merchant.WifiAds)));
 
+                parameters.Add(new MySqlParameter("?MachineCode", merchant.MachineCode));
+                parameters.Add(new MySqlParameter("?MachineKey", merchant.MachineKey));
+
 
             }
             else
@@ -256,7 +264,9 @@ namespace Backstage.Core.Logic
                                         LoginAdStayTime          ,
                                         LoginAdUrl               ,
                                         WifiAdStayTime           ,
-                                        WifiAds                  
+                                        WifiAds                  ,
+                                        MachineCode                 ,
+                                        MachineKey                 
                                         ) 
                                         values
                                         (
@@ -305,7 +315,9 @@ namespace Backstage.Core.Logic
                                         ?LoginAdStayTime          ,
                                         ?LoginAdUrl               ,
                                         ?WifiAdStayTime           ,
-                                        ?WifiAds                  
+                                        ?WifiAds                  ,
+                                        ?MachineCode                 ,
+                                        ?MachineKey                 
                                         )";
                 parameters.Add(new MySqlParameter("?Id", merchant.Id));
                 parameters.Add(new MySqlParameter("?Name", merchant.Name));
@@ -355,6 +367,9 @@ namespace Backstage.Core.Logic
                 parameters.Add(new MySqlParameter("?LoginAdUrl", merchant.LoginAdUrl));
                 parameters.Add(new MySqlParameter("?WifiAdStayTime", merchant.WifiAdStayTime));
                 parameters.Add(new MySqlParameter("?WifiAds", JsonTransfer.SerializeObject(merchant.WifiAds)));
+
+                parameters.Add(new MySqlParameter("?MachineCode", merchant.MachineCode));
+                parameters.Add(new MySqlParameter("?MachineKey", merchant.MachineKey));
             }
             try
             {
@@ -449,6 +464,9 @@ namespace Backstage.Core.Logic
                         merchant.LoginAdUrl = reader["LoginAdUrl"].ToString();
                         merchant.WifiAdStayTime = (int)reader["WifiAdStayTime"];
                         merchant.WifiAds = JsonTransfer.DeserializeObject<List<PicJumpItem>>(reader["WifiAds"].ToString());
+
+                        merchant.MachineCode = reader["MachineCode"].ToString();
+                        merchant.MachineKey = reader["MachineKey"].ToString();
 
                         result.Results.Add(merchant);
                     }

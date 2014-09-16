@@ -15,6 +15,7 @@ using System.Text;
 using System.Web;
 using System.Web.Security;
 using Backstage.Core.Entity;
+using Backstage.Core.Logic;
 using log4net;
 using MySql.Data.MySqlClient;
 using Newtonsoft.Json;
@@ -52,10 +53,6 @@ namespace Backstage.Core
         public static string _3vurl = System.Configuration.ConfigurationManager.AppSettings["3vurl"];//3V平台官网
 
 
-        //无线打印机终端号
-        public static string _machine_code = System.Configuration.ConfigurationManager.AppSettings["machine_code"];
-        //无线打印机密钥
-        public static string _machine_key = System.Configuration.ConfigurationManager.AppSettings["machine_key"];
         //apikey（管理中心系统集成里）
         public static string _machine_apikey = System.Configuration.ConfigurationManager.AppSettings["machine_apikey"];
         //用户id（管理中心系统集成里 http://my.10ss.net/index.php?a=Apisystem）
@@ -617,25 +614,63 @@ namespace Backstage.Core
         #endregion
 
         #region 无线打印发送
-        public static bool SendPrinterData(string content)
+        public static bool SendOrdersMsgToPrint(Orders orders)
+        {
+            var merchant = MerchantHelper.GetMerchant(orders.SellerId);
+            if (merchant == null) return false;
+            if (string.IsNullOrEmpty(merchant.MachineCode) || string.IsNullOrEmpty(merchant.MachineKey)) return false;
+            var merchanttype = MerchantTypeHelper.GetMerchantType(merchant.Mid);
+            if (merchanttype == null) return false;
+            StringBuilder sb = new StringBuilder(string.Empty);
+            var ordertypename = orders.OrderType == OrderType.Shop ? "到店" : "送餐";
+
+            sb.AppendFormat("【{0}】{1}/r/n/r/n", merchanttype.Name, ordertypename);
+
+            sb.AppendFormat("订单号：{0}/r/n", orders.Id);
+            sb.AppendFormat("订单类型：{0}/r/n", ordertypename);
+            sb.AppendFormat("订单时间：{0}/r/n/r/n", orders.CreateTime.ToString("yyyy-MM-dd hh:mm:ss"));
+
+            sb.Append("【收货信息】/r/n");
+            sb.AppendFormat("联系人：{0}/r/n", orders.LinkMan);
+            sb.AppendFormat("联系电话：{0}/r/n", orders.Mobile);
+            sb.AppendFormat("地址：{0}/r/n/r/n", orders.Address);
+
+            sb.Append("【订单详情】/r/n");
+            sb.Append("******************************/r/n");
+            var i = 0;
+            foreach (var order in orders.GidList)
+            {
+                sb.AppendFormat("{0}   {1}   {2}/r/n", i + 1, orders.TitleList[i], orders.NumList[i]);
+                i++;
+            }
+            sb.Append("******************************/r/n");
+            sb.AppendFormat("总计数量：{0}/r/n", orders.NumList.Sum(o => o));
+            sb.AppendFormat("总金额：{0}/r/n/r/n", orders.TotalPrice);
+
+            sb.AppendFormat("【备注】：{0}/r/n/r/n", orders.Remark);
+
+            return SendPrinterData(sb.ToString(), merchant);
+        }
+        public static bool SendPrinterData(string content, Merchant merchant)
         {
             try
             {
                 SortedDictionary<string, string> parameters = new SortedDictionary<string, string>();
                 parameters.Add("partner", _machine_partner);
-                parameters.Add("machine_code", _machine_code);
-                parameters.Add("mkey", _machine_key);
+                parameters.Add("machine_code", merchant.MachineCode);
+                parameters.Add("mkey", merchant.MachineKey);
                 parameters.Add("apikey", _machine_apikey);
                 parameters.Add("content", content);
-                string sign = getMachineSign(parameters);
+                string sign = getMachineSign(parameters, merchant.MachineKey);
                 parameters.Add("sign", sign);
                 HttpWebResponse response = CreatePostHttpResponse(_machine_apiurl, parameters, null, null, Encoding.UTF8,
                     null);
                 StreamReader sr = new StreamReader(response.GetResponseStream(), Encoding.UTF8);
                 string retContent = sr.ReadToEnd();
-                var sendResponse = JsonConvert.DeserializeObject<SendSmsResponse>(retContent);
+                //var sendResponse = JsonConvert.DeserializeObject<string>(retContent);
+                var retNum = Convert.ToInt32(retContent);
 
-                if (sendResponse.res_code == "0")
+                if (retNum <= 2)
                     return true;
                 else return false;
             }
@@ -653,7 +688,7 @@ namespace Backstage.Core
         /// <param name="preKey">preKey，apikey的值</param>
         /// <param name="secKey">secKey，终端密钥的值</param>
         /// <returns>String，签名</returns>
-        private static String getMachineSign(IDictionary<string, string> parameters)
+        private static String getMachineSign(IDictionary<string, string> parameters, string machinekey)
         {
             // 第一步：把字典按Key的字母顺序排序
             IDictionary<string, string> sortedParams = new SortedDictionary<string, string>(parameters);
@@ -671,7 +706,7 @@ namespace Backstage.Core
                 }
             }
             string source = query.ToString();
-            source = _machine_apikey + source + _machine_key;
+            source = _machine_apikey + source + machinekey;
             //System.Console.Out.WriteLine("source:" + source);
             return System.Web.Security.FormsAuthentication.HashPasswordForStoringInConfigFile(source, "MD5").ToUpper();
             //return MD5(source);

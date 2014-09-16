@@ -164,6 +164,20 @@
                             <input type="text" id="j-profile-androidurl" />
                         </div>
                     </div>
+
+                    <div class="control-group">
+                        <label class="control-label">终端号</label>
+                        <div class="controls">
+                            <input type="text" id="j-profile-machinecode" />
+                        </div>
+                    </div>
+
+                    <div class="control-group">
+                        <label class="control-label">密   钥</label>
+                        <div class="controls">
+                            <input type="text" id="j-profile-machinekey" />
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -578,7 +592,9 @@
                 $("#j-profile-qq").val(mpage.merchantdata.mer.Qq);
                 $("#j-profile-email").val(mpage.merchantdata.mer.Email);
                 $("#j-profile-iosurl").val(mpage.merchantdata.mer.IosUrl);
-                $("#j-profile-androidurl").val(mpage.merchantdata.mer.AndroidUrl);
+                $("#j-profile-androidurl").val(mpage.merchantdata.mer.AndroidUrl); 
+                $("#j-profile-machinecode").val(mpage.merchantdata.mer.MachineCode);
+                $("#j-profile-machinekey").val(mpage.merchantdata.mer.MachineKey);
                 
                 $("#j_name_activity").val(mpage.merchantdata.mer.CnameList[0]);
                 $("#j_name_goods").val(mpage.merchantdata.mer.CnameList[1]);
@@ -611,6 +627,8 @@
                 data_save.Email = $("#j-profile-email").val().trim();
                 data_save.IosUrl = $("#j-profile-iosurl").val().trim();
                 data_save.AndroidUrl = $("#j-profile-androidurl").val().trim();
+                data_save.MachineCode = $("#j-profile-machinecode").val().trim();
+                data_save.MachineKey = $("#j-profile-machinekey").val().trim();
                 data_save.CnameList = [
                     $("#j_name_activity").val().trim(),
                     $("#j_name_goods").val().trim(),
@@ -675,6 +693,14 @@
                 }
                 if (data_save.AndroidUrl == "") {
                     Common.tip({ type: "error", content: "安卓地址不能为空" });
+                    return;
+                }
+                if (data_save.HasPrint == 1 && data_save.MachineCode == "") {
+                    Common.tip({ type: "error", content: "打印机终端号不能为空" });
+                    return;
+                }
+                if (data_save.HasPrint == 1 && data_save.MachineKey == "") {
+                    Common.tip({ type: "error", content: "打印机密钥不能为空" });
                     return;
                 }
 

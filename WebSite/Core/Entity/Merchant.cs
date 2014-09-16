@@ -55,6 +55,14 @@ namespace Backstage.Core.Entity
         /// </summary>
         public string AndroidUrl { get; set; }
         /// <summary>
+        /// 打印机终端号
+        /// </summary>
+        public string MachineCode { get; set; }
+        /// <summary>
+        /// 打印机密钥
+        /// </summary>
+        public string MachineKey { get; set; }
+        /// <summary>
         /// Ios下载地址
         /// </summary>
         public string IosUrl { get; set; }

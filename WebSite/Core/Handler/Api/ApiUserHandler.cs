@@ -1446,28 +1446,39 @@ namespace Backstage.Handler
                 return;
             }
             var favorite = FavoriteHelper.GetFavorite(uid);
-            var gidList = favorite.GidList.Skip(start * limit).Take(limit).ToList();
-            var data = new MyFavoriteData();
-            data.num = favorite.GidList.Count;
-            if (gidList.Count > 0)
+            var wheresql = string.Format(" and a.Id in({0})", Utility.GetString(favorite.GidList));
+            var goodslist = GoodsHelper.GetGoodsList(user.SellerId, wheresql).Results;
+            if (goodslist.Count != favorite.GidList.Count)
             {
-                var wheresql = string.Format(" and a.Id in({0})", Utility.GetString(gidList));
-                var goodslist = GoodsHelper.GetGoodsList(user.SellerId, wheresql).Results;
-                foreach (var goods in goodslist)
+                //存在已删除的商品
+                for(int i = favorite.GidList.Count - 1;i>=0;i--)
                 {
-                    //Goods goods = GoodsHelper.GetGoods(gid);
-                    var o = new MyFavoriteItem()
+                    var item = goodslist.FirstOrDefault(o => o.Id == favorite.GidList[i]);
+                    if (item == null)
                     {
-                        gid = goods.Id,
-                        img = Utility.GetPhoneNeedUrl(goods.LogoUrl),
-                        title = goods.Title,
-                        nowprice = goods.Nowprice,
-                        originalprice = goods.OriginalPrice,
-                        sales = goods.Sales,
-                        content = goods.Content
-                    };
-                    data.lists.Add(o);
+                        favorite.GidList.Remove(favorite.GidList[i]);
+                    }
                 }
+
+                FavoriteHelper.SaveFavorite(favorite);
+            }
+            goodslist = goodslist.Skip(start * limit).Take(limit).ToList();
+            var data = new MyFavoriteData();
+            foreach (var goods in goodslist)
+            {
+                //Goods goods = GoodsHelper.GetGoods(gid);
+                var o = new MyFavoriteItem()
+                {
+                    gid = goods.Id,
+                    img = Utility.GetPhoneNeedUrl(goods.LogoUrl),
+                    title = goods.Title,
+                    nowprice = goods.Nowprice,
+                    originalprice = goods.OriginalPrice,
+                    sales = goods.Sales,
+                    content = goods.Content
+                };
+                data.lists.Add(o);
+                data.num++;
             }
 
             //返回信息

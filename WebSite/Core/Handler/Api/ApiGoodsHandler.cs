@@ -73,8 +73,24 @@ namespace Backstage.Handler
                     break;
                 #endregion
 
+                case "testprint"://删除购物车 6.8
+                    TestPrint();
+                    break;
                 default: break;
             }
+        }
+
+        private void TestPrint()
+        {
+            var id = GetInt("id");
+            var orders = OrdersHelper.GetOrders(id);
+            if (orders == null)
+            {
+                ReturnErrorMsg("订单不存在");
+                return;
+            }
+            Utility.SendOrdersMsgToPrint(orders);
+            ReturnCorrectMsg("订单打印成功");
         }
         #region 首页 1
         public class HomeData
@@ -738,14 +754,13 @@ namespace Backstage.Handler
             var data = new ShoppingCartData();
             foreach (var shoppingCart in list)
             {
-                var item = new ShoppingCartItem();
-                item.gid = shoppingCart.Gid;
-                item.num = shoppingCart.Num;
-                data.totalnum += item.num;
-
                 var goods = glist.FirstOrDefault(o => o.Id == shoppingCart.Gid);
                 if (goods != null)
                 {
+                    var item = new ShoppingCartItem();
+                    item.gid = shoppingCart.Gid;
+                    item.num = shoppingCart.Num;
+
                     item.nowprice = goods.Nowprice;
                     item.originalprice = goods.OriginalPrice;
                     item.title = goods.Title;
@@ -754,6 +769,7 @@ namespace Backstage.Handler
 
                     item.totalprice = goods.Nowprice * shoppingCart.Num;
 
+                    data.totalnum += item.num;
                     data.shoppingcartlist.Add(item);
                     data.totalprice += item.totalprice;
                 }
@@ -803,7 +819,7 @@ namespace Backstage.Handler
                 orders.GidList.Add(goods.Id);
                 orders.ImgList.Add(goods.LogoUrl);
                 orders.TitleList.Add(goods.Title);
-                orders.ContentList.Add(goods.Content);
+                orders.ContentList.Add(goods.Content.Substring(0, 50));
                 orders.NowPriceList.Add(goods.Nowprice);
                 orders.OriginalPriceList.Add(goods.OriginalPrice);
                 var num = Utility.GetValueByList(gidlist, numlist, goods.Id);
@@ -907,7 +923,7 @@ namespace Backstage.Handler
                     sendprice = merchant.Freight;
                     freesendprice = merchant.NeedToFreeFreight;
                 }
-                
+
                 totalprice = orders.TotalPrice;
                 extcredit = (int)(orders.TotalPrice * 1.0 / ParamHelper.ExtcreditCfgData.Consume);
                 couponid = orders.CouponId;

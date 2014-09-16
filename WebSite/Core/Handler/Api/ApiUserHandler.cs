@@ -641,7 +641,7 @@ namespace Backstage.Handler
                 item.expiry = coupon.Expiry.GetUnixTime();
                 item.sellerid = sellerid;
                 item.status = coupon.Status;
-
+                item.extcredit = coupon.Extcredit;
                 data.couponlist.Add(item);
             }
 

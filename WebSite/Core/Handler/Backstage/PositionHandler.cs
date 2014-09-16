@@ -99,21 +99,25 @@ namespace Backstage.Core.Handler.Backstage
 
         private void GetList()
         {
-            //var sellerId = GetInt("sellerId");
-            //var index = GetInt("start");
-            //var size = GetInt("limit");
-            //var cid = GetInt("cid");
-            //var status = GetInt("status");
-            //var list = PositionHelper.GetPaging(sellerId, index * size, size, cid);
-            //var results = new PagResults<object>();
-            //foreach (var item in list.Results)
-            //{
-            //    var o = new
-            //    {
-            //        Id = item.Id,
-            //        BoxNumber = item.BoxNumber,
-            //    };
-            //}
+            var sellerId = GetInt("sellerId");
+            var index = GetInt("start");
+            var size = GetInt("limit");
+            var cid = GetInt("cid");
+            var status = GetInt("status");
+            var list = PositionHelper.GetPaging(sellerId, index * size, size, cid);
+            var results = new PagResults<object>();
+            foreach (var item in list.Results)
+            {
+                var boxType = PositionHelper.GetBoxType(item.BoxTypeId);
+                var o = new
+                {
+                    Id = item.Id,
+                    BoxNumber = item.Title,
+                    Cid = item.BoxTypeId,
+                    Lowest = boxType.Lowest,
+                    Status = item.Status
+                };
+            }
 
 
         }

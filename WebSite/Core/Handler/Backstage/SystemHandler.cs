@@ -279,7 +279,6 @@ namespace Backstage.Core.Handler.Backstage
             var userlevels = Newtonsoft.Json.JsonConvert.DeserializeObject<List<UserLevel>>("levels");
 
             SystemHelper.UpdateUserLevels(userlevels);
-            throw new NotImplementedException();
         }
 
 
@@ -318,7 +317,7 @@ namespace Backstage.Core.Handler.Backstage
             MerchantHelper.SaveMerchant(merchant);
         }
 
-
+        
 
     }
 

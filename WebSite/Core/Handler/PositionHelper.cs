@@ -1,4 +1,5 @@
 ﻿using Backstage.Core.Entity;
+using Backstage.Model;
 using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
@@ -78,6 +79,73 @@ namespace Backstage.Core.Handler
                         p.Status = (int)reader["Status"];
                         p.BoxTypeId = (int)reader["BoxTypeId"];
                         results.Add(p);
+                    }
+                }
+
+            }
+            catch (System.Exception ex)
+            {
+                throw;
+            }
+            return results;
+        }
+
+        public static PagResults<Position> GetPaging(int sellerId, int pageIndex, int pageSize, int cid = 0, int status = -1)
+        {
+            var results = new PagResults<Position>();
+            int totalnum = 0;
+            string commandText = @"select * from position where sellerId = ?sellerId";
+            if (cid != 0)
+                commandText += (" and BoxTypeId = " + cid);
+            if (status != -1)
+                commandText += (" and status = " + status);
+            commandText += " LIMIT ?index,?size";
+            List<MySqlParameter> parameters = new List<MySqlParameter>();
+            parameters.Add(new MySqlParameter("?sellerId", sellerId));
+            parameters.Add(new MySqlParameter("?index", pageIndex));
+            parameters.Add(new MySqlParameter("?size", pageSize));
+
+            try
+            {
+                using (var conn = Utility.ObtainConn(Utility._gameDbConn))
+                {
+                    MySqlDataReader reader = MySqlHelper.ExecuteReader(conn, CommandType.Text, commandText, parameters.ToArray());
+                    while (reader.Read())
+                    {
+                        Position p = new Position();
+                        p.Id = reader.GetInt32(0);
+                        //p.ImgId = (int)reader["ImgId"];
+                        p.ImgUrls = reader["ImgUrls"].ToString();
+                        p.Title = reader["Title"].ToString();
+                        p.Phone = reader["Phone"].ToString();
+                        p.Price = (float)reader["Price"];
+                        p.SellerId = (int)reader["SellerId"];
+                        p.Description = reader["Description"].ToString();
+                        p.Status = (int)reader["Status"];
+                        p.BoxTypeId = (int)reader["BoxTypeId"];
+                        results.Results.Add(p);
+                    }
+
+                    //一个函数有两次连接数据库 先把连接断开 然后重连
+                    conn.Close();
+                    conn.Dispose();
+                    conn.Open();
+
+                    commandText = @"select count(*) from position where sellerId = ?sellerId";
+                    parameters.Clear();
+                    parameters.Add(new MySqlParameter("?sellerId", sellerId));
+                    if (cid != 0)
+                        commandText += (" and BoxTypeId = " + cid);
+                    if (status != -1)
+                        commandText += (" and status = " + status);
+
+                    reader = MySqlHelper.ExecuteReader(conn, CommandType.Text, commandText, parameters.ToArray());
+                    if (reader.HasRows)
+                    {
+                        if (reader.Read())
+                        {
+                            results.TotalCount = reader.GetInt32(0);
+                        }
                     }
                 }
 

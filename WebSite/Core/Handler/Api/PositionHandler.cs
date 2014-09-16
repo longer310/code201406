@@ -36,8 +36,6 @@ namespace Backstage.Core.Handler
 
             var cs = PositionHelper.GetListBoxTypes(sid, 0, 0);
             var ps = PositionHelper.GetList(sid, index * size, size, cid, status);
-           
-
 
             var data = new
             {

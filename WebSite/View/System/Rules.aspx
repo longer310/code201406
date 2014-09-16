@@ -146,14 +146,6 @@
                         case 0:
                             text = "消费总额需";
                             break;
-
-                        case 1:
-                            text = "充值总额需";
-                            break;
-
-                        case 2:
-                            text = "获得积分需";
-                            break;
                     }
 
                     $("#j-level_list .j-level_condition_text").html(text);

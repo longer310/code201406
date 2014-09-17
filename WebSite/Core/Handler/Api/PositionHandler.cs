@@ -64,7 +64,7 @@ namespace Backstage.Core.Handler
                     hold = r.HoldNum,
                     price = item.Price,
                     cid = r.Id,
-                    name = item.Title,
+                    name = item.BoxNumber,
                     lowest = r.Lowest,
                     status = item.Status
                 };
@@ -103,7 +103,7 @@ namespace Backstage.Core.Handler
                 imgs = Utility.GetListstring(item.ImgUrls),
                 cid = item.BoxTypeId,
                 ctitle = boxType.Title,
-                name = item.Title,
+                name = item.BoxNumber,
                 price = item.Price,
                 des = item.Description,
                 lowest = boxType.Lowest,

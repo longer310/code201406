@@ -8,7 +8,6 @@ namespace Backstage.Core.Entity
     public class Position
     {
         public int Id { get; set; }
-
         //public int ImgId { get; set; }
 
         public int BoxTypeId { get; set; }
@@ -18,7 +17,10 @@ namespace Backstage.Core.Entity
         /// </summary>
         public string ImgUrls { get; set; }
 
-        public string Title { get; set; }
+        /// <summary>
+        /// 包厢号
+        /// </summary>
+        public string BoxNumber { get; set; }
 
         public float Price { get; set; }
 
@@ -26,9 +28,14 @@ namespace Backstage.Core.Entity
 
         public string Phone { get; set; }
 
+        /// <summary>
+        /// 0:未预定，1：已预定
+        /// </summary>
         public int Status { get; set; }
 
         public int SellerId { get; set; }
+
+        public DateTime CreateTime { get; set; }
 
     }
 }

@@ -1,4 +1,5 @@
-﻿using Backstage.Model;
+﻿using Backstage.Core.Entity;
+using Backstage.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -84,7 +85,16 @@ namespace Backstage.Core.Handler.Backstage
 
         private void Add()
         {
-            throw new NotImplementedException();
+            var item = new Position();
+            item.BoxNumber = GetString("box");
+            item.BoxTypeId = GetInt("boxType");
+            item.Description = GetString("description");
+            item.ImgUrls = GetString("imgurls");
+            item.Phone = GetString("phone");
+            item.Price = GetFloat("price");
+            item.SellerId = GetInt("selllerId");
+            item.Status = 0;
+
         }
 
         private void GetItem()
@@ -108,14 +118,12 @@ namespace Backstage.Core.Handler.Backstage
             var results = new PagResults<object>();
             foreach (var item in list.Results)
             {
-                var boxType = PositionHelper.GetBoxType(item.BoxTypeId);
                 var o = new
                 {
                     Id = item.Id,
-                    BoxNumber = item.Title,
-                    Cid = item.BoxTypeId,
-                    Lowest = boxType.Lowest,
-                    Status = item.Status
+                    BoxNumber = item.BoxNumber,
+                    BoxTypeId = item.BoxTypeId,
+ 
                 };
             }
 

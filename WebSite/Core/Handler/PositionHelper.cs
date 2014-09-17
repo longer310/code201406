@@ -11,6 +11,81 @@ namespace Backstage.Core.Handler
 {
     public class PositionHelper
     {
+        #region Position
+        public static void Create(Position p)
+        {
+            string connectionString = GlobalConfig.DbConn;
+            string commandText = @"INSERT INTO position 
+        	                                ( 
+        	                                SellerId, 
+        	                                BoxTypeId,
+        	                                ImgUrls,
+        	                                BoxNumber,
+        	                                Price,
+        	                                Description,
+        	                                Phone,
+        	                                Status,
+                                            CreateTime
+        	                                )
+        	                                VALUES
+        	                                ( 
+        	                                ?SellerId, 
+        	                                ?BoxTypeId,
+        	                                ?ImgUrls,
+        	                                ?BoxNumber,
+        	                                ?Price,
+        	                                ?Description,
+        	                                ?Phone,
+        	                                ?Status,
+        	                                ?CreateTime
+        	                                )";
+
+            List<MySqlParameter> parameters = new List<MySqlParameter>();
+            parameters.Add(new MySqlParameter("?SellerId", p.SellerId));
+            parameters.Add(new MySqlParameter("?BoxTypeId", p.BoxTypeId));
+            parameters.Add(new MySqlParameter("?ImgUrls", p.ImgUrls));
+            parameters.Add(new MySqlParameter("?BoxNumber", p.BoxNumber));
+            parameters.Add(new MySqlParameter("?Price", p.Price));
+            parameters.Add(new MySqlParameter("?Description", p.Description));
+            parameters.Add(new MySqlParameter("?Phone", p.Phone));
+            parameters.Add(new MySqlParameter("?Status", p.Status));
+            parameters.Add(new MySqlParameter("?CreateTime", p.CreateTime));
+            MySqlHelper.ExecuteNonQuery(connectionString, CommandType.Text, commandText, parameters.ToArray());
+
+        }
+
+
+        public static void Update(Position p)
+        {
+            string commandText = @"UPDATE position SET
+                                                    SellerId = ?SellerId, 
+        	                                        BoxTypeId = ?BoxTypeId,
+        	                                        ImgUrls = ?ImgUrls,
+        	                                        BoxNumber = ?BoxNumber,
+        	                                        Price = ?Price,
+        	                                        Description = ?Description,
+        	                                        Phone = ?Phone,
+        	                                        Status = Status,
+                                                    CreateTime = CreateTime
+                                                WHERE
+                                                    Id = ?Id";
+
+            List<MySqlParameter> parameters = new List<MySqlParameter>();
+            parameters.Add(new MySqlParameter("?Id", p.Id));
+            parameters.Add(new MySqlParameter("?SellerId", p.SellerId));
+            parameters.Add(new MySqlParameter("?BoxTypeId", p.BoxTypeId));
+            parameters.Add(new MySqlParameter("?ImgUrls", p.ImgUrls));
+            parameters.Add(new MySqlParameter("?BoxNumber", p.BoxNumber));
+            parameters.Add(new MySqlParameter("?Price", p.Price));
+            parameters.Add(new MySqlParameter("?Description", p.Description));
+            parameters.Add(new MySqlParameter("?Phone", p.Phone));
+            parameters.Add(new MySqlParameter("?Status", p.Status));
+            parameters.Add(new MySqlParameter("?CreateTime", p.CreateTime));
+
+            MySqlHelper.ExecuteNonQuery(GlobalConfig.DbConn, CommandType.Text, commandText, parameters.ToArray());
+
+        }
+
         public static Position GetItem(int id)
         {
             var p = new Position();
@@ -27,7 +102,7 @@ namespace Backstage.Core.Handler
                     {
                         p.Id = reader.GetInt32(0);
                         p.ImgUrls = reader["ImgUrls"].ToString();
-                        p.Title = reader["Title"].ToString();
+                        p.BoxNumber = reader["Title"].ToString();
                         p.Phone = reader["Phone"].ToString();
                         p.Price = (float)reader["Price"];
                         p.SellerId = (int)reader["SellerId"];
@@ -45,12 +120,12 @@ namespace Backstage.Core.Handler
             return p;
         }
 
-        public static IList<Position> GetList(int sellerId, int pageIndex, int pageSize,int cid = 0, int status =-1)
+        public static IList<Position> GetList(int sellerId, int pageIndex, int pageSize, int cid = 0, int status = -1)
         {
             var results = new List<Position>();
             int totalnum = 0;
             string commandText = @"select * from position where sellerId = ?sellerId";
-            if(cid != 0)
+            if (cid != 0)
                 commandText += (" and BoxTypeId = " + cid);
             if (status != -1)
                 commandText += (" and status = " + status);
@@ -71,7 +146,7 @@ namespace Backstage.Core.Handler
                         p.Id = reader.GetInt32(0);
                         //p.ImgId = (int)reader["ImgId"];
                         p.ImgUrls = reader["ImgUrls"].ToString();
-                        p.Title = reader["Title"].ToString();
+                        p.BoxNumber = reader["Title"].ToString();
                         p.Phone = reader["Phone"].ToString();
                         p.Price = (float)reader["Price"];
                         p.SellerId = (int)reader["SellerId"];
@@ -116,7 +191,7 @@ namespace Backstage.Core.Handler
                         p.Id = reader.GetInt32(0);
                         //p.ImgId = (int)reader["ImgId"];
                         p.ImgUrls = reader["ImgUrls"].ToString();
-                        p.Title = reader["Title"].ToString();
+                        p.BoxNumber = reader["Title"].ToString();
                         p.Phone = reader["Phone"].ToString();
                         p.Price = (float)reader["Price"];
                         p.SellerId = (int)reader["SellerId"];
@@ -157,6 +232,7 @@ namespace Backstage.Core.Handler
             return results;
         }
 
+        #endregion
         public static IList<BoxType> GetListBoxTypes(int sellerId, int pageIndex, int pageSize)
         {
             var results = new List<BoxType>();
@@ -200,36 +276,6 @@ namespace Backstage.Core.Handler
         }
 
 
-
-
-
-        public static void Update(Position sm)
-        {
-            //            string commandText = @"UPDATE position SET
-            //                                        Title = ?Title,
-            //                                        ImgId = ?ImgId,
-            //                                        Description = ?Description,
-            //                                        Views = ?Views,
-            //                                        Commentnum = ?Commentnum,
-            //                                        SellerId = ?SellerId,
-            //                                        CreateTime = ?CreateTime
-            //                                    WHERE
-            //                                        Id = ?Id";
-
-            //            List<MySqlParameter> parameters = new List<MySqlParameter>();
-            //            parameters.Add(new MySqlParameter("?Id", sm.Id));
-            //            parameters.Add(new MySqlParameter("?Title", sm.Title));
-            //            parameters.Add(new MySqlParameter("?Url", sm.Url));
-            //            parameters.Add(new MySqlParameter("?Description", sm.Description));
-            //            parameters.Add(new MySqlParameter("?Views", sm.Views));
-            //            parameters.Add(new MySqlParameter("?Commentnum", sm.Commentnum));
-            //            parameters.Add(new MySqlParameter("?SellerId", sm.SellerId));
-            //            parameters.Add(new MySqlParameter("?CreateTime", sm.CreateTime));
-
-
-            //            MySqlHelper.ExecuteNonQuery(GlobalConfig.DbConn, CommandType.Text, commandText, parameters.ToArray());
-
-        }
 
         internal static UserPosition GetUserPosition(int timeid, int positionId)
         {
@@ -399,7 +445,7 @@ namespace Backstage.Core.Handler
                         Position p = new Position();
                         p.Id = reader.GetInt32(0);
                         p.ImgUrls = reader["ImgUrls"].ToString();
-                        p.Title = reader["Title"].ToString();
+                        p.BoxNumber = reader["Title"].ToString();
                         p.Phone = reader["Phone"].ToString();
                         p.Price = (float)reader["Price"];
                         p.SellerId = (int)reader["SellerId"];

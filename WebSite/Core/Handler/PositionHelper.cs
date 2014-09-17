@@ -54,7 +54,52 @@ namespace Backstage.Core.Handler
 
         }
 
+        public static void Delete(int id)
+        {
+            string commandText = @"DELETE FROM position WHERE Id = ?Id";
+            List<MySqlParameter> parameters = new List<MySqlParameter>();
+            parameters.Add(new MySqlParameter("?Id", id));
 
+            MySqlHelper.ExecuteNonQuery(GlobalConfig.DbConn, CommandType.Text, commandText, parameters.ToArray());
+        }
+        internal static IList<Position> GetListByBoxTypeId(int boxTypeId)
+        {
+
+            var results = new List<Position>();
+            int totalnum = 0;
+            string commandText = @"select * from position where boxTypeId = ?boxTypeId";
+
+            List<MySqlParameter> parameters = new List<MySqlParameter>();
+            parameters.Add(new MySqlParameter("?boxTypeId", boxTypeId));
+
+            try
+            {
+                using (var conn = Utility.ObtainConn(Utility._gameDbConn))
+                {
+                    MySqlDataReader reader = MySqlHelper.ExecuteReader(conn, CommandType.Text, commandText, parameters.ToArray());
+                    while (reader.Read())
+                    {
+                        Position p = new Position();
+                        p.Id = reader.GetInt32(0);
+                        p.ImgUrls = reader["ImgUrls"].ToString();
+                        p.BoxNumber = reader["BoxNumber"].ToString();
+                        p.Phone = reader["Phone"].ToString();
+                        p.Price = (float)reader["Price"];
+                        p.SellerId = (int)reader["SellerId"];
+                        p.Description = reader["Description"].ToString();
+                        p.Status = (int)reader["Status"];
+                        p.BoxTypeId = (int)reader["BoxTypeId"];
+                        results.Add(p);
+                    }
+                }
+
+            }
+            catch (System.Exception ex)
+            {
+                throw;
+            }
+            return results;
+        }
         public static void Update(Position p)
         {
             string commandText = @"UPDATE position SET
@@ -102,7 +147,7 @@ namespace Backstage.Core.Handler
                     {
                         p.Id = reader.GetInt32(0);
                         p.ImgUrls = reader["ImgUrls"].ToString();
-                        p.BoxNumber = reader["Title"].ToString();
+                        p.BoxNumber = reader["BoxNumber"].ToString();
                         p.Phone = reader["Phone"].ToString();
                         p.Price = (float)reader["Price"];
                         p.SellerId = (int)reader["SellerId"];
@@ -146,7 +191,7 @@ namespace Backstage.Core.Handler
                         p.Id = reader.GetInt32(0);
                         //p.ImgId = (int)reader["ImgId"];
                         p.ImgUrls = reader["ImgUrls"].ToString();
-                        p.BoxNumber = reader["Title"].ToString();
+                        p.BoxNumber = reader["BoxNumber"].ToString();
                         p.Phone = reader["Phone"].ToString();
                         p.Price = (float)reader["Price"];
                         p.SellerId = (int)reader["SellerId"];
@@ -191,7 +236,7 @@ namespace Backstage.Core.Handler
                         p.Id = reader.GetInt32(0);
                         //p.ImgId = (int)reader["ImgId"];
                         p.ImgUrls = reader["ImgUrls"].ToString();
-                        p.BoxNumber = reader["Title"].ToString();
+                        p.BoxNumber = reader["BoxNumber"].ToString();
                         p.Phone = reader["Phone"].ToString();
                         p.Price = (float)reader["Price"];
                         p.SellerId = (int)reader["SellerId"];
@@ -233,6 +278,9 @@ namespace Backstage.Core.Handler
         }
 
         #endregion
+
+        #region BoxType
+
         public static IList<BoxType> GetListBoxTypes(int sellerId, int pageIndex, int pageSize)
         {
             var results = new List<BoxType>();
@@ -274,8 +322,102 @@ namespace Backstage.Core.Handler
             }
             return results;
         }
+        internal static BoxType GetBoxType(int id)
+        {
+
+            var p = new BoxType();
+            string commandText = @"select * from boxType where id = ?id";
+            List<MySqlParameter> parameters = new List<MySqlParameter>();
+            parameters.Add(new MySqlParameter("?id", id));
+            try
+            {
+                using (var conn = Utility.ObtainConn(Utility._gameDbConn))
+                {
+                    //MySqlDataReader reader = MySqlHelper.ExecuteReader(GlobalConfig.DbConn, CommandType.Text, commandText, parameters.ToArray());
+                    MySqlDataReader reader = MySqlHelper.ExecuteReader(conn, CommandType.Text, commandText, parameters.ToArray());
+                    while (reader.Read())
+                    {
+                        p.Id = reader.GetInt32(0);
+                        p.CreateTime = (DateTime)reader["CreateTime"];
+                        p.HoldNum = (int)reader["HoldNum"];
+                        p.Lowest = (int)reader["Lowest"];
+                        p.SellerId = (int)reader["SellerId"];
+                        p.Title = reader["Title"].ToString();
+                    }
+                }
+
+            }
+            catch (System.Exception ex)
+            {
+                throw;
+            }
+            return p;
+
+        }
+
+        internal static void CreateBoxType(BoxType boxType)
+        {
+            string connectionString = GlobalConfig.DbConn;
+            string commandText = @"INSERT INTO BoxType 
+            	                                ( 
+            	                                CreateTime, 
+            	                                HoldNum,
+            	                                Lowest,
+           	                                    SellerId, 
+            	                                Title,
+            	                                )
+            	                                VALUES
+            	                                ( 
+            	                                ?UserId, 
+            	                                ?HoldNum,
+            	                                ?Lowest,
+           	                                    ?SellerId, 
+            	                                ?Title,
+            	                                )";
+
+            List<MySqlParameter> parameters = new List<MySqlParameter>();
+            parameters.Add(new MySqlParameter("?CreateTime", boxType.CreateTime));
+            parameters.Add(new MySqlParameter("?HoldNum", boxType.HoldNum));
+            parameters.Add(new MySqlParameter("?Lowest", boxType.Lowest));
+            parameters.Add(new MySqlParameter("?SellerId", boxType.SellerId));
+            parameters.Add(new MySqlParameter("?Title", boxType.Title));
 
 
+
+            MySqlHelper.ExecuteNonQuery(connectionString, CommandType.Text, commandText, parameters.ToArray());
+        }
+
+        internal static void UpdateBoxType(BoxType boxType)
+        {
+            string commandText = @"UPDATE position SET
+                                                    CreateTime = ?CreateTime,
+                                                    HoldNum = ?HoldNum,
+                                                    Lowest = ?Lowest,
+                                                    SellerId = ?SellerId,
+                                                    Title = ?Title,
+                                                WHERE
+                                                    Id = ?Id";
+
+            List<MySqlParameter> parameters = new List<MySqlParameter>();
+            parameters.Add(new MySqlParameter("?Id", boxType.Id));
+            parameters.Add(new MySqlParameter("?CreateTime", boxType.CreateTime));
+            parameters.Add(new MySqlParameter("?HoldNum", boxType.HoldNum));
+            parameters.Add(new MySqlParameter("?Lowest", boxType.Lowest));
+            parameters.Add(new MySqlParameter("?SellerId", boxType.SellerId));
+            parameters.Add(new MySqlParameter("?Title", boxType.Title));
+
+            MySqlHelper.ExecuteNonQuery(GlobalConfig.DbConn, CommandType.Text, commandText, parameters.ToArray());
+        }
+        public static void DeleteBoxType(int id)
+        {
+            string commandText = @"DELETE FROM boxtype WHERE Id = ?Id";
+            List<MySqlParameter> parameters = new List<MySqlParameter>();
+            parameters.Add(new MySqlParameter("?Id", id));
+
+            MySqlHelper.ExecuteNonQuery(GlobalConfig.DbConn, CommandType.Text, commandText, parameters.ToArray());
+        }
+
+        #endregion
 
         internal static UserPosition GetUserPosition(int timeid, int positionId)
         {
@@ -425,77 +567,7 @@ namespace Backstage.Core.Handler
             MySqlHelper.ExecuteNonQuery(GlobalConfig.DbConn, CommandType.Text, commandText, parameters.ToArray());
         }
 
-        internal static IList<Position> GetListByBoxTypeId(int boxTypeId)
-        {
-
-            var results = new List<Position>();
-            int totalnum = 0;
-            string commandText = @"select * from position where boxTypeId = ?boxTypeId";
-
-            List<MySqlParameter> parameters = new List<MySqlParameter>();
-            parameters.Add(new MySqlParameter("?boxTypeId", boxTypeId));
-
-            try
-            {
-                using (var conn = Utility.ObtainConn(Utility._gameDbConn))
-                {
-                    MySqlDataReader reader = MySqlHelper.ExecuteReader(conn, CommandType.Text, commandText, parameters.ToArray());
-                    while (reader.Read())
-                    {
-                        Position p = new Position();
-                        p.Id = reader.GetInt32(0);
-                        p.ImgUrls = reader["ImgUrls"].ToString();
-                        p.BoxNumber = reader["Title"].ToString();
-                        p.Phone = reader["Phone"].ToString();
-                        p.Price = (float)reader["Price"];
-                        p.SellerId = (int)reader["SellerId"];
-                        p.Description = reader["Description"].ToString();
-                        p.Status = (int)reader["Status"];
-                        p.BoxTypeId = (int)reader["BoxTypeId"];
-                        results.Add(p);
-                    }
-                }
-
-            }
-            catch (System.Exception ex)
-            {
-                throw;
-            }
-            return results;
-        }
-
-        internal static BoxType GetBoxType(int id)
-        {
-
-            var p = new BoxType();
-            string commandText = @"select * from boxType where id = ?id";
-            List<MySqlParameter> parameters = new List<MySqlParameter>();
-            parameters.Add(new MySqlParameter("?id", id));
-            try
-            {
-                using (var conn = Utility.ObtainConn(Utility._gameDbConn))
-                {
-                    //MySqlDataReader reader = MySqlHelper.ExecuteReader(GlobalConfig.DbConn, CommandType.Text, commandText, parameters.ToArray());
-                    MySqlDataReader reader = MySqlHelper.ExecuteReader(conn, CommandType.Text, commandText, parameters.ToArray());
-                    while (reader.Read())
-                    {
-                        p.Id = reader.GetInt32(0);
-                        p.CreateTime = (DateTime)reader["CreateTime"];
-                        p.HoldNum = (int)reader["HoldNum"];
-                        p.Lowest = (int)reader["Lowest"];
-                        p.SellerId = (int)reader["SellerId"];
-                        p.Title = reader["Title"].ToString();
-                    }
-                }
-
-            }
-            catch (System.Exception ex)
-            {
-                throw;
-            }
-            return p;
-
-        }
+        #region timeline
 
         internal static IList<Timeline> GetTimeLines(int positionId)
         {
@@ -565,29 +637,81 @@ namespace Backstage.Core.Handler
             return t;
         }
 
-        internal static void UpdateTimeline(Timeline timeline)
+        public static void CreateTimeline(Timeline t)
         {
-            string commandText = @"UPDATE timeline SET
-                                                    Status = ?Status,
-                                                    PositionId = ?PositionId,
-                                                    Title = ?Title,
-                                                    BeginTime = ?BeginTime,
-                                                    EndTime = ?EndTime,
-                                                    SellerId = ?SellerId
+            string connectionString = GlobalConfig.DbConn;
+            string commandText = @"INSERT INTO timeline 
+        	                                ( 
+        	                                SellerId, 
+        	                                BeginTime,
+        	                                Date,
+        	                                EndTime,
+        	                                PositionId,
+        	                                Status,
+                                            Title
+        	                                )
+        	                                VALUES
+        	                                ( 
+        	                                ?SellerId, 
+        	                                ?BeginTime,
+        	                                ?Date,
+        	                                ?EndTime,
+        	                                ?PositionId,
+        	                                ?Status,
+        	                                ?Title
+        	                                )";
+
+            List<MySqlParameter> parameters = new List<MySqlParameter>();
+            parameters.Add(new MySqlParameter("?SellerId", t.SellerId));
+            parameters.Add(new MySqlParameter("?BeginTime", t.BeginTime));
+            parameters.Add(new MySqlParameter("?Date", t.Date));
+            parameters.Add(new MySqlParameter("?EndTime", t.EndTime));
+            parameters.Add(new MySqlParameter("?PositionId", t.PositionId));
+            parameters.Add(new MySqlParameter("?Status", t.Status));
+            parameters.Add(new MySqlParameter("?Title", t.Title));
+
+            MySqlHelper.ExecuteNonQuery(connectionString, CommandType.Text, commandText, parameters.ToArray());
+
+        }
+
+        public static void UpdateTimeline(Timeline t)
+        {
+            string commandText = @"UPDATE position SET
+                                                    SellerId = ?SellerId, 
+        	                                        BeginTime = ?BeginTime,
+        	                                        Date = ?Date,
+        	                                        BoxNumber = ?BoxNumber,
+        	                                        Price = ?Price,
+        	                                        Description = ?Description,
+        	                                        Phone = ?Phone,
+        	                                        Status = Status,
+                                                    CreateTime = CreateTime
                                                 WHERE
                                                     Id = ?Id";
 
             List<MySqlParameter> parameters = new List<MySqlParameter>();
-            parameters.Add(new MySqlParameter("?Id", timeline.Id));
-            parameters.Add(new MySqlParameter("?PositionId", timeline.PositionId));
-            parameters.Add(new MySqlParameter("?Status", timeline.Status));
-            parameters.Add(new MySqlParameter("?Title", timeline.Title));
-            parameters.Add(new MySqlParameter("?BeginTime", timeline.BeginTime));
-            parameters.Add(new MySqlParameter("?EndTime", timeline.EndTime));
-            parameters.Add(new MySqlParameter("?SellerId", timeline.SellerId));
+            parameters.Add(new MySqlParameter("?Id", t.Id));
+            parameters.Add(new MySqlParameter("?SellerId", t.SellerId));
+            parameters.Add(new MySqlParameter("?BeginTime", t.BeginTime));
+            parameters.Add(new MySqlParameter("?Date", t.Date));
+            parameters.Add(new MySqlParameter("?EndTime", t.EndTime));
+            parameters.Add(new MySqlParameter("?PositionId", t.PositionId));
+            parameters.Add(new MySqlParameter("?Status", t.Status));
+            parameters.Add(new MySqlParameter("?Title", t.Title));
 
+            MySqlHelper.ExecuteNonQuery(GlobalConfig.DbConn, CommandType.Text, commandText, parameters.ToArray());
+
+        }
+
+        public static void DeleteTimeline(int id)
+        {
+            string commandText = @"DELETE FROM timeline WHERE Id = ?Id";
+            List<MySqlParameter> parameters = new List<MySqlParameter>();
+            parameters.Add(new MySqlParameter("?Id", id));
 
             MySqlHelper.ExecuteNonQuery(GlobalConfig.DbConn, CommandType.Text, commandText, parameters.ToArray());
         }
+        #endregion
+
     }
 }

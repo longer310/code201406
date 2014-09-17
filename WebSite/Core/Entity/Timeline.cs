@@ -23,6 +23,11 @@ namespace Backstage.Core.Entity
         public DateTime EndTime { get; set; }
 
         /// <summary>
+        /// 日期
+        /// </summary>
+        public DateTime Date { get; set; }
+
+        /// <summary>
         ///  1：被预定，0：未被预定
         /// </summary>
         public int Status { get; set; }

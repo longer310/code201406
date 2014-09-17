@@ -95,6 +95,7 @@ namespace Backstage.Core.Handler.Backstage
             item.SellerId = GetInt("selllerId");
             item.Status = 0;
 
+            PositionHelper.Create(item);
         }
 
         private void GetItem()

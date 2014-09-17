@@ -133,7 +133,7 @@ namespace Backstage.Handler
                 ReturnErrorMsg("phone参数没传");
                 return;
             }
-            var user = AccountHelper.FindUserByPhone(phone,sellerId);
+            var user = AccountHelper.FindUserByPhone(phone, sellerId);
             if (user != null)
             {
                 ReturnErrorMsg("此电话已注册");
@@ -205,7 +205,7 @@ namespace Backstage.Handler
                 return;
             }
 
-            if (AccountHelper.JudgeUser(phone,sellerid))//, username
+            if (AccountHelper.JudgeUser(phone, sellerid))//, username
             {
                 ReturnErrorMsg("已存在该电话号码的用户");
                 return;
@@ -268,20 +268,35 @@ namespace Backstage.Handler
                 return;
             }
 
-            var user = AccountHelper.FindUserByPhone(phone,sellerid);
+            var user = AccountHelper.FindUserByPhone(phone, sellerid);
             if (user == null)
             {
                 ReturnErrorMsg("该用户不存在");
                 return;
             }
 
-            var data = new LoginData();
+            //var data = new LoginData();
+            //data.uid = user.Id;
+            //data.sellerid = user.SellerId;
+            //data.avatar = user.Avatar;
+            //data.phone = user.Phone;
+            //data.sex = (int)user.Sex;
+            //data.nickname = user.NickName;
+
+            var data = new UserInfoData();
             data.uid = user.Id;
-            data.sellerid = user.SellerId;
-            data.avatar = user.Avatar;
-            data.phone = user.Phone;
-            data.sex = (int)user.Sex;
+            data.username = user.UserName;
             data.nickname = user.NickName;
+            data.phone = user.Phone;
+            data.avatar = Utility.GetPhoneNeedUrl(user.Avatar);
+            data.sex = (int)user.Sex;
+            data.money = user.Money;
+            data.integral = user.Integral;
+            data.sellerid = user.SellerId;
+            var sourceId = DateTime.Today.GetUnixTime();
+            if (ExtcreditLogHelper.JudgeExtcreditGet(ExtcreditSourceType.Register, sourceId, user.Id))
+                data.signin = 1;
+            data.signintegral = ParamHelper.ExtcreditCfgData.Register;
 
             //修改登录次数
             user.TotalLoginCount++;
@@ -302,6 +317,13 @@ namespace Backstage.Handler
             var sellerid = GetInt("sellerid");
             var openid = GetString("openid");
             var type = GetInt("type");
+
+            var merchant = MerchantHelper.GetMerchant(sellerid);
+            if (merchant == null)
+            {
+                ReturnErrorMsg(string.Format("不存在id为{0}的商户", sellerid));
+                return;
+            }
 
             var userbinding = AccountBindingHelper.GetAccountBindingByIdentity(openid);
             var user = new Account();
@@ -338,13 +360,28 @@ namespace Backstage.Handler
                 }
             }
 
-            var data = new LoginData();
+            //var data = new LoginData();
+            //data.uid = user.Id;
+            //data.sellerid = user.SellerId;
+            //data.avatar = user.Avatar;
+            //data.phone = user.Phone;
+            //data.sex = (int)user.Sex;
+            //data.nickname = user.NickName;
+
+            var data = new UserInfoData();
             data.uid = user.Id;
-            data.sellerid = user.SellerId;
-            data.avatar = user.Avatar;
-            data.phone = user.Phone;
-            data.sex = (int)user.Sex;
+            data.username = user.UserName;
             data.nickname = user.NickName;
+            data.phone = user.Phone;
+            data.avatar = Utility.GetPhoneNeedUrl(user.Avatar);
+            data.sex = (int)user.Sex;
+            data.money = user.Money;
+            data.integral = user.Integral;
+            data.sellerid = user.SellerId;
+            var sourceId = DateTime.Today.GetUnixTime();
+            if (ExtcreditLogHelper.JudgeExtcreditGet(ExtcreditSourceType.Register, sourceId, user.Id))
+                data.signin = 1;
+            data.signintegral = ParamHelper.ExtcreditCfgData.Register;
 
             //修改登录次数
             user.TotalLoginCount++;
@@ -1004,7 +1041,7 @@ namespace Backstage.Handler
                 ReturnErrorMsg("商户id参数错误");
                 return;
             }
-            var user = AccountHelper.FindUserByPhone(phone,sellerId);
+            var user = AccountHelper.FindUserByPhone(phone, sellerId);
             if (user == null)
             {
                 ReturnErrorMsg("此电话未注册");
@@ -1183,7 +1220,7 @@ namespace Backstage.Handler
                 ReturnErrorMsg("传参错误，电话为空");
                 return;
             }
-            var euser = AccountHelper.FindUserByPhone(phone,sellerId);
+            var euser = AccountHelper.FindUserByPhone(phone, sellerId);
             if (euser != null)
             {
                 ReturnErrorMsg("此电话已注册");
@@ -1227,7 +1264,7 @@ namespace Backstage.Handler
                 if (Utility.SendMsg(verificationCode.Phone, MsgTempleId.UserModifyPhone, jsobject) != "发送成功")
                 {
                     logger.InfoFormat("短信模板：{0},Phone:{3},发送失败VerificationCodeId：{1},SellerId:{2}",
-                        (int) MsgTempleId.UserModifyPhone, verificationCode.Id, verificationCode.SellerId,
+                        (int)MsgTempleId.UserModifyPhone, verificationCode.Id, verificationCode.SellerId,
                         verificationCode.Phone);
                     ReturnErrorMsg("短信发送失败");
                     return;
@@ -1289,6 +1326,7 @@ namespace Backstage.Handler
         #region 获取会员信息 7.20
         public class UserInfoData
         {
+            public int uid { get; set; }
             public string username { get; set; }
             public string phone { get; set; }
             public string avatar { get; set; }
@@ -1451,7 +1489,7 @@ namespace Backstage.Handler
             if (goodslist.Count != favorite.GidList.Count)
             {
                 //存在已删除的商品
-                for(int i = favorite.GidList.Count - 1;i>=0;i--)
+                for (int i = favorite.GidList.Count - 1; i >= 0; i--)
                 {
                     var item = goodslist.FirstOrDefault(o => o.Id == favorite.GidList[i]);
                     if (item == null)

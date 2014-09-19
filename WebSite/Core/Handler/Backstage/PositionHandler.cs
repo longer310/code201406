@@ -100,12 +100,28 @@ namespace Backstage.Core.Handler.Backstage
 
         private void GetItem()
         {
-            throw new NotImplementedException();
+            var id = GetInt("id");
+            var item = PositionHelper.GetItem(id);
+            JsonTransfer jt = new JsonTransfer();
+            jt.Add("data", item);
+            Response.Write(DesEncrypt(jt));
+            Response.End();
         }
 
         private void Update()
         {
-            throw new NotImplementedException();
+            var id = GetInt("id");
+            var item = PositionHelper.GetItem(id);
+            item.BoxNumber = GetString("box");
+            item.BoxTypeId = GetInt("typeId");
+            item.Description = GetString("description");
+            item.ImgUrls = GetString("imgurls");
+            item.SellerId = GetInt("sellerId");
+            item.Status = GetInt("status");
+            item.Price = GetFloat("price");
+            item.Phone = GetString("phone");
+
+            PositionHelper.Update(item);
         }
 
         private void GetList()

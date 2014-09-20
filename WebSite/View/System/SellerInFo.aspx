@@ -108,6 +108,7 @@
     <script charset="utf-8" src="../../script/kindeditor/lang/zh_CN.js"></script>
 
     <script type="text/javascript">
+        var sellerId = '<%=SellerId%>';
         var MPage = {
             init: function () {
                 var mpage = this;
@@ -117,14 +118,14 @@
                 KindEditor.ready(function (K) {
                     //文本编辑器
                     mpage.text_editor = text_editor = K.create('textarea[name="content"]', {
-                        uploadJson: '<%=DomainUrl %>/Handler/FileManager/UploadHandler.ashx?type=0',
+                        uploadJson: '<%=DomainUrl %>/Handler/FileManager/UploadHandler.ashx?type=0&sellerid=' + sellerId,
                             allowFileManager: true
                         });
 
                         //图片上传编辑
                         mpage.image_editor = image_editor = K.editor({
-                            uploadJson: '<%=DomainUrl %>/Handler/FileManager/UploadHandler.ashx?type=0',
-                            fileManagerJson: '<%=DomainUrl %>/Handler/FileManager/FileManagerHandler.ashx?type=0',
+                            uploadJson: '<%=DomainUrl %>/Handler/FileManager/UploadHandler.ashx?type=0&sellerid=' + sellerId,
+                            fileManagerJson: '<%=DomainUrl %>/Handler/FileManager/FileManagerHandler.ashx?type=0&sellerid=' + sellerId,
                         });
 
                         //图片上传绑定

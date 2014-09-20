@@ -746,6 +746,10 @@ namespace Backstage.Handler
             public string MachineKey { get; set; }
             [XmlElement("CnameList")]
             public List<string> CnameList { get; set; }
+            [XmlElement("HasDelivery")]
+            public int HasDelivery { get; set; }
+            [XmlElement("WifiAccount")]
+            public string WifiAccount { get; set; }
         }
         /// <summary>
         /// 保存商户信息
@@ -813,6 +817,7 @@ namespace Backstage.Handler
             merchant.ServerEndTime = merchantinfo.ServerEndTime;
             merchant.HasWifi = merchantinfo.HasWifi;
             merchant.HasPrint = merchantinfo.HasPrint;
+            merchant.HasDelivery = merchantinfo.HasDelivery;
             merchant.Sid = merchantinfo.Sid;
             merchant.Phone = merchantinfo.Phone;
             merchant.ManagerPhone = merchantinfo.ManagerPhone;
@@ -831,6 +836,7 @@ namespace Backstage.Handler
             if (string.IsNullOrEmpty(merchantinfo.CnameList[4])) merchantinfo.CnameList[4] = "包厢";
             merchant.CnameList = merchantinfo.CnameList;
             merchant.DevName = merchantinfo.DevName;
+            merchant.WifiAccount = merchantinfo.WifiAccount;
 
             AccountHelper.SaveAccount(user);
             if (MerchantHelper.SaveMerchant(merchant, isadd))

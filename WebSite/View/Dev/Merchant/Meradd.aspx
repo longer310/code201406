@@ -88,6 +88,15 @@
                     </div>
 
                     <div class="control-group">
+                        <label class="control-label">配送</label>
+                        <div class="controls">
+                            <label class="checkbox">
+                                <input type="checkbox" id="j-is_delivery">
+                                是否开启【配送功能】</label>
+                        </div>
+                    </div>
+
+                    <div class="control-group">
                         <label class="control-label">签约模式</label>
                         <div class="controls">
                             <select id="j-sign-list">
@@ -99,6 +108,13 @@
                         <label class="control-label">开发人员</label>
                         <div class="controls">
                             <input type="text" id="j-dev-name" />
+                        </div>
+                    </div>
+
+                    <div class="control-group">
+                        <label class="control-label">wifi账号</label>
+                        <div class="controls">
+                            <input type="text" id="j-wifi-account" />
                         </div>
                     </div>
                 </div>
@@ -565,7 +581,9 @@
                 data_save.CreateTime = new Date($('#j_user_createtime').html());
                 data_save.ServerEndTime = new Date($('#j_mer_serverendtime').html());
                 data_save.HasWifi = $("#j-is_wifi").attr("checked") == "checked" ? 1 : 0;
+                data_save.WifiAccount = $("#j-wifi-account").val();
                 data_save.HasPrint = $("#j-is_print").attr("checked") == "checked" ? 1 : 0;
+                data_save.HasDelivery = $("#j-is_delivery").attr("checked") == "checked" ? 1 : 0;
                 data_save.Sid = $("#j-sign-list").val();
                 data_save.DevName = $("#j-dev-name").val();
                 data_save.Phone = $("#j-profile-phone").val().trim();
@@ -615,6 +633,10 @@
                 if (!/[0-9A-Za-z]/.test(data_save.DevName)) {
                     alert('开发人员格式输入错误');
                     return false;
+                }
+                if (data_save.HasWifi == 1 && data_save.WifiAccount == "") {
+                    Common.tip({ type: "error", content: "WiFi账号不能为空" });
+                    return;
                 }
                 if (data_save.Phone == "") {
                     Common.tip({ type: "error", content: "联系电话不能为空" });

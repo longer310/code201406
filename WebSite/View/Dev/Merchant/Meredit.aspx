@@ -87,6 +87,15 @@
                     </div>
 
                     <div class="control-group">
+                        <label class="control-label">配送</label>
+                        <div class="controls">
+                            <label class="checkbox">
+                                <input type="checkbox" id="j-is_delivery">
+                                是否开启【配送功能】</label>
+                        </div>
+                    </div>
+
+                    <div class="control-group">
                         <label class="control-label">签约模式</label>
                         <div class="controls">
                             <select id="j-sign-list">
@@ -98,6 +107,13 @@
                         <label class="control-label">开发人员</label>
                         <div class="controls">
                             <input type="text" id="j-dev-name" />
+                        </div>
+                    </div>
+
+                    <div class="control-group">
+                        <label class="control-label">wifi账号</label>
+                        <div class="controls">
+                            <input type="text" id="j-wifi-account" />
                         </div>
                     </div>
                 </div>
@@ -581,7 +597,9 @@
                 $('#j_user_createtime').html(mpage.merchantdata.user.CreateTime.ToDate().Format("yyyy-MM-dd"));
                 $('#j_mer_serverendtime').html(mpage.merchantdata.mer.ServerEndTime.ToDate().Format("yyyy-MM-dd"));
                 if (mpage.merchantdata.mer.HasWifi) $("#j-is_wifi").attr("checked", "checked");
+                $("#j-wifi-account").val(mpage.merchantdata.mer.WifiAccount);
                 if (mpage.merchantdata.mer.HasPrint) $("#j-is_print").attr("checked", "checked");
+                if (mpage.merchantdata.mer.HasDelivery) $("#j-is_delivery").attr("checked", "checked");
                 $("#j-sign-list").val(mpage.merchantdata.mer.Sid);
                 $("#j-dev-name").val(mpage.merchantdata.mer.DevName);
 
@@ -616,7 +634,9 @@
                 data_save.CreateTime = new Date($('#j_user_createtime').html());
                 data_save.ServerEndTime = new Date($('#j_mer_serverendtime').html());
                 data_save.HasWifi = $("#j-is_wifi").attr("checked") == "checked" ? 1 : 0;
+                data_save.WifiAccount = $("#j-wifi-account").val();
                 data_save.HasPrint = $("#j-is_print").attr("checked") == "checked" ? 1 : 0;
+                data_save.HasDelivery = $("#j-is_delivery").attr("checked") == "checked" ? 1 : 0;
                 data_save.Sid = $("#j-sign-list").val();
                 data_save.DevName = $("#j-dev-name").val();
                 data_save.Phone = $("#j-profile-phone").val().trim();
@@ -693,6 +713,10 @@
                 }
                 if (data_save.AndroidUrl == "") {
                     Common.tip({ type: "error", content: "安卓地址不能为空" });
+                    return;
+                }
+                if (data_save.HasWifi == 1 && data_save.WifiAccount == "") {
+                    Common.tip({ type: "error", content: "WiFi账号不能为空" });
                     return;
                 }
                 if (data_save.HasPrint == 1 && data_save.MachineCode == "") {

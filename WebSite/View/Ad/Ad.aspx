@@ -202,14 +202,14 @@
                 var text_editor;
                 KindEditor.ready(function (K) {
                     mpage.text_editor = text_editor = K.create('textarea[name="content"]', {
-                        uploadJson: '<%=DomainUrl %>/Handler/FileManager/UploadHandler.ashx?type=3',
+                        uploadJson: '<%=DomainUrl %>/Handler/FileManager/UploadHandler.ashx?type=3&sellerid=' + sellerId,
                         allowFileManager: true
                     });
 
                     //图片上传编辑
                     mpage.image_editor = image_editor = K.editor({
-                        uploadJson: '<%=DomainUrl %>/Handler/FileManager/UploadHandler.ashx?type=3',
-                        fileManagerJson: '<%=DomainUrl %>/Handler/FileManager/FileManagerHandler.ashx?type=3',
+                        uploadJson: '<%=DomainUrl %>/Handler/FileManager/UploadHandler.ashx?type=3&sellerid=' + sellerId,
+                        fileManagerJson: '<%=DomainUrl %>/Handler/FileManager/FileManagerHandler.ashx?type=3&sellerid=' + sellerId,
                     });
 
                     //图片上传绑定

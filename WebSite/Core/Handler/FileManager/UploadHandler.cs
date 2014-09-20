@@ -21,16 +21,39 @@ namespace Backstage.Handler
         {
             RoleType = RoleType.ThirdUser; //需商家管理权限
             ImageType imgType = (ImageType)Convert.ToInt32(context.Request.QueryString["type"]);
+            var qsellerId = context.Request.QueryString["sellerid"];
+            var sellerId = 0;
+            if (!string.IsNullOrEmpty(qsellerId))
+                sellerId = Convert.ToInt32(qsellerId);
 
             base.ProcessRequest(HttpContext.Current);
 
             //String aspxUrl = context.Request.Path.Substring(0, context.Request.Path.LastIndexOf("/") + 1);
 
+            var userFileName = CurrentUser.Id.ToString();
+            var isManager = 0;
+
+            if (CurrentUser.RoleType < RoleType.Merchant)
+            {
+                userFileName = sellerId.ToString();
+                if (sellerId == 0 || sellerId == CurrentUser.Id)
+                {
+                    userFileName = "admin";
+                    isManager = 1;
+                }
+            }
+            //    isManager = 1;
+            //if (isManager == 1)
+            //{
+            //    //管理员上传的图片 统一到一个目录
+            //    userFileName = "admin";
+            //}
+
             //文件保存目录路径
-            String savePath = "../../File/" + CurrentUser.Id.ToString() + "/";// "../attached/";
+            String savePath = "../../File/" + userFileName + "/";// "../attached/";
 
             //文件保存目录URL
-            String saveUrl = Utility._domainurl + "/File/" + CurrentUser.Id.ToString() + "/"; ;// "../attached/";
+            String saveUrl = Utility._domainurl + "/File/" + userFileName + "/"; ;// "../attached/";
 
             //定义允许上传的文件扩展名
             Hashtable extTable = new Hashtable();
@@ -88,9 +111,13 @@ namespace Backstage.Handler
             {
                 Directory.CreateDirectory(dirPath);
             }
-            String ymd = DateTime.Now.ToString("yyyyMMdd", DateTimeFormatInfo.InvariantInfo);
-            dirPath += ymd + "/";
-            saveUrl += ymd + "/";
+            //管理员素材库统一到一个文件夹即可
+            if (isManager == 0)
+            {
+                String ymd = DateTime.Now.ToString("yyyyMMdd", DateTimeFormatInfo.InvariantInfo);
+                dirPath += ymd + "/";
+                saveUrl += ymd + "/";
+            }
             if (!Directory.Exists(dirPath))
             {
                 Directory.CreateDirectory(dirPath);
@@ -122,7 +149,7 @@ namespace Backstage.Handler
             {
                 //TODO:暂时这么添加 图片名称及图片描述 这个后面再根据需求定怎么赋初值 后面应该加上图片类型！（上传）
                 var sm = new SourceMaterial();
-                sm.SellerId = CurrentUser.Id;
+                sm.SellerId = sellerId == 0 ? CurrentUser.Id : sellerId;//管理员在商户管理页面上传的图片归商户管理
                 sm.Title = Path.GetFileNameWithoutExtension(fileName);
                 sm.Url = fileUrl;
                 sm.Description = Path.GetFileNameWithoutExtension(fileName);

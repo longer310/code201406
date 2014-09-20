@@ -136,9 +136,19 @@ namespace Backstage.Core.Entity
         public int HasWifi { get; set; }
 
         /// <summary>
+        /// WiFi账号 只作为存储
+        /// </summary>
+        public string WifiAccount { get; set; }
+
+        /// <summary>
         /// 是否使用云打印
         /// </summary>
         public int HasPrint { get; set; }
+
+        /// <summary>
+        /// 是否使用配送
+        /// </summary>
+        public int HasDelivery { get; set; }
         /// <summary>
         /// 管理员联系方式
         /// </summary>

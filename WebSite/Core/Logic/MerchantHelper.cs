@@ -80,6 +80,8 @@ namespace Backstage.Core.Logic
                             merchant.MachineCode = reader["MachineCode"].ToString();
                             merchant.MachineKey = reader["MachineKey"].ToString();
 
+                            merchant.HasDelivery = (int)reader["HasDelivery"];
+
                             //获取商户基础类型
                             var merchanttype = MerchantTypeHelper.GetMerchantType(merchant.Mid);
                             if (merchanttype != null)
@@ -155,7 +157,8 @@ namespace Backstage.Core.Logic
                                         WifiAdStayTime           = ?WifiAdStayTime         ,
                                         WifiAds                  = ?WifiAds              ,
                                         MachineCode                  = ?MachineCode               ,
-                                        MachineKey                  = ?MachineKey                 
+                                        MachineKey                  = ?MachineKey                ,
+                                        HasDelivery                  = ?HasDelivery                  
 
                                     WHERE
                                         Id = ?Id";
@@ -212,6 +215,7 @@ namespace Backstage.Core.Logic
 
                 parameters.Add(new MySqlParameter("?MachineCode", merchant.MachineCode));
                 parameters.Add(new MySqlParameter("?MachineKey", merchant.MachineKey));
+                parameters.Add(new MySqlParameter("?HasDelivery", merchant.HasDelivery));
 
 
             }
@@ -266,7 +270,8 @@ namespace Backstage.Core.Logic
                                         WifiAdStayTime           ,
                                         WifiAds                  ,
                                         MachineCode                 ,
-                                        MachineKey                 
+                                        MachineKey                 ,
+                                        HasDelivery                 
                                         ) 
                                         values
                                         (
@@ -317,7 +322,8 @@ namespace Backstage.Core.Logic
                                         ?WifiAdStayTime           ,
                                         ?WifiAds                  ,
                                         ?MachineCode                 ,
-                                        ?MachineKey                 
+                                        ?MachineKey                 ,
+                                        ?HasDelivery                 
                                         )";
                 parameters.Add(new MySqlParameter("?Id", merchant.Id));
                 parameters.Add(new MySqlParameter("?Name", merchant.Name));
@@ -370,6 +376,7 @@ namespace Backstage.Core.Logic
 
                 parameters.Add(new MySqlParameter("?MachineCode", merchant.MachineCode));
                 parameters.Add(new MySqlParameter("?MachineKey", merchant.MachineKey));
+                parameters.Add(new MySqlParameter("?HasDelivery", merchant.HasDelivery));
             }
             try
             {
@@ -467,6 +474,7 @@ namespace Backstage.Core.Logic
 
                         merchant.MachineCode = reader["MachineCode"].ToString();
                         merchant.MachineKey = reader["MachineKey"].ToString();
+                        merchant.HasDelivery = (int)reader["HasDelivery"];
 
                         result.Results.Add(merchant);
                     }

@@ -53,6 +53,7 @@
 		<script charset="utf-8" src="../public/kindeditor/lang/zh_CN.js"></script>
 
         <script type="text/javascript">
+            var sellerId = '<%=SellerId%>';
             var MPage = {
                 init: function () {
                     var mpage = this;

@@ -20,14 +20,29 @@ namespace Backstage.Handler
         public override void ProcessRequest(HttpContext context)
         {
             RoleType = RoleType.ThirdUser;//需商家管理权限 暂定权限管理
+            var qsellerId = context.Request.QueryString["sellerid"];
+            var sellerId = 0;
+            if (!string.IsNullOrEmpty(qsellerId))
+                sellerId = Convert.ToInt32(qsellerId);
+
             base.ProcessRequest(HttpContext.Current);
 
             //String aspxUrl = context.Request.Path.Substring(0, context.Request.Path.LastIndexOf("/") + 1);
 
+            var userFileName = CurrentUser.Id.ToString();
+            if (CurrentUser.RoleType < RoleType.Merchant)
+            {
+                userFileName = sellerId.ToString();
+                if (sellerId == 0 || sellerId == CurrentUser.Id)
+                {
+                    userFileName = "admin";
+                }
+            }
+
             //根目录路径，相对路径
-            String rootPath = "../../File/" + CurrentUser.Id.ToString() + "/"; ;// "../attached/";
+            String rootPath = "../../File/" + userFileName + "/"; ;// "../attached/";
             //根目录URL，可以指定绝对路径，比如 http://www.yoursite.com/attached/
-            String rootUrl = Utility._domainurl + "/File/" + CurrentUser.Id.ToString() + "/"; ;//aspxUrl + "../attached/";
+            String rootUrl = Utility._domainurl + "/File/" + userFileName + "/"; ;//aspxUrl + "../attached/";
             //图片扩展名
             String fileTypes = "gif,jpg,jpeg,png,bmp";
 

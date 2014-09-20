@@ -19,8 +19,8 @@
             <ul class="nav nav-tabs" id="j-order-tab">
                 <li><a href="#">所有订单</a></li>
                 <li><a href="#">已付款订单</a></li>
-                <%--<li><a href="#">待发货订单</a></li>
-                <li><a href="#">已发货订单</a></li>--%>
+                <%--<li><a href="#">待发货订单</a></li>--%>
+                <li><a href="#">已发货订单</a></li>
                 <li><a href="#">已完成订单</a></li>
             </ul>
             <table class="table table-bordered table-striped with-check">
@@ -78,8 +78,7 @@
                         <b class="text-error j-order-status">
                             {{if v.Status == 1}}未付款
                             {{else v.Status == 2}}已付款
-                            {{else v.Status == 3}}待发货
-                            {{else v.Status == 4}}已发货
+                            {{else v.Status == 3}}已发货
                             {{else}}已完结
                             {{/if}}
                         </b>
@@ -91,7 +90,7 @@
 					
 					<td style="width:130px;">
 						<div class="pull-right">
-                        {{if v.Type == 1}}
+                        {{if v.Type == 1 && v.Status ==2}}
 							<a class="btn btn-success btn-mini j-btn-reach" href="javascript:;"><i class="icon-ok icon-white"></i> 已发货</a>
                         {{/if}}
 							<a class="btn btn-primary btn-mini" href="<%=DomainUrl %>/view/orders/detail.aspx?id=${v.Id}&sellerId=<%=SellerId%>"><i class="icon-pencil icon-white"></i> 查看</a>
@@ -255,8 +254,8 @@
                             page: '<li><a href="#">@{page}</a></li>',
                             tip: '<li class="page-info"><b class="text-info">@{nowPage}</b>/@{pageCount}页 共<b class="text-info">@{count}</b>条记录</li>',
                             now: mpage.start,//当前页
-                            maxPage: 5,//显示的最多页数
-                            per: 6,//每页显示几个
+                            maxPage: mpage.maxpage,//显示的最多页数
+                            per: mpage.limit,//每页显示几个
                             count: data.count,
                             onchange: function (page) {//切换页数回调函数
                                 mpage.getOrderList(page, mpage.type);

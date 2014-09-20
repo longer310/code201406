@@ -181,15 +181,15 @@ namespace Backstage.Core
         /// <summary>
         /// 待发货
         /// </summary>
-        WaitDeliverGoods = 3,
+        //WaitDeliverGoods = 3,
         /// <summary>
         /// 已发货
         /// </summary>
-        DeliverGoodsed = 4,
+        DeliverGoodsed = 3,
         /// <summary>
         /// 已完结（用户完结或者倒计时到了完结）
         /// </summary>
-        End = 5,
+        End = 4,
     }
 
     /// <summary>

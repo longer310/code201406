@@ -205,6 +205,13 @@ namespace Backstage.Handler
                 return;
             }
 
+            var merchant = MerchantHelper.GetMerchant(sellerid);
+            if (merchant == null)
+            {
+                ReturnErrorMsg("不存在该商户");
+                return;
+            }
+
             if (AccountHelper.JudgeUser(phone, sellerid))//, username
             {
                 ReturnErrorMsg("已存在该电话号码的用户");
@@ -241,6 +248,10 @@ namespace Backstage.Handler
             //设置验证码已过期
             verificationCode.ExpiredTime = DateTime.Now;
             VerificationCodeHelper.SaveVerificationCode(verificationCode);
+
+            //商户用户量加一
+            merchant.UserCount++;
+            MerchantHelper.SaveMerchant(merchant);
 
             ReturnCorrectMsg("注册成功");
         }

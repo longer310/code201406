@@ -882,6 +882,7 @@ namespace Backstage.Handler
             public float discount { get; set; }
             public int boxno { get; set; }
             public List<OrderGoddsItem> goodslist { get; set; }
+            public int hasdelivery { get; set; }
 
             public OrderDetailData()
             {
@@ -922,10 +923,12 @@ namespace Backstage.Handler
                 sendprice = 5;
                 freesendprice = 100;
                 var merchant = MerchantHelper.GetMerchant(orders.SellerId);
+                hasdelivery = 0;
                 if (merchant != null)
                 {
                     sendprice = merchant.Freight;
                     freesendprice = merchant.NeedToFreeFreight;
+                    hasdelivery = merchant.HasDelivery;
                 }
 
                 totalprice = orders.TotalPrice;
@@ -1062,6 +1065,13 @@ namespace Backstage.Handler
 
             if (ordertime != default(DateTime)) orders.OrderTime = ordertime;
             orders.OrderType = (OrderType)ordertype;
+
+            if (orders.OrderType != OrderType.Shop && merchant.HasDelivery == 0)
+            {
+                ReturnErrorMsg("该商户不支持配送");
+                return;
+            }
+
             if (orders.OrderType != OrderType.Shop)
             {
                 orders.TotalPrice += merchant.Freight;

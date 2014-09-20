@@ -46,10 +46,11 @@ namespace Backstage.Core.Logic
         /// 根据第三方账号id获取绑定实体
         /// </summary>
         /// <param name="userIdentity"></param>
+        /// <param name="sellerId"></param>
         /// <returns></returns>
-        public static AccountBinding GetAccountBindingByIdentity(string userIdentity)
+        public static AccountBinding GetAccountBindingByIdentity(string userIdentity, int sellerId)
         {
-            var cmdText = string.Format("select * from AccountBinding where UserIdentity='{0}' and Status=0 limit 0,1;", userIdentity);
+            var cmdText = string.Format("select * from AccountBinding where UserIdentity='{0}' and SellerId={1} and Status=0 limit 0,1;", userIdentity, sellerId);
             try
             {
                 using (var conn = Utility.ObtainConn(Utility._gameDbConn))
@@ -85,10 +86,11 @@ namespace Backstage.Core.Logic
             var cmdText = string.Empty;
             List<MySqlParameter> parameters = new List<MySqlParameter>();
 
-            cmdText = @"insert into AccountBinding(Id,UserIdentity,AccountType) values (?Id,?UserIdentity,?AccountType)";
+            cmdText = @"insert into AccountBinding(Id,UserIdentity,AccountType,SellerId) values (?Id,?UserIdentity,?AccountType,?SellerId)";
             parameters.Add(new MySqlParameter("?Id", accountBinding.Id));
             parameters.Add(new MySqlParameter("?UserIdentity", accountBinding.UserIdentity));
             parameters.Add(new MySqlParameter("?AccountType", accountBinding.AccountType));
+            parameters.Add(new MySqlParameter("?SellerId", accountBinding.SellerId));
             try
             {
                 var num = MySqlHelper.ExecuteNonQuery(Utility._gameDbConn, CommandType.Text, cmdText, parameters.ToArray());

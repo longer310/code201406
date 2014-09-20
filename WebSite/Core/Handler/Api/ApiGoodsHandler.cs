@@ -89,8 +89,12 @@ namespace Backstage.Handler
                 ReturnErrorMsg("订单不存在");
                 return;
             }
-            Utility.SendOrdersMsgToPrint(orders);
-            ReturnCorrectMsg("订单打印成功");
+            if (Utility.SendOrdersMsgToPrint(orders))
+            {
+                ReturnCorrectMsg("订单打印成功");
+                return;
+            }
+            ReturnCorrectMsg("订单打印失败");
         }
         #region 首页 1
         public class HomeData

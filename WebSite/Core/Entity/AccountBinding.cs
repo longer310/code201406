@@ -18,5 +18,9 @@ namespace Backstage.Core.Entity
         /// 第三方账号标识
         /// </summary>
         public string UserIdentity { get; set; }
+        /// <summary>
+        /// 商户id
+        /// </summary>
+        public int SellerId { get; set; }
     }
 }

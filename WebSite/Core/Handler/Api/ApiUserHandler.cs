@@ -325,7 +325,7 @@ namespace Backstage.Handler
                 return;
             }
 
-            var userbinding = AccountBindingHelper.GetAccountBindingByIdentity(openid);
+            var userbinding = AccountBindingHelper.GetAccountBindingByIdentity(openid, sellerid);
             var user = new Account();
             if (userbinding == null)
             {//没有绑定 先添加用户
@@ -347,6 +347,7 @@ namespace Backstage.Handler
                 userbinding.Id = id;
                 userbinding.AccountType = (AccountType)type;
                 userbinding.UserIdentity = openid;
+                userbinding.SellerId = sellerid;
                 //添加第三方绑定
                 AccountBindingHelper.AddAccountBinding(userbinding);
             }

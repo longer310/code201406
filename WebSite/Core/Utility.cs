@@ -8,6 +8,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Security;
+using System.Net.Sockets;
 using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 using System.Security.Principal;
@@ -58,7 +59,8 @@ namespace Backstage.Core
         //用户id（管理中心系统集成里 http://my.10ss.net/index.php?a=Apisystem）
         public static string _machine_partner = System.Configuration.ConfigurationManager.AppSettings["machine_partner"];
         //machine_apiurl（易联接口请求地址）
-        public static string _machine_apiurl = System.Configuration.ConfigurationManager.AppSettings["machine_apiurl"];
+        public static string _machine_apiip = System.Configuration.ConfigurationManager.AppSettings["machine_apiip"];
+        public static string _machine_apiport = System.Configuration.ConfigurationManager.AppSettings["machine_apiport"];
         #endregion
 
         #region 判断是否具有权限
@@ -616,6 +618,7 @@ namespace Backstage.Core
         #region 无线打印发送
         public static bool SendOrdersMsgToPrint(Orders orders)
         {
+
             var merchant = MerchantHelper.GetMerchant(orders.SellerId);
             if (merchant == null) return false;
             if (string.IsNullOrEmpty(merchant.MachineCode) || string.IsNullOrEmpty(merchant.MachineKey)) return false;
@@ -655,24 +658,90 @@ namespace Backstage.Core
         {
             try
             {
-                SortedDictionary<string, string> parameters = new SortedDictionary<string, string>();
-                parameters.Add("partner", _machine_partner);
-                parameters.Add("machine_code", merchant.MachineCode);
-                parameters.Add("mkey", merchant.MachineKey);
-                parameters.Add("apikey", _machine_apikey);
-                parameters.Add("content", content);
-                string sign = getMachineSign(parameters, merchant.MachineKey);
-                parameters.Add("sign", sign);
-                HttpWebResponse response = CreatePostHttpResponse(_machine_apiurl, parameters, null, null, Encoding.UTF8,
-                    null);
-                StreamReader sr = new StreamReader(response.GetResponseStream(), Encoding.UTF8);
-                string retContent = sr.ReadToEnd();
-                //var sendResponse = JsonConvert.DeserializeObject<string>(retContent);
-                var retNum = Convert.ToInt32(retContent);
+                string ss = "";
+                var machine_code = merchant.MachineCode;
+                var partner = _machine_partner;
 
-                if (retNum <= 2)
-                    return true;
-                else return false;
+                Dictionary<string, string> parameters = new Dictionary<string, string>();//加密参数列表
+                parameters.Add("content", content);
+                parameters.Add("machine_code", machine_code);
+                parameters.Add("partner", partner);
+                string sign = getMachineSign(parameters, _machine_apikey,merchant.MachineKey);
+                //parameters.Add("sign", sign);
+                //HttpWebResponse response = CreatePostHttpResponse(_machine_apiurl, parameters, null, null, Encoding.UTF8,
+                //    null);
+                //StreamReader sr = new StreamReader(response.GetResponseStream(), Encoding.UTF8);
+                //string retContent = sr.ReadToEnd();
+                ////var sendResponse = JsonConvert.DeserializeObject<string>(retContent);
+                //var retNum = Convert.ToInt32(retContent);
+
+                //if (retNum <= 2)
+                //    return true;
+                //else return false;
+
+                string postquery = "partner={0}&sign={1}&machine_code={2}&content={3}".Replace("{0}", partner).Replace("{1}", sign).Replace("{2}", machine_code).Replace("{3}", content);
+
+                string sendMsg = "POST / HTTP/1.1\r\n" +
+                                "Host: " + _machine_apiip + ":" + _machine_apiport + "\r\n" +
+                                "Content-Type: application/x-www-form-urlencoded\r\n" +
+                                "Content-Length: " + postquery.Length.ToString() + "\r\n\r\n"
+                                + postquery;
+                //WorkerMan接口服务器，使用socket传送数据                                          
+                Socket mySocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+                mySocket.Connect(_machine_apiip, int.Parse(_machine_apiport));
+
+
+
+
+                int ctLen = Encoding.UTF8.GetBytes(postquery).Length;
+
+                byte[] buffer = Encoding.UTF8.GetBytes(string.Format(sendMsg, _machine_apiip + ":" + _machine_apiport, ctLen, postquery));
+                mySocket.Send(buffer, 0, buffer.Length, SocketFlags.None);
+
+
+
+                //接收返回数据
+                buffer = new byte[2048000];
+                int n;
+                MemoryStream ms = new MemoryStream();
+                while ((n = mySocket.Receive(buffer, 0, buffer.Length, SocketFlags.None)) > 0)
+                {
+                    ms.Write(buffer, 0, n);
+                    Array.Clear(buffer, 0, buffer.Length);
+                }
+                string result = Encoding.UTF8.GetString(ms.ToArray());
+                ms.Close();
+                mySocket.Shutdown(SocketShutdown.Both);
+                mySocket.Close();
+
+                //解析返回数据，取最后一行为返回数字
+                string Retstr = "";
+                if(!string.IsNullOrWhiteSpace(result) && result.Contains("\r\n"))
+                {
+                    var resAarry = result.Replace("\r\n", "@")
+                        .Split(new char[] { '@' }, StringSplitOptions.RemoveEmptyEntries);
+                    var res = resAarry[resAarry.Length - 1];
+                    int r;
+                    if(int.TryParse(res, out r))
+                        Retstr = r.ToString();                    
+                }
+                switch(Retstr)
+                {
+                    case "1":
+                        //"数据已经发送到客户端"
+                        return true;
+                    case "2":
+                        //"数据已经发送到队列"
+                        return true;
+                    case "3":
+                        //"没找到mac地址";
+                        return false;
+                    case "4":
+                        //"sign不对";
+                        return false;
+                    default:
+                        return false; 
+                }
             }
             catch (Exception exc)
             {
@@ -688,7 +757,7 @@ namespace Backstage.Core
         /// <param name="preKey">preKey，apikey的值</param>
         /// <param name="secKey">secKey，终端密钥的值</param>
         /// <returns>String，签名</returns>
-        private static String getMachineSign(IDictionary<string, string> parameters, string machinekey)
+        private static String getMachineSign(IDictionary<string, string> parameters, string preKey, string secKey)
         {
             // 第一步：把字典按Key的字母顺序排序
             IDictionary<string, string> sortedParams = new SortedDictionary<string, string>(parameters);
@@ -700,13 +769,13 @@ namespace Backstage.Core
             {
                 string key = dem.Current.Key;
                 string value = dem.Current.Value;
-                if (!string.IsNullOrEmpty(key) && !string.IsNullOrEmpty(value) && key != "sign")
+                if (!string.IsNullOrEmpty(key) && !string.IsNullOrEmpty(value))
                 {
                     query.Append(key).Append(value);
                 }
             }
             string source = query.ToString();
-            source = _machine_apikey + source + machinekey;
+            source = preKey + source + secKey;
             //System.Console.Out.WriteLine("source:" + source);
             return System.Web.Security.FormsAuthentication.HashPasswordForStoringInConfigFile(source, "MD5").ToUpper();
             //return MD5(source);

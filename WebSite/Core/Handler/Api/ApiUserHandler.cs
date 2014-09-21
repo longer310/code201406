@@ -328,6 +328,7 @@ namespace Backstage.Handler
             var sellerid = GetInt("sellerid");
             var openid = GetString("openid");
             var type = GetInt("type");
+            var isbindphone = GetInt("isbindphone");
 
             var merchant = MerchantHelper.GetMerchant(sellerid);
             if (merchant == null)

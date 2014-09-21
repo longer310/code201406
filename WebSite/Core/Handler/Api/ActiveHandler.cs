@@ -131,6 +131,11 @@ namespace Backstage.Core.Handler
         {
             int aid = GetInt("newid");
             var item = ActiveHelper.GetItem(aid);
+            if (item == null)
+            {
+                ReturnErrorMsg("不存在该活动");
+                return;
+            }
             var data = new
             {
                 newid = item.Id,

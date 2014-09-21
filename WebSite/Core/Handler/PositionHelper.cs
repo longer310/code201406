@@ -322,6 +322,67 @@ namespace Backstage.Core.Handler
             }
             return results;
         }
+
+
+        public static PagResults<BoxType> GetPagingBoxTypes(int sellerId, int pageIndex, int pageSize)
+        {
+            var results = new PagResults<BoxType>();
+            string commandText = @"select * from boxtype where sellerId = ?sellerId LIMIT ?index,?size";
+            List<MySqlParameter> parameters = new List<MySqlParameter>();
+            if (pageSize == 0)
+            {
+                commandText = @"select * from boxtype where sellerId = ?sellerId";
+                parameters.Add(new MySqlParameter("?sellerId", sellerId));
+            }
+            else
+            {
+                parameters.Add(new MySqlParameter("?sellerId", sellerId));
+                parameters.Add(new MySqlParameter("?index", pageIndex));
+                parameters.Add(new MySqlParameter("?size", pageSize));
+            }
+            try
+            {
+                using (var conn = Utility.ObtainConn(Utility._gameDbConn))
+                {
+                    MySqlDataReader reader = MySqlHelper.ExecuteReader(conn, CommandType.Text, commandText, parameters.ToArray());
+                    while (reader.Read())
+                    {
+                        BoxType b = new BoxType();
+                        b.Id = reader.GetInt32(0);
+                        b.SellerId = (int)reader["SellerId"];
+                        b.HoldNum = (int)reader["HoldNum"];
+                        b.Lowest = (int)reader["Lowest"];
+                        b.Title = reader["Title"].ToString();
+
+                        results.Results.Add(b);
+                    }
+                    conn.Close();
+                    conn.Dispose();
+                    conn.Open();
+
+                    commandText = @"select count(*) from boxType where sellerId = ?sellerId";
+                    parameters.Clear();
+                    parameters.Add(new MySqlParameter("?sellerId", sellerId));
+
+                    reader = MySqlHelper.ExecuteReader(conn, CommandType.Text, commandText, parameters.ToArray());
+                    if (reader.HasRows)
+                    {
+                        if (reader.Read())
+                        {
+                            results.TotalCount = reader.GetInt32(0);
+                        }
+                    }
+
+                }
+
+            }
+            catch (System.Exception ex)
+            {
+                throw;
+            }
+            return results;
+        }
+
         internal static BoxType GetBoxType(int id)
         {
 
@@ -593,7 +654,68 @@ namespace Backstage.Core.Handler
                         t.BeginTime = (DateTime)reader["BeginTime"];
                         t.EndTime = (DateTime)reader["EndTime"];
                         t.SellerId = (int)reader["SellerId"];
+                        t.Date = (DateTime)reader["Date"];
+
                         results.Add(t);
+                    }
+                }
+
+            }
+            catch (System.Exception ex)
+            {
+                throw;
+            }
+            return results;
+        }
+
+        internal static PagResults<Timeline> GetTimeLines(int positionId,int sellerId,int index,int size)
+        {
+            var results = new PagResults<Timeline>();
+            int totalnum = 0;
+            string commandText = @"select * from timeline where positionId = ?positionId and sellerId = ?sellerId limit ?index,?size";
+
+            List<MySqlParameter> parameters = new List<MySqlParameter>();
+            parameters.Add(new MySqlParameter("?positionId", positionId));
+            parameters.Add(new MySqlParameter("?sellerId", sellerId));
+            parameters.Add(new MySqlParameter("?index", index));
+            parameters.Add(new MySqlParameter("?size", size));
+
+            try
+            {
+                using (var conn = Utility.ObtainConn(Utility._gameDbConn))
+                {
+                    MySqlDataReader reader = MySqlHelper.ExecuteReader(conn, CommandType.Text, commandText, parameters.ToArray());
+                    while (reader.Read())
+                    {
+                        Timeline t = new Timeline();
+                        t.Id = reader.GetInt32(0);
+                        t.PositionId = (int)reader["PositionId"];
+                        t.Status = (int)reader["Status"];
+                        t.Title = reader["Title"].ToString();
+                        t.BeginTime = (DateTime)reader["BeginTime"];
+                        t.EndTime = (DateTime)reader["EndTime"];
+                        t.SellerId = (int)reader["SellerId"];
+                        t.Date = (DateTime)reader["Date"];
+
+                        results.Results.Add(t);
+                    }
+
+                    conn.Close();
+                    conn.Dispose();
+                    conn.Open();
+
+                    commandText = @"select count(*) from timeline where positionId = ?positionId and sellerId = ?sellerId";
+                    parameters.Clear();
+                    parameters.Add(new MySqlParameter("?positionId", positionId));
+                    parameters.Add(new MySqlParameter("?sellerId", sellerId));
+
+                    reader = MySqlHelper.ExecuteReader(conn, CommandType.Text, commandText, parameters.ToArray());
+                    if (reader.HasRows)
+                    {
+                        if (reader.Read())
+                        {
+                            results.TotalCount = reader.GetInt32(0);
+                        }
                     }
                 }
 
@@ -626,6 +748,7 @@ namespace Backstage.Core.Handler
                         t.BeginTime = (DateTime)reader["BeginTime"];
                         t.EndTime = (DateTime)reader["EndTime"];
                         t.SellerId = (int)reader["SellerId"];
+                        t.Date = (DateTime)reader["Date"];
                     }
                 }
 
@@ -669,6 +792,7 @@ namespace Backstage.Core.Handler
             parameters.Add(new MySqlParameter("?PositionId", t.PositionId));
             parameters.Add(new MySqlParameter("?Status", t.Status));
             parameters.Add(new MySqlParameter("?Title", t.Title));
+            parameters.Add(new MySqlParameter("?Date", t.Date));
 
             MySqlHelper.ExecuteNonQuery(connectionString, CommandType.Text, commandText, parameters.ToArray());
 
@@ -698,6 +822,7 @@ namespace Backstage.Core.Handler
             parameters.Add(new MySqlParameter("?PositionId", t.PositionId));
             parameters.Add(new MySqlParameter("?Status", t.Status));
             parameters.Add(new MySqlParameter("?Title", t.Title));
+            parameters.Add(new MySqlParameter("?Date", t.Date));
 
             MySqlHelper.ExecuteNonQuery(GlobalConfig.DbConn, CommandType.Text, commandText, parameters.ToArray());
 

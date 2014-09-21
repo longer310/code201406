@@ -23,6 +23,8 @@ namespace Backstage.Core.Handler.Backstage
                     Update(); break;
                 case "add":
                     Add(); break;
+                case "del":
+                    Delete(); break;
                 case "categorys":
                     GetCategorys(); break;
                 case "updatecategory":
@@ -43,44 +45,10 @@ namespace Backstage.Core.Handler.Backstage
             }
         }
 
-        private void DeleteCategory()
+        private void Delete()
         {
-            throw new NotImplementedException();
-        }
-
-        private void AddCategory()
-        {
-            throw new NotImplementedException();
-        }
-
-        private void UpdateCategory()
-        {
-            throw new NotImplementedException();
-        }
-
-        private void DeleteTime()
-        {
-            throw new NotImplementedException();
-        }
-
-        private void EditTime()
-        {
-            throw new NotImplementedException();
-        }
-
-        private void AddTime()
-        {
-            throw new NotImplementedException();
-        }
-
-        private void GetTimes()
-        {
-            throw new NotImplementedException();
-        }
-
-        private void GetCategorys()
-        {
-            throw new NotImplementedException();
+            var id = GetInt("id");
+            PositionHelper.Delete(id);
         }
 
         private void Add()
@@ -133,18 +101,121 @@ namespace Backstage.Core.Handler.Backstage
             var status = GetInt("status");
             var list = PositionHelper.GetPaging(sellerId, index * size, size, cid);
             var results = new PagResults<object>();
+            var boxTypes = PositionHelper.GetListBoxTypes(sellerId, 0, 0);
+            results.TotalCount = list.TotalCount;
             foreach (var item in list.Results)
             {
+                var boxType = boxTypes.FirstOrDefault(b => b.Id == item.BoxTypeId);
+
                 var o = new
                 {
                     Id = item.Id,
                     BoxNumber = item.BoxNumber,
                     BoxTypeId = item.BoxTypeId,
- 
+                    BoxTypeTitle = boxType.Title,
+                    Lowest = boxType.Lowest
                 };
+
+                results.Results.Add(o);
             }
-
-
+            JsonTransfer jt = new JsonTransfer();
+            jt.Add("data", results);
+            Response.Write(DesEncrypt(jt));
+            Response.End();
         }
+
+        private void DeleteCategory()
+        {
+            var id = GetInt("id");
+            PositionHelper.DeleteBoxType(id);
+        }
+
+        private void AddCategory()
+        {
+            var title = GetInt("title");
+            var item = new BoxType();
+            item.CreateTime = DateTime.Now;
+            item.HoldNum = GetInt("holdnum");
+            item.Lowest = GetInt("lowest");
+            item.SellerId = GetInt("sellerId");
+            item.Title = GetString("title");
+
+            PositionHelper.CreateBoxType(item);
+        }
+
+        private void GetCategorys()
+        {
+            var sellerId = GetInt("sellerId");
+            var index = GetInt("start");
+            var size = GetInt("limit");
+            var list = PositionHelper.GetPagingBoxTypes(sellerId, index, size);
+
+            JsonTransfer jt = new JsonTransfer();
+            jt.Add("data", list);
+            Response.Write(DesEncrypt(jt));
+            Response.End();
+        }
+
+        private void UpdateCategory()
+        {
+            var id = GetInt("id");
+            var item = PositionHelper.GetBoxType(id);
+            item.HoldNum = GetInt("holdnum");
+            item.Lowest = GetInt("lowest");
+            item.SellerId = GetInt("sellerId");
+            item.Title = GetString("title");
+
+            PositionHelper.UpdateBoxType(item);
+        }
+
+        private void DeleteTime()
+        {
+            var id = GetInt("id");
+            PositionHelper.DeleteTimeline(id);
+        }
+
+        private void EditTime()
+        {
+            var id = GetInt("id");
+            var item = PositionHelper.GetTimeLine(id);
+            item.BeginTime = GetTime("begin");
+            item.EndTime = GetTime("end");
+            item.Date = GetTime("date");
+            item.Title = GetString("title");
+            item.Status = GetInt("status");
+
+            PositionHelper.UpdateTimeline(item);
+        }
+
+        private void AddTime()
+        {
+            var item = new Timeline();
+            item.BeginTime = GetTime("begin");
+            item.EndTime = GetTime("end");
+            item.Date = GetTime("date");
+            item.Title = GetString("title");
+            item.Status = GetInt("status");
+            item.SellerId = GetInt("sellerId");
+            item.PositionId = GetInt("positionId");
+            PositionHelper.CreateTimeline(item);
+        }
+
+        private void GetTimes()
+        {
+            var sellerId = GetInt("sellerId");
+            var positionId = GetInt("positionId");
+            var index = GetInt("start");
+            var size = GetInt("limit");
+            var list = PositionHelper.GetTimeLines(sellerId, positionId, index * size, size);
+
+            JsonTransfer jt = new JsonTransfer();
+            jt.Add("data", list);
+            Response.Write(DesEncrypt(jt));
+            Response.End();
+        }
+
+       
+
+
     }
 }

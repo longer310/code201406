@@ -111,6 +111,7 @@ public partial class wap_notify_ordersurl : System.Web.UI.Page
                                     chargeLog.SellerId = orders.SellerId;
                                     chargeLog.OrderId = orders.Id.ToString();
                                     chargeLog.PayName = payMent.Id == 0 ? "账户余额" : payMent.Name;
+                                    chargeLog.Status = RechargeStatus.Success;
                                     //记录消费记录
                                     ChargeLogHelper.AddChargeLog(chargeLog);
 

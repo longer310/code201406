@@ -38,42 +38,10 @@ namespace Backstage.Core.Handler.Backstage
                     CreatePush(); break;
                 case "editpush":
                     UpdatePush(); break;
-                case "getsalestat": //获取销售统计
-                    GetSaleStat(); break;
-                case "getchargestat": //获取充值统计
-                    GetChargeStat(); break;
                 case "updatepwd":
                     UpdateMerchantPwd(); break;
                 default: break;
             }
-        }
-
-        private void GetChargeStat()
-        {
-            var sellerId = GetInt("sellerId");
-            //var yearOrMonth = GetInt("isyear");
-            var index = GetInt("index");
-            var size = GetInt("size");
-            var charglogs = ChargeLogHelper.GetChargeLogs(sellerId, index * size, size);
-
-            JsonTransfer jt = new JsonTransfer();
-            jt.Add("data", charglogs);
-            Response.Write(DesEncrypt(jt));
-            Response.End();
-        }
-
-
-        private void GetSaleStat()
-        {
-            var sellerId = GetInt("sellerId");
-            var index = GetInt("index");
-            var size = GetInt("size");
-            var goods = GoodsHelper.GetGoodsList(sellerId, "", "order by CreateTime", index * size, size);
-
-            JsonTransfer jt = new JsonTransfer();
-            jt.Add("data", goods);
-            Response.Write(DesEncrypt(jt));
-            Response.End();
         }
 
         private void UpdateMerchantPwd()
@@ -317,7 +285,7 @@ namespace Backstage.Core.Handler.Backstage
             MerchantHelper.SaveMerchant(merchant);
         }
 
-        
+
 
     }
 

@@ -547,6 +547,7 @@
     <Content Include="View\Ad\Ad.aspx" />
     <Content Include="View\Alipay\notify_ordersurl.aspx" />
     <Content Include="View\Alipay\wap_notify_ordersurl.aspx" />
+    <Content Include="View\Alipay\notify_url.aspx" />
     <Content Include="View\Alipay\wap_notify_url.aspx" />
     <Content Include="View\Cash\Add.aspx" />
     <Content Include="View\Cash\List.aspx" />
@@ -615,6 +616,8 @@
     <Compile Include="Core\Alipay\AlipaySubmit.cs" />
     <Compile Include="Core\Alipay\MD5.cs" />
     <Compile Include="Core\Alipay\RSA.cs" />
+    <Compile Include="Core\Entity\RechargeMonthStatistics.cs" />
+    <Compile Include="Core\Entity\RechargeDateStatistics.cs" />
     <Compile Include="Core\Entity\Fastlinks.cs" />
     <Compile Include="Core\Entity\SendMsg.cs" />
     <Compile Include="Core\Entity\Announcement.cs" />
@@ -625,6 +628,8 @@
     <Compile Include="Core\Entity\Timeline.cs" />
     <Compile Include="Core\Handler\Backstage\PositionHandler.cs" />
     <Compile Include="Core\Handler\DevSystemHelper.cs" />
+    <Compile Include="Core\Handler\Merchant\StatisticsHandler.cs" />
+    <Compile Include="Core\Logic\RechargeStatisticsHelper.cs" />
     <Compile Include="Core\Logic\TempleHelper.cs" />
     <Compile Include="Core\PlatBasePage.cs">
       <SubType>ASPXCodeBehind</SubType>
@@ -765,6 +770,10 @@
     </Compile>
     <Compile Include="View\Alipay\wap_notify_ordersurl.aspx.cs">
       <DependentUpon>wap_notify_ordersurl.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="View\Alipay\notify_url.aspx.cs">
+      <DependentUpon>notify_url.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="View\Alipay\wap_notify_url.aspx.cs">
@@ -1206,6 +1215,7 @@
     <Content Include="View\DevMaster.Master" />
     <Content Include="Handler\Backstage\DevSystemHandler.ashx" />
     <Content Include="Handler\Backstage\PositionHandler.ashx" />
+    <Content Include="Handler\Merchant\StatisticsHandler.ashx" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

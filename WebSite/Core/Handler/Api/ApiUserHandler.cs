@@ -106,6 +106,12 @@ namespace Backstage.Handler
                 case "modifymerchant"://更新商户信息 7.25
                     ModifyMerchant();
                     break;
+                case "getthirdbindphonecode"://第三方绑定手机发验证码 7.28
+                    GetThirdBindPhoneCode();
+                    break;
+                case "thirdbindphone"://第三方绑定手机 7.29
+                    ThirdBindPhone();
+                    break;
                 default: break;
             }
         }
@@ -328,7 +334,6 @@ namespace Backstage.Handler
             var sellerid = GetInt("sellerid");
             var openid = GetString("openid");
             var type = GetInt("type");
-            var isbindphone = GetInt("isbindphone");
 
             var merchant = MerchantHelper.GetMerchant(sellerid);
             if (merchant == null)
@@ -348,6 +353,7 @@ namespace Backstage.Handler
                 user.RoleType = RoleType.ThirdUser;
                 user.Sex = (SexType)sex;
                 user.SellerId = sellerid;
+                user.Phone = string.Empty;
 
                 var id = AccountHelper.SaveAccount(user);
                 user.Id = id;
@@ -1497,7 +1503,9 @@ namespace Backstage.Handler
                 return;
             }
             var favorite = FavoriteHelper.GetFavorite(uid);
-            var wheresql = string.Format(" and a.Id in({0})", Utility.GetString(favorite.GidList));
+            var wheresql = string.Empty;
+            if(favorite.GidList.Count > 0)
+                wheresql = string.Format(" and a.Id in({0})", Utility.GetString(favorite.GidList));
             var goodslist = GoodsHelper.GetGoodsList(user.SellerId, wheresql).Results;
             if (goodslist.Count != favorite.GidList.Count)
             {
@@ -1606,6 +1614,158 @@ namespace Backstage.Handler
             MerchantHelper.SaveMerchant(merchant);
 
             ReturnCorrectMsg("更新商户信息成功");
+        }
+        #endregion
+
+        #region 第三方绑定手机发验证码（新增） 7.28
+        private void GetThirdBindPhoneCode()
+        {
+            var phone = GetString("phone");
+            var sellerId = GetInt("sellerid");
+            var uid = GetInt("uid");
+
+            var cuser = AccountHelper.GetUser(uid);
+            if (cuser == null)
+            {
+                ReturnErrorMsg("不存在该id的用户");
+                return;
+            }
+
+            if (!string.IsNullOrEmpty(cuser.Phone))
+            {
+                ReturnErrorMsg("该用户已绑定过手机号码");
+                return;
+            }
+
+            if (string.IsNullOrEmpty(phone))
+            {
+                ReturnErrorMsg("phone参数没传");
+                return;
+            }
+            if (sellerId <= 0)
+            {
+                ReturnErrorMsg("商户id参数错误");
+                return;
+            }
+            var merchant = MerchantHelper.GetMerchant(sellerId);
+            if (merchant == null)
+            {
+                ReturnErrorMsg("不存在该商户");
+                return;
+            }
+            var user = AccountHelper.FindUserByPhone(phone, sellerId);
+            if (user != null)
+            {
+                ReturnErrorMsg("此电话已在该商户注册");
+                return;
+            }
+            var verificationCode = VerificationCodeHelper.GetVerificationCode(sellerId, phone);
+            bool needgen = false;
+            if (verificationCode == null)
+            {
+                verificationCode = new VerificationCode();
+                verificationCode.Phone = phone;
+                verificationCode.SellerId = sellerId;
+                needgen = true;
+            }
+            else
+            {
+                if (verificationCode.ExpiredTime < DateTime.Now)
+                    needgen = true;
+            }
+            if (needgen)
+            {//重新生成验证码 和 过期时间
+                verificationCode.Code = Utility.GetVerificationCode(6);
+                verificationCode.ExpiredTime = DateTime.Now.AddMinutes(30);
+            }
+            //发送短信
+            //Utility.SendMsg(verificationCode.Code, verificationCode.Phone, Utility._register_message);
+            if (Utility._msg_opensend == "1")
+            {
+                SendMsgClass3 jsobject = new SendMsgClass3();
+                jsobject.param1 = merchant.Name;
+                jsobject.param2 = verificationCode.Code;
+                jsobject.param3 = "30";
+
+                if (Utility.SendMsg(verificationCode.Phone, MsgTempleId.UserModifyPhone, jsobject) != "发送成功")
+                {
+                    logger.InfoFormat("短信模板：{0}发送失败Phone：{1},SellerId:{2}",
+                        (int)MsgTempleId.UserModifyPhone, phone, sellerId);
+                    ReturnErrorMsg("短信发送失败");
+                    return;
+                }
+            }
+            //保存验证信息
+            VerificationCodeHelper.SaveVerificationCode(verificationCode);
+
+            //返回
+            ReturnCorrectMsg("验证码已发送");
+        }
+        #endregion
+
+        #region 第三方绑定手机（新增）7.29
+        public void ThirdBindPhone()
+        {
+            var phone = GetString("phone");
+            var sellerid = GetInt("sellerid");
+            var uid = GetInt("uid");
+            var code = GetString("code");
+
+            var cuser = AccountHelper.GetUser(uid);
+            if (cuser == null)
+            {
+                ReturnErrorMsg("不存在该id的用户");
+                return;
+            }
+
+            if (!string.IsNullOrEmpty(cuser.Phone))
+            {
+                ReturnErrorMsg("该用户已绑定过手机号码");
+                return;
+            }
+
+            var user2 = AccountHelper.GetUserByPhone(phone, sellerid);
+            if (user2 != null)
+            {
+                ReturnErrorMsg("已存在绑定该手机号码的用户");
+                return;
+            }
+            var merchant = MerchantHelper.GetMerchant(sellerid);
+            if (merchant == null)
+            {
+                ReturnErrorMsg("该商户不存在");
+                return;
+            }
+
+            var verificationCode = VerificationCodeHelper.GetVerificationCode(sellerid, phone);
+            if (verificationCode == null)
+            {
+                ReturnErrorMsg("无验证码");
+                return;
+            }
+            if (verificationCode.Code != code)
+            {
+                ReturnErrorMsg("验证码错误");
+                return;
+            }
+            if (verificationCode.ExpiredTime <= DateTime.Now)
+            {
+                ReturnErrorMsg("验证码已过期,请重新发送请求");
+                return;
+            }
+            cuser.Phone = phone;
+            if (AccountHelper.SaveAccount(cuser) > 0)
+            {
+                //设置验证码过期
+                verificationCode.ExpiredTime = DateTime.Now;
+                VerificationCodeHelper.SaveVerificationCode(verificationCode);
+
+                ReturnCorrectMsg("绑定手机号码成功");
+            }
+            else
+            {
+                ReturnCorrectMsg("重绑定手机号码失败");
+            }
         }
         #endregion
     }

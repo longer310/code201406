@@ -268,6 +268,7 @@ namespace Backstage.Handler
             public float score { get; set; }
             public int isfav { get; set; }
             public string content { get; set; }
+            //public int cid { get; set; }
 
             public GoodsItem()
             {
@@ -346,6 +347,7 @@ namespace Backstage.Handler
                 gitem.sales = goods.Sales;
                 gitem.score = goods.Score;
                 gitem.content = goods.Content;
+                //gitem.cid = goods.Cid;
                 if (favorite != null && favorite.GidList.Contains(goods.Id))
                     gitem.isfav = 1;
                 gitem.gid = goods.Id;
@@ -392,6 +394,11 @@ namespace Backstage.Handler
             int uid = GetInt("uid");
 
             var goods = GoodsHelper.GetGoods(gid);
+            if (goods == null)
+            {
+                ReturnErrorMsg("商户不存在");
+                return;
+            }
             if (goods.SellerId != sellerid)
             {
                 ReturnErrorMsg("商户id与产品不对应");
@@ -1191,6 +1198,7 @@ namespace Backstage.Handler
                 chargeLog.SellerId = orders.SellerId;
                 chargeLog.OrderId = orders.Id.ToString();
                 chargeLog.PayName = payMent.Id == 0 ? "账户余额" : payMent.Name;
+                chargeLog.Status = RechargeStatus.Success;
                 //记录消费记录
                 ChargeLogHelper.AddChargeLog(chargeLog);
 

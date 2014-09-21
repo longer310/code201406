@@ -429,4 +429,24 @@ namespace Backstage.Core
         /// </summary>
         UserModifyPhone = 91002176,
     }
+
+    public enum StatisticsType
+    {
+        /// <summary>
+        /// 日统计
+        /// </summary>
+        Day = 0,
+        /// <summary>
+        /// 月统计
+        /// </summary>
+        Month = 1,
+        /// <summary>
+        /// 季度统计
+        /// </summary>
+        Quarter = 2,
+        /// <summary>
+        /// 年统计
+        /// </summary>
+        Year = 3,
+    }
 }

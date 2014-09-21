@@ -130,7 +130,7 @@ namespace Backstage.Core.Logic
         public static int GetMaxIndex(int sellerId)
         {
             int index = 0;
-            var cmdText = string.Format("select max(`index`) from GoodsCategories where sellerId={0}", sellerId);
+            var cmdText = string.Format("select count(*) id, max(`index`) maxindex from GoodsCategories where sellerId={0}", sellerId);
             try
             {
                 using (var conn = Utility.ObtainConn(Utility._gameDbConn))
@@ -140,7 +140,10 @@ namespace Backstage.Core.Logic
                     {
                         if (reader.Read())
                         {
-                            index = reader.GetInt32(0);
+                            var id = reader.GetInt32(0);
+                            var vindex = reader["maxindex"].ToString();
+                            if (string.IsNullOrEmpty(vindex)) index = 0;
+                            else index = Convert.ToInt32(vindex);
                         }
                     }
                 }

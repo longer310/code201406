@@ -181,8 +181,13 @@
                             title: "删除确认提示",
                             content: "您确定要删除当前选择的所有数据吗？",
                             confirm: function () {
-                                //执行确认回调
-                                alert('执行确认回调');
+                                $.ajax({
+                                    url: "../../Handler/Backstage/PositionHandler.ashx?action=del&ids=" + ids,
+                                    dataType: "json",
+                                    type: "Get"
+                                }).success(function (data) {
+                                    alert("删除成功")
+                                });
 
                                 //删除成功后刷新本页
                                 mpage.getPkgList(mpage.curPage, mpage.curType, mpage.curStatus);

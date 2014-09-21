@@ -47,8 +47,11 @@ namespace Backstage.Core.Handler.Backstage
 
         private void Delete()
         {
-            var id = GetInt("id");
-            PositionHelper.Delete(id);
+            var ids = Utility.GetListint(GetString("ids"));
+            foreach (var id in ids)
+            {
+                PositionHelper.Delete(id);
+            }
         }
 
         private void Add()
@@ -126,8 +129,11 @@ namespace Backstage.Core.Handler.Backstage
 
         private void DeleteCategory()
         {
-            var id = GetInt("id");
-            PositionHelper.DeleteBoxType(id);
+            var ids = Utility.GetListint(GetString("ids"));
+            foreach (var id in ids)
+            {
+                PositionHelper.DeleteBoxType(id);
+            }
         }
 
         private void AddCategory()
@@ -214,7 +220,7 @@ namespace Backstage.Core.Handler.Backstage
             Response.End();
         }
 
-       
+
 
 
     }

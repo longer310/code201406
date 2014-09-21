@@ -163,7 +163,7 @@ namespace Backstage.Core.Handler
             int size = GetInt("limit");
             int sid = GetInt("sellerid");
 
-            var results = ActiveHelper.GetPagings(sid, index, size);
+            var results = ActiveHelper.GetPagings(sid, index * size, size);
             var data = new List<object>();
             foreach (var r in results.Results)
             {
@@ -419,5 +419,5 @@ namespace Backstage.Core.Handler
             }
         }
     }
-   
+
 }

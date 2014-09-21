@@ -38,11 +38,6 @@
 								<th>包厢号</th>
 								<th>分类</th>
 								<th>低消</th>
-								<th>状态</th>
-								<th>用户名</th>
-								<th>联系方式</th>
-								<th>预定时段</th>
-								<th>到店时间</th>
 								<th>操作</th>
 							</tr>
 						</thead>
@@ -130,18 +125,9 @@
         	{{each(i, v) list}}
 	        	<tr data-gid="1">
 					<td><input type="checkbox" class="j-select" /></td>
-					<td style="width:45px;">111</td>
-					<td style="width:30px;">小包</td>
-					<td>267</td>
-					<td style="width:160px;">
-						<b class="text-error">占用</b> 
-						<a class="btn btn-primary btn-mini j-btn-change_status" data-status="1" href="javascript:;">空闲</a>
-						<a class="btn btn-primary btn-mini j-btn-change_status" data-status="2" href="javascript:;">占用</a>
-						<a class="btn btn-primary btn-mini j-btn-change_status" data-status="3" href="javascript:;">已定</a></td>
-					<td>czonechan</td>
-					<td>16809569456</td>
-					<td>6点~8点</td>
-					<td>2014-09-09 12:12:12</td>
+					<td style="width:45px;">${BoxNumber}</td>
+					<td style="width:30px;">${BoxTypeTitle}</td>
+					<td>${Lowest}</td>
 					<td style="width:120px;">
 						<div class="pull-right">
 							<a class="btn btn-primary btn-mini" href="pkg_edit.html?id=111"><i class="icon-pencil icon-white"></i> 编辑</a>
@@ -232,91 +218,103 @@
                 //type tab 类型
                 getPkgList: function (p, type, status) {
                     var mpage = this;
-
-                    //$.getJSON("", { p: p, type : type, status : status}， function(json){
                     mpage.curPage = p;
                     mpage.curType = type;
                     mpage.curStatus = status;
-                    $("#j-btn-selectAll").removeAttr("checked");
 
-                    var json = {
-                        code: 0,
-                        msg: "",
-                        result: {
-                            count: 59,
-                            list: [
-                                {},
-                                {},
-                                {},
-                                {},
-                                {},
-                                {}
-                            ]
-                        }
-                    };
+                    $.ajax({
+                        url: "../../Handler/Backstage/SourceMaterialHandler.ashx?action=getlist&sellerId=" + sellerId + "&start=" + (p - 1) + "&limit=8",
+                        type: "Get",
+                        dataType: "json"
+                        //context: document.body
+                    }).success(function (data) {
+                        //$.getJSON("", { p: p, type : type, status : status}， function(json){
 
-                    $("#j-pkg-list").html($("#j-tmpl-pkg-listitem").tmpl(json.result));
+                        $("#j-btn-selectAll").removeAttr("checked");
 
-                    ue.pager({
-                        //target : $(".list_pager"),//放置分页的元素
-                        pagerTarget: $("#j-pkg-pagination ul"),
-                        first: '<li><a href="#">首页</a></li>',
-                        firstDisabled: '<li class="disabled"><a href="#">首页</a></li>',
-                        last: '<li><a href="#">末页</a></li>',
-                        lastDisabled: '<li class="disabled"><a href="#">末页</a></li>',
-                        prev: '<li><a href="#">上一页</a></li>',
-                        prevDisabled: '<li class="disabled"><a href="#">上一页</a></li>',
-                        next: '<li><a href="#">下一页</a></li>',
-                        nextDisabled: '<li class="disabled"><a href="#">下一页</a></li>',
-                        current: '<li class="active"><a href="#">@{page}</a></li>',
-                        page: '<li><a href="#">@{page}</a></li>',
-                        tip: '<li class="page-info"><b class="text-info">@{nowPage}</b>/@{pageCount}页 共<b class="text-info">@{count}</b>条记录</li>',
-                        now: p,//当前页
-                        maxPage: 5,//显示的最多页数
-                        per: 6,//每页显示几个
-                        count: json.result.count,
-                        onchange: function (page) {//切换页数回调函数
-                            mpage.getPkgList(page, type, status);
-                        }
-                    });
+                        var json = {
+                            code: 0,
+                            msg: "",
+                            result: {
+                                count: 59,
+                                list: [
+                                    {},
+                                    {},
+                                    {},
+                                    {},
+                                    {},
+                                    {}
+                                ]
+                            }
+                        };
+                        json.result.list = data.data.Results;
+                        json.result.count = data.data.TotalCount;
 
-                    //绑定单个删除
-                    $("#j-pkg-list .j-btn-del").bind("click", function () {
-                        var $item = $(this).parents("tr");
-                        var id = $item.attr("data-gid");
+                        $("#j-pkg-list").html($("#j-tmpl-pkg-listitem").tmpl(json.result));
 
-                        Common.confirm({
-                            title: "删除确认提示",
-                            content: "您确定要删除当前活动？",
-                            confirm: function () {
-                                //执行确认回调
-                                alert('执行确认回调');
-
-                                $item.remove();
-                            },
-                            cancel: function () {
-                                //执行取消回调
-                                alert('执行取消回调');
+                        ue.pager({
+                            //target : $(".list_pager"),//放置分页的元素
+                            pagerTarget: $("#j-pkg-pagination ul"),
+                            first: '<li><a href="#">首页</a></li>',
+                            firstDisabled: '<li class="disabled"><a href="#">首页</a></li>',
+                            last: '<li><a href="#">末页</a></li>',
+                            lastDisabled: '<li class="disabled"><a href="#">末页</a></li>',
+                            prev: '<li><a href="#">上一页</a></li>',
+                            prevDisabled: '<li class="disabled"><a href="#">上一页</a></li>',
+                            next: '<li><a href="#">下一页</a></li>',
+                            nextDisabled: '<li class="disabled"><a href="#">下一页</a></li>',
+                            current: '<li class="active"><a href="#">@{page}</a></li>',
+                            page: '<li><a href="#">@{page}</a></li>',
+                            tip: '<li class="page-info"><b class="text-info">@{nowPage}</b>/@{pageCount}页 共<b class="text-info">@{count}</b>条记录</li>',
+                            now: p,//当前页
+                            maxPage: 5,//显示的最多页数
+                            per: 6,//每页显示几个
+                            count: json.result.count,
+                            onchange: function (page) {//切换页数回调函数
+                                mpage.getPkgList(page, type, status);
                             }
                         });
-                        return false;
+
+                        //绑定单个删除
+                        $("#j-pkg-list .j-btn-del").bind("click", function () {
+                            var $item = $(this).parents("tr");
+                            var id = $item.attr("data-gid");
+
+                            Common.confirm({
+                                title: "删除确认提示",
+                                content: "您确定要删除当前活动？",
+                                confirm: function () {
+                                    //执行确认回调
+                                    alert('执行确认回调');
+
+                                    $item.remove();
+                                },
+                                cancel: function () {
+                                    //执行取消回调
+                                    alert('执行取消回调');
+                                }
+                            });
+                            return false;
+                        });
+
+                        //绑定状态修改
+                        $("#j-pkg-list .j-btn-change_status").bind("click", function () {
+                            var $item = $(this).parents("tr");
+                            var id = $item.attr("data-gid");
+                            var status = $(this).attr("data-status");
+
+                            //已定
+                            if (status == 2) {
+                                mpage.showProfileForm();
+                            } else {
+
+                            }
+
+                            return false;
+                        });
                     });
 
-                    //绑定状态修改
-                    $("#j-pkg-list .j-btn-change_status").bind("click", function () {
-                        var $item = $(this).parents("tr");
-                        var id = $item.attr("data-gid");
-                        var status = $(this).attr("data-status");
-
-                        //已定
-                        if (status == 2) {
-                            mpage.showProfileForm();
-                        } else {
-
-                        }
-
-                        return false;
-                    });
+                    
 
                     //});
 

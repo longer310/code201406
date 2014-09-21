@@ -584,6 +584,7 @@
     <Content Include="View\Position\Add.aspx" />
     <Content Include="View\Position\Edit.aspx" />
     <Content Include="View\Position\List.aspx" />
+    <Content Include="View\Position\OrderPosition.aspx" />
     <Content Include="View\Position\Pcategory.aspx" />
     <Content Include="View\Position\Timeline.aspx" />
     <Content Include="View\Push\Add.aspx" />
@@ -1035,6 +1036,13 @@
     </Compile>
     <Compile Include="View\Position\List.aspx.designer.cs">
       <DependentUpon>List.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="View\Position\OrderPosition.aspx.cs">
+      <DependentUpon>OrderPosition.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="View\Position\OrderPosition.aspx.designer.cs">
+      <DependentUpon>OrderPosition.aspx</DependentUpon>
     </Compile>
     <Compile Include="View\Position\Pcategory.aspx.cs">
       <DependentUpon>Pcategory.aspx</DependentUpon>

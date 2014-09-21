@@ -1,5 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/View/merchant.Master" AutoEventWireup="true" CodeBehind="List.aspx.cs" Inherits="Backstage.View.Position.List" %>
-
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/View/merchant.Master" AutoEventWireup="true" CodeBehind="OrderPosition.aspx.cs" Inherits="Backstage.View.Position.OrderPosition" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="Header" runat="server">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="Content" runat="server">
@@ -184,7 +183,7 @@
                             },
                             cancel: function () {
                                 //执行取消回调
-                                
+
                             }
                         });
                     } else {
@@ -290,7 +289,7 @@
                                     alert("删除成功");
                                     $item.remove();
                                 });
-                                
+
                             },
                             cancel: function () {
                                 //执行取消回调

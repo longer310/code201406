@@ -20,7 +20,7 @@ namespace Backstage.Core.Handler.Backstage
         {
             base.SetApiName("ActiveHandler");
             base.ProcessRequest(HttpContext.Current);
-            
+
             switch (Action)
             {
                 case "getlist":
@@ -72,7 +72,7 @@ namespace Backstage.Core.Handler.Backstage
             int sellerId = GetInt("sellerid");
 
             PagResults<SourceMaterial> data = SourceMaterialHelper.GetPaging(pageIndex * pageSize, pageSize, sellerId);
-            
+
             JsonTransfer jt = new JsonTransfer();
             jt.AddSuccessParam();
             jt.Add("data", data);
@@ -88,7 +88,11 @@ namespace Backstage.Core.Handler.Backstage
         {
             int pid = GetInt("pid");
             SourceMaterial data = SourceMaterialHelper.GetItem(pid);
-
+            if (data == null)
+            {
+                ReturnErrorMsg("图片墙不存在pid:" + pid);
+                return;
+            }
             JsonTransfer jt = new JsonTransfer();
             jt.AddSuccessParam();
             jt.Add("data", data);

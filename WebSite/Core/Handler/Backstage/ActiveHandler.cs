@@ -77,6 +77,11 @@ namespace Backstage.Core.Handler.Backstage
         {
             int aid = GetInt("id");
             var item = ActiveHelper.GetItem(aid);
+            if (item == null)
+            {
+                ReturnErrorMsg("资讯不存在：id" + aid);
+                return;
+            }
             var coupon = CouponHelper.GetItem(item.CouponId);
             var data = new
             {

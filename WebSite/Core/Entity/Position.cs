@@ -29,7 +29,7 @@ namespace Backstage.Core.Entity
         public string Phone { get; set; }
 
         /// <summary>
-        /// 0:未预定，1：已预定,2:占用
+        /// 0:未预定，1：已预定，2:占用
         /// </summary>
         public int Status { get; set; }
 

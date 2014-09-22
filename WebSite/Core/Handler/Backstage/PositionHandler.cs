@@ -17,9 +17,9 @@ namespace Backstage.Core.Handler.Backstage
             {
                 case "getlist": //获取列表
                     GetList(); break;
-                case "getitem": //获取规则
+                case "getitem": 
                     GetItem(); break;
-                case "update": //获取规则
+                case "update": 
                     Update(); break;
                 case "add":
                     Add(); break;

@@ -64,8 +64,8 @@
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="Footer" runat="server">
     <!--页面js-->
-    <script src="../public/js/ue.pager.js"></script>
-    <script src="../public/js/bootstrap-datepicker.js"></script>
+    <script src="<%=DomainUrl %>/Script/js/ue.pager.js"></script>
+    <script src="<%=DomainUrl %>/Script/js/bootstrap-datepicker.js"></script>
 
     <div id="j-comment-modal" class="modal hide">
         <form action="#" method="get" class="form-horizontal">
@@ -130,6 +130,7 @@
         </script>
 
     <script type="text/javascript">
+        var sellerId = '<%=SellerId%>';
         var MPage = {
             init: function () {
                 var mpage = this;
@@ -142,6 +143,7 @@
                     var status = parseInt($("#j-pkg-status").val());
 
                     $(this).tab('show');
+                    console.log(1 + type + status);
                     mpage.getPkgList(1, type, status);
                     return false
                 });

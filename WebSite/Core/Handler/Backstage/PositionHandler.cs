@@ -61,9 +61,9 @@ namespace Backstage.Core.Handler.Backstage
             item.BoxTypeId = GetInt("boxType");
             item.Description = GetString("description");
             item.ImgUrls = GetString("imgurls");
-            item.Phone = GetString("phone");
-            item.Price = GetFloat("price");
-            item.SellerId = GetInt("selllerId");
+            //item.Phone = GetString("phone");
+            //item.Price = GetFloat("price");
+            //item.SellerId = GetInt("selllerId");
             item.Status = 0;
 
             PositionHelper.Create(item);

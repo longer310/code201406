@@ -1,1 +1,1 @@
-﻿<%@ WebHandler Language="C#" Class="Backstage.Core.Handler.Backstage.DevSystemHandler" %>
+﻿<%@ WebHandler Language="C#" Class="Backstage.Core.Handler.Backstage.PositionHandler" %>

@@ -22,7 +22,7 @@
             <div class="control-group">
                 <label class="control-label">包厢分类</label>
                 <div class="controls">
-                    <select>
+                    <select id="select-boxType">
                         <option value="0">小包</option>
                         <option value="1">中包</option>
                         <option value="2">大包</option>
@@ -66,10 +66,11 @@
     <!--页面js-->
     <script src="../public/js/ue.pager.js"></script>
 
-    <script charset="utf-8" src="../public/kindeditor/kindeditor-min.js"></script>
-    <script charset="utf-8" src="../public/kindeditor/lang/zh_CN.js"></script>
+    <script charset="utf-8" src="<%=DomainUrl %>/Script/kindeditor/kindeditor-min.js"></script>
+    <script charset="utf-8" src="<%=DomainUrl %>/Script/kindeditor/lang/zh_CN.js"></script>
 
     <script type="text/javascript">
+        var sellerId = '<%=SellerId%>';
         var MPage = {
             init: function () {
                 var mpage = this;
@@ -123,21 +124,21 @@
                 $("#j-pkg-addForm").bind("submit", function () {
 
                     var save_data = {
-                        title: $.trim($("#j-pkg-title").val()),
-                        thumbnail: $('#j-img-placehold').attr("src"),
-                        content: text_editor.html()
-
+                        box: $.trim($("#j-pkg-title").val()),
+                        imgurls: $('#j-img-placehold').attr("src"),
+                        description: text_editor.html(),
+                        boxType: $('#select-boxType').val()
                     }
                     $.ajax({
-                        url: "../../Handler/Backstage/SourceMaterialHandler.ashx?action=getlist&sellerId=" + sellerId + "&start=" + (p - 1) + "&limit=8",
+                        url: "../../Handler/Backstage/PositionHandler.ashx?action=add&sellerId=" + sellerId,
                         type: "POST",
                         data: save_data,
                         dataType: "json"
                         //context: document.body
                     }).success(function (data) {
                         //$.getJSON("", { p: p, type : type, status : status}， function(json){
-
                         alert("新增成功！");
+                        window.location.href = "/List.aspx?sellerId" + sellerId;
                     });
                     return false;
                 });

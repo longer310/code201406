@@ -64,129 +64,135 @@
         </div>
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="Footer" runat="server">
-     <!--页面js-->
-        <script src="../public/js/ue.pager.js"></script>
+    <!--页面js-->
+    <script src="../public/js/ue.pager.js"></script>
 
-        <script charset="utf-8" src="../public/kindeditor/kindeditor-min.js"></script>
-		<script charset="utf-8" src="../public/kindeditor/lang/zh_CN.js"></script>
+    <script charset="utf-8" src="../public/kindeditor/kindeditor-min.js"></script>
+    <script charset="utf-8" src="../public/kindeditor/lang/zh_CN.js"></script>
 
-        <script type="text/javascript">
-            var MPage = {
-                init: function () {
-                    var mpage = this;
+    <script type="text/javascript">
+        var MPage = {
+            init: function () {
+                var mpage = this;
 
-                    var text_editor,
-        				image_editor;
+                var text_editor,
+                    image_editor;
 
-                    KindEditor.ready(function (K) {
-                        //文本编辑器
-                        mpage.text_editor = text_editor = K.create('textarea[name="content"]', {
-                            uploadJson: '../public/kindeditor/php/upload_json.php',
-                            allowFileManager: true
-                        });
+                KindEditor.ready(function (K) {
+                    //文本编辑器
+                    mpage.text_editor = text_editor = K.create('textarea[name="content"]', {
+                        uploadJson: '../public/kindeditor/php/upload_json.php',
+                        allowFileManager: true
+                    });
 
-                        //图片上传编辑
-                        mpage.image_editor = image_editor = K.editor({
-                            uploadJson: '../public/kindeditor/php/upload_json.php',
-                            fileManagerJson: '../public/kindeditor/php/file_manager_json.php'
-                        });
+                    //图片上传编辑
+                    mpage.image_editor = image_editor = K.editor({
+                        uploadJson: '../public/kindeditor/php/upload_json.php',
+                        fileManagerJson: '../public/kindeditor/php/file_manager_json.php'
+                    });
 
-                        //图片上传绑定
-                        K('#j-btn-imageManager').click(function () {
-                            image_editor.loadPlugin('filemanager', function () {
-                                image_editor.plugin.filemanagerDialog({
-                                    viewType: 'VIEW',
-                                    dirName: 'image',
-                                    clickFn: function (url, title) {
-                                        K('#j-img-placehold').attr("src", url);
-                                        image_editor.hideDialog();
-                                    }
-                                });
+                    //图片上传绑定
+                    K('#j-btn-imageManager').click(function () {
+                        image_editor.loadPlugin('filemanager', function () {
+                            image_editor.plugin.filemanagerDialog({
+                                viewType: 'VIEW',
+                                dirName: 'image',
+                                clickFn: function (url, title) {
+                                    K('#j-img-placehold').attr("src", url);
+                                    image_editor.hideDialog();
+                                }
                             });
                         });
+                    });
 
-                        //从资料库选择图片
-                        K('#j-btn-imageUpload').click(function () {
-                            image_editor.loadPlugin('image', function () {
-                                image_editor.plugin.imageDialog({
-                                    showRemote: false,
-                                    imageUrl: K('#j-img-placehold').attr("src"),
-                                    clickFn: function (url, title, width, height, border, align) {
-                                        K('#j-img-placehold').attr("src", url);
-                                        image_editor.hideDialog();
-                                    }
-                                });
+                    //从资料库选择图片
+                    K('#j-btn-imageUpload').click(function () {
+                        image_editor.loadPlugin('image', function () {
+                            image_editor.plugin.imageDialog({
+                                showRemote: false,
+                                imageUrl: K('#j-img-placehold').attr("src"),
+                                clickFn: function (url, title, width, height, border, align) {
+                                    K('#j-img-placehold').attr("src", url);
+                                    image_editor.hideDialog();
+                                }
                             });
                         });
-
-
-                        //解析url中的id
-                        var image_id = /\?id=(\d+)/.test(document.location.href);
-                        if (image_id) {
-                            mpage.getDetail(image_id);
-                        } else {
-                            alert("该包厢不存在");
-                            window.history.back();
-                        }
                     });
 
 
-                    //绑定提交表单
-                    $("#j-pkg-addForm").bind("submit", function () {
-                        var save_data = {
-                            title: $.trim($("#j-pkg-title").val()),
-                            thumbnail: $('#j-img-placehold').attr("src"),
-                            content: text_editor.html()
+                    //解析url中的id
+                    var image_id = /\?id=(\d+)/.test(document.location.href);
+                    if (image_id) {
+                        mpage.getDetail(image_id);
+                    } else {
+                        alert("该包厢不存在");
+                        window.history.back();
+                    }
+                });
 
-                        }
 
-                        console.log(save_data);
-                        alert('提交数据')
-                        return false;
-                    });
+                //绑定提交表单
+                $("#j-pkg-addForm").bind("submit", function () {
+                    var save_data = {
+                        title: $.trim($("#j-pkg-title").val()),
+                        thumbnail: $('#j-img-placehold').attr("src"),
+                        content: text_editor.html()
 
-                    //绑定重置表单
-                    $("#j-pkg-addForm").bind("reset", function () {
-                        mpage.setEditFormData();
-                        return false;
-                    });
-                },
-
-                getDetail: function (image_id) {
-                    var mpage = this;
-
-                    //$.getJSON("", { id: image_id}， function(json){
-                    var json = {
-                        code: 0,
-                        msg: "",
-                        result: {
-                            title: "活动主题",
-                            thumbnail: "/public/kindeditor/attached/image/20140723/20140723161001_48669.jpg",
-                            content: "活动简介活动简介"
-                        }
                     }
 
-                    mpage.detailData = json.result;
+                    console.log(save_data);
+                    alert('提交数据')
+                    return false;
+                });
+
+                //绑定重置表单
+                $("#j-pkg-addForm").bind("reset", function () {
                     mpage.setEditFormData();
+                    return false;
+                });
+            },
 
+            getDetail: function (image_id) {
+                var mpage = this;
 
-                    //});
-                },
+                $.ajax({
+                    url: "../../Handler/Backstage/PositionHandler.ashx?action=getitem" + image_id,
+                    dataType: "json",
+                    type: "get"
+                });
 
-                setEditFormData: function () {
-                    var mpage = this,
-        				detail = mpage.detailData;
-
-                    $("#j-pkg-title").val(detail.title);
-                    $("#j-pkg-thumbnails").html("").hide();
-                    $('#j-img-placehold').attr("src", detail.thumbnail);
-                    mpage.text_editor.html(detail.content);
+                //$.getJSON("", { id: image_id}， function(json){
+                var json = {
+                    code: 0,
+                    msg: "",
+                    result: {
+                        title: "活动主题",
+                        thumbnail: "/public/kindeditor/attached/image/20140723/20140723161001_48669.jpg",
+                        content: "活动简介活动简介"
+                    }
                 }
-            }
 
-            $(function () {
-                MPage.init();
-            });
+                mpage.detailData = json.result;
+                mpage.setEditFormData();
+
+
+                //});
+            },
+
+            setEditFormData: function () {
+                var mpage = this,
+                    detail = mpage.detailData;
+
+                $("#j-pkg-title").val(detail.title);
+                $("#j-pkg-thumbnails").html("").hide();
+                $('#j-img-placehold').attr("src", detail.thumbnail);
+                mpage.text_editor.html(detail.content);
+            }
+        }
+
+        $(function () {
+            MPage.init();
+        });
 
         </script>
 </asp:Content>

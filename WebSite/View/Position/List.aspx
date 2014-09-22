@@ -71,7 +71,7 @@
         <form action="#" method="get" class="form-horizontal">
             <div class="modal-header">
                 <button data-dismiss="modal" class="close" type="button">×</button>
-                <h3>评论回复</h3>
+                <h3>提交预约</h3>
             </div>
             <div class="modal-body">
 
@@ -92,7 +92,7 @@
                 <div class="control-group">
                     <label class="control-label">选择时段</label>
                     <div class="controls">
-                        <select>
+                        <select id="select-timeline">
                             <option>时段1</option>
                             <option>时段2</option>
                             <option>时段3</option>
@@ -302,21 +302,14 @@
                         return false;
                     });
 
-                    //绑定状态修改
-                    $("#j-pkg-list .j-btn-change_status").bind("click", function () {
-                        var $item = $(this).parents("tr");
-                        var id = $item.attr("data-gid");
-                        var status = $(this).attr("data-status");
+                    ////绑定状态修改
+                    //$("#j-pkg-list .j-btn-change_status").bind("click", function () {
+                    //    var $item = $(this).parents("tr");
+                    //    var id = $item.attr("data-gid");
+                    //    var status = $(this).attr("data-status");
 
-                        //已定
-                        if (status == 2) {
-                            mpage.showProfileForm();
-                        } else {
-
-                        }
-
-                        return false;
-                    });
+                    //    return false;
+                    //});
                 });
 
 
@@ -337,10 +330,20 @@
                 });
 
                 //绑定回复
-                $("#j-comment-modal form").unbind("submit").bind("submit", function () {
-                    alert("提交表单");
-                    return false;
-                });
+                //$("#j-comment-modal form").unbind("submit").bind("submit", function () {
+                    
+
+                //    $.ajax({
+                //        url: "../../Handler/Backstage/PositionHandler.ashx?action=gettimes",
+                //        type: "Get",
+                //        data: {
+                //           pid:
+                //        },
+                //        dataType: ""
+
+                //    });
+                //    return false;
+                //});
             }
         }
 

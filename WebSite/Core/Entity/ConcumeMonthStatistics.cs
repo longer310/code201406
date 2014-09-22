@@ -6,9 +6,9 @@ using System.Web;
 namespace Backstage.Core.Entity
 {
     /// <summary>
-    /// 充值月统计
+    /// 销量月统计
     /// </summary>
-    public class RechargeMonthStatistics : KVEntity
+    public class ConcumeMonthStatistics : KVEntity
     {
         /// <summary>
         /// 商户id

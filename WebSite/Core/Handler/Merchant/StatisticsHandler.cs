@@ -81,23 +81,23 @@ namespace Backstage.Handler
             var sellerId = CurSellerId;
             var type = (StatisticsType)GetInt("type");//统计类型
 
-            var result = new RechargeStatisticsHelper.ReqRechargeStatistics(type);
-            switch (type)
-            {
-                case StatisticsType.Day:
-                    result = RechargeStatisticsHelper.GetRechargeDateStatisticsList(sellerId, DateTime.Now); break;
-                case StatisticsType.Month:
-                    result = RechargeStatisticsHelper.GetRechargeMonthStatisticsList(sellerId, DateTime.Now.Year, DateTime.Now.Month); break;
-                case StatisticsType.Quarter:
-                    result = RechargeStatisticsHelper.GetRechargeQuarterStatisticsList(sellerId, DateTime.Now.Year); break;
-                case StatisticsType.Year:
-                    result = RechargeStatisticsHelper.GetRechargeYearStatisticsList(sellerId, DateTime.Now.Year); break;
-            }
+            //var result = new RechargeStatisticsHelper.ReqRechargeStatistics(type);
+            //switch (type)
+            //{
+            //    case StatisticsType.Day:
+            //        result = RechargeStatisticsHelper.GetRechargeDateStatisticsList(sellerId, DateTime.Now); break;
+            //    case StatisticsType.Month:
+            //        result = RechargeStatisticsHelper.GetRechargeMonthStatisticsList(sellerId, DateTime.Now.Year, DateTime.Now.Month); break;
+            //    case StatisticsType.Quarter:
+            //        result = RechargeStatisticsHelper.GetRechargeQuarterStatisticsList(sellerId, DateTime.Now.Year); break;
+            //    case StatisticsType.Year:
+            //        result = RechargeStatisticsHelper.GetRechargeYearStatisticsList(sellerId, DateTime.Now.Year); break;
+            //}
 
-            var jt = new JsonTransfer();
-            jt.Add("data", result);
-            Response.Write(jt.ToJson());
-            Response.End();
+            //var jt = new JsonTransfer();
+            //jt.Add("data", result);
+            //Response.Write(jt.ToJson());
+            //Response.End();
         }
 
         /// <summary>

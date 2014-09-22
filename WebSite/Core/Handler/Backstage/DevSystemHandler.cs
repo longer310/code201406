@@ -8,11 +8,10 @@ using System.Web;
 
 namespace Backstage.Core.Handler.Backstage
 {
-    public class DevSystemHandler : BaseApiHandler
+    public class DevSystemHandler : BaseHandler
     {
         public override void ProcessRequest(HttpContext context)
         {
-            base.SetApiName("DevSystemHandler");
             base.ProcessRequest(HttpContext.Current);
             switch (Action)
             {

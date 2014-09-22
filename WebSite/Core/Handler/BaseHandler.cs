@@ -164,6 +164,14 @@ namespace Backstage.Core
             return returnVaLue;
         }
 
+        public string DesEncrypt(JsonTransfer jt)
+        {
+            if (Utility._desopen == "1")
+                return CryptHelper.DES_Encrypt(jt.ToJson());
+            else
+                return jt.ToJson();
+        }
+
         public int GetInt(string paramName)
         {
             int defaultVale = 0;

@@ -203,6 +203,11 @@ namespace Backstage.Core.Handler
         {
             int cid = GetInt("couponid");
             var item = CouponHelper.GetItem(cid);
+            if (item == null)
+            {
+                ReturnErrorMsg("电子券不存在id:" + cid);
+                return;
+            }
             var data = new
             {
                 couponid = item.Id,

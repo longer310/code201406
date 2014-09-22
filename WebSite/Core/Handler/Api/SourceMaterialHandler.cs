@@ -75,6 +75,12 @@ namespace Backstage.Core.Handler
         {
             int pid = GetInt("pid");
             SourceMaterial sm = SourceMaterialHelper.GetItem(pid);
+            if (sm == null)
+            {
+                ReturnErrorMsg("图片墙不存在id:" + pid);
+                return;
+            }
+
             var data = new
             {
                 pid = sm.Id,

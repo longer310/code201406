@@ -627,30 +627,30 @@ namespace Backstage.Core
             StringBuilder sb = new StringBuilder(string.Empty);
             var ordertypename = orders.OrderType == OrderType.Shop ? "到店" : "送餐";
 
-            sb.AppendFormat("【{0}】{1}/r/n/r/n", merchanttype.Name, ordertypename);
+            sb.AppendFormat("【{0}】{1}\n", merchanttype.Name, ordertypename);
 
-            sb.AppendFormat("订单号：{0}/r/n", orders.Id);
-            sb.AppendFormat("订单类型：{0}/r/n", ordertypename);
-            sb.AppendFormat("订单时间：{0}/r/n/r/n", orders.CreateTime.ToString("yyyy-MM-dd hh:mm:ss"));
+            sb.AppendFormat("订单号：{0}\n", orders.Id);
+            sb.AppendFormat("订单类型：{0}\n", ordertypename);
+            sb.AppendFormat("订单时间：{0}\n", orders.CreateTime.ToString("yyyy-MM-dd hh:mm:ss"));
 
-            sb.Append("【收货信息】/r/n");
-            sb.AppendFormat("联系人：{0}/r/n", orders.LinkMan);
-            sb.AppendFormat("联系电话：{0}/r/n", orders.Mobile);
-            sb.AppendFormat("地址：{0}/r/n/r/n", orders.Address);
+            sb.Append("【收货信息】\n");
+            sb.AppendFormat("联系人：{0}\n", orders.LinkMan);
+            sb.AppendFormat("联系电话：{0}\n", orders.Mobile);
+            sb.AppendFormat("地址：{0}\n", orders.Address);
 
-            sb.Append("【订单详情】/r/n");
-            sb.Append("******************************/r/n");
+            sb.Append("【订单详情】\n");
+            sb.Append("******************************\n");
             var i = 0;
             foreach (var order in orders.GidList)
             {
-                sb.AppendFormat("{0}   {1}   {2}/r/n", i + 1, orders.TitleList[i], orders.NumList[i]);
+                sb.AppendFormat("{0}   {1}   {2}\n", i + 1, orders.TitleList[i], orders.NumList[i]);
                 i++;
             }
-            sb.Append("******************************/r/n");
-            sb.AppendFormat("总计数量：{0}/r/n", orders.NumList.Sum(o => o));
-            sb.AppendFormat("总金额：{0}/r/n/r/n", orders.TotalPrice);
+            sb.Append("******************************\n");
+            sb.AppendFormat("总计数量：{0}\n", orders.NumList.Sum(o => o));
+            sb.AppendFormat("总金额：{0}\n", orders.TotalPrice);
 
-            sb.AppendFormat("【备注】：{0}/r/n/r/n", orders.Remark);
+            sb.AppendFormat("【备注】：{0}\n", orders.Remark);
 
             return SendPrinterData(sb.ToString(), merchant);
         }

@@ -177,7 +177,14 @@ public partial class wap_notify_ordersurl : System.Web.UI.Page
                             if (orders != null)
                             {
                                 logger.ErrorFormat("订单付款失败;UserId={1},Money={0}", orders.TotalPrice, orders.UserId);
+
                                 orders.Status = OrderStatus.Update;
+                                //关闭时才更改状态
+                                if (trade_status == "TRADE_Close")
+                                {
+                                    orders.Status = OrderStatus.Cancel;
+                                    trade_status = "success";//返回success
+                                }
                                 OrdersHelper.SaveOrders(orders);
                             }
                             else

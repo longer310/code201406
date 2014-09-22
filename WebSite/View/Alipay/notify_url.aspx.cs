@@ -169,7 +169,12 @@ public partial class notify_url : System.Web.UI.Page
                             {
                                 logger.ErrorFormat("充值失败,充值记录未找到Id:{0}", id);
                             }
-                            ChargeLogHelper.UpdateStatus(RechargeStatus.Fail, id, trade_no);
+                            //关闭时才更改状态
+                            if (trade_status == "TRADE_Close")
+                            {
+                                ChargeLogHelper.UpdateStatus(RechargeStatus.Fail, id, trade_no);
+                                trade_status = "success";//返回success
+                            }
                         }
                         else
                         {

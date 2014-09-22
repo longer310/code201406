@@ -74,8 +74,52 @@
                             <a href="javascript:void(0);" id="j_sub_oneyear" class="btn btn-primary btn-mini"><i class="icon-minus icon-white"></i>减少一年</a>
                         </div>
                     </div>
-
                     <div class="control-group">
+						<label class="control-label">是否使用【易wifi】</label>
+						<div class="controls">
+							<label class="checkbox"><input type="checkbox" id="j-is_wifi"> 使用</label>
+						</div>
+					</div>
+
+					<div id="j-wifi_hold" style="display:none;">
+						<div class="control-group">
+				            <label class="control-label">wifi账号</label>
+				            <div class="controls">
+				                <input type="text" id="j-wifi-account">
+				            </div>
+				        </div>
+			        </div>
+
+					<div class="control-group">
+						<label class="control-label">是否使用【云打印】</label>
+						<div class="controls">
+							<label class="checkbox"><input type="checkbox" id="j-is_print"> 使用</label>
+						</div>
+					</div>
+
+					<div id="j-print_hold" style="display:none;">
+						<div class="control-group">
+				            <label class="control-label">终端号</label>
+				            <div class="controls">
+				                <input type="text" id="j-profile-machinecode">
+				            </div>
+				        </div>
+
+	                    <div class="control-group">
+				            <label class="control-label">密   钥</label>
+				            <div class="controls">
+				                <input type="text" id="j-profile-machinekey">
+				            </div>
+				        </div>
+					</div>
+
+					<div class="control-group">
+						<label class="control-label">是否启用配送功能</label>
+						<div class="controls">
+							<label class="checkbox"><input type="checkbox" id="j-is_delivery"> 启用</label>
+						</div>
+					</div>
+                    <%--<div class="control-group">
                         <label class="control-label">易wifi和云打印</label>
                         <div class="controls">
                             <label class="checkbox">
@@ -94,7 +138,7 @@
                                 <input type="checkbox" id="j-is_delivery">
                                 是否开启【配送功能】</label>
                         </div>
-                    </div>
+                    </div>--%>
 
                     <div class="control-group">
                         <label class="control-label">签约模式</label>
@@ -111,12 +155,12 @@
                         </div>
                     </div>
 
-                    <div class="control-group">
+                    <%--<div class="control-group">
                         <label class="control-label">wifi账号</label>
                         <div class="controls">
                             <input type="text" id="j-wifi-account" />
                         </div>
-                    </div>
+                    </div>--%>
                 </div>
             </div>
 
@@ -129,14 +173,9 @@
                     <div class="control-group">
                         <label class="control-label">联系电话</label>
                         <div class="controls">
-                            <input type="text" id="j-profile-phone" />
-                        </div>
-                    </div>
-
-                    <div class="control-group">
-                        <label class="control-label">管理人联系电话</label>
-                        <div class="controls">
-                            <input type="text" id="j-profile-admin_phone" />
+                            <input type="text" id="j-profile-phone" class="input-medium1" />
+							<label class="col2-label">管理人联系电话</label>
+							<input type="text" id="j-profile-admin_phone" class="input-medium1" />
                         </div>
                     </div>
 
@@ -150,39 +189,35 @@
                     <div class="control-group">
                         <label class="control-label">微信公众号</label>
                         <div class="controls">
-                            <input type="text" id="j-profile-wechat_id" />
+							<input type="text" id="j-profile-wechat_id"  class="input-medium1"/>
+							<label class="col2-label">服务QQ号</label>
+							<input type="text" id="j-profile-qq"  class="input-medium1"/>
                         </div>
                     </div>
 
                     <div class="control-group">
-                        <label class="control-label">服务QQ号</label>
-                        <div class="controls">
-                            <input type="text" id="j-profile-qq" />
-                        </div>
-                    </div>
+						<label class="control-label">IOS地址</label>
+						<div class="controls">
+							<input type="text" id="j-profile-iosurl" />
+						</div>
+					</div>
 
-                    <div class="control-group">
-                        <label class="control-label">Email</label>
-                        <div class="controls">
-                            <input type="text" id="j-profile-email" />
-                        </div>
-                    </div>
+					<div class="control-group">
+						<label class="control-label">安卓地址</label>
+						<div class="controls">
+							<input type="text" id="j-profile-androidurl" />
+						</div>
+					</div>
+							
 
-                    <div class="control-group">
-                        <label class="control-label">IOS地址</label>
-                        <div class="controls">
-                            <input type="text" id="j-profile-iosurl" />
-                        </div>
-                    </div>
+					<div class="control-group">
+						<label class="control-label">其他备注</label>
+						<div class="controls">
+							<input type="text" id="j-profile-note" />
+						</div>
+					</div>
 
-                    <div class="control-group">
-                        <label class="control-label">安卓地址</label>
-                        <div class="controls">
-                            <input type="text" id="j-profile-androidurl" />
-                        </div>
-                    </div>
-
-                    <div class="control-group">
+                    <%--<div class="control-group">
                         <label class="control-label">终端号</label>
                         <div class="controls">
                             <input type="text" id="j-profile-machinecode" />
@@ -194,7 +229,7 @@
                         <div class="controls">
                             <input type="text" id="j-profile-machinekey" />
                         </div>
-                    </div>
+                    </div>--%>
                 </div>
             </div>
 
@@ -207,11 +242,17 @@
                     <div class="control-group">
                         <label class="control-label">活动资讯</label>
                         <div class="controls">
-                            <input type="text" id="j_name_activity" value="活动资讯" />
+                            <input type="text" id="j_name_activity" class="input-small" value="活动资讯" />
+
+							<label class="col3-label">商品展示</label>
+							<input type="text" id="j_name_goods" value="商品展示" class="input-small" />
+
+							<label class="col3-label">快速预约</label>
+							<input type="text" id="j_name_appointment" value="快速预约" class="input-small" />
                         </div>
                     </div>
 
-                    <div class="control-group">
+                    <%--<div class="control-group">
                         <label class="control-label">商品展示</label>
                         <div class="controls">
                             <input type="text" id="j_name_goods" value="商品展示" />
@@ -223,21 +264,23 @@
                         <div class="controls">
                             <input type="text" id="j_name_appointment" value="快速预约" />
                         </div>
-                    </div>
+                    </div>--%>
 
                     <div class="control-group">
                         <label class="control-label">图片墙</label>
                         <div class="controls">
-                            <input type="text" id="j_name_img" value="图片墙" />
+                            <input type="text" id="j_name_img" value="图片墙" class="input-small" />
+							<label class="col3-label">包厢</label>
+							<input type="text" id="j_name_box" value="包厢" class="input-small" />
                         </div>
                     </div>
 
-                    <div class="control-group">
+                    <%--<div class="control-group">
                         <label class="control-label">包厢</label>
                         <div class="controls">
                             <input type="text" id="j_name_box" value="包厢" />
                         </div>
-                    </div>
+                    </div>--%>
                 </div>
             </div>
 

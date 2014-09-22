@@ -631,6 +631,7 @@
     <Compile Include="Core\Handler\Backstage\PositionHandler.cs" />
     <Compile Include="Core\Handler\DevSystemHelper.cs" />
     <Compile Include="Core\Handler\Merchant\StatisticsHandler.cs" />
+    <Compile Include="Core\Logic\RechargeStatisticsHelper.cs" />
     <Compile Include="Core\Logic\TempleHelper.cs" />
     <Compile Include="Core\PlatBasePage.cs">
       <SubType>ASPXCodeBehind</SubType>

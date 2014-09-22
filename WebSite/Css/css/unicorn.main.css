@@ -1329,6 +1329,14 @@ form {
 	width: 150px;
 }
 
+.form-horizontal input.input-medium1{
+	width: 230px;
+}
+
+.form-horizontal input.input-medium2{
+	width: 450px;
+}
+
 .form-horizontal input.input-small{
 	width: 90px;
 }
@@ -1341,6 +1349,23 @@ form {
 	margin-top: 0;
 	margin-bottom: 0;
 }
+
+.form-horizontal .col2-label{
+	margin-left:50px;
+	margin-right:15px;
+	width:100px; 
+	text-align:right;
+	display: inline-block;
+}
+
+.form-horizontal .col3-label{
+	margin-left:50px;
+	margin-right:15px;
+	width:100px; 
+	text-align:right;
+	display: inline-block;
+}
+
 .help-block, .help-inline {
     color: #999999;
 }

@@ -7,20 +7,12 @@
             <span class="icon">
                 <i class="icon-gift"></i>
             </span>
-            <h5>包厢列表</h5>
+            <h5>预定列表</h5>
             <div class="buttons">
                 <a href="#" class="btn btn-danger btn-mini" id="j-btn-delSelected"><i class="icon-remove icon-white"></i>删除</a>
             </div>
         </div>
         <div class="widget-content">
-            <div class="clearfix" style="position: relative;">
-                <select id="j-pkg-status" style="position: absolute; right: 0; top: 0px;">
-                    <option value="-1">所有包厢状态</option>
-                    <option value="0">空闲</option>
-                    <option value="2">占用</option>
-                    <option value="1">已定</option>
-                </select>
-            </div>
             <table class="table table-bordered table-striped with-check">
                 <thead>
                     <tr>
@@ -28,7 +20,12 @@
                             <input type="checkbox" id="j-btn-selectAll" name="title-table-checkbox" /></th>
                         <th>包厢号</th>
                         <th>分类</th>
-                        <th>低消</th>
+                        <th>时段</th>
+                        <th>状态</th>
+                        <th>用户名</th>
+                        <th>联系方式</th>
+                        <th>预约时间</th>
+                        <th>到店时间</th>
                         <th>操作</th>
                     </tr>
                 </thead>
@@ -66,7 +63,7 @@
     <script src="../public/js/ue.pager.js"></script>
     <script src="../public/js/bootstrap-datepicker.js"></script>
 
-    <div id="j-comment-modal" class="modal hide">
+    <%--<div id="j-comment-modal" class="modal hide">
         <form action="#" method="get" class="form-horizontal">
             <div class="modal-header">
                 <button data-dismiss="modal" class="close" type="button">×</button>
@@ -109,7 +106,7 @@
             <div class="modal-footer">
             </div>
         </form>
-    </div>
+    </div>--%>
 
     <script type="text/jquery-tmpl-x" id="j-tmpl-pkg-listitem">
         	{{each(i, v) list}}

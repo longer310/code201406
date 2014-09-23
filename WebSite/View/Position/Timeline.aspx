@@ -108,14 +108,20 @@
                                 content: "您确定要删除当前选择的所有数据吗？",
                                 confirm: function () {
                                     //执行确认回调
-                                    alert('执行确认回调');
+                                    $.ajax({
+                                        url: "../../Handler/Backstage/SourceMaterialHandler.ashx?action=deleteTime&ids=" + ids,
+                                        type: "get",
+                                        dataType: "json"
+                                        //context: document.body
+                                    }).success(function (data) {
+                                        alert("删除成功！");
+                                    });
 
                                     //删除成功后刷新本页
                                     mpage.getCategroyList();
                                 },
                                 cancel: function () {
                                     //执行取消回调
-                                    alert('执行取消回调');
                                 }
                             });
                         } else {
@@ -124,7 +130,6 @@
                                 content: "请至少选择一项",
                                 confirm: function () {
                                     //执行确认回调
-                                    alert('执行确认回调');
                                 }
                             });
                         }

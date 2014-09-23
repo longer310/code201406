@@ -71,6 +71,7 @@
     <script charset="utf-8" src="../public/kindeditor/lang/zh_CN.js"></script>
 
     <script type="text/javascript">
+        var sellerId = '<%=SellerId%>';
         var MPage = {
             init: function () {
                 var mpage = this;
@@ -81,15 +82,16 @@
                 KindEditor.ready(function (K) {
                     //文本编辑器
                     mpage.text_editor = text_editor = K.create('textarea[name="content"]', {
-                        uploadJson: '../public/kindeditor/php/upload_json.php',
+                        uploadJson: '<%=DomainUrl %>/Handler/FileManager/UploadHandler.ashx?type=3&sellerid=' + sellerId,
                         allowFileManager: true
                     });
 
                     //图片上传编辑
                     mpage.image_editor = image_editor = K.editor({
-                        uploadJson: '../public/kindeditor/php/upload_json.php',
-                        fileManagerJson: '../public/kindeditor/php/file_manager_json.php'
+                        uploadJson: '<%=DomainUrl %>/Handler/FileManager/UploadHandler.ashx?type=3&sellerid=' + sellerId,
+                        fileManagerJson: '<%=DomainUrl %>/Handler/FileManager/FileManagerHandler.ashx?type=3&sellerid=' + sellerId,
                     });
+
 
                     //图片上传绑定
                     K('#j-btn-imageManager').click(function () {
@@ -140,8 +142,14 @@
 
                     }
 
-                    console.log(save_data);
-                    alert('提交数据')
+                    $.ajax({
+                        url: "../../Handler/Backstage/PositionHandler.ashx?action=getitem&id=" + image_id,
+                        dataType: "json",
+                        data:save_data,
+                        type: "Post"
+                    }).success(function (data) {
+                        alert("更新成功！");
+                    });
                     return false;
                 });
 
@@ -156,24 +164,26 @@
                 var mpage = this;
 
                 $.ajax({
-                    url: "../../Handler/Backstage/PositionHandler.ashx?action=getitem" + image_id,
+                    url: "../../Handler/Backstage/PositionHandler.ashx?action=getitem&id=" + image_id,
                     dataType: "json",
                     type: "get"
+                }).success(function (data) {
+                    var json = {
+                        code: 0,
+                        msg: "",
+                        result: {
+                            title: "活动主题",
+                            thumbnail: "/public/kindeditor/attached/image/20140723/20140723161001_48669.jpg",
+                            content: "活动简介活动简介"
+                        }
+                    }
+                    json.result = data.data;
+                    mpage.detailData = json.result;
+                    mpage.setEditFormData();
                 });
 
                 //$.getJSON("", { id: image_id}， function(json){
-                var json = {
-                    code: 0,
-                    msg: "",
-                    result: {
-                        title: "活动主题",
-                        thumbnail: "/public/kindeditor/attached/image/20140723/20140723161001_48669.jpg",
-                        content: "活动简介活动简介"
-                    }
-                }
-
-                mpage.detailData = json.result;
-                mpage.setEditFormData();
+                
 
 
                 //});

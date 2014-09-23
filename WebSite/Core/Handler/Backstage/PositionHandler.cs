@@ -220,8 +220,5 @@ namespace Backstage.Core.Handler.Backstage
             Response.End();
         }
 
-
-
-
     }
 }

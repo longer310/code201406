@@ -55,6 +55,10 @@ namespace Backstage.Core.Entity
         /// </summary>
         public string AndroidUrl { get; set; }
         /// <summary>
+        /// 安卓版本号
+        /// </summary>
+        public string AndroidVersion { get; set; }
+        /// <summary>
         /// 打印机终端号
         /// </summary>
         public string MachineCode { get; set; }
@@ -66,6 +70,10 @@ namespace Backstage.Core.Entity
         /// Ios下载地址
         /// </summary>
         public string IosUrl { get; set; }
+        /// <summary>
+        /// Ios版本号
+        /// </summary>
+        public string IosVersion { get; set; }
         /// <summary>
         /// 关注微信地址
         /// </summary>
@@ -163,9 +171,9 @@ namespace Backstage.Core.Entity
         /// </summary>
         public string WinXinAccount { get; set; }
         /// <summary>
-        /// 邮箱号
+        /// 备注
         /// </summary>
-        public string Email { get; set; }
+        public string Remark { get; set; }
 
         /// <summary>
         /// 类名称列表【活动咨询、商品展示、快速预约、图片墙、包厢】
@@ -244,7 +252,7 @@ namespace Backstage.Core.Entity
             ManagerPhone =
             Qq =
             WinXinAccount =
-            Email =
+            Remark =
             DevName =string.Empty;
             AccessExpire = DateTime.Now;
             ServerEndTime = DateTime.Now;

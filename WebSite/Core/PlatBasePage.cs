@@ -20,6 +20,10 @@ namespace Backstage.Core
         {
             get { return Utility._domainurl; }
         }
+        public string OnlyDomainUrl
+        {
+            get { return Utility._onlydomainurl; }
+        }           
 
         /// <summary>
         /// 可能为null，使用的时候要记得判断

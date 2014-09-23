@@ -734,12 +734,16 @@ namespace Backstage.Handler
             public string WinXinAccount { get; set; }
             [XmlElement("Qq")]
             public string Qq { get; set; }
-            [XmlElement("Email")]
-            public string Email { get; set; }
+            [XmlElement("Note")]
+            public string Note { get; set; }
             [XmlElement("IosUrl")]
             public string IosUrl { get; set; }
             [XmlElement("AndroidUrl")]
             public string AndroidUrl { get; set; }
+            [XmlElement("IosVer")]
+            public string IosVer { get; set; }
+            [XmlElement("AndroidVer")]
+            public string AndroidVer { get; set; }
             [XmlElement("MachineCode")]
             public string MachineCode { get; set; }
             [XmlElement("MachineKey")]
@@ -824,9 +828,11 @@ namespace Backstage.Handler
             merchant.Address = merchantinfo.Address;
             merchant.WinXinAccount = merchantinfo.WinXinAccount;
             merchant.Qq = merchantinfo.Qq;
-            merchant.Email = merchantinfo.Email;
+            merchant.Remark = merchantinfo.Note;
             merchant.IosUrl = merchantinfo.IosUrl;
+            merchant.IosVersion = merchantinfo.IosVer;
             merchant.AndroidUrl = merchantinfo.AndroidUrl;
+            merchant.AndroidVersion = merchantinfo.AndroidVer;
             merchant.MachineCode = merchantinfo.MachineCode;
             merchant.MachineKey = merchantinfo.MachineKey;
             if (string.IsNullOrEmpty(merchantinfo.CnameList[0])) merchantinfo.CnameList[0] = "活动咨询";

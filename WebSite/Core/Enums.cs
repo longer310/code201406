@@ -328,7 +328,7 @@ namespace Backstage.Core
     /// <summary>
     /// 素材库图片类型 1、图片墙，2、活动，3、产品，4、头像
     /// </summary>
-    public enum ImageType
+    public enum UploadType
     {
         /// <summary>
         /// 所有
@@ -349,7 +349,11 @@ namespace Backstage.Core
         /// <summary>
         /// 头像
         /// </summary>
-        Logo = 4
+        Logo = 4,
+        /// <summary>
+        /// 安装包文件
+        /// </summary>
+        Package = 5,
     }
     /// <summary>
     /// 商户类型

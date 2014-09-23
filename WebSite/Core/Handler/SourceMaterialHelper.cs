@@ -35,7 +35,7 @@ namespace Backstage.Core
                         sm.Commentnum = (int)reader["Commentnum"];
                         sm.SellerId = (int)reader["SellerId"];
                         sm.CreateTime = (DateTime)reader["CreateTime"];
-                        sm.ImageType = (ImageType)reader["ImageType"];
+                        sm.ImageType = (UploadType)reader["ImageType"];
                     }
                 }
 
@@ -77,7 +77,7 @@ namespace Backstage.Core
                         sm.Commentnum = (int)reader["Commentnum"];
                         sm.SellerId = (int)reader["SellerId"];
                         sm.CreateTime = (DateTime)reader["CreateTime"];
-                        sm.ImageType = (ImageType)reader["ImageType"];
+                        sm.ImageType = (UploadType)reader["ImageType"];
                         results.Results.Add(sm);
                     }
 
@@ -132,7 +132,7 @@ namespace Backstage.Core
                         sm.Commentnum = (int)reader["Commentnum"];
                         sm.SellerId = (int)reader["SellerId"];
                         sm.CreateTime = (DateTime)reader["CreateTime"];
-                        sm.ImageType = (ImageType)reader["ImageType"];
+                        sm.ImageType = (UploadType)reader["ImageType"];
                         results.Add(sm);
                     }
                 }
@@ -179,7 +179,7 @@ namespace Backstage.Core
                         sm.Commentnum = (int)reader["Commentnum"];
                         sm.SellerId = (int)reader["SellerId"];
                         sm.CreateTime = (DateTime)reader["CreateTime"];
-                        sm.ImageType = (ImageType)reader["ImageType"];
+                        sm.ImageType = (UploadType)reader["ImageType"];
                         results.Add(sm);
                     }
                 }

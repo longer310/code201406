@@ -195,7 +195,7 @@
                         </div>
                     </div>
 
-                    <div class="control-group">
+                    <%--<div class="control-group">
 						<label class="control-label">IOS地址</label>
 						<div class="controls">
 							<input type="text" id="j-profile-iosurl" />
@@ -207,7 +207,7 @@
 						<div class="controls">
 							<input type="text" id="j-profile-androidurl" />
 						</div>
-					</div>
+					</div>--%>
 							
 
 					<div class="control-group">
@@ -216,22 +216,38 @@
 							<input type="text" id="j-profile-note" />
 						</div>
 					</div>
-
-                    <%--<div class="control-group">
-                        <label class="control-label">终端号</label>
-                        <div class="controls">
-                            <input type="text" id="j-profile-machinecode" />
-                        </div>
-                    </div>
-
-                    <div class="control-group">
-                        <label class="control-label">密   钥</label>
-                        <div class="controls">
-                            <input type="text" id="j-profile-machinekey" />
-                        </div>
-                    </div>--%>
                 </div>
             </div>
+            
+            <div class="widget-box" >
+					<div class="widget-title">
+						<h5>软件版本更新</h5>
+					</div>
+					<div class="widget-content">
+
+						<div class="control-group">
+							<label class="control-label">IOS地址</label>
+							<div class="controls">
+								<input type="text" id="j-profile-iosurl"  class="input-medium2" />
+
+								<label class="inline" style="margin-left:28px;margin-right:15px;">版本号</label>
+								<input type="text" id="j-profile-iosurl-ver"  class="input-small"/>
+								<a class="btn btn-info" href="javascript:;" id="j-btn-iosUpload"><i class="icon-folder-open icon-white"></i> 本地上传</a>
+							</div>
+						</div>
+
+						<div class="control-group">
+							<label class="control-label">安卓地址</label>
+							<div class="controls">
+								<input type="text" id="j-profile-androidurl"  class="input-medium2" />
+								<label class="inline" style="margin-left:28px;margin-right:15px;">版本号</label>
+								<input type="text" id="j-profile-androidurl-ver"  class="input-small"/>
+								<a class="btn btn-info" href="javascript:;" id="j-btn-androidUpload"><i class="icon-folder-open icon-white"></i> 本地上传</a>
+							</div>
+						</div>
+							
+					</div>
+				</div>
 
             <div class="widget-box">
                 <div class="widget-title">
@@ -439,6 +455,7 @@
         ];
     </script>
     <script type="text/javascript">
+        var onlyDomainUrl = '<%=OnlyDomainUrl%>';
         var MPage = {
             merchantid: 0,
             merchantdata: {},
@@ -464,19 +481,25 @@
                     }
                 }, "JSON");
 
-                var text_editor,
+                var file_editor,
                     image_editor;
                 KindEditor.ready(function (K) {
                     //文本编辑器
-                    mpage.text_editor = text_editor = K.create('textarea[name="content"]', {
+                    <%--mpage.text_editor = text_editor = K.create('textarea[name="content"]', {
                         uploadJson: '<%=DomainUrl %>/Handler/FileManager/UploadHandler.ashx?type=3',
                         allowFileManager: true
-                    });
+                    });--%>
 
                     //图片上传编辑
                     mpage.image_editor = image_editor = K.editor({
                         uploadJson: '<%=DomainUrl %>/Handler/FileManager/UploadHandler.ashx?type=3',
                         fileManagerJson: '<%=DomainUrl %>/Handler/FileManager/FileManagerHandler.ashx?type=3',
+                    });
+
+                    //图片上传编辑
+                    mpage.file_editor = file_editor = K.editor({
+                        uploadJson: '<%=DomainUrl %>/Handler/FileManager/UploadHandler.ashx?type=5',
+                        fileManagerJson: '<%=DomainUrl %>/Handler/FileManager/FileManagerHandler.ashx?type=5',
                     });
 
                     //图片上传绑定
@@ -502,6 +525,33 @@
                                 clickFn: function (url, title, width, height, border, align) {
                                     K('#j-img-placehold').attr("src", url);
                                     image_editor.hideDialog();
+                                }
+                            });
+                        });
+                    });
+
+
+                    K('#j-btn-iosUpload').click(function () {
+                        file_editor.loadPlugin('insertfile', function () {
+                            file_editor.plugin.fileDialog({
+                                showRemote: false,
+                                clickFn: function (url, title) {
+                                    //console.log(url, title);
+                                    K('#j-profile-iosurl').val(onlyDomainUrl+url);
+                                    file_editor.hideDialog();
+                                }
+                            });
+                        });
+                    });
+
+                    K('#j-btn-androidUpload').click(function () {
+                        file_editor.loadPlugin('insertfile', function () {
+                            file_editor.plugin.fileDialog({
+                                showRemote: false,
+                                clickFn: function (url, title) {
+                                    //console.log(url, title);
+                                    K('#j-profile-androidurl').val(onlyDomainUrl + url);
+                                    file_editor.hideDialog();
                                 }
                             });
                         });
@@ -572,6 +622,22 @@
 
                 });
 
+                $("#j-is_wifi").bind("change", function () {
+                    if ($(this).attr("checked")) {
+                        $("#j-wifi_hold").show();
+                    } else {
+                        $("#j-wifi_hold").hide();
+                    }
+                });
+
+                $("#j-is_print").bind("change", function () {
+                    if ($(this).attr("checked")) {
+                        $("#j-print_hold").show();
+                    } else {
+                        $("#j-print_hold").hide();
+                    }
+                });
+
             },
 
             clearMerchantData: function () {
@@ -634,9 +700,11 @@
                 data_save.Address = $("#j-profile-address").val().trim();
                 data_save.WinXinAccount = $("#j-profile-wechat_id").val().trim();
                 data_save.Qq = $("#j-profile-qq").val().trim();
-                data_save.Email = $("#j-profile-email").val().trim();
+                data_save.Note = $("#j-profile-note").val().trim();
                 data_save.IosUrl = $("#j-profile-iosurl").val().trim();
                 data_save.AndroidUrl = $("#j-profile-androidurl").val().trim();
+                data_save.IosdVer = $("#j-profile-iosurl-ver").val().trim();
+                data_save.AndroidVer = $("#j-profile-androidurl-ver").val().trim();
                 data_save.MachineCode = $("#j-profile-machinecode").val().trim();
                 data_save.MachineKey = $("#j-profile-machinekey").val().trim();
                 data_save.CnameList = [
@@ -713,6 +781,14 @@
                     Common.tip({ type: "error", content: "安卓地址不能为空" });
                     return;
                 }
+                if (data_save.IosVer == "") {
+                    Common.tip({ type: "error", content: "Ios版本不能为空" });
+                    return;
+                }
+                if (data_save.AndroidVer == "") {
+                    Common.tip({ type: "error", content: "安卓版本不能为空" });
+                    return;
+                }
                 if (data_save.HasPrint == 1 && data_save.MachineCode == "") {
                     Common.tip({ type: "error", content: "打印机终端号不能为空" });
                     return;
@@ -737,7 +813,7 @@
             MPage.init();
         });
 
-        </script>
+    </script>
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="Footer" runat="server">
 </asp:Content>

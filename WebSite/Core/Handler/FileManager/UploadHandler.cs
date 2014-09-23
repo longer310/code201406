@@ -20,7 +20,7 @@ namespace Backstage.Handler
         public override void ProcessRequest(HttpContext context)
         {
             RoleType = RoleType.ThirdUser; //需商家管理权限
-            ImageType imgType = (ImageType)Convert.ToInt32(context.Request.QueryString["type"]);
+            UploadType imgType = (UploadType)Convert.ToInt32(context.Request.QueryString["type"]);
             var qsellerId = context.Request.QueryString["sellerid"];
             var sellerId = 0;
             if (!string.IsNullOrEmpty(qsellerId))
@@ -79,10 +79,10 @@ namespace Backstage.Handler
             }
 
             String dirName = context.Request.QueryString["dir"];
-            if (String.IsNullOrEmpty(dirName))
-            {
-                dirName = "image";
-            }
+            //if (String.IsNullOrEmpty(dirName))
+            //{
+            //    dirName = "image";
+            //}
             if (!extTable.ContainsKey(dirName))
             {
                 showError("目录名不正确。");
@@ -145,7 +145,7 @@ namespace Backstage.Handler
 
             var addId = 0;
             //添加商户图片
-            if (imgType == ImageType.Img)
+            if (imgType == UploadType.Img)
             {
                 //TODO:暂时这么添加 图片名称及图片描述 这个后面再根据需求定怎么赋初值 后面应该加上图片类型！（上传）
                 var sm = new SourceMaterial();
@@ -154,7 +154,7 @@ namespace Backstage.Handler
                 sm.Url = fileUrl;
                 sm.Description = Path.GetFileNameWithoutExtension(fileName);
                 sm.CreateTime = DateTime.Now;
-                sm.ImageType = ImageType.Img;
+                sm.ImageType = UploadType.Img;
                 addId = SourceMaterialHelper.Create(sm);
             }
 
@@ -181,11 +181,12 @@ namespace Backstage.Handler
         public static string GetTypeName(HttpContext context)
         {
             var typeName = "";
-            ImageType type = (ImageType)Convert.ToInt32(context.Request.QueryString["type"]);
+            UploadType type = (UploadType)Convert.ToInt32(context.Request.QueryString["type"]);
             switch (type)
             {
-                case ImageType.All: typeName = ""; break;
-                case ImageType.Goods: typeName = "/goods"; break;
+                case UploadType.All: typeName = ""; break;
+                case UploadType.Goods: typeName = "/goods"; break;
+                case UploadType.Package: typeName = "/package"; break;
                 default: break;
             }
             return typeName;

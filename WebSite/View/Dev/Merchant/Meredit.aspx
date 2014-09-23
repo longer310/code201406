@@ -73,8 +73,52 @@
                             <a href="javascript:void(0);" id="j_sub_oneyear" class="btn btn-primary btn-mini"><i class="icon-minus icon-white"></i>减少一年</a>
                         </div>
                     </div>
-
                     <div class="control-group">
+						<label class="control-label">是否使用【易wifi】</label>
+						<div class="controls">
+							<label class="checkbox"><input type="checkbox" id="j-is_wifi"> 使用</label>
+						</div>
+					</div>
+
+					<div id="j-wifi_hold" style="display:none;">
+						<div class="control-group">
+				            <label class="control-label">wifi账号</label>
+				            <div class="controls">
+				                <input type="text" id="j-wifi-account">
+				            </div>
+				        </div>
+			        </div>
+
+					<div class="control-group">
+						<label class="control-label">是否使用【云打印】</label>
+						<div class="controls">
+							<label class="checkbox"><input type="checkbox" id="j-is_print"> 使用</label>
+						</div>
+					</div>
+
+					<div id="j-print_hold" style="display:none;">
+						<div class="control-group">
+				            <label class="control-label">终端号</label>
+				            <div class="controls">
+				                <input type="text" id="j-profile-machinecode">
+				            </div>
+				        </div>
+
+	                    <div class="control-group">
+				            <label class="control-label">密   钥</label>
+				            <div class="controls">
+				                <input type="text" id="j-profile-machinekey">
+				            </div>
+				        </div>
+					</div>
+
+					<div class="control-group">
+						<label class="control-label">是否启用配送功能</label>
+						<div class="controls">
+							<label class="checkbox"><input type="checkbox" id="j-is_delivery"> 启用</label>
+						</div>
+					</div>
+                    <%--<div class="control-group">
                         <label class="control-label">易wifi和云打印</label>
                         <div class="controls">
                             <label class="checkbox">
@@ -93,7 +137,7 @@
                                 <input type="checkbox" id="j-is_delivery">
                                 是否开启【配送功能】</label>
                         </div>
-                    </div>
+                    </div>--%>
 
                     <div class="control-group">
                         <label class="control-label">签约模式</label>
@@ -110,12 +154,12 @@
                         </div>
                     </div>
 
-                    <div class="control-group">
+                    <%--<div class="control-group">
                         <label class="control-label">wifi账号</label>
                         <div class="controls">
                             <input type="text" id="j-wifi-account" />
                         </div>
-                    </div>
+                    </div>--%>
                 </div>
             </div>
 
@@ -128,14 +172,9 @@
                     <div class="control-group">
                         <label class="control-label">联系电话</label>
                         <div class="controls">
-                            <input type="text" id="j-profile-phone" />
-                        </div>
-                    </div>
-
-                    <div class="control-group">
-                        <label class="control-label">管理人联系电话</label>
-                        <div class="controls">
-                            <input type="text" id="j-profile-admin_phone" />
+                            <input type="text" id="j-profile-phone" class="input-medium1" />
+							<label class="col2-label">管理人联系电话</label>
+							<input type="text" id="j-profile-admin_phone" class="input-medium1" />
                         </div>
                     </div>
 
@@ -149,53 +188,65 @@
                     <div class="control-group">
                         <label class="control-label">微信公众号</label>
                         <div class="controls">
-                            <input type="text" id="j-profile-wechat_id" />
+							<input type="text" id="j-profile-wechat_id"  class="input-medium1"/>
+							<label class="col2-label">服务QQ号</label>
+							<input type="text" id="j-profile-qq"  class="input-medium1"/>
                         </div>
                     </div>
 
-                    <div class="control-group">
-                        <label class="control-label">服务QQ号</label>
-                        <div class="controls">
-                            <input type="text" id="j-profile-qq" />
-                        </div>
-                    </div>
+                    <%--<div class="control-group">
+						<label class="control-label">IOS地址</label>
+						<div class="controls">
+							<input type="text" id="j-profile-iosurl" />
+						</div>
+					</div>
 
-                    <div class="control-group">
-                        <label class="control-label">Email</label>
-                        <div class="controls">
-                            <input type="text" id="j-profile-email" />
-                        </div>
-                    </div>
+					<div class="control-group">
+						<label class="control-label">安卓地址</label>
+						<div class="controls">
+							<input type="text" id="j-profile-androidurl" />
+						</div>
+					</div>--%>
+							
 
-                    <div class="control-group">
-                        <label class="control-label">IOS地址</label>
-                        <div class="controls">
-                            <input type="text" id="j-profile-iosurl" />
-                        </div>
-                    </div>
-
-                    <div class="control-group">
-                        <label class="control-label">安卓地址</label>
-                        <div class="controls">
-                            <input type="text" id="j-profile-androidurl" />
-                        </div>
-                    </div>
-
-                    <div class="control-group">
-                        <label class="control-label">终端号</label>
-                        <div class="controls">
-                            <input type="text" id="j-profile-machinecode" />
-                        </div>
-                    </div>
-
-                    <div class="control-group">
-                        <label class="control-label">密   钥</label>
-                        <div class="controls">
-                            <input type="text" id="j-profile-machinekey" />
-                        </div>
-                    </div>
+					<div class="control-group">
+						<label class="control-label">其他备注</label>
+						<div class="controls">
+							<input type="text" id="j-profile-note" />
+						</div>
+					</div>
                 </div>
             </div>
+            
+            <div class="widget-box" >
+					<div class="widget-title">
+						<h5>软件版本更新</h5>
+					</div>
+					<div class="widget-content">
+
+						<div class="control-group">
+							<label class="control-label">IOS地址</label>
+							<div class="controls">
+								<input type="text" id="j-profile-iosurl"  class="input-medium2" />
+
+								<label class="inline" style="margin-left:28px;margin-right:15px;">版本号</label>
+								<input type="text" id="j-profile-iosurl-ver"  class="input-small"/>
+								<a class="btn btn-info" href="javascript:;" id="j-btn-iosUpload"><i class="icon-folder-open icon-white"></i> 本地上传</a>
+							</div>
+						</div>
+
+						<div class="control-group">
+							<label class="control-label">安卓地址</label>
+							<div class="controls">
+								<input type="text" id="j-profile-androidurl"  class="input-medium2" />
+								<label class="inline" style="margin-left:28px;margin-right:15px;">版本号</label>
+								<input type="text" id="j-profile-androidurl-ver"  class="input-small"/>
+								<a class="btn btn-info" href="javascript:;" id="j-btn-androidUpload"><i class="icon-folder-open icon-white"></i> 本地上传</a>
+							</div>
+						</div>
+							
+					</div>
+				</div>
 
             <div class="widget-box">
                 <div class="widget-title">
@@ -206,11 +257,17 @@
                     <div class="control-group">
                         <label class="control-label">活动资讯</label>
                         <div class="controls">
-                            <input type="text" id="j_name_activity" value="活动资讯" />
+                            <input type="text" id="j_name_activity" class="input-small" value="活动资讯" />
+
+							<label class="col3-label">商品展示</label>
+							<input type="text" id="j_name_goods" value="商品展示" class="input-small" />
+
+							<label class="col3-label">快速预约</label>
+							<input type="text" id="j_name_appointment" value="快速预约" class="input-small" />
                         </div>
                     </div>
 
-                    <div class="control-group">
+                    <%--<div class="control-group">
                         <label class="control-label">商品展示</label>
                         <div class="controls">
                             <input type="text" id="j_name_goods" value="商品展示" />
@@ -222,21 +279,23 @@
                         <div class="controls">
                             <input type="text" id="j_name_appointment" value="快速预约" />
                         </div>
-                    </div>
+                    </div>--%>
 
                     <div class="control-group">
                         <label class="control-label">图片墙</label>
                         <div class="controls">
-                            <input type="text" id="j_name_img" value="图片墙" />
+                            <input type="text" id="j_name_img" value="图片墙" class="input-small" />
+							<label class="col3-label">包厢</label>
+							<input type="text" id="j_name_box" value="包厢" class="input-small" />
                         </div>
                     </div>
 
-                    <div class="control-group">
+                    <%--<div class="control-group">
                         <label class="control-label">包厢</label>
                         <div class="controls">
                             <input type="text" id="j_name_box" value="包厢" />
                         </div>
-                    </div>
+                    </div>--%>
                 </div>
             </div>
 
@@ -421,19 +480,25 @@
                     }
                 }, "JSON");
 
-                var text_editor,
+                var file_editor,
                     image_editor;
                 KindEditor.ready(function (K) {
                     //文本编辑器
-                    mpage.text_editor = text_editor = K.create('textarea[name="content"]', {
+                    <%--mpage.text_editor = text_editor = K.create('textarea[name="content"]', {
                         uploadJson: '<%=DomainUrl %>/Handler/FileManager/UploadHandler.ashx?type=3',
                         allowFileManager: true
-                    });
+                    });--%>
 
                     //图片上传编辑
                     mpage.image_editor = image_editor = K.editor({
                         uploadJson: '<%=DomainUrl %>/Handler/FileManager/UploadHandler.ashx?type=3',
                         fileManagerJson: '<%=DomainUrl %>/Handler/FileManager/FileManagerHandler.ashx?type=3',
+                    });
+
+                    //文件上传
+                    mpage.file_editor = file_editor = K.editor({
+                        uploadJson: '<%=DomainUrl %>/Handler/FileManager/UploadHandler.ashx?type=5',
+                        fileManagerJson: '<%=DomainUrl %>/Handler/FileManager/FileManagerHandler.ashx?type=5',
                     });
 
                     //图片上传绑定
@@ -459,6 +524,33 @@
                                 clickFn: function (url, title, width, height, border, align) {
                                     K('#j-img-placehold').attr("src", url);
                                     image_editor.hideDialog();
+                                }
+                            });
+                        });
+                    });
+
+
+                    K('#j-btn-iosUpload').click(function () {
+                        file_editor.loadPlugin('insertfile', function () {
+                            file_editor.plugin.fileDialog({
+                                showRemote: false,
+                                clickFn: function (url, title) {
+                                    //console.log(url, title);
+                                    K('#j-profile-iosurl').val(onlyDomainUrl + url);
+                                    file_editor.hideDialog();
+                                }
+                            });
+                        });
+                    });
+
+                    K('#j-btn-androidUpload').click(function () {
+                        file_editor.loadPlugin('insertfile', function () {
+                            file_editor.plugin.fileDialog({
+                                showRemote: false,
+                                clickFn: function (url, title) {
+                                    //console.log(url, title);
+                                    K('#j-profile-androidurl').val(onlyDomainUrl + url);
+                                    file_editor.hideDialog();
                                 }
                             });
                         });
@@ -541,6 +633,22 @@
 
                 });
 
+                $("#j-is_wifi").bind("change", function () {
+                    if ($(this).attr("checked")) {
+                        $("#j-wifi_hold").show();
+                    } else {
+                        $("#j-wifi_hold").hide();
+                    }
+                });
+
+                $("#j-is_print").bind("change", function () {
+                    if ($(this).attr("checked")) {
+                        $("#j-print_hold").show();
+                    } else {
+                        $("#j-print_hold").hide();
+                    }
+                });
+
             },
 
             showCategroyList: function () {
@@ -596,9 +704,9 @@
                 $("#j-template-list").val(mpage.merchantdata.mer.Tid);
                 $('#j_user_createtime').html(mpage.merchantdata.user.CreateTime.ToDate().Format("yyyy-MM-dd"));
                 $('#j_mer_serverendtime').html(mpage.merchantdata.mer.ServerEndTime.ToDate().Format("yyyy-MM-dd"));
-                if (mpage.merchantdata.mer.HasWifi) $("#j-is_wifi").attr("checked", "checked");
+                if (mpage.merchantdata.mer.HasWifi) $("#j-is_wifi").attr("checked", "checked").trigger("change");
                 $("#j-wifi-account").val(mpage.merchantdata.mer.WifiAccount);
-                if (mpage.merchantdata.mer.HasPrint) $("#j-is_print").attr("checked", "checked");
+                if (mpage.merchantdata.mer.HasPrint) $("#j-is_print").attr("checked", "checked").trigger("change");
                 if (mpage.merchantdata.mer.HasDelivery) $("#j-is_delivery").attr("checked", "checked");
                 $("#j-sign-list").val(mpage.merchantdata.mer.Sid);
                 $("#j-dev-name").val(mpage.merchantdata.mer.DevName);
@@ -610,7 +718,9 @@
                 $("#j-profile-qq").val(mpage.merchantdata.mer.Qq);
                 $("#j-profile-email").val(mpage.merchantdata.mer.Email);
                 $("#j-profile-iosurl").val(mpage.merchantdata.mer.IosUrl);
-                $("#j-profile-androidurl").val(mpage.merchantdata.mer.AndroidUrl); 
+                $("#j-profile-androidurl").val(mpage.merchantdata.mer.AndroidUrl);
+                $("#j-profile-iosurl-ver").val(mpage.merchantdata.mer.IosVersion);
+                $("#j-profile-androidurl-ver").val(mpage.merchantdata.mer.AndroidVersion);
                 $("#j-profile-machinecode").val(mpage.merchantdata.mer.MachineCode);
                 $("#j-profile-machinekey").val(mpage.merchantdata.mer.MachineKey);
                 
@@ -647,6 +757,8 @@
                 data_save.Email = $("#j-profile-email").val().trim();
                 data_save.IosUrl = $("#j-profile-iosurl").val().trim();
                 data_save.AndroidUrl = $("#j-profile-androidurl").val().trim();
+                data_save.IosdVer = $("#j-profile-iosurl-ver").val().trim();
+                data_save.AndroidVer = $("#j-profile-androidurl-ver").val().trim();
                 data_save.MachineCode = $("#j-profile-machinecode").val().trim();
                 data_save.MachineKey = $("#j-profile-machinekey").val().trim();
                 data_save.CnameList = [
@@ -713,6 +825,24 @@
                 }
                 if (data_save.AndroidUrl == "") {
                     Common.tip({ type: "error", content: "安卓地址不能为空" });
+                    return;
+                }
+                if (data_save.IosVer == "") {
+                    Common.tip({ type: "error", content: "Ios版本不能为空" });
+                    return;
+                }
+                if (data_save.AndroidVer == "") {
+                    Common.tip({ type: "error", content: "安卓版本不能为空" });
+                    return;
+                }
+                if (mpage.merchantdata.mer.IosUrl != data_save.IosUrl &&
+                    mpage.merchantdata.mer.IosVersion <= data_save.IosVer) {
+                    Common.tip({ type: "error", content: "IOS版本上传后，版本号得往上加" });
+                    return;
+                }
+                if (mpage.merchantdata.mer.AndroidUrl != data_save.AndroidUrl &&
+                    mpage.merchantdata.mer.AndroidVersion <= data_save.AndroidVer) {
+                    Common.tip({ type: "error", content: "安卓版本上传后，版本号得往上加" });
                     return;
                 }
                 if (data_save.HasWifi == 1 && data_save.WifiAccount == "") {

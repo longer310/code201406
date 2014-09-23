@@ -652,6 +652,7 @@ namespace Backstage.Core
             parameters.Add(new MySqlParameter("?password", password));
             parameters.Add(new MySqlParameter("?phone", phone));
             parameters.Add(new MySqlParameter("?sellerId", sellerId));
+            //parameters.Add(new MySqlParameter("?RoleType", (int)RoleType.ThirdUser));
             try
             {
                 using (var conn = Utility.ObtainConn(Utility._gameDbConn))

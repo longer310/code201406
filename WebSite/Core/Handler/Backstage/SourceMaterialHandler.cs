@@ -45,7 +45,7 @@ namespace Backstage.Core.Handler.Backstage
             sm.Url = GetString("thumbnail");
             sm.Description = GetString("content");
             sm.CreateTime = DateTime.Now;
-            sm.ImageType = ImageType.Img;
+            sm.ImageType = UploadType.Img;
             SourceMaterialHelper.Create(sm);
         }
 

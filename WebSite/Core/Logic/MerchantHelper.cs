@@ -62,7 +62,7 @@ namespace Backstage.Core.Logic
                             merchant.ManagerPhone = reader["ManagerPhone"].ToString();
                             merchant.Qq = reader["Qq"].ToString();
                             merchant.WinXinAccount = reader["WinXinAccount"].ToString();
-                            merchant.Email = reader["Email"].ToString();
+                            merchant.Remark = reader["Remark"].ToString();
                             merchant.CnameList = Utility.GetListstring(reader["CnameList"].ToString());
                             merchant.Money = (float)reader["Money"];
                             merchant.DevName = reader["DevName"].ToString();
@@ -81,6 +81,10 @@ namespace Backstage.Core.Logic
                             merchant.MachineKey = reader["MachineKey"].ToString();
 
                             merchant.HasDelivery = (int)reader["HasDelivery"];
+
+                            merchant.WifiAccount = reader["WifiAccount"].ToString();
+                            merchant.AndroidVersion = reader["AndroidVersion"].ToString();
+                            merchant.IosVersion = reader["IosVersion"].ToString();
 
                             //获取商户基础类型
                             var merchanttype = MerchantTypeHelper.GetMerchantType(merchant.Mid);
@@ -144,7 +148,7 @@ namespace Backstage.Core.Logic
                                         ManagerPhone                  = ?ManagerPhone       ,
                                         Qq                            = ?Qq                 ,
                                         WinXinAccount                 = ?WinXinAccount      ,
-                                        Email                         = ?Email              ,
+                                        Remark                         = ?Remark              ,
                                         Money                         = ?Money              ,
                                         DevName                         = ?DevName              ,
                                         Sid                         = ?Sid              ,
@@ -158,7 +162,10 @@ namespace Backstage.Core.Logic
                                         WifiAds                  = ?WifiAds              ,
                                         MachineCode                  = ?MachineCode               ,
                                         MachineKey                  = ?MachineKey                ,
-                                        HasDelivery                  = ?HasDelivery                  
+                                        HasDelivery                  = ?HasDelivery               ,
+                                        WifiAccount                  = ?WifiAccount              ,
+                                        AndroidVersion                  = ?AndroidVersion              ,
+                                        IosVersion                  = ?IosVersion                 
 
                                     WHERE
                                         Id = ?Id";
@@ -198,7 +205,7 @@ namespace Backstage.Core.Logic
                 parameters.Add(new MySqlParameter("?ManagerPhone", merchant.ManagerPhone));
                 parameters.Add(new MySqlParameter("?Qq", merchant.Qq));
                 parameters.Add(new MySqlParameter("?WinXinAccount", merchant.WinXinAccount));
-                parameters.Add(new MySqlParameter("?Email", merchant.Email));
+                parameters.Add(new MySqlParameter("?Remark", merchant.Remark));
                 parameters.Add(new MySqlParameter("?Money", merchant.Money));
                 parameters.Add(new MySqlParameter("?CnameList", Utility.GetString(merchant.CnameList)));
                 parameters.Add(new MySqlParameter("?DevName", merchant.DevName));
@@ -216,6 +223,9 @@ namespace Backstage.Core.Logic
                 parameters.Add(new MySqlParameter("?MachineCode", merchant.MachineCode));
                 parameters.Add(new MySqlParameter("?MachineKey", merchant.MachineKey));
                 parameters.Add(new MySqlParameter("?HasDelivery", merchant.HasDelivery));
+                parameters.Add(new MySqlParameter("?WifiAccount", merchant.WifiAccount));
+                parameters.Add(new MySqlParameter("?AndroidVersion", merchant.AndroidVersion));
+                parameters.Add(new MySqlParameter("?IosVersion", merchant.IosVersion));
 
 
             }
@@ -257,7 +267,7 @@ namespace Backstage.Core.Logic
                                         ManagerPhone         ,
                                         Qq                   ,
                                         WinXinAccount        ,
-                                        Email                ,
+                                        Remark                ,
                                         Money                ,
                                         DevName                ,
                                         Sid                ,
@@ -271,7 +281,10 @@ namespace Backstage.Core.Logic
                                         WifiAds                  ,
                                         MachineCode                 ,
                                         MachineKey                 ,
-                                        HasDelivery                 
+                                        HasDelivery                 ,
+                                        WifiAccount                ,
+                                        AndroidVersion                ,
+                                        IosVersion                
                                         ) 
                                         values
                                         (
@@ -309,7 +322,7 @@ namespace Backstage.Core.Logic
                                         ?ManagerPhone         ,
                                         ?Qq                   ,
                                         ?WinXinAccount        ,
-                                        ?Email                ,
+                                        ?Remark                ,
                                         ?Money                ,
                                         ?DevName                ,
                                         ?Sid                ,
@@ -323,7 +336,10 @@ namespace Backstage.Core.Logic
                                         ?WifiAds                  ,
                                         ?MachineCode                 ,
                                         ?MachineKey                 ,
-                                        ?HasDelivery                 
+                                        ?HasDelivery                ,
+                                        ?WifiAccount                 ,
+                                        ?AndroidVersion                 ,
+                                        ?IosVersion                  
                                         )";
                 parameters.Add(new MySqlParameter("?Id", merchant.Id));
                 parameters.Add(new MySqlParameter("?Name", merchant.Name));
@@ -359,7 +375,7 @@ namespace Backstage.Core.Logic
                 parameters.Add(new MySqlParameter("?ManagerPhone", merchant.ManagerPhone));
                 parameters.Add(new MySqlParameter("?Qq", merchant.Qq));
                 parameters.Add(new MySqlParameter("?WinXinAccount", merchant.WinXinAccount));
-                parameters.Add(new MySqlParameter("?Email", merchant.Email));
+                parameters.Add(new MySqlParameter("?Remark", merchant.Remark));
                 parameters.Add(new MySqlParameter("?CnameList", Utility.GetString(merchant.CnameList)));
                 parameters.Add(new MySqlParameter("?Money", merchant.Money));
                 parameters.Add(new MySqlParameter("?DevName", merchant.DevName));
@@ -377,6 +393,9 @@ namespace Backstage.Core.Logic
                 parameters.Add(new MySqlParameter("?MachineCode", merchant.MachineCode));
                 parameters.Add(new MySqlParameter("?MachineKey", merchant.MachineKey));
                 parameters.Add(new MySqlParameter("?HasDelivery", merchant.HasDelivery));
+                parameters.Add(new MySqlParameter("?WifiAccount", merchant.WifiAccount));
+                parameters.Add(new MySqlParameter("?AndroidVersion", merchant.AndroidVersion));
+                parameters.Add(new MySqlParameter("?IosVersion", merchant.IosVersion));
             }
             try
             {
@@ -457,7 +476,7 @@ namespace Backstage.Core.Logic
                         merchant.ManagerPhone = reader["ManagerPhone"].ToString();
                         merchant.Qq = reader["Qq"].ToString();
                         merchant.WinXinAccount = reader["WinXinAccount"].ToString();
-                        merchant.Email = reader["Email"].ToString();
+                        merchant.Remark = reader["Remark"].ToString();
                         merchant.CnameList = Utility.GetListstring(reader["CnameList"].ToString());
                         merchant.Money = (float)reader["Money"];
                         merchant.DevName = reader["DevName"].ToString();
@@ -475,6 +494,10 @@ namespace Backstage.Core.Logic
                         merchant.MachineCode = reader["MachineCode"].ToString();
                         merchant.MachineKey = reader["MachineKey"].ToString();
                         merchant.HasDelivery = (int)reader["HasDelivery"];
+
+                        merchant.WifiAccount = reader["WifiAccount"].ToString();
+                        merchant.AndroidVersion = reader["AndroidVersion"].ToString();
+                        merchant.IosVersion = reader["IosVersion"].ToString();
 
                         result.Results.Add(merchant);
                     }

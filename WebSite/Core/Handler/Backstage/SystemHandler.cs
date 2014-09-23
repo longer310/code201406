@@ -279,7 +279,7 @@ namespace Backstage.Core.Handler.Backstage
             merchant.Address = GetString("address");
             merchant.WinXinAccount = GetString("weixin");
             merchant.Qq = GetString("qq");
-            merchant.Email = GetString("email");
+            merchant.Remark = GetString("email");//直接把商户邮箱改为备注了 邮箱字段建勇说不需要
             merchant.Description = GetString("content");
 
             MerchantHelper.SaveMerchant(merchant);

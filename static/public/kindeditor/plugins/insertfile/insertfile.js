@@ -31,7 +31,7 @@ KindEditor.plugin('insertfile', function(K) {
 			'</span>',
 			'</div>',
 			//title
-			'<div class="ke-dialog-row">',
+			'<div class="ke-dialog-row" style="display:none;">',
 			'<label for="keTitle" style="width:60px;">' + lang.title + '</label>',
 			'<input type="text" id="keTitle" class="ke-input-text" name="title" value="" style="width:160px;" /></div>',
 			'</div>',

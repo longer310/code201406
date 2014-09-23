@@ -24,12 +24,8 @@ namespace Backstage.Handler
                 #region 充值统计、消费统计
                 case "getconsumestat": //获取销售统计
                     GetConsumeStat(); break;
-                case "getconsumelist": //获取销售列表
-                    GetConsumeList(); break;
                 case "getchargestat": //获取充值统计
                     GetChargeStat(); break;
-                case "getchargelist": //获取充值列表
-                    GetChargeList(); break;
                 #endregion
 
                 default: break;
@@ -38,14 +34,41 @@ namespace Backstage.Handler
 
 
         #region 充值统计、消费统计
-        /// <summary>
-        /// 获取充值列表
-        /// </summary>
-        private void GetChargeList()
+        public class ChargeStatResponse
         {
-            var start = GetInt("start");
-            var limit = GetInt("limit");
+            public RechargeStatisticsHelper.ReqRechargeStatistics Stat { get; set; }
+            public List<ChargeLog> List { get; set; }
+
+            public ChargeStatResponse()
+            {
+                Stat = new RechargeStatisticsHelper.ReqRechargeStatistics(StatisticsType.Day);
+                List = new List<ChargeLog>();
+            }
+        }
+        /// <summary>
+        /// 获取充值统计
+        /// </summary>
+        private void GetChargeStat()
+        {
+            var sellerId = CurSellerId;
             var type = (StatisticsType)GetInt("type");//统计类型
+            var start = GetInt("start");//传0
+            var limit = GetInt("limit");//传10 只取前十名
+
+            var data = new ChargeStatResponse();
+            data.Stat = new RechargeStatisticsHelper.ReqRechargeStatistics(type);
+            switch (type)
+            {
+                case StatisticsType.Day:
+                    data.Stat = RechargeStatisticsHelper.GetRechargeDateStatisticsList(sellerId, DateTime.Now); break;
+                case StatisticsType.Month:
+                    data.Stat = RechargeStatisticsHelper.GetRechargeMonthStatisticsList(sellerId, DateTime.Now.Year, DateTime.Now.Month); break;
+                case StatisticsType.Quarter:
+                    data.Stat = RechargeStatisticsHelper.GetRechargeQuarterStatisticsList(sellerId, DateTime.Now.Year); break;
+                case StatisticsType.Year:
+                    data.Stat = RechargeStatisticsHelper.GetRechargeYearStatisticsList(sellerId, DateTime.Now.Year); break;
+            }
+
             var startTime = DateTime.Now;
             var endTime = DateTime.Now;
             switch (type)
@@ -55,7 +78,7 @@ namespace Backstage.Handler
                     endTime = startTime.AddDays(1).AddMilliseconds(-1);
                     break;
                 case StatisticsType.Month:
-                    startTime = new DateTime(startTime.Year,startTime.Month,1).Date;
+                    startTime = new DateTime(startTime.Year, startTime.Month, 1).Date;
                     endTime = startTime.AddMonths(1).AddMilliseconds(-1);
                     break;
                 case StatisticsType.Quarter:
@@ -65,50 +88,12 @@ namespace Backstage.Handler
                     break;
             }
 
-            var result = ChargeLogHelper.GetRechargeLogList(CurSellerId, startTime, endTime, start*limit, limit);
+            data.List = ChargeLogHelper.GetRechargeLogList(CurSellerId, startTime, endTime, start * limit, limit);
 
             var jt = new JsonTransfer();
-            jt.Add("list", result.Results);
-            jt.Add("count", result.TotalCount);
+            jt.Add("data", data);
             Response.Write(jt.ToJson());
-        }
-
-        /// <summary>
-        /// 获取充值统计
-        /// </summary>
-        private void GetChargeStat()
-        {
-            var sellerId = CurSellerId;
-            var type = (StatisticsType)GetInt("type");//统计类型
-
-            //var result = new RechargeStatisticsHelper.ReqRechargeStatistics(type);
-            //switch (type)
-            //{
-            //    case StatisticsType.Day:
-            //        result = RechargeStatisticsHelper.GetRechargeDateStatisticsList(sellerId, DateTime.Now); break;
-            //    case StatisticsType.Month:
-            //        result = RechargeStatisticsHelper.GetRechargeMonthStatisticsList(sellerId, DateTime.Now.Year, DateTime.Now.Month); break;
-            //    case StatisticsType.Quarter:
-            //        result = RechargeStatisticsHelper.GetRechargeQuarterStatisticsList(sellerId, DateTime.Now.Year); break;
-            //    case StatisticsType.Year:
-            //        result = RechargeStatisticsHelper.GetRechargeYearStatisticsList(sellerId, DateTime.Now.Year); break;
-            //}
-
-            //var jt = new JsonTransfer();
-            //jt.Add("data", result);
-            //Response.Write(jt.ToJson());
-            //Response.End();
-        }
-
-        /// <summary>
-        /// 获取消费列表
-        /// </summary>
-        private void GetConsumeList()
-        {
-            var start = GetInt("start");
-            var limit = GetInt("limit");
-            var sellerId = GetInt("sellerId");
-            var type = (StatisticsType)GetInt("type");//统计类型
+            Response.End();
         }
         /// <summary>
         /// 获取消费统计

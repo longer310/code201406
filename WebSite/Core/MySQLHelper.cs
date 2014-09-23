@@ -383,6 +383,50 @@ namespace Backstage.Core
             }
 
         }
+        /// <summary>
+
+        /// 执行命令或存储过程，返回DataSet对象
+
+        /// </summary>
+
+        /// <param name="connectionString">数据库连接字符串</param>
+
+        /// <param name="cmdType">命令类型(存储过程或SQL语句)</param>
+
+        /// <param name="cmdText">SQL语句或存储过程名</param>
+
+        /// <param name="cmdParms">MySqlCommand参数数组(可为null值)</param>
+
+        /// <returns></returns>
+
+        public static DataSet ExecuteDataset(MySqlConnection conn, CommandType cmdType, string cmdText, params MySqlParameter[] cmdParms)
+        {
+
+            MySqlCommand cmd = new MySqlCommand();
+
+            try
+            {
+                PrepareCommand(conn, null, cmd, cmdType, cmdText, cmdParms);
+
+                MySqlDataAdapter da = new MySqlDataAdapter(cmd);
+
+                DataSet ds = new DataSet();
+
+                da.Fill(ds);
+
+                cmd.Parameters.Clear();
+
+                cmd.Dispose();
+                da.Dispose();
+
+                return ds;
+            }
+            catch (Exception e)
+            {
+                throw;
+            }
+
+        }
 
         #endregion
 

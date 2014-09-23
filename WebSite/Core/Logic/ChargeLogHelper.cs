@@ -303,13 +303,12 @@ namespace Backstage.Core.Logic
         }
 
 
-        public static PagResults<ChargeLog> GetRechargeLogList(int sellerId,DateTime startTime,DateTime endTime, int start = 0, int limit = 0)
+        public static List<ChargeLog> GetRechargeLogList(int sellerId,DateTime startTime,DateTime endTime, int start = 0, int limit = 0)
         {
-            var result = new PagResults<ChargeLog>();
-            result.Results = new List<ChargeLog>();
+            var result = new List<ChargeLog>();
             string limitsql = start != 0 ? " LIMIT ?start,?limit" : string.Empty;
             var cmdText =
-                @"select * from ChargeLog where SellerId=?SellerId and Money>0 and CreateTime>=?StartTime and EndTime<=?EndTime order by createtime desc " +
+                @"sum(a.money) totalmoney,a.userid,b.UserName from chargelog a join account b on a.UserId=b.Id where a.SellerId=?SellerId a.money>0 and a.`Status` =10 and CreateTime>=?StartTime and EndTime<=?EndTime GROUP BY a.userid ORDER BY totalmoney desc " +
                 limitsql;
 
             List<MySqlParameter> parameters = new List<MySqlParameter>();
@@ -341,27 +340,27 @@ namespace Backstage.Core.Logic
                         ChargeLog.Status = (RechargeStatus)reader["Status"];
                         ChargeLog.UpdateStatusTime = (DateTime)reader["UpdateStatusTime"];
 
-                        result.Results.Add(ChargeLog);
+                        result.Add(ChargeLog);
                     }
 
                     //一个函数有两次连接数据库 先把连接断开 然后重连
-                    conn.Close();
-                    conn.Dispose();
-                    conn.Open();
+                    //conn.Close();
+                    //conn.Dispose();
+                    //conn.Open();
 
-                    cmdText = @"select count(*) from ChargeLog where SellerId=?SellerId and Money>0 and CreateTime>=?StartTime and EndTime<=?EndTime;";
-                    parameters = new List<MySqlParameter>();
-                    parameters.Add(new MySqlParameter("?SellerId", sellerId));
-                    parameters.Add(new MySqlParameter("?StartTime", startTime));
-                    parameters.Add(new MySqlParameter("?EndTime", endTime));
-                    reader = MySqlHelper.ExecuteReader(conn, CommandType.Text, cmdText, parameters.ToArray());
-                    if (reader.HasRows)
-                    {
-                        if (reader.Read())
-                        {
-                            result.TotalCount = reader.GetInt32(0);
-                        }
-                    }
+                    //cmdText = @"select count(*) from ChargeLog where SellerId=?SellerId and Money>0 and CreateTime>=?StartTime and EndTime<=?EndTime;";
+                    //parameters = new List<MySqlParameter>();
+                    //parameters.Add(new MySqlParameter("?SellerId", sellerId));
+                    //parameters.Add(new MySqlParameter("?StartTime", startTime));
+                    //parameters.Add(new MySqlParameter("?EndTime", endTime));
+                    //reader = MySqlHelper.ExecuteReader(conn, CommandType.Text, cmdText, parameters.ToArray());
+                    //if (reader.HasRows)
+                    //{
+                    //    if (reader.Read())
+                    //    {
+                    //        result.TotalCount = reader.GetInt32(0);
+                    //    }
+                    //}
                 }
 
             }

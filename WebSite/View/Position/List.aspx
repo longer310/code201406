@@ -143,7 +143,6 @@
                     var status = parseInt($("#j-pkg-status").val());
 
                     $(this).tab('show');
-                    console.log(1 + type + status);
                     mpage.getPkgList(1, type, status);
                     return false
                 });
@@ -267,7 +266,7 @@
                         tip: '<li class="page-info"><b class="text-info">@{nowPage}</b>/@{pageCount}页 共<b class="text-info">@{count}</b>条记录</li>',
                         now: p,//当前页
                         maxPage: 5,//显示的最多页数
-                        per: 6,//每页显示几个
+                        per: 8,//每页显示几个
                         count: json.result.count,
                         onchange: function (page) {//切换页数回调函数
                             mpage.getPkgList(page, type, status);

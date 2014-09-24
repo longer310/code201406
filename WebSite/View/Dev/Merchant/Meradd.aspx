@@ -228,10 +228,10 @@
 						<div class="control-group">
 							<label class="control-label">IOS地址</label>
 							<div class="controls">
-								<input type="text" id="j-profile-iosurl"  class="input-medium2" />
+								<input readonly="readonly"  type="text" id="j-profile-iosurl"  class="input-medium2" />
 
 								<label class="inline" style="margin-left:28px;margin-right:15px;">版本号</label>
-								<input type="text" id="j-profile-iosurl-ver"  class="input-small"/>
+								<input onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')" type="text" id="j-profile-iosurl-ver"  class="input-small"/>
 								<a class="btn btn-info" href="javascript:;" id="j-btn-iosUpload"><i class="icon-folder-open icon-white"></i> 本地上传</a>
 							</div>
 						</div>
@@ -239,9 +239,9 @@
 						<div class="control-group">
 							<label class="control-label">安卓地址</label>
 							<div class="controls">
-								<input type="text" id="j-profile-androidurl"  class="input-medium2" />
+								<input readonly="readonly" type="text" id="j-profile-androidurl"  class="input-medium2" />
 								<label class="inline" style="margin-left:28px;margin-right:15px;">版本号</label>
-								<input type="text" id="j-profile-androidurl-ver"  class="input-small"/>
+								<input onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')" type="text" id="j-profile-androidurl-ver"  class="input-small"/>
 								<a class="btn btn-info" href="javascript:;" id="j-btn-androidUpload"><i class="icon-folder-open icon-white"></i> 本地上传</a>
 							</div>
 						</div>
@@ -703,7 +703,7 @@
                 data_save.Note = $("#j-profile-note").val().trim();
                 data_save.IosUrl = $("#j-profile-iosurl").val().trim();
                 data_save.AndroidUrl = $("#j-profile-androidurl").val().trim();
-                data_save.IosdVer = $("#j-profile-iosurl-ver").val().trim();
+                data_save.IosVer = $("#j-profile-iosurl-ver").val().trim();
                 data_save.AndroidVer = $("#j-profile-androidurl-ver").val().trim();
                 data_save.MachineCode = $("#j-profile-machinecode").val().trim();
                 data_save.MachineKey = $("#j-profile-machinekey").val().trim();
@@ -774,19 +774,27 @@
                     return;
                 }
                 if (data_save.IosUrl == "") {
-                    Common.tip({ type: "error", content: "Ios地址不能为空" });
+                    Common.tip({ type: "error", content: "Ios地址不能为空，请点击右边的本地上传" });
                     return;
                 }
                 if (data_save.AndroidUrl == "") {
-                    Common.tip({ type: "error", content: "安卓地址不能为空" });
+                    Common.tip({ type: "error", content: "安卓地址不能为空，请点击右边的本地上传" });
                     return;
                 }
                 if (data_save.IosVer == "") {
-                    Common.tip({ type: "error", content: "Ios版本不能为空" });
+                    Common.tip({ type: "error", content: "Ios版本号不能为空" });
+                    return;
+                }
+                if (isNaN(data_save.IosVer)) {
+                    alert("Ios版本号应为数字，例如1");
                     return;
                 }
                 if (data_save.AndroidVer == "") {
-                    Common.tip({ type: "error", content: "安卓版本不能为空" });
+                    Common.tip({ type: "error", content: "安卓版本号不能为空" });
+                    return;
+                }
+                if (isNaN(data_save.AndroidVer)) {
+                    alert("Android版本号应为数字，例如1");
                     return;
                 }
                 if (data_save.HasPrint == 1 && data_save.MachineCode == "") {

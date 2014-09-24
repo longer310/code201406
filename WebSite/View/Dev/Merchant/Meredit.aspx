@@ -220,17 +220,17 @@
             
             <div class="widget-box" >
 					<div class="widget-title">
-						<h5>软件版本更新</h5>
+						<h5>软件版本更新（上传新安装包后，版本号记得加1）</h5>
 					</div>
 					<div class="widget-content">
 
 						<div class="control-group">
 							<label class="control-label">IOS地址</label>
 							<div class="controls">
-								<input type="text" id="j-profile-iosurl"  class="input-medium2" />
+								<input type="text" readonly="readonly" id="j-profile-iosurl"  class="input-medium2" />
 
 								<label class="inline" style="margin-left:28px;margin-right:15px;">版本号</label>
-								<input type="text" id="j-profile-iosurl-ver"  class="input-small"/>
+								<input  onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')" type="text" id="j-profile-iosurl-ver"  class="input-small"/>
 								<a class="btn btn-info" href="javascript:;" id="j-btn-iosUpload"><i class="icon-folder-open icon-white"></i> 本地上传</a>
 							</div>
 						</div>
@@ -238,9 +238,9 @@
 						<div class="control-group">
 							<label class="control-label">安卓地址</label>
 							<div class="controls">
-								<input type="text" id="j-profile-androidurl"  class="input-medium2" />
+								<input type="text" readonly="readonly" id="j-profile-androidurl"  class="input-medium2" />
 								<label class="inline" style="margin-left:28px;margin-right:15px;">版本号</label>
-								<input type="text" id="j-profile-androidurl-ver"  class="input-small"/>
+								<input onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')" type="text" id="j-profile-androidurl-ver"  class="input-small"/>
 								<a class="btn btn-info" href="javascript:;" id="j-btn-androidUpload"><i class="icon-folder-open icon-white"></i> 本地上传</a>
 							</div>
 						</div>
@@ -454,6 +454,7 @@
         ];
     </script>
     <script type="text/javascript">
+        var onlyDomainUrl = '<%=OnlyDomainUrl%>';
         var MPage = {
             merchantid: 0,
             merchantdata: {},
@@ -716,7 +717,7 @@
                 $("#j-profile-address").val(mpage.merchantdata.mer.Address);
                 $("#j-profile-wechat_id").val(mpage.merchantdata.mer.WinXinAccount);
                 $("#j-profile-qq").val(mpage.merchantdata.mer.Qq);
-                $("#j-profile-email").val(mpage.merchantdata.mer.Email);
+                $("#j-profile-note").val(mpage.merchantdata.mer.Remark);
                 $("#j-profile-iosurl").val(mpage.merchantdata.mer.IosUrl);
                 $("#j-profile-androidurl").val(mpage.merchantdata.mer.AndroidUrl);
                 $("#j-profile-iosurl-ver").val(mpage.merchantdata.mer.IosVersion);
@@ -754,10 +755,10 @@
                 data_save.Address = $("#j-profile-address").val().trim();
                 data_save.WinXinAccount = $("#j-profile-wechat_id").val().trim();
                 data_save.Qq = $("#j-profile-qq").val().trim();
-                data_save.Email = $("#j-profile-email").val().trim();
+                data_save.Note = $("#j-profile-note").val().trim();
                 data_save.IosUrl = $("#j-profile-iosurl").val().trim();
                 data_save.AndroidUrl = $("#j-profile-androidurl").val().trim();
-                data_save.IosdVer = $("#j-profile-iosurl-ver").val().trim();
+                data_save.IosVer = $("#j-profile-iosurl-ver").val().trim();
                 data_save.AndroidVer = $("#j-profile-androidurl-ver").val().trim();
                 data_save.MachineCode = $("#j-profile-machinecode").val().trim();
                 data_save.MachineKey = $("#j-profile-machinekey").val().trim();
@@ -815,34 +816,42 @@
                     Common.tip({ type: "error", content: "服务QQ不能为空" });
                     return;
                 }
-                if (data_save.Email == "") {
-                    Common.tip({ type: "error", content: "Email不能为空" });
-                    return;
-                }
+                //if (data_save.Note == "") {
+                //    Common.tip({ type: "error", content: "备注不能为空" });
+                //    return;
+                //}
                 if (data_save.IosUrl == "") {
-                    Common.tip({ type: "error", content: "Ios地址不能为空" });
+                    Common.tip({ type: "error", content: "Ios地址不能为空，请点击右边的本地上传" });
                     return;
                 }
                 if (data_save.AndroidUrl == "") {
-                    Common.tip({ type: "error", content: "安卓地址不能为空" });
+                    Common.tip({ type: "error", content: "安卓地址不能为空，请点击右边的本地上传" });
                     return;
                 }
                 if (data_save.IosVer == "") {
                     Common.tip({ type: "error", content: "Ios版本不能为空" });
                     return;
                 }
+                if (isNaN(data_save.IosVer)) {
+                    alert("Ios版本号应为数字，例如1");
+                    return;
+                }
+                if (mpage.merchantdata.mer.IosUrl != data_save.IosUrl && mpage.merchantdata.mer.IosVersion != "" &&
+                    parseInt(mpage.merchantdata.mer.IosVersion) >= parseInt(data_save.IosVer)) {
+                    Common.tip({ type: "error", content: "上传IOS版本后，版本号得增加1" });
+                    return;
+                }
                 if (data_save.AndroidVer == "") {
                     Common.tip({ type: "error", content: "安卓版本不能为空" });
                     return;
                 }
-                if (mpage.merchantdata.mer.IosUrl != data_save.IosUrl &&
-                    mpage.merchantdata.mer.IosVersion <= data_save.IosVer) {
-                    Common.tip({ type: "error", content: "IOS版本上传后，版本号得往上加" });
+                if (isNaN(data_save.AndroidVer)) {
+                    alert("Android版本号应为数字，例如1");
                     return;
                 }
                 if (mpage.merchantdata.mer.AndroidUrl != data_save.AndroidUrl &&
-                    mpage.merchantdata.mer.AndroidVersion <= data_save.AndroidVer) {
-                    Common.tip({ type: "error", content: "安卓版本上传后，版本号得往上加" });
+                    parseInt(mpage.merchantdata.mer.AndroidVersion) >= parseInt(data_save.AndroidVer)) {
+                    Common.tip({ type: "error", content: "上传安卓版本后，版本号得增加1" });
                     return;
                 }
                 if (data_save.HasWifi == 1 && data_save.WifiAccount == "") {

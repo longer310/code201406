@@ -390,7 +390,7 @@
 						});
 						
 						//图片上传绑定
-						K('.j-btn-imageManager').click(function() {
+						$(document).delegate('.j-btn-imageManager', 'click', function() {
 							var $item = $(this).parents(".controls");
 
 							image_editor.loadPlugin('filemanager', function() {
@@ -406,7 +406,7 @@
 						});
 
 						//从资料库选择图片
-						K('.j-btn-imageUpload').click(function() {
+						$(document).delegate('.j-btn-imageUpload', 'click', function() {
 							var $item = $(this).parents(".controls");
 
 							image_editor.loadPlugin('image', function() {
@@ -421,7 +421,7 @@
 						});
 
 						//图片上传绑定
-						K('.j-btn-imageManager1').click(function() {
+						$(document).delegate('.j-btn-imageManager1', 'click', function() {
 							var $item = $(this).parents(".controls");
 
 							image_editor1.loadPlugin('filemanager', function() {
@@ -437,7 +437,7 @@
 						});
 
 						//从资料库选择图片
-						K('.j-btn-imageUpload1').click(function() {
+						$(document).delegate('.j-btn-imageUpload1', 'click', function() {
 							var $item = $(this).parents(".controls");
 
 							image_editor1.loadPlugin('image', function() {

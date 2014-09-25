@@ -37,5 +37,11 @@ namespace Backstage.Core.Entity
 
         public DateTime CreateTime { get; set; }
 
+
+        /// <summary>
+        /// 冗余（不存数据库）
+        /// </summary>
+        public string BoxTypeTitle { get; set; }
+
     }
 }

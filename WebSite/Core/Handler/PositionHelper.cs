@@ -416,6 +416,16 @@ namespace Backstage.Core.Handler
 
         }
 
+        internal static void ClearBoxTypes(int sellerId)
+        {
+            string commandText = @"DELETE FROM boxType WHERE sellerId = ?sellerId";
+            List<MySqlParameter> parameters = new List<MySqlParameter>();
+            parameters.Add(new MySqlParameter("?sellerId", sellerId));
+
+            MySqlHelper.ExecuteNonQuery(GlobalConfig.DbConn, CommandType.Text, commandText, parameters.ToArray());
+       
+        }
+
         internal static void CreateBoxType(BoxType boxType)
         {
             string connectionString = GlobalConfig.DbConn;
@@ -838,5 +848,7 @@ namespace Backstage.Core.Handler
         }
         #endregion
 
+
+        
     }
 }

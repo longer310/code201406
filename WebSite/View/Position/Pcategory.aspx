@@ -16,21 +16,21 @@
             <div class="control-group">
                 <label class="control-label">分类名称</label>
                 <div class="controls">
-                    <input type="text" id="j-categroy-title" />
+                    <input type="text" id="j-type-title" />
                 </div>
             </div>
 
             <div class="control-group">
                 <label class="control-label">可容纳人数</label>
                 <div class="controls">
-                    <input type="text" id="j-categroy-title" />
+                    <input type="text" id="j-type-num" />
                 </div>
             </div>
 
             <div class="control-group">
                 <label class="control-label">最低消费</label>
                 <div class="controls">
-                    <input type="text" id="j-categroy-title" />
+                    <input type="text" id="j-type-low" />
                 </div>
             </div>
 
@@ -64,7 +64,6 @@
                         <th>分类名称</th>
                         <th>容纳人数</th>
                         <th>最低消费</th>
-                        <th>包厢数量</th>
                         <th>操作</th>
                     </tr>
                 </thead>
@@ -77,27 +76,19 @@
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="Footer" runat="server">
     <!--页面js-->
-    <script src="../public/js/ue.pager.js"></script>
+    <script src="<%=DomainUrl %>/Script/js/ue.pager.js"></script>
 
-    <script charset="utf-8" src="../public/kindeditor/kindeditor-min.js"></script>
-    <script charset="utf-8" src="../public/kindeditor/lang/zh_CN.js"></script>
+    <script charset="utf-8" src="<%=DomainUrl %>/Script/kindeditor/kindeditor-min.js"></script>
+    <script charset="utf-8" src="<%=DomainUrl %>/Script/kindeditor/lang/zh_CN.js"></script>
 
     <script type="text/jquery-tmpl-x" id="j-tmpl-listitem">
         	{{each(i, v) list}}
 	        	<tr data-cid="${v.id}">
 					<td><input type="checkbox" class="j-select" /></td>
-					<td style="width:90px;">
-						<a class="btn btn-mini {{if i == 0}}disabled{{/if}} j-categroy-up" href="javascript:;"><i class="icon icon-arrow-up"></i></a>
-						<span class="j-categroy-index">${v.index}</span>
-						<a class="btn btn-mini {{if i == list.length - 1}}disabled{{/if}} j-categroy-down" href="javascript:;"><i class="icon icon-arrow-down"></i></a>
-					</td>
-					
-					<td><input type="text" value="水煮活鱼水煮活鱼水煮活鱼" class="j-categroy-title"></td>
-					<td>5~6</td>
-					<td>123</td>
-					<td>12</td>
+					<td><input type="text" value="${v.Title}" class="j-categroy-title"></td>
+					<td>${v.HoldNum}</td>
+					<td>${v.Lowest}</td>
 					<td style="width:140px;">
-						<a class="btn btn-primary btn-mini" href="goods_list.html?cid=111"><i class="icon-pencil icon-white"></i> 管理包厢</a>
 						<a class="btn btn-danger btn-mini j-btn-del" href=""><i class="icon-remove icon-white"></i> 删除</a>
 					</td>
 				</tr>
@@ -105,9 +96,14 @@
         </script>
 
     <script type="text/javascript">
+        var sellerId = '<%=SellerId%>';
+
         var MPage = {
             init: function () {
                 var mpage = this;
+
+                $("#sidebar li").removeClass("active open");
+                $("#sidebar .sadebaer_pms").addClass("active open").find(".sidebar_pms_pc").addClass("active");
 
                 mpage.getCategroyList();
 
@@ -141,10 +137,7 @@
                                     dataType: "json",
                                     type: "get"
                                 }).success(function (data) {
-
-                                    //删除成功后刷新本页
-                                    mpage.getCategroyList();
-
+                                    window.location.reload();
                                 });
 
                             },
@@ -175,10 +168,8 @@
                         var $item = $(this).parents("tr");
                         data_save.push(
                         {
-                            id: $item.attr("data-cid"),
-                            index: parseInt($item.find(".j-categroy-index").html()),
-                            title: $item.find(".j-categroy-title").val(),
-                            thumbnail: $item.find(".j-categroy-thumbnail").attr("src")
+                            Id: $item.attr("data-cid"),
+                            Title: $item.find(".j-categroy-title").val()
                         });
                     });
 
@@ -190,7 +181,7 @@
                             confirm: function () {
                                 //执行确认回调
                                 $.ajax({
-                                    url: "../../Handler/Backstage/PositionHandler.ashx?action=savecategory&ids=" + ids,
+                                    url: "../../Handler/Backstage/PositionHandler.ashx?action=savetypes&sellerId=" + sellerId,
                                     dataType: "json",
                                     data: data_save,
                                     type: "post"
@@ -219,14 +210,19 @@
                 //绑定提交表单
                 $("#j-categroy-addForm").bind("submit", function () {
                     var save_data = {
-                        title: $.trim($("#j-categroy-title").val()),
-                        thumbnail: $('#j-img-placehold').attr("src")
+                        title: $.trim($("#j-type-title").val()),
+                        holdnum: $.trim($("#j-type-num").val()),
+                        lowest: $.trim($("#j-type-low").val())
                     }
-
-                    console.log(save_data);
-                    alert('提交数据');
-                    //添加成功后重新获取分类列表
-                    mpage.getCategroyList();
+                    $.ajax({
+                        url: "../../Handler/Backstage/PositionHandler.ashx?action=addCateory&sellerId=" + sellerId,
+                        dataType: "json",
+                        data: save_data,
+                        type: "post"
+                    }).success(function (data) {
+                        alert("保存成功！");
+                        window.location.reload();
+                    });
                     return false;
                 });
 
@@ -240,95 +236,109 @@
             getCategroyList: function () {
                 var mpage = this;
 
-                //$.getJSON("", { p: p, type : type}， function(json){
-                $("#j-btn-selectAll").removeAttr("checked");
-                var json = {
-                    code: 0,
-                    msg: "",
-                    result: {
-                        count: 59,
-                        list: [
-                            {
-                                index: 1,
-                                id: 1,
-                            },
-                            {
-                                index: 2,
-                                id: 2
-                            },
-                            {
-                                index: 3,
-                                id: 3
-                            },
-                            {
-                                index: 4,
-                                id: 4
-                            },
-                            {
-                                index: 5,
-                                id: 5
-                            },
-                            {
-                                index: 6,
-                                id: 6
-                            }
-                        ]
-                    }
-                };
-
-                $("#j-categroy-list").html($("#j-tmpl-listitem").tmpl(json.result));
-
-                //绑定单个删除
-                $("#j-categroy-list .j-btn-del").bind("click", function () {
-                    var $item = $(this).parents("tr");
-                    var id = $item.attr("data-cid");
-
-                    Common.confirm({
-                        title: "删除确认提示",
-                        content: "您确定要删除当前活动？",
-                        confirm: function () {
-                            //执行确认回调
-                            alert('执行确认回调');
-
-                            $item.remove();
-                        },
-                        cancel: function () {
-                            //执行取消回调
-                            alert('执行取消回调');
+                $.ajax({
+                    url: "../../Handler/Backstage/PositionHandler.ashx?action=categorys&sellerId=" + sellerId,
+                    dataType: "json",
+                    type: "get",
+                }).success(function () {
+                    //$.getJSON("", { p: p, type : type}， function(json){
+                    $("#j-btn-selectAll").removeAttr("checked");
+                    var json = {
+                        code: 0,
+                        msg: "",
+                        result: {
+                            count: 59,
+                            list: [
+                                {
+                                    index: 1,
+                                    id: 1,
+                                },
+                                {
+                                    index: 2,
+                                    id: 2
+                                },
+                                {
+                                    index: 3,
+                                    id: 3
+                                },
+                                {
+                                    index: 4,
+                                    id: 4
+                                },
+                                {
+                                    index: 5,
+                                    id: 5
+                                },
+                                {
+                                    index: 6,
+                                    id: 6
+                                }
+                            ]
                         }
-                    });
-                    return false;
-                });
+                    };
 
-                //绑定上下移动
-                $("#j-categroy-list .j-categroy-up,#j-categroy-list .j-categroy-down").bind("click", function () {
-                    var $btn = $(this),
-                        $item = $(this).parents("tr");
+                    json.result.list = data.data;
 
-                    if ($btn.hasClass("disabled")) {
+                    $("#j-categroy-list").html($("#j-tmpl-listitem").tmpl(json.result));
+
+                    //绑定单个删除
+                    $("#j-categroy-list .j-btn-del").bind("click", function () {
+                        var $item = $(this).parents("tr");
+                        var id = $item.attr("data-cid");
+
+                        Common.confirm({
+                            title: "删除确认提示",
+                            content: "您确定要删除当前活动？",
+                            confirm: function () {
+                                //执行确认回调
+                                $.ajax({
+                                    url: "../../Handler/Backstage/PositionHandler.ashx?action=deletecategory&ids=" + id,
+                                    dataType: "",
+                                    type: "get"
+                                }).success(function () {
+                                    alert("删除成功！");
+                                    $item.remove();
+                                })
+                            },
+                            cancel: function () {
+                                //执行取消回调
+                            }
+                        });
                         return false;
-                    }
+                    });
 
-                    var change_index,
-                        $change_item;
+                    ////绑定上下移动
+                    //$("#j-categroy-list .j-categroy-up,#j-categroy-list .j-categroy-down").bind("click", function () {
+                    //    var $btn = $(this),
+                    //        $item = $(this).parents("tr");
 
-                    if ($btn.hasClass("j-categroy-up")) {
-                        $change_item = $item.prev();
-                        $item.insertBefore($change_item);
-                    } else {
-                        $change_item = $item.next();
-                        $item.insertAfter($change_item);
-                    }
+                    //    if ($btn.hasClass("disabled")) {
+                    //        return false;
+                    //    }
 
-                    change_index = $change_item.find(".j-categroy-index").html();
-                    $change_item.find(".j-categroy-index").html($item.find(".j-categroy-index").html());
-                    $item.find(".j-categroy-index").html(change_index);
+                    //    var change_index,
+                    //        $change_item;
 
-                    $("#j-categroy-list .j-categroy-up").removeClass("disabled").first().addClass("disabled");
-                    $("#j-categroy-list .j-categroy-down").removeClass("disabled").last().addClass("disabled");
-                    return false;
+                    //    if ($btn.hasClass("j-categroy-up")) {
+                    //        $change_item = $item.prev();
+                    //        $item.insertBefore($change_item);
+                    //    } else {
+                    //        $change_item = $item.next();
+                    //        $item.insertAfter($change_item);
+                    //    }
+
+                    //    change_index = $change_item.find(".j-categroy-index").html();
+                    //    $change_item.find(".j-categroy-index").html($item.find(".j-categroy-index").html());
+                    //    $item.find(".j-categroy-index").html(change_index);
+
+                    //    $("#j-categroy-list .j-categroy-up").removeClass("disabled").first().addClass("disabled");
+                    //    $("#j-categroy-list .j-categroy-down").removeClass("disabled").last().addClass("disabled");
+                    //    return false;
+                    //});
+                    ////});
                 });
-                //});
+
+
 
             }
         }

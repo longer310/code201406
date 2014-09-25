@@ -23,10 +23,9 @@
                 <label class="control-label">包厢分类</label>
                 <div class="controls">
                     <select id="select-boxType">
-                        <option value="0">小包</option>
-                        <option value="1">中包</option>
-                        <option value="2">大包</option>
-                        <option value="3">豪包</option>
+                        <%foreach(var type in BoxTypes){ %>
+                            <option value="<%=type.Id %>"><%=type.Title %></option>
+                        <%} %>
                     </select>
                 </div>
             </div>
@@ -64,7 +63,7 @@
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="Footer" runat="server">
     <!--页面js-->
-    <script src="../public/js/ue.pager.js"></script>
+    <script src="<%=DomainUrl %>/Script/js/ue.pager.js"></script>
 
     <script charset="utf-8" src="<%=DomainUrl %>/Script/kindeditor/kindeditor-min.js"></script>
     <script charset="utf-8" src="<%=DomainUrl %>/Script/kindeditor/lang/zh_CN.js"></script>
@@ -143,7 +142,7 @@
                     }).success(function (data) {
                         //$.getJSON("", { p: p, type : type, status : status}， function(json){
                         alert("新增成功！");
-                        window.location.href = "/List.aspx?sellerId" + sellerId;
+                        window.location.href = "/List.aspx?sellerId=" + sellerId;
                     });
                     return false;
                 });

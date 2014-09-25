@@ -1,10 +1,7 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/View/merchant.Master" AutoEventWireup="true" CodeBehind="Edit.aspx.cs" Inherits="Backstage.View.Position.Edit" %>
-
 <asp:Content ID="Content1" ContentPlaceHolderID="Header" runat="server">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="Content" runat="server">
-    <div id="content">
-
         <div class="widget-box">
             <div class="widget-title">
                 <span class="icon">
@@ -24,11 +21,10 @@
                 <div class="control-group">
                     <label class="control-label">包厢分类</label>
                     <div class="controls">
-                        <select>
-                            <option value="0">小包</option>
-                            <option value="1">中包</option>
-                            <option value="2">大包</option>
-                            <option value="3">豪包</option>
+                        <select id="select-types">
+                            <%foreach(var type in BoxTypes){ %>
+                            <option value="<%=type.Id %>"><%=type.Title %></option>
+                        <%} %>
                         </select>
                     </div>
                 </div>
@@ -65,13 +61,14 @@
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="Footer" runat="server">
     <!--页面js-->
-    <script src="../public/js/ue.pager.js"></script>
+    <script src="<%=DomainUrl %>/Script/js/ue.pager.js"></script>
 
-    <script charset="utf-8" src="../public/kindeditor/kindeditor-min.js"></script>
-    <script charset="utf-8" src="../public/kindeditor/lang/zh_CN.js"></script>
+    <script charset="utf-8" src="<%=DomainUrl %>/Script/kindeditor/kindeditor-min.js"></script>
+    <script charset="utf-8" src="<%=DomainUrl %>/Script/kindeditor/lang/zh_CN.js"></script>
 
     <script type="text/javascript">
         var sellerId = '<%=SellerId%>';
+        var image_id = '<%=Id%>';
         var MPage = {
             init: function () {
                 var mpage = this;
@@ -123,7 +120,6 @@
 
 
                     //解析url中的id
-                    var image_id = /\?id=(\d+)/.test(document.location.href);
                     if (image_id) {
                         mpage.getDetail(image_id);
                     } else {
@@ -136,14 +132,14 @@
                 //绑定提交表单
                 $("#j-pkg-addForm").bind("submit", function () {
                     var save_data = {
-                        title: $.trim($("#j-pkg-title").val()),
-                        thumbnail: $('#j-img-placehold').attr("src"),
-                        content: text_editor.html()
-
+                        box: $.trim($("#j-pkg-title").val()),
+                        imgurls: $('#j-img-placehold').attr("src"),
+                        boxType: $('#select-types').val(),
+                        description: text_editor.html()
                     }
 
                     $.ajax({
-                        url: "../../Handler/Backstage/PositionHandler.ashx?action=getitem&id=" + image_id,
+                        url: "../../Handler/Backstage/PositionHandler.ashx?action=update&id=" + image_id,
                         dataType: "json",
                         data:save_data,
                         type: "Post"
@@ -177,16 +173,14 @@
                             content: "活动简介活动简介"
                         }
                     }
-                    json.result = data.data;
+                    json.result.title = data.data.BoxNumber;
+                    json.result.thumbnail = data.data.ImgUrls;
+                    json.result.content = data.data.Description;
+                    json.result.boxTypeId = data.data.BoxTypeId;
+                    json.result.boxTypeTitle = data.data.BoxTypeTitle;
                     mpage.detailData = json.result;
                     mpage.setEditFormData();
                 });
-
-                //$.getJSON("", { id: image_id}， function(json){
-                
-
-
-                //});
             },
 
             setEditFormData: function () {
@@ -196,6 +190,7 @@
                 $("#j-pkg-title").val(detail.title);
                 $("#j-pkg-thumbnails").html("").hide();
                 $('#j-img-placehold').attr("src", detail.thumbnail);
+                $('#select-types').val(detail.boxTypeId);
                 mpage.text_editor.html(detail.content);
             }
         }

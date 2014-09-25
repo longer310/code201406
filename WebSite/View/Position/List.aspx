@@ -114,14 +114,14 @@
 
     <script type="text/jquery-tmpl-x" id="j-tmpl-pkg-listitem">
         	{{each(i, v) list}}
-	        	<tr data-gid="1">
+	        	<tr data-gid="${v.Id}">
 					<td><input type="checkbox" class="j-select" /></td>
-					<td style="width:45px;">${BoxNumber}</td>
-					<td style="width:30px;">${BoxTypeTitle}</td>
-					<td>${Lowest}</td>
+					<td style="width:45px;">${v.BoxNumber}</td>
+					<td style="width:30px;">${v.BoxTypeTitle}</td>
+					<td>${v.Lowest}</td>
 					<td style="width:120px;">
 						<div class="pull-right">
-							<a class="btn btn-primary btn-mini" href="pkg_edit.html?id=111"><i class="icon-pencil icon-white"></i> 编辑</a>
+							<a class="btn btn-primary btn-mini" href="Edit.aspx?id=${v.Id}"><i class="icon-pencil icon-white"></i> 编辑</a>
 							<a class="btn btn-danger btn-mini j-btn-del" href=""><i class="icon-remove icon-white"></i> 删除</a>
 						</div>
 					</td>
@@ -289,7 +289,9 @@
                                     type: "Get"
                                 }).success(function (data) {
                                     alert("删除成功");
-                                    $item.remove();
+                                    setTimeout(function () {
+                                        window.location.reload();
+                                    }, 500);
                                 });
                                 
                             },

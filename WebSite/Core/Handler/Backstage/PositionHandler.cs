@@ -7,6 +7,13 @@ using System.Web;
 
 namespace Backstage.Core.Handler.Backstage
 {
+    public class BoxTypeForUI
+    {
+        public int Id { get; set; }
+
+        public string Title { get; set; }
+    }
+
     public class PositionHandler : BaseApiHandler
     {
         public override void ProcessRequest(HttpContext context)
@@ -33,6 +40,8 @@ namespace Backstage.Core.Handler.Backstage
                     AddCategory(); break;
                 case "deletecategory":
                     DeleteCategory(); break;
+                case "savetypes":
+                    SaveTypes(); break;
                 case "times":
                     GetTimes(); break;
                 case "addTime":
@@ -43,6 +52,21 @@ namespace Backstage.Core.Handler.Backstage
                     DeleteTime(); break;
                 default: break;
             }
+        }
+
+
+        private void SaveTypes()
+        {
+            var list = Tools.Json.JsonTransfer.DeserializeObject<List<BoxTypeForUI>>(GetString("list"));
+            var sellerId = GetInt("sellerId");
+
+            foreach (var item in list)
+            {
+                var type = PositionHelper.GetBoxType(item.Id);
+                type.Title = item.Title;
+                PositionHelper.UpdateBoxType(type);
+            }
+
         }
 
         private void Delete()
@@ -65,6 +89,7 @@ namespace Backstage.Core.Handler.Backstage
             //item.Price = GetFloat("price");
             //item.SellerId = GetInt("selllerId");
             item.Status = 0;
+            item.CreateTime = DateTime.Now;
 
             PositionHelper.Create(item);
         }
@@ -74,6 +99,8 @@ namespace Backstage.Core.Handler.Backstage
             var id = GetInt("id");
             var item = PositionHelper.GetItem(id);
             JsonTransfer jt = new JsonTransfer();
+            var type = PositionHelper.GetBoxType(item.BoxTypeId);
+            item.BoxTypeTitle = type.Title;
             jt.Add("data", item);
             Response.Write(DesEncrypt(jt));
             Response.End();
@@ -84,13 +111,9 @@ namespace Backstage.Core.Handler.Backstage
             var id = GetInt("id");
             var item = PositionHelper.GetItem(id);
             item.BoxNumber = GetString("box");
-            item.BoxTypeId = GetInt("typeId");
+            item.BoxTypeId = GetInt("boxType");
             item.Description = GetString("description");
             item.ImgUrls = GetString("imgurls");
-            item.SellerId = GetInt("sellerId");
-            item.Status = GetInt("status");
-            item.Price = GetFloat("price");
-            item.Phone = GetString("phone");
 
             PositionHelper.Update(item);
         }

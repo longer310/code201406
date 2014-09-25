@@ -179,7 +179,7 @@
                 $.ajax({
                     url: "../../Handler/Backstage/PositionHandler.ashx?action=times&positionId=" + positionId,
                     dataType: "json",
-                    data: "get"
+                    type: "get"
                 }).success(function (data) {
                     $("#j-btn-selectAll").removeAttr("checked");
                     var json = {

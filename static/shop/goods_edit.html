@@ -125,7 +125,8 @@
 								<a class="btn btn-success" href="javascript:;" id="j-btn-imageManager"><i class="icon-picture icon-white"></i> 素材库选择</a>
 								<span class="help-inline">上传过的图片可以直接从素材库选择</span>
 								<ul class="thumbnails" id="j-goods-thumbnails" style="display:none;margin-top:10px;">
-									</ul>
+								</ul>
+								<p style="margin-top:10px;"><b class="text-error">上传图片要求：540*400</b></p>
 							</div>
 						</div>
 
@@ -196,7 +197,7 @@
 			{{each(i, v) thumbnails}}
 	        	<li class="span">
 					<span class="thumbnail">
-						<img src="${v.url}" alt="" class="j-goods-thumbnail">
+						<img src="${v.url}" alt="" class="j-goods-thumbnail" width="130" height="103">
 					</span>
 					<div class="clearfix" style="margin-top:5px;">
 						<label class="radio pull-left"><input type="radio" name="islogo" class="j-goods-islogo" {{if v.islogo}}checked="checked"{{/if}}> 设为logo</label>
@@ -367,16 +368,16 @@
 								thumbnails : [
 									{
 										islogo : 1,
-										url : "/public/kindeditor/attached/image/20140723/20140723161001_48669.jpg"
+										url : "http://placehold.it/130x103"
 									},{
 										islogo : 0,
-										url : "/public/kindeditor/attached/image/20140723/20140723161001_48669.jpg"
+										url : "http://placehold.it/130x103"
 									},{
 										islogo : 0,
-										url : "/public/kindeditor/attached/image/20140723/20140723161001_48669.jpg"
+										url : "http://placehold.it/130x103"
 									},{
 										islogo : 0,
-										url : "/public/kindeditor/attached/image/20140723/20140723161001_48669.jpg"
+										url : "http://placehold.it/130x103"
 									}
 								],
 

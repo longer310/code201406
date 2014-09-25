@@ -1529,9 +1529,6 @@ ul.inline>li,ol.inline>li{
 	width: 100%;
 }
 
-.thumbnail img{
-	min-width: 150px;
-}
 
 .alert-info {
 	color: #EE0C0C;

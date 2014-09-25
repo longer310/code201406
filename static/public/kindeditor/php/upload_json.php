@@ -22,7 +22,7 @@ $ext_arr = array(
 	'file' => array('apk', 'ipa'),
 );
 //最大文件大小
-$max_size = 100000000;
+$max_size = 200000000;
 
 $save_path = realpath($save_path) . '/';
 

@@ -119,9 +119,10 @@
 								<span class="help-inline">上传过的图片可以直接从素材库选择</span>
 								<div class="clearfix" style="margin-top:10px;">
 									<span class="thumbnail pull-left">
-										<img src="http://placehold.it/128x128" alt="" id="j-sysytem-profile-logo">
+										<img src="http://placehold.it/300x300" width="60" height="60" alt="" id="j-sysytem-profile-logo">
 									</span>
 								</div>
+								<p style="margin-top:10px;"><b class="text-error">上传图片要求：300x300</b></p>
 							</div>
 						</div>
 
@@ -174,9 +175,10 @@
 								<span class="help-inline">上传过的图片可以直接从素材库选择</span>
 								<div class="clearfix" style="margin-top:10px;">
 									<span class="thumbnail pull-left">
-										<img src="http://placehold.it/128x128" alt="" id="j-sysytem-profile-qrcode">
+										<img src="http://placehold.it/300x300" width="60" height="60" alt="" id="j-sysytem-profile-qrcode">
 									</span>
 								</div>
+								<p style="margin-top:10px;"><b class="text-error">上传图片要求：300x300</b></p>
 							</div>
 						</div>
 
@@ -232,7 +234,8 @@
         			var mpage = this;
 
         			var text_editor,
-        				image_editor;
+        				image_editor,
+        				image_editor_qrcode;
 					KindEditor.ready(function(K) {
 						//文本编辑器
 						mpage.text_editor = text_editor = K.create('textarea[name="content"]', {
@@ -245,9 +248,11 @@
 							uploadJson : '../public/kindeditor/php/upload_json.php',
 							fileManagerJson : '../public/kindeditor/php/file_manager_json.php'
 						});
+
+						
 						
 						//图片上传绑定
-						K('#j-btn-imageManager_logo,#j-btn-imageManager_qrcode').click(function() {
+						K('#j-btn-imageManager_logo').click(function() {
 							var $btn = $(this);
 
 							image_editor.loadPlugin('filemanager', function() {
@@ -263,7 +268,7 @@
 						});
 
 						//从资料库选择图片
-						K('#j-btn-imageUpload_logo,#j-btn-imageUpload_qrcode').click(function() {
+						K('#j-btn-imageUpload_logo').click(function() {
 							var $btn = $(this);
 							image_editor.loadPlugin('image', function() {
 								image_editor.plugin.imageDialog({
@@ -271,6 +276,42 @@
 									clickFn : function(url, title, width, height, border, align) {
 										$btn.parents(".controls").find(".thumbnail img").attr("src", url);
 										image_editor.hideDialog();
+									}
+								});
+							});
+						});
+
+						//图片上传编辑
+						mpage.image_editor_qrcode = image_editor_qrcode = K.editor({
+							uploadJson : '../public/kindeditor/php/upload_json.php',
+							fileManagerJson : '../public/kindeditor/php/file_manager_json.php'
+						});
+
+						//图片上传绑定
+						K('#j-btn-imageManager_qrcode').click(function() {
+							var $btn = $(this);
+
+							image_editor_qrcode.loadPlugin('filemanager', function() {
+								image_editor_qrcode.plugin.filemanagerDialog({
+									viewType : 'VIEW',
+									dirName : 'image',
+									clickFn : function(url, title) {
+										$btn.parents(".controls").find(".thumbnail img").attr("src", url);
+										image_editor_qrcode.hideDialog();
+									}
+								});
+							});
+						});
+
+						//从资料库选择图片
+						K('#j-btn-imageUpload_qrcode').click(function() {
+							var $btn = $(this);
+							image_editor_qrcode.loadPlugin('image', function() {
+								image_editor_qrcode.plugin.imageDialog({
+									showRemote : false,
+									clickFn : function(url, title, width, height, border, align) {
+										$btn.parents(".controls").find(".thumbnail img").attr("src", url);
+										image_editor_qrcode.hideDialog();
 									}
 								});
 							});

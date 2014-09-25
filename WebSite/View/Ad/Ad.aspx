@@ -29,7 +29,7 @@
                             <span class="help-inline">上传过的图片可以直接从素材库选择</span>
                             <div class="clearfix" style="margin-top: 10px;">
                                 <span class="thumbnail pull-left">
-                                    <img src="http://placehold.it/640x1138" width="128" alt="" class="j-img-placehold">
+                                    <img id="j-login-url" src="http://placehold.it/640x1138" width="128" alt="" class="j-img-placehold">
                                 </span>
                             </div>
                         </div>
@@ -44,7 +44,7 @@
                             <span class="help-inline">上传过的图片可以直接从素材库选择</span>
                             <div class="clearfix" style="margin-top: 10px;">
                                 <span class="thumbnail pull-left">
-                                    <img src="http://placehold.it/640x960" width="128" alt="" class="j-img-placehold1">
+                                    <img id="j-login-url2" src="http://placehold.it/640x960" width="128" alt="" class="j-img-placehold1">
                                 </span>
                             </div>
                         </div>
@@ -53,7 +53,7 @@
                     <div class="control-group">
                         <label class="control-label">停留时间：</label>
                         <div class="controls">
-                            <input type="text" class="input-small j-ad-delay" />
+                            <input id="j-login-delay" type="text" class="input-small j-ad-delay" />
                             秒
 								
                         </div>
@@ -250,7 +250,10 @@
                 var staytime = 1;
                 var jumpurls = "";
                 if (type == 0) {
-                    imgs = $("#j-login-url").attr("src");
+                    //登录广告大图
+                    var imglist = [];
+                    imglist.push($("#j-login-url").attr("src"));
+                    imglist.push($("#j-login-url").attr("src"));
                     staytime = $("#j-login-delay").val();
                 } else {
                     var imglist = [];
@@ -302,7 +305,7 @@
                     });
 
                     //图片上传绑定
-                    K('.j-btn-imageManager').click(function () {
+                    $(document).delegate('.j-btn-imageManager', 'click', function () {
                         var $item = $(this).parents(".controls");
 
                         image_editor.loadPlugin('filemanager', function () {
@@ -318,7 +321,7 @@
                     });
 
                     //从资料库选择图片
-                    K('.j-btn-imageUpload').click(function () {
+                    $(document).delegate('.j-btn-imageUpload', 'click', function () {
                         var $item = $(this).parents(".controls");
 
                         image_editor.loadPlugin('image', function () {
@@ -333,7 +336,7 @@
                     });
 
                     //图片上传绑定
-                    K('.j-btn-imageManager1').click(function () {
+                    $(document).delegate('.j-btn-imageManager1', 'click', function () {
                         var $item = $(this).parents(".controls");
 
                         image_editor1.loadPlugin('filemanager', function () {
@@ -349,7 +352,7 @@
                     });
 
                     //从资料库选择图片
-                    K('.j-btn-imageUpload1').click(function () {
+                    $(document).delegate('.j-btn-imageUpload1', 'click', function () {
                         var $item = $(this).parents(".controls");
 
                         image_editor1.loadPlugin('image', function () {

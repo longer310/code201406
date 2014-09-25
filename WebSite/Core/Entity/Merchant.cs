@@ -214,7 +214,7 @@ namespace Backstage.Core.Entity
         public long CardNumber { get; set; }
 
         public DateTime CreateTime { get; set; }
-        
+
         /// <summary>
         /// 登录页广告停留时间（秒）
         /// </summary>
@@ -231,7 +231,42 @@ namespace Backstage.Core.Entity
         /// wifi广告图片列表
         /// </summary>
         public List<PicJumpItem> WifiAds { get; set; }
-
+        /// <summary>
+        /// 登录页广告图片地址 640*1138
+        /// </summary>
+        public string LoginAdUrl_640x1138
+        {
+            get
+            {
+                var width = 640;
+                var height = 1138;
+                return Utility.GetSizePicUrl(LoginAdUrl, width, height);
+            }
+        }
+        /// <summary>
+        /// 登录页广告图片地址 640*960
+        /// </summary>
+        public string LoginAdUrl_640x960
+        {
+            get
+            {
+                var width = 640;
+                var height = 960;
+                return Utility.GetSizePicUrl(LoginAdUrl, width, height);
+            }
+        }
+        /// <summary>
+        /// 登录页广告图片地址 540*960 由640*1138生成
+        /// </summary>
+        public string LoginAdUrl_540x960
+        {
+            get
+            {
+                var width = 640;
+                var height = 1138;
+                return Utility.GetSizePicUrl(LoginAdUrl, width, height);
+            }
+        }
         public Merchant()
         {
             Name =
@@ -239,13 +274,13 @@ namespace Backstage.Core.Entity
             Address =
             Phone =
             Description =
-            Mapurl = 
+            Mapurl =
             AppId =
             AppSecret =
             AccessToken =
             AndroidUrl =
             IosUrl =
-            WxUrl = 
+            WxUrl =
             PointX =
             PointY =
             LogoUrl =
@@ -253,7 +288,7 @@ namespace Backstage.Core.Entity
             Qq =
             WinXinAccount =
             Remark =
-            DevName =string.Empty;
+            DevName = string.Empty;
             AccessExpire = DateTime.Now;
             ServerEndTime = DateTime.Now;
             CreateTime = DateTime.Now;

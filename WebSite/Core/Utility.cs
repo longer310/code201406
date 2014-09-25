@@ -374,8 +374,8 @@ namespace Backstage.Core
             {
                 Directory.CreateDirectory(dirPath);
             }
-            Utility.Base64StringToImage(avatar, dirPath + "head");
-            avatar = Utility._domainurl + "/File/" + uid + "/image/head.jpg";
+            Base64StringToImage(avatar, dirPath + "head");
+            avatar = _domainurl + "/File/" + uid + "/image/head.jpg";
             return avatar;
         }
         /// <summary>
@@ -411,14 +411,27 @@ namespace Backstage.Core
             {
                 byte[] arr = Convert.FromBase64String(base64Str);
                 MemoryStream ms = new MemoryStream(arr);
-                Bitmap bmp = new Bitmap(ms);
+                Bitmap tempbmp = new Bitmap(ms);
+                Bitmap bmp = new Bitmap(tempbmp);
+                tempbmp.Dispose();
 
                 bmp.Save(folderUrl + ".jpg", System.Drawing.Imaging.ImageFormat.Jpeg);
             }
             catch (Exception ex)
             {
-                throw;
+                logger.ErrorFormat(ex.Message);
+                logger.ErrorFormat(ex.InnerException.Message);
+                throw ex;
             }
+        }
+        #endregion
+
+        #region 获取不同分辨率的图片地址
+        public static string GetSizePicUrl(string url, int width, int height)
+        {
+            var index = url.LastIndexOf('.');
+            if (index < 0) return url;
+            return url.Substring(0, index) + width + "x" + height + url.Substring(index);
         }
         #endregion
 

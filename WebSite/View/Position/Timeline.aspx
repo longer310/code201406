@@ -22,9 +22,9 @@
                 <div class="control-group">
                     <label class="control-label">时段选择</label>
                     <div class="controls">
-                        <input type="text" class="input-small">
+                        <input type="text" id="j-time-begin" class="input-small" />
                         点至
-                        <input type="text" class="input-small">
+                        <input type="text" id="j-time-end"  class="input-small" />
                         点
 						
                     </div>
@@ -72,8 +72,8 @@
         	{{each(i, v) list}}
 	        	<tr data-cid="${v.id}">
 					<td><input type="checkbox" class="j-select" /></td>
-					<td>123</td>
-					<td>12</td>
+					<td>${v.Title}</td>
+					<td>${v.Time}</td>
 					<td style="width:140px;">
 						<a class="btn btn-danger btn-mini j-btn-del" href=""><i class="icon-remove icon-white"></i> 删除</a>
 					</td>
@@ -149,8 +149,9 @@
                     var save_data = {
                         title: $.trim($("#j-time-title").val()),
                         positionId: positionId,
-                        sellerId:sellerId,
-                        thumbnail: $('#j-img-placehold').attr("src")
+                        sellerId: sellerId,
+                        begin: $.trim($("#j-time-begin").val()),
+                        end: $.trim($("#j-time-end").val())
                     }
 
                     $.ajax({
@@ -161,7 +162,7 @@
                     }).success(function () {
                         alert('提交数据');
                         //添加成功后重新获取分类列表
-                        mpage.getCategroyList();
+                        mpage.getimes();
                         return false;
                     });
                 });

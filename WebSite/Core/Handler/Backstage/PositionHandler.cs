@@ -24,9 +24,9 @@ namespace Backstage.Core.Handler.Backstage
             {
                 case "getlist": //获取列表
                     GetList(); break;
-                case "getitem": 
+                case "getitem":
                     GetItem(); break;
-                case "update": 
+                case "update":
                     Update(); break;
                 case "add":
                     Add(); break;
@@ -175,7 +175,7 @@ namespace Backstage.Core.Handler.Backstage
         private void GetCategorys()
         {
             var sellerId = GetInt("sellerId");
-            var list = PositionHelper.GetListBoxTypes(sellerId,0,0);
+            var list = PositionHelper.GetListBoxTypes(sellerId, 0, 0);
 
             JsonTransfer jt = new JsonTransfer();
             jt.Add("data", list);
@@ -237,7 +237,17 @@ namespace Backstage.Core.Handler.Backstage
             var list = PositionHelper.GetTimeLines(positionId);
 
             JsonTransfer jt = new JsonTransfer();
-            jt.Add("data", list);
+            var results = new List<object>();
+            foreach (var item in list)
+            {
+                results.Add(new
+                {
+                    Id = item.Id,
+                    Title = item.Title,
+                    Time = item.BeginTime.ToString("HH:mm") + "--" + item.EndTime.ToString("HH:mm")
+                });
+            }
+            jt.Add("data", results);
             Response.Write(DesEncrypt(jt));
             Response.End();
         }

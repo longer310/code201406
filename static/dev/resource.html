@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+	<!-- container-fluid -->
+	<head>
+		<title>Unicorn Admin</title>
+		<meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <!--公用样式-->
+		<link rel="stylesheet" href="../public/css/bootstrap.min.css" />
+		<link rel="stylesheet" href="../public/css/bootstrap-responsive.min.css" />	
+		<link rel="stylesheet" href="../public/css/unicorn.main.css" />
+		<link rel="stylesheet" href="../public/css/unicorn.grey.css" />
+		<!--页面样式-->
+		<link href="../public/kindeditor/themes/default/default.css" type="text/css" rel="stylesheet">
+	</head>
+	<body>
+		<!--top.html-->
+		<div id="header"></div>
+		<!--sidebar.html-->
+		<div id="sidebar"></div>
+		
+		<div id="content">
+
+			<div class="widget-box" >
+				<div class="widget-title">
+					<span class="icon">
+						<i class="icon-cog"></i>
+					</span>
+					<h5>图片墙管理</h5>
+				</div>
+				<div class="widget-content">
+					<div class="clearfix" style="padding:20px 0;">
+						<a class="btn btn-primary" href="image_list.html"><i class="icon-picture icon-white"></i> 一键清除未相关图片</a>
+					</div>
+					<div class="alert alert-info alert-block">
+						<h4 class="alert-heading">提示</h4>
+						清除未相关图片，可以减少不必要的图片，减少服务器的存储压力
+					</div>
+				</div>
+			</div>
+
+			<div class="widget-box" >
+				<div class="widget-title">
+					<span class="icon">
+						<i class="icon-cog"></i>
+					</span>
+					<h5>快捷方式列表</h5>
+					<div class="buttons">
+						<a href="#" class="btn btn-primary btn-mini" id="j-btn-saveAll"><i class="icon-ok icon-white"></i> 保存所有</a>
+						<a href="#" class="btn btn-danger btn-mini" id="j-btn-delSelected"><i class="icon-remove icon-white"></i> 删除</a>
+					</div>
+				</div>
+				<div class="widget-content">
+					<table class="table table-bordered table-striped with-check">
+						<thead>
+							<tr>
+								<th><input type="checkbox" id="j-btn-selectAll" name="title-table-checkbox" /></th>
+								<th>序号</th>
+								<th>快捷图标</th>
+								<th>快捷名称</th>
+								<th>跳转地址</th>
+								<th>操作</th>
+							</tr>
+						</thead>
+						<tbody id="j-list">
+						</tbody>
+					</table>
+				</div>
+			</div>
+			<div id="footer">
+				<p>关于淘宝合作伙伴营销中心廉正举报联系客服开放平台诚征英才联系我们网站地图法律声明© 2003-2014 Taobao.com 版权所有</p>
+				<p>网络文化经营许可证：文网文[2010]040号|增值电信业务经营许可证：浙B2-20080224-1|信息网络传播视听节目许可证：1109364号 </p>
+			</div>
+		</div>
+		
+		<!--公用js-->
+        <script src="../public/js/jquery.min.js"></script>
+        <script src="../public/js/jquery.ui.custom.js"></script>
+        <script src="../public/js/bootstrap.min.js"></script>
+        <script src="../public/js/unicorn.js"></script>
+        <script src="../public/js/jquery.tmpl.min.js"></script>
+        <script src="../public/js/common.js"></script>
+
+		
+
+        <script type="text/javascript">
+        	var MPage = {
+        		init : function(){
+        			var mpage = this;
+				}
+    		}
+
+    		$(function(){
+    			MPage.init();
+    		});
+    		
+        </script>
+	</body>
+</html>

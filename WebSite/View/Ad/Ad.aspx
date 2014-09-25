@@ -288,20 +288,15 @@
                 var image_editor;
                 var image_editor1;
                 KindEditor.ready(function (K) {
-                    mpage.text_editor = text_editor = K.create('textarea[name="content"]', {
-                        uploadJson: '<%=DomainUrl %>/Handler/FileManager/UploadHandler.ashx?type=3&sellerid=' + sellerId,
-                        allowFileManager: true
-                    });
-
                     //图片上传编辑
                     mpage.image_editor = image_editor = K.editor({
-                        uploadJson: '<%=DomainUrl %>/Handler/FileManager/UploadHandler.ashx?type=3&sellerid=' + sellerId,
-                            fileManagerJson: '<%=DomainUrl %>/Handler/FileManager/FileManagerHandler.ashx?type=3&sellerid=' + sellerId,
+                        uploadJson: '<%=DomainUrl %>/Handler/FileManager/UploadHandler.ashx?type=107&sellerid=' + sellerId,
+                        fileManagerJson: '<%=DomainUrl %>/Handler/FileManager/FileManagerHandler.ashx?type=107&sellerid=' + sellerId,
                     });
                     //图片上传编辑
                     mpage.image_editor1 = image_editor1 = K.editor({
-                        uploadJson: '<%=DomainUrl %>/Handler/FileManager/UploadHandler.ashx?type=3&sellerid=' + sellerId,
-                        fileManagerJson: '<%=DomainUrl %>/Handler/FileManager/FileManagerHandler.ashx?type=3&sellerid=' + sellerId,
+                        uploadJson: '<%=DomainUrl %>/Handler/FileManager/UploadHandler.ashx?type=108&sellerid=' + sellerId,
+                        fileManagerJson: '<%=DomainUrl %>/Handler/FileManager/FileManagerHandler.ashx?type=108&sellerid=' + sellerId,
                     });
 
                     //图片上传绑定

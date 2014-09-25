@@ -498,8 +498,8 @@
 
                     //图片上传编辑
                     mpage.file_editor = file_editor = K.editor({
-                        uploadJson: '<%=DomainUrl %>/Handler/FileManager/UploadHandler.ashx?type=5',
-                        fileManagerJson: '<%=DomainUrl %>/Handler/FileManager/FileManagerHandler.ashx?type=5',
+                        uploadJson: '<%=DomainUrl %>/Handler/FileManager/UploadHandler.ashx?type=100',
+                        fileManagerJson: '<%=DomainUrl %>/Handler/FileManager/FileManagerHandler.ashx?type=100',
                     });
 
                     //图片上传绑定

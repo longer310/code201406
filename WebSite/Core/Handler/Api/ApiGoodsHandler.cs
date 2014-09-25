@@ -27,7 +27,7 @@ namespace Backstage.Handler
                     GetPageInfo();
                     break;
                 case "getgoodslist"://获取产品列表 2.1
-                    GetGoodsList();
+                    GetGoodsList(context);
                     break;
                 case "getgoodsdetail"://获取产品详情 2.2
                     GetGoodsDetail();
@@ -281,7 +281,7 @@ namespace Backstage.Handler
         /// <summary>
         /// 获取商品列表
         /// </summary>
-        private void GetGoodsList()
+        private void GetGoodsList(HttpContext context)
         {
             int sellerid = GetInt("sellerid");
             int cid = GetInt("cid");
@@ -341,7 +341,7 @@ namespace Backstage.Handler
                 gitem.title = goods.Title;
                 //var pic = picList.FirstOrDefault(o => o.Id == goods.Logo);
                 //if (pic != null) gitem.img = pic.Url;
-                gitem.img = Utility.GetPhoneNeedUrl(goods.LogoUrl);
+                gitem.img = Utility.GetSizePicUrl(goods.LogoUrl, 188, 133, context);
                 gitem.nowprice = goods.Nowprice;
                 gitem.originalprice = goods.OriginalPrice;
                 gitem.sales = goods.Sales;

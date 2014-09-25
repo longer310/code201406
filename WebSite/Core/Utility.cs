@@ -7,6 +7,7 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Net.NetworkInformation;
 using System.Net.Security;
 using System.Net.Sockets;
 using System.Security.Cryptography;
@@ -427,11 +428,65 @@ namespace Backstage.Core
         #endregion
 
         #region 获取不同分辨率的图片地址
-        public static string GetSizePicUrl(string url, int width, int height)
+        /// <summary>
+        /// 获取不同分辨率的图片地址
+        /// </summary>
+        /// <param name="url"></param>
+        /// <param name="width"></param>
+        /// <param name="height"></param>
+        /// <param name="context"></param>
+        /// <param name="isgen">是否生成图片</param>
+        /// <returns></returns>
+        public static string GetSizePicUrl(string url, int width, int height, HttpContext context = null, int isgen = 0)
         {
+            url = GetPhoneNeedUrl(url);
             var index = url.LastIndexOf('.');
             if (index < 0) return url;
-            return url.Substring(0, index) + width + "x" + height + url.Substring(index);
+            var result = url.Substring(0, index) + "_" + width + "x" + height + url.Substring(index);
+            if (isgen == 0)
+            {
+                //获取图片情况下 需检查图片是否存在
+                var isExist = false;
+                try
+                {
+                    Ping ping = new Ping();
+                    PingReply reply = ping.Send(result);
+                    if (reply != null && reply.Status.Equals(IPStatus.Success))
+                    {
+                        //可以访问
+                        isExist = true;
+                    }
+                }
+                catch (Exception)
+                {
+                    isExist = false;
+                }
+
+                if (!isExist)
+                {
+                    //不存在图片 按照原始图片 生成新的尺寸图片
+                    var alist = url.Split(new char[] { '/' }, StringSplitOptions.RemoveEmptyEntries);
+                    var i = 0;
+                    foreach (var s in alist)
+                    {
+                        if (s == "File" || s == "file")
+                        {
+                            break;
+                        }
+                        i++;
+                    }
+                    var filePath = "../../File/";
+                    for (int j = i + 1; j < alist.Count(); j++)
+                    {
+                        filePath += alist[j] + "/";
+                    }
+                    filePath = filePath.TrimEnd("/".ToCharArray());
+
+                    if (context != null) filePath = context.Server.MapPath(filePath);
+                    MakeThumNail(filePath, width, height);
+                }
+            }
+            return result;
         }
         #endregion
 
@@ -679,7 +734,7 @@ namespace Backstage.Core
                 parameters.Add("content", content);
                 parameters.Add("machine_code", machine_code);
                 parameters.Add("partner", partner);
-                string sign = getMachineSign(parameters, _machine_apikey,merchant.MachineKey);
+                string sign = getMachineSign(parameters, _machine_apikey, merchant.MachineKey);
                 //parameters.Add("sign", sign);
                 //HttpWebResponse response = CreatePostHttpResponse(_machine_apiurl, parameters, null, null, Encoding.UTF8,
                 //    null);
@@ -729,16 +784,16 @@ namespace Backstage.Core
 
                 //解析返回数据，取最后一行为返回数字
                 string Retstr = "";
-                if(!string.IsNullOrWhiteSpace(result) && result.Contains("\r\n"))
+                if (!string.IsNullOrWhiteSpace(result) && result.Contains("\r\n"))
                 {
                     var resAarry = result.Replace("\r\n", "@")
                         .Split(new char[] { '@' }, StringSplitOptions.RemoveEmptyEntries);
                     var res = resAarry[resAarry.Length - 1];
                     int r;
-                    if(int.TryParse(res, out r))
-                        Retstr = r.ToString();                    
+                    if (int.TryParse(res, out r))
+                        Retstr = r.ToString();
                 }
-                switch(Retstr)
+                switch (Retstr)
                 {
                     case "1":
                         //"数据已经发送到客户端"
@@ -753,7 +808,7 @@ namespace Backstage.Core
                         //"sign不对";
                         return false;
                     default:
-                        return false; 
+                        return false;
                 }
             }
             catch (Exception exc)
@@ -794,5 +849,99 @@ namespace Backstage.Core
             //return MD5(source);
         }
         #endregion
+
+        # region 图片处理
+        /// <summary>
+        /// 缩放图像
+        /// </summary>
+        /// <param name="originalImagePath">图片原始路径</param>
+        /// <param name="thumNailPath">保存路径</param>
+        /// <param name="width">缩放图的宽</param>
+        /// <param name="height">缩放图的高</param>
+        /// <param name="model">缩放模式</param>
+        public static void MakeThumNail(string originalImagePath, int width, int height, string model = "Cut", string thumNailPath = "")
+        {
+            System.Drawing.Image originalImage = System.Drawing.Image.FromFile(originalImagePath);
+            if (string.IsNullOrEmpty(thumNailPath))
+            {
+                thumNailPath = Utility.GetSizePicUrl(originalImagePath, width, height, null, 1);
+            }
+
+            int thumWidth = width;      //缩略图的宽度
+            int thumHeight = height;    //缩略图的高度
+            if (height == 0) model = "W";
+            if (width == 0) model = "H";
+
+            int x = 0;
+            int y = 0;
+
+            int originalWidth = originalImage.Width;    //原始图片的宽度
+            int originalHeight = originalImage.Height;  //原始图片的高度
+
+            switch (model)
+            {
+                case "HW":      //指定高宽缩放,可能变形
+                    break;
+                case "W":       //指定宽度,高度按照比例缩放
+                    thumHeight = originalImage.Height * width / originalImage.Width;
+                    break;
+                case "H":       //指定高度,宽度按照等比例缩放
+                    thumWidth = originalImage.Width * height / originalImage.Height;
+                    break;
+                case "Cut":
+                    if ((double)originalImage.Width / (double)originalImage.Height > (double)thumWidth / (double)thumHeight)
+                    {
+                        originalHeight = originalImage.Height;
+                        originalWidth = originalImage.Height * thumWidth / thumHeight;
+                        y = 0;
+                        x = (originalImage.Width - originalWidth) / 2;
+                    }
+                    else
+                    {
+                        originalWidth = originalImage.Width;
+                        originalHeight = originalWidth * height / thumWidth;
+                        x = 0;
+                        y = (originalImage.Height - originalHeight) / 2;
+                    }
+                    break;
+                default:
+                    break;
+            }
+
+            //新建一个bmp图片
+            System.Drawing.Image bitmap = new System.Drawing.Bitmap(thumWidth, thumHeight);
+
+            //新建一个画板
+            System.Drawing.Graphics graphic = System.Drawing.Graphics.FromImage(bitmap);
+
+            //设置高质量查值法
+            graphic.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.High;
+
+            //设置高质量，低速度呈现平滑程度
+            graphic.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
+
+            //清空画布并以透明背景色填充
+            graphic.Clear(System.Drawing.Color.Transparent);
+
+            //在指定位置并且按指定大小绘制原图片的指定部分
+            graphic.DrawImage(originalImage, new System.Drawing.Rectangle(0, 0, thumWidth, thumHeight), new System.Drawing.Rectangle(x, y, originalWidth, originalHeight), System.Drawing.GraphicsUnit.Pixel);
+
+            try
+            {
+                bitmap.Save(thumNailPath, System.Drawing.Imaging.ImageFormat.Jpeg);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                originalImage.Dispose();
+                bitmap.Dispose();
+                graphic.Dispose();
+            }
+        }
+
+        # endregion
     }
 }

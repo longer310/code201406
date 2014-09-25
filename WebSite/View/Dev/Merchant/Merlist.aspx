@@ -185,7 +185,7 @@
             showShopCategoryTab: function () {
                 var mpage = this,
                     tmpl = '';
-                $.post(mpage.hander + "getMerchantTypeList", {}, function (data) {
+                $.post(mpage.hander + "getMerchantTypeList", { type: 0 }, function (data) {
                     if (!data.error) {
                         $.each(data.list, function (i, v) {
                             tmpl += '<li class="' + (v.Id == mpage.mid ? 'active' : '') + '" data-id="' + v.Id + '"><a href="#">' + v.Name + '</a></li>';
@@ -194,10 +194,11 @@
                         $("#j-shop-category-tab").html(tmpl);
 
                         //解析url中的id
-                        /\?mid=(\d+)/.test(document.location.href);
-                        var mid = RegExp.$1;
-                        $("#j-shop-category-tab li").removeClass("active");
-                        $("#j-shop-category-tab li[data-id=" +mid+ "]").addClass("active");
+                        var mid = /\?id=(\d+)/.test(document.location.href);
+                        if (mid) {
+                            $("#j-shop-category-tab li").removeClass("active");
+                            $("#j-shop-category-tab li[data-id=" + mid + "]").addClass("active");
+                        }
 
                         //绑定tab
                         $('#j-shop-category-tab a').bind("click", function (e) {

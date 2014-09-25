@@ -222,7 +222,8 @@ namespace Backstage.Core.Logic
                     var merchant = MerchantHelper.GetMerchant(orders.SellerId);
                     if (merchant.HasPrint == 1)
                     {
-
+                        //云打印
+                        Utility.SendOrdersMsgToPrint(orders);
                     }
                     if (Utility._msg_opensend == "1")
                     {

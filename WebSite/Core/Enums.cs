@@ -334,26 +334,53 @@ namespace Backstage.Core
         /// 所有
         /// </summary>
         All = 0,
+
+        //-----图片类型-----
+
         /// <summary>
         /// 图片墙
         /// </summary>
-        Img = 1,
+        Img = 101,
         /// <summary>
         /// 活动
         /// </summary>
-        Avtive = 2,
+        Active = 102,
         /// <summary>
         /// 产品
         /// </summary>
-        Goods = 3,
+        Goods = 103,
         /// <summary>
-        /// 头像
+        /// 商品分类
         /// </summary>
-        Logo = 4,
+        GoodCategories = 104,
+        /// <summary>
+        /// 会员
+        /// </summary>
+        User = 105,
+        /// <summary>
+        /// 优惠券
+        /// </summary>
+        Coupon = 106,
+        /// <summary>
+        /// 商户登录广告设置
+        /// </summary>
+        MerchantLoginAd = 107,
+        /// <summary>
+        /// 商户wifi广告设置
+        /// </summary>
+        MerchantWifiAd = 108,
+        /// <summary>
+        /// 开发方软件广告设置
+        /// </summary>
+        PlatformAd = 109,
+
+
+        //-----文件类型-----
+        
         /// <summary>
         /// 安装包文件
         /// </summary>
-        Package = 5,
+        Package = 200,
     }
     /// <summary>
     /// 商户类型

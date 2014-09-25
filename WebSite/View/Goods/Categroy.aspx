@@ -138,19 +138,12 @@
                 $("#sidebar li").removeClass("active open");
                 $("#sidebar .sidebar_goods").addClass("active open").find(".sidebar_categories").addClass("active");
 
-                var text_editor,
-                    image_editor;
+                var image_editor;
                 KindEditor.ready(function (K) {
-                    //文本编辑器
-                    mpage.text_editor = text_editor = K.create('textarea[name="content"]', {
-                        uploadJson: '<%=DomainUrl %>/Handler/FileManager/UploadHandler.ashx?type=3&sellerid=' + sellerId,
-                        allowFileManager: true
-                    });
-
                     //图片上传编辑
                     mpage.image_editor = image_editor = K.editor({
-                        uploadJson: '<%=DomainUrl %>/Handler/FileManager/UploadHandler.ashx?type=3&sellerid=' + sellerId,
-                        fileManagerJson: '<%=DomainUrl %>/Handler/FileManager/FileManagerHandler.ashx?type=3&sellerid=' + sellerId,
+                        uploadJson: '<%=DomainUrl %>/Handler/FileManager/UploadHandler.ashx?type=104&sellerid=' + sellerId,
+                        fileManagerJson: '<%=DomainUrl %>/Handler/FileManager/FileManagerHandler.ashx?type=104&sellerid=' + sellerId,
                     });
 
                     //从资料库选择图片

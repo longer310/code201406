@@ -66,14 +66,14 @@
 
                 KindEditor.ready(function (K) {
                     mpage.text_editor = text_editor = K.create('textarea[name="content"]', {
-                        uploadJson: '../../Handler/FileManager/UploadHandler.ashx?type=1&sellerid=' + sellerId,
+                        uploadJson: '../../Handler/FileManager/UploadHandler.ashx?type=101&sellerid=' + sellerId,
                         allowFileManager: true
                     });
 
                     //图片上传编辑
                     image_editor = image_editor = K.editor({
-                        uploadJson: '../../Handler/FileManager/UploadHandler.ashx?type=1&sellerid=' + sellerId,
-                        fileManagerJson: '../../Handler/FileManager/FileManagerHandler.ashx?type=1&sellerid=' + sellerId,
+                        uploadJson: '../../Handler/FileManager/UploadHandler.ashx?type=101&sellerid=' + sellerId,
+                        fileManagerJson: '../../Handler/FileManager/FileManagerHandler.ashx?type=101&sellerid=' + sellerId,
                     });
 
 

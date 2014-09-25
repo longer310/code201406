@@ -39,7 +39,7 @@ namespace Backstage.Core.Handler.Backstage
                     AddTime(); break;
                 case "editTime":
                     EditTime(); break;
-                case "deleteTime":
+                case "deltimes":
                     DeleteTime(); break;
                 default: break;
             }
@@ -152,9 +152,7 @@ namespace Backstage.Core.Handler.Backstage
         private void GetCategorys()
         {
             var sellerId = GetInt("sellerId");
-            var index = GetInt("start");
-            var size = GetInt("limit");
-            var list = PositionHelper.GetPagingBoxTypes(sellerId, index, size);
+            var list = PositionHelper.GetListBoxTypes(sellerId,0,0);
 
             JsonTransfer jt = new JsonTransfer();
             jt.Add("data", list);
@@ -176,8 +174,11 @@ namespace Backstage.Core.Handler.Backstage
 
         private void DeleteTime()
         {
-            var id = GetInt("id");
-            PositionHelper.DeleteTimeline(id);
+            var ids = Utility.GetListint(GetString("ids"));
+            foreach (var id in ids)
+            {
+                PositionHelper.DeleteTimeline(id);
+            }
         }
 
         private void EditTime()
@@ -198,7 +199,7 @@ namespace Backstage.Core.Handler.Backstage
             var item = new Timeline();
             item.BeginTime = GetTime("begin");
             item.EndTime = GetTime("end");
-            item.Date = GetTime("date");
+            item.Date = item.BeginTime.Date;
             item.Title = GetString("title");
             item.Status = GetInt("status");
             item.SellerId = GetInt("sellerId");
@@ -210,9 +211,7 @@ namespace Backstage.Core.Handler.Backstage
         {
             var sellerId = GetInt("sellerId");
             var positionId = GetInt("positionId");
-            var index = GetInt("start");
-            var size = GetInt("limit");
-            var list = PositionHelper.GetTimeLines(sellerId, positionId, index * size, size);
+            var list = PositionHelper.GetTimeLines(positionId);
 
             JsonTransfer jt = new JsonTransfer();
             jt.Add("data", list);

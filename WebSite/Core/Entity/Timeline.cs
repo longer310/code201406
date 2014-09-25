@@ -28,7 +28,7 @@ namespace Backstage.Core.Entity
         public DateTime Date { get; set; }
 
         /// <summary>
-        ///  1：被预定，0：未被预定
+        ///  1：被预定，0：未被预定，2：已经到店
         /// </summary>
         public int Status { get; set; }
 

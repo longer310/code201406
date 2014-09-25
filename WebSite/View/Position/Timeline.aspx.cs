@@ -10,9 +10,10 @@ namespace Backstage.View.Position
 {
     public partial class Timeline : BasePage
     {
+        public string PositionId;
         protected void Page_Load(object sender, EventArgs e)
         {
-
+            PositionId = Request.QueryString["pid"].ToString();
         }
     }
 }

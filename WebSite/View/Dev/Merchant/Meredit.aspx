@@ -38,10 +38,10 @@
                             <span class="help-inline">上传过的图片可以直接从素材库选择</span>
                             <div class="clearfix" style="margin-top: 10px;">
                                 <span class="thumbnail pull-left">
-                                    <img width="60" height="60" src="http://placehold.it/60x60" alt="" id="j-img-placehold">
+                                    <img width="60" height="60" src="http://placehold.it/300x300" alt="" id="j-img-placehold">
                                 </span>
                             </div>
-                            <p style="margin-top:10px;"><b class="text-error">上传图片要求：60x60</b></p>
+                            <p style="margin-top:10px;"><b class="text-error">上传图片要求：300x300</b></p>
                         </div>
                     </div>
 

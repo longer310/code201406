@@ -37,9 +37,10 @@
                     <span class="help-inline">上传过的图片可以直接从素材库选择</span>
                     <div class="clearfix" style="margin-top: 10px;">
                         <span class="thumbnail pull-left">
-                            <img style="max-width: 128px; min-width: 128px; max-height: 128px; min-height: 128px;" src="http://placehold.it/128x128" alt="" id="j-img-placehold">
+                            <img src="http://placehold.it/448x126" width="448" height="126" alt="" id="j-img-placehold">
                         </span>
                     </div>
+                    <p style="margin-top:10px;"><b class="text-error">上传图片要求：448x126</b></p>
                 </div>
             </div>
 
@@ -97,8 +98,8 @@
 				    <span class="j-categroy-index">${v.Index}</span>
 				    <a class="btn btn-mini {{if i == list.length - 1}}disabled{{/if}} j-categroy-down" href="javascript:;"><i class="icon icon-arrow-down"></i></a>
 			    </td>
-			    <td style="width:300px;">
-                    <img src="${v.ImageUrl}" class="j-categroy-thumbnail" style="margin-right:10px;width:90px;height:45px;">
+			    <td style="width:330px;">
+                    <img src="${v.ImageUrl}" width="142" height="40" class="j-categroy-thumbnail">
                     <a class="btn btn-info btn-mini j-btn-imageUpload" href="javascript:;">
                         <i class="icon-folder-open icon-white"></i> 本地上传
                     </a>
@@ -138,10 +139,16 @@
                 $("#sidebar li").removeClass("active open");
                 $("#sidebar .sidebar_goods").addClass("active open").find(".sidebar_categories").addClass("active");
 
-                var image_editor;
+                var image_editor,
+        			image_editor_list;
                 KindEditor.ready(function (K) {
                     //图片上传编辑
                     mpage.image_editor = image_editor = K.editor({
+                        uploadJson: '<%=DomainUrl %>/Handler/FileManager/UploadHandler.ashx?type=104&sellerid=' + sellerId,
+                        fileManagerJson: '<%=DomainUrl %>/Handler/FileManager/FileManagerHandler.ashx?type=104&sellerid=' + sellerId,
+                    });
+                    //图片上传编辑
+                    mpage.image_editor_list = image_editor_list = K.editor({
                         uploadJson: '<%=DomainUrl %>/Handler/FileManager/UploadHandler.ashx?type=104&sellerid=' + sellerId,
                         fileManagerJson: '<%=DomainUrl %>/Handler/FileManager/FileManagerHandler.ashx?type=104&sellerid=' + sellerId,
                     });
@@ -358,13 +365,13 @@
                         $('#j-categroy-list .j-btn-imageManager').bind("click", function () {
                             var $item = $(this).parents("tr");
 
-                            mpage.image_editor.loadPlugin('filemanager', function () {
-                                mpage.image_editor.plugin.filemanagerDialog({
+                            mpage.image_editor_list.loadPlugin('filemanager', function () {
+                                mpage.image_editor_list.plugin.filemanagerDialog({
                                     viewType: 'VIEW',
                                     dirName: 'image',
                                     clickFn: function (url, title) {
                                         $item.find('.j-categroy-thumbnail').attr("src", url);
-                                        mpage.image_editor.hideDialog();
+                                        mpage.image_editor_list.hideDialog();
                                     }
                                 });
                             });
@@ -373,12 +380,12 @@
                         //从资料库选择图片
                         $('#j-categroy-list .j-btn-imageUpload').bind("click", function () {
                             var $item = $(this).parents("tr");
-                            mpage.image_editor.loadPlugin('image', function () {
-                                mpage.image_editor.plugin.imageDialog({
+                            mpage.image_editor_list.loadPlugin('image', function () {
+                                mpage.image_editor_list.plugin.imageDialog({
                                     showRemote: false,
                                     clickFn: function (url, title, width, height, border, align) {
                                         $item.find('.j-categroy-thumbnail').attr("src", url);
-                                        mpage.image_editor.hideDialog();
+                                        mpage.image_editor_list.hideDialog();
                                     }
                                 });
                             });

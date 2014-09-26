@@ -74,7 +74,7 @@
 	            <tr data-gid="${v.Id}">
 				    <td><input type="checkbox" class="j-select"/></td>
 				    <td style="width:30px;">${v.Id}</td>
-                    <td style="width:45px;"><img style="max-width:45px;min-width:45px;max-height:45px;min-height:45px;" src="${v.LogoUrl}"></td>
+                    <td style="width:63px;"><img width="63" height="50" src="${v.LogoUrl}"></td>
 				    <td>${v.Title}</td>
 				    <td style="width:104px;"><input type="text" class="input-small j-price" value="${v.Nowprice}" ></td>
 				    <td style="width:104px;"><input type="text" class="input-small j-preprice" value="${v.OriginalPrice}" ></td>

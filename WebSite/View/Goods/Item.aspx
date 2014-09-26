@@ -41,6 +41,7 @@
                     <span class="help-inline">上传过的图片可以直接从素材库选择</span>
                     <ul class="thumbnails" id="j-goods-thumbnails" style="display: none; margin-top: 10px;">
                     </ul>
+                    <p style="margin-top:10px;"><b class="text-error">上传图片要求：540*400</b></p>
                 </div>
             </div>
 
@@ -95,7 +96,7 @@
 	{{each(i, v) thumbnails}}
 	    <li class="span">
 			<span class="thumbnail">
-				<img src="${v.Url}" style="max-width:45px;min-width:45px;max-height:45px;min-height:45px;" alt="" class="j-goods-thumbnail">
+				<img src="${v.Url}" width="130" height="103" alt="" class="j-goods-thumbnail">
 			</span>
 			<div class="clearfix" style="margin-top:5px;">
 				<label class="radio pull-left"><input type="radio" name="islogo" class="j-goods-islogo" {{if v.IsLogo}}checked="checked"{{/if}}> 设为logo</label>

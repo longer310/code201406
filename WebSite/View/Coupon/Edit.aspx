@@ -42,9 +42,10 @@
                     <span class="help-inline">上传过的图片可以直接从素材库选择</span>
                     <div class="clearfix" style="margin-top: 10px;">
                         <span class="thumbnail pull-left">
-                            <img src="http://placehold.it/128x128" alt="" id="j-img-placehold">
+                            <img src="http://placehold.it/540x400" width="180" height="133" alt="" id="j-img-placehold">
                         </span>
                     </div>
+                    <p style="margin-top:10px;"><b class="text-error">上传图片要求：540x400</b></p>
                 </div>
             </div>
 

@@ -14,7 +14,7 @@
         </div>
         <div class="widget-content">
 
-            <div class="widget-box">
+            <div class="widget-box" id="j-home-ad">
                 <div class="widget-title">
                     <h5>登录页大图广告</h5>
                 </div>
@@ -29,24 +29,10 @@
                             <span class="help-inline">上传过的图片可以直接从素材库选择</span>
                             <div class="clearfix" style="margin-top: 10px;">
                                 <span class="thumbnail pull-left">
-                                    <img id="j-login-url" src="http://placehold.it/640x1138" width="128" alt="" class="j-img-placehold">
+                                    <img id="j-login-url" src="http://placehold.it/640x1138" width="200" height="356" alt="" class="j-img-placehold">
                                 </span>
                             </div>
-                        </div>
-                    </div>
-
-                    <div class="control-group">
-                        <label class="control-label">图片 <b class="text-error">*640x960</b></label>
-                        <div class="controls">
-
-                            <a class="btn btn-info j-btn-imageUpload1" href="javascript:;"><i class="icon-folder-open icon-white"></i>本地上传</a>
-                            <a class="btn btn-success j-btn-imageManager1" href="javascript:;"><i class="icon-picture icon-white"></i>素材库选择</a>
-                            <span class="help-inline">上传过的图片可以直接从素材库选择</span>
-                            <div class="clearfix" style="margin-top: 10px;">
-                                <span class="thumbnail pull-left">
-                                    <img id="j-login-url2" src="http://placehold.it/640x960" width="128" alt="" class="j-img-placehold1">
-                                </span>
-                            </div>
+                            <p style="margin-top:10px;"><b class="text-error">上传图片要求：640x1138</b></p>
                         </div>
                     </div>
 
@@ -151,8 +137,9 @@
 					<div class="controls">
 						<div class="clearfix">
 							<span class="thumbnail pull-left" style="margin-right:10px;">
-								<img src="${v.PicUrl}" style="max-width:128px;min-width:128px;max-height:128px;min-height:128px;" height="128" width="128" alt="" class="j-img-placehold">
+								<img src="${v.PicUrl}" height="130" width="313" alt="" class="j-img-placehold">
 							</span>
+                            <p style="margin-top:10px;"><b class="text-error">上传图片要求：540x224</b></p>
 							<p><a class="btn btn-info j-btn-imageUpload" href="javascript:;"><i class="icon-folder-open icon-white"></i> 本地上传</a></p>
 							<p><a class="btn btn-success j-btn-imageManager" href="javascript:;"><i class="icon-picture icon-white"></i> 素材库选择</a></p>
 							<span class="help-inline">上传过的图片可以直接从素材库选择</span>
@@ -180,8 +167,9 @@
 					<div class="controls">
 						<div class="clearfix">
 							<span class="thumbnail pull-left" style="margin-right:10px;">
-								<img src="${v.avatar}" height="128" width="128" alt="" class="j-img-placehold">
+								<img src="${v.avatar}" height="130" width="313" alt="" class="j-img-placehold">
 							</span>
+                            <p style="margin-top:10px;"><b class="text-error">上传图片要求：540x224</b></p>
 							<p><a class="btn btn-info j-btn-imageUpload" href="javascript:;"><i class="icon-folder-open icon-white"></i> 本地上传</a></p>
 							<p><a class="btn btn-success j-btn-imageManager" href="javascript:;"><i class="icon-picture icon-white"></i> 素材库选择</a></p>
 							<span class="help-inline">上传过的图片可以直接从素材库选择</span>
@@ -285,8 +273,9 @@
             bindForm: function () {
                 var mpage = this;
 
-                var image_editor;
-                var image_editor1;
+                var image_editor,
+                    image_editor_homeslide,
+        			image_editor_wifi;
                 KindEditor.ready(function (K) {
                     //图片上传编辑
                     mpage.image_editor = image_editor = K.editor({
@@ -294,13 +283,18 @@
                         fileManagerJson: '<%=DomainUrl %>/Handler/FileManager/FileManagerHandler.ashx?type=107&sellerid=' + sellerId,
                     });
                     //图片上传编辑
-                    mpage.image_editor1 = image_editor1 = K.editor({
+                    mpage.image_editor_homeslide = image_editor_homeslide = K.editor({
+                        uploadJson: '<%=DomainUrl %>/Handler/FileManager/UploadHandler.ashx?type=108&sellerid=' + sellerId,
+                        fileManagerJson: '<%=DomainUrl %>/Handler/FileManager/FileManagerHandler.ashx?type=108&sellerid=' + sellerId,
+                    });
+                    //图片上传编辑
+                    mpage.image_editor_wifi = image_editor_wifi = K.editor({
                         uploadJson: '<%=DomainUrl %>/Handler/FileManager/UploadHandler.ashx?type=108&sellerid=' + sellerId,
                         fileManagerJson: '<%=DomainUrl %>/Handler/FileManager/FileManagerHandler.ashx?type=108&sellerid=' + sellerId,
                     });
 
                     //图片上传绑定
-                    $(document).delegate('.j-btn-imageManager', 'click', function () {
+                    $('#j-home-ad .j-btn-imageManager').bind('click', function () {
                         var $item = $(this).parents(".controls");
 
                         image_editor.loadPlugin('filemanager', function () {
@@ -316,7 +310,7 @@
                     });
 
                     //从资料库选择图片
-                    $(document).delegate('.j-btn-imageUpload', 'click', function () {
+                    $('#j-home-ad .j-btn-imageUpload').bind('click', function () {
                         var $item = $(this).parents(".controls");
 
                         image_editor.loadPlugin('image', function () {
@@ -325,37 +319,6 @@
                                 clickFn: function (url, title, width, height, border, align) {
                                     $item.find('.j-img-placehold').attr("src", url);
                                     image_editor.hideDialog();
-                                }
-                            });
-                        });
-                    });
-
-                    //图片上传绑定
-                    $(document).delegate('.j-btn-imageManager1', 'click', function () {
-                        var $item = $(this).parents(".controls");
-
-                        image_editor1.loadPlugin('filemanager', function () {
-                            image_editor1.plugin.filemanagerDialog({
-                                viewType: 'VIEW',
-                                dirName: 'image',
-                                clickFn: function (url, title) {
-                                    $item.find('.j-img-placehold1').attr("src", url);
-                                    image_editor1.hideDialog();
-                                }
-                            });
-                        });
-                    });
-
-                    //从资料库选择图片
-                    $(document).delegate('.j-btn-imageUpload1', 'click', function () {
-                        var $item = $(this).parents(".controls");
-
-                        image_editor1.loadPlugin('image', function () {
-                            image_editor1.plugin.imageDialog({
-                                showRemote: false,
-                                clickFn: function (url, title, width, height, border, align) {
-                                    $item.find('.j-img-placehold1').attr("src", url);
-                                    image_editor1.hideDialog();
                                 }
                             });
                         });
@@ -446,8 +409,40 @@
                 });
             },
             addHomeSlideLevel: function (data) {
+                var mpage = this;
                 console.log(data);
                 $("#j-homeslide-ad").append($("#j-tmpl-homeslide-ad-item").tmpl(data));
+
+                //图片上传绑定
+                $("#j-homeslide-ad").find('.j-btn-imageManager').unbind('click').bind('click', function () {
+                    var $item = $(this).parents(".controls");
+
+                    mpage.image_editor_homeslide.loadPlugin('filemanager', function () {
+                        mpage.image_editor_homeslide.plugin.filemanagerDialog({
+                            viewType: 'VIEW',
+                            dirName: 'image',
+                            clickFn: function (url, title) {
+                                $item.find('.j-img-placehold').attr("src", url);
+                                mpage.image_editor_homeslide.hideDialog();
+                            }
+                        });
+                    });
+                });
+
+                //从资料库选择图片
+                $("#j-homeslide-ad").find('.j-btn-imageUpload').unbind('click').bind('click', function () {
+                    var $item = $(this).parents(".controls");
+
+                    mpage.image_editor_homeslide.loadPlugin('image', function () {
+                        mpage.image_editor_homeslide.plugin.imageDialog({
+                            showRemote: false,
+                            clickFn: function (url, title, width, height, border, align) {
+                                $item.find('.j-img-placehold').attr("src", url);
+                                mpage.image_editor_homeslide.hideDialog();
+                            }
+                        });
+                    });
+                });
             },
 
             removeHomeSlideLevel: function (index) {
@@ -466,31 +461,31 @@
                 $("#j-wifi-ad").append($("#j-tmpl-wifi-ad-item").tmpl(data));
 
                 //图片上传绑定
-                $('#j-wifi-ad .j-btn-imageManager').unbind("click").bind("click", function () {
+                $("#j-wifi-ad").find('.j-btn-imageManager').unbind('click').bind('click', function () {
                     var $item = $(this).parents(".controls");
 
-                    mpage.image_editor.loadPlugin('filemanager', function () {
-                        mpage.image_editor.plugin.filemanagerDialog({
+                    mpage.image_editor_wifi.loadPlugin('filemanager', function () {
+                        mpage.image_editor_wifi.plugin.filemanagerDialog({
                             viewType: 'VIEW',
                             dirName: 'image',
                             clickFn: function (url, title) {
                                 $item.find('.j-img-placehold').attr("src", url);
-                                mpage.image_editor.hideDialog();
+                                mpage.image_editor_wifi.hideDialog();
                             }
                         });
                     });
                 });
 
                 //从资料库选择图片
-                $('#j-wifi-ad .j-btn-imageUpload').unbind("click").bind("click", function () {
+                $("#j-wifi-ad").find('.j-btn-imageUpload').unbind('click').bind('click', function () {
                     var $item = $(this).parents(".controls");
 
-                    mpage.image_editor.loadPlugin('image', function () {
-                        mpage.image_editor.plugin.imageDialog({
+                    mpage.image_editor_wifi.loadPlugin('image', function () {
+                        mpage.image_editor_wifi.plugin.imageDialog({
                             showRemote: false,
                             clickFn: function (url, title, width, height, border, align) {
                                 $item.find('.j-img-placehold').attr("src", url);
-                                mpage.image_editor.hideDialog();
+                                mpage.image_editor_wifi.hideDialog();
                             }
                         });
                     });

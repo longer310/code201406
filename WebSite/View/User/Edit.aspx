@@ -41,7 +41,7 @@
         	<table class="table table-striped table-bordered">
                 <tbody>
                 	<tr>
-                		<td rowspan="3" style="text-align:center; width:120px;"><img style="max-width:100px;min-width:100px;max-height:100px;min-height:100px;" src="${User.Avatar}" /></td>
+                		<td rowspan="3" style="text-align:center; width:120px;"><img width="100" height="100" src="${User.Avatar}" /></td>
                 		<th>会员账号：</th>
                         <td><span class="text-info">${User.UserName}</span></td>
                         <th>性　　别：</th>

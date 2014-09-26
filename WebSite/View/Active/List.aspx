@@ -52,7 +52,7 @@
 	        	<li class="item" data-id="${v.id}">
 					<div class="item-in">
 						<div class="article-thumb">
-							<img alt="User" src="${v.imgurl}" />
+							<img alt="User" src="${v.imgurl}" width="140" height="111"  />
 						</div>
 						<div class="article-post">
 							<span class="post-title">${v.title}</span>

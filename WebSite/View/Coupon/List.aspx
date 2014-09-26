@@ -95,7 +95,7 @@
         	{{each(i, v) list}}
 	        	<tr data-gid="${v.id}">
 					<td><input type="checkbox" class="j-select" /></td>
-					<td style="width:180px;"><img src="${v.imgurl}"></td>
+					<td style="width:140px;"><img src="${v.imgurl}" width="140" height="111"></td>
 					<td>
 						<dl class="dl-horizontal">
 							<dt>电子券名称：</dt>

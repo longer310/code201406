@@ -51,8 +51,8 @@
 	        	<li class="item" data-id="${v.id}">
 					<div class="item-in">
 						<h3 class="post-title">${v.title}</h3>
-						<div class="article-thumb">
-							<img alt="User" src="${v.url}" />
+						<div class="article-thumb" style="width:200px;height:140px;">
+							<img alt="User" src="${v.url}" width="200" height="140"  />
 						</div>
 
 						<p class="post-desc">

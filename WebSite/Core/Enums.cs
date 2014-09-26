@@ -373,6 +373,14 @@ namespace Backstage.Core
         /// 开发方软件广告设置
         /// </summary>
         PlatformAd = 109,
+        /// <summary>
+        /// 快捷方式
+        /// </summary>
+        FastLinks = 110,
+        /// <summary>
+        /// 快捷方式列表
+        /// </summary>
+        FastLinksList = 111,
 
 
         //-----文件类型-----

@@ -127,9 +127,9 @@ namespace Backstage.Core.Entity
         public float Discount { get; set; }
 
         /// <summary>
-        /// 包厢号 夜场类 商户才有
+        /// 包厢号 夜场类 商户才有 包厢名称+包厢类型
         /// </summary>
-        public int Boxno { get; set; }
+        public string Boxno { get; set; }
 
         public Orders()
         {

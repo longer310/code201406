@@ -616,6 +616,7 @@
     <Compile Include="Core\Alipay\AlipaySubmit.cs" />
     <Compile Include="Core\Alipay\MD5.cs" />
     <Compile Include="Core\Alipay\RSA.cs" />
+    <Compile Include="Core\Entity\ImgSizeCfg.cs" />
     <Compile Include="Core\Entity\RechargeMonthStatistics.cs" />
     <Compile Include="Core\Entity\RechargeDateStatistics.cs" />
     <Compile Include="Core\Entity\Fastlinks.cs" />
@@ -631,6 +632,7 @@
     <Compile Include="Core\Handler\Backstage\PositionHandler.cs" />
     <Compile Include="Core\Handler\DevSystemHelper.cs" />
     <Compile Include="Core\Handler\Merchant\StatisticsHandler.cs" />
+    <Compile Include="Core\Logic\ImgSizeCfgHelper.cs" />
     <Compile Include="Core\Logic\RechargeStatisticsHelper.cs" />
     <Compile Include="Core\Logic\TempleHelper.cs" />
     <Compile Include="Core\PlatBasePage.cs">

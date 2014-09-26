@@ -34,8 +34,8 @@
 	        	<li class="item" data-id="${v.Id}">
 					<div class="item-in">
 						<h3 class="post-title" sty>${v.Name}</h3>
-						<div class="article-thumb">
-							<img style="max-width: 128px; min-width: 128px; max-height: 128px; min-height: 128px;" alt="User" src="${v.ImgUrl}" />
+						<div class="article-thumb" style="width:100px;height:100px;">
+							<img width="100" height="100"  alt="User" src="${v.ImgUrl}" />
 						</div>
 						<div class="article-post">
 							<div class="post-action">

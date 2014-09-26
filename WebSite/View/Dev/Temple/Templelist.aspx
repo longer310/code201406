@@ -73,8 +73,8 @@
 	        	<li class="item" data-id="${v.Id}">
 					<div class="item-in">
 						<h3 class="post-title">${v.Name}</h3>
-						<div class="article-thumb">
-							<img alt="User" src="${v.LogoUrl}" />
+						<div class="article-thumb" style="width:133px; height:200px;">
+							<img alt="User" src="${v.LogoUrl}" width="133" height="200"/>
 						</div>
 						<div class="article-post" style="margin-top:10px;">
 							<p class="post-meta">所属：<span class="text-info">

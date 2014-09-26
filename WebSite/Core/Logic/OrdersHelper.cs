@@ -63,7 +63,7 @@ namespace Backstage.Core.Logic
                         orders.Status = (OrderStatus)reader["Status"];
                         orders.SellerId = (int)reader["SellerId"];
                         orders.Ccontent = reader["Ccontent"].ToString();
-                        orders.Boxno = (int)reader["Boxno"];
+                        orders.Boxno = reader["Boxno"].ToString();
                         orders.CouponTitle = reader["CouponTitle"].ToString();
 
                         result.Results.Add(orders);
@@ -134,7 +134,7 @@ namespace Backstage.Core.Logic
                             orders.Status = (OrderStatus)reader["Status"];
                             orders.SellerId = (int)reader["SellerId"];
                             orders.Ccontent = reader["Ccontent"].ToString();
-                            orders.Boxno = (int)reader["Boxno"];
+                            orders.Boxno = reader["Boxno"].ToString();
                             orders.CouponTitle = reader["CouponTitle"].ToString();
                             return orders;
                         }

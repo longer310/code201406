@@ -202,9 +202,13 @@ namespace Backstage.Handler
                 case UploadType.User: typeName = "/user"; break;
                 case UploadType.Coupon: typeName = "/coupon"; break;
                 case UploadType.MerchantLoginAd:
-                case UploadType.MerchantWifiAd:
-                case UploadType.PlatformAd: typeName = "/ad"; break;
+                case UploadType.MerchantWifiAd: typeName = "/ad"; break;
                 case UploadType.Package: typeName = "/package"; break;
+
+                //开发商上传的图片都在一个文件夹
+                case UploadType.PlatformAd:
+                case UploadType.FastLinks:
+                case UploadType.FastLinksList: typeName = ""; break;
                 default: break;
             }
             return typeName;

@@ -54,7 +54,7 @@
 	        <tr data-gid="1">
 				<%--<td><input type="checkbox" class="j-select" /></td>--%>
 				<td style="width:40px;">${v.Id}</td>
-				<td style="width:45px;"><img style="max-width: 45px; min-width: 45px; max-height: 45px; min-height: 45px;"  src="${v.LogoUrl}"></td>
+				<td style="width:60px;"><img src="${v.LogoUrl} width="60" height="60""></td>
 				<td>${v.Name}</td>
 				<td>${v.ServerEndTime.ToDate().Format("yyyy-MM-dd hh:mm:ss")}</td>
 				<td>${v.Cname}</td>

@@ -29,9 +29,10 @@
                     <span class="help-inline">上传过的图片可以直接从素材库选择</span>
                     <div class="clearfix" style="margin-top: 10px;">
                         <span class="thumbnail pull-left">
-                            <img src="http://placehold.it/40x40" alt="" id="j-img-placehold">
+                            <img src="http://placehold.it/50x50" width="50" height="50" alt="" id="j-img-placehold">
                         </span>
                     </div>
+                    <p style="margin-top:10px;"><b class="text-error">上传图片要求：50x50</b></p>
                 </div>
             </div>
 
@@ -98,7 +99,7 @@
 						<%--<span class="j-index">${v.index}</span>
 						<a class="btn btn-mini {{if i == list.length - 1}}disabled{{/if}} j-down" href="javascript:;"><i class="icon icon-arrow-down"></i></a>--%>
 					</td>
-					<td style="width:230px;"><img src="${v.ImgUrl}" class="j-thumbnail" style="margin-right:10px;width:40px;height:40px;"><a class="btn btn-info btn-mini j-btn-imageUpload" href="javascript:;"><i class="icon-folder-open icon-white"></i> 本地上传</a>
+					<td style="width:240px;"><img src="${v.ImgUrl}" class="j-thumbnail" style="margin-right:10px;width:40px;height:40px;"><a class="btn btn-info btn-mini j-btn-imageUpload" href="javascript:;"><i class="icon-folder-open icon-white"></i> 本地上传</a>
 								<a class="btn btn-success btn-mini j-btn-imageManager" href="javascript:;"><i class="icon-picture icon-white"></i> 素材库选择</a></td>
 					<td><input type="text" value="${v.Title}" class="j-title"></td>
 					<td><input type="text" value="${v.Url}" class="j-url"></td>
@@ -115,18 +116,25 @@
                 var mpage = this;
 
                 var text_editor,
-                    image_editor;
+                    image_editor,
+        			image_editor_list;
                 KindEditor.ready(function (K) {
                     //文本编辑器
                     mpage.text_editor = text_editor = K.create('textarea[name="content"]', {
-                        uploadJson: '<%=DomainUrl %>/Handler/FileManager/UploadHandler.ashx?type=3',
+                        uploadJson: '<%=DomainUrl %>/Handler/FileManager/UploadHandler.ashx?type=110',
                         allowFileManager: true
                     });
 
                     //图片上传编辑
                     mpage.image_editor = image_editor = K.editor({
-                        uploadJson: '<%=DomainUrl %>/Handler/FileManager/UploadHandler.ashx?type=3',
-                        fileManagerJson: '<%=DomainUrl %>/Handler/FileManager/FileManagerHandler.ashx?type=3',
+                        uploadJson: '<%=DomainUrl %>/Handler/FileManager/UploadHandler.ashx?type=110',
+                        fileManagerJson: '<%=DomainUrl %>/Handler/FileManager/FileManagerHandler.ashx?type=110',
+                    });
+                    
+                    //列表上传编辑
+                    mpage.image_editor_list = image_editor_list = K.editor({
+                        uploadJson: '<%=DomainUrl %>/Handler/FileManager/UploadHandler.ashx?type=111',
+                        fileManagerJson: '<%=DomainUrl %>/Handler/FileManager/FileManagerHandler.ashx?type=111',
                     });
 
                     //图片上传绑定
@@ -156,6 +164,7 @@
                             });
                         });
                     });
+
                 });
 
                 mpage.getList();
@@ -368,13 +377,13 @@
                     $('#j-list .j-btn-imageManager').bind("click", function () {
                         var $item = $(this).parents("tr");
 
-                        mpage.image_editor.loadPlugin('filemanager', function () {
-                            mpage.image_editor.plugin.filemanagerDialog({
+                        mpage.image_editor_list.loadPlugin('filemanager', function () {
+                            mpage.image_editor_list.plugin.filemanagerDialog({
                                 viewType: 'VIEW',
                                 dirName: 'image',
                                 clickFn: function (url, title) {
                                     $item.find('.j-thumbnail').attr("src", url);
-                                    mpage.image_editor.hideDialog();
+                                    mpage.image_editor_list.hideDialog();
                                 }
                             });
                         });
@@ -383,12 +392,12 @@
                     //从资料库选择图片
                     $('#j-list .j-btn-imageUpload').bind("click", function () {
                         var $item = $(this).parents("tr");
-                        mpage.image_editor.loadPlugin('image', function () {
-                            mpage.image_editor.plugin.imageDialog({
+                        mpage.image_editor_list.loadPlugin('image', function () {
+                            mpage.image_editor_list.plugin.imageDialog({
                                 showRemote: false,
                                 clickFn: function (url, title, width, height, border, align) {
                                     $item.find('.j-thumbnail').attr("src", url);
-                                    mpage.image_editor.hideDialog();
+                                    mpage.image_editor_list.hideDialog();
                                 }
                             });
                         });

@@ -887,7 +887,7 @@ namespace Backstage.Handler
             public string linkman { get; set; }
             public int pid { get; set; }
             public float discount { get; set; }
-            public int boxno { get; set; }
+            public string boxno { get; set; }//包厢名称+包厢类型
             public List<OrderGoddsItem> goodslist { get; set; }
             public int hasdelivery { get; set; }
 
@@ -1036,7 +1036,7 @@ namespace Backstage.Handler
             var remark = GetString("remark");
             var uid = GetInt("uid");
             var orderId = GetInt("orderid");
-            var boxno = GetInt("boxno");
+            var boxno = GetString("boxno");
 
             var orders = OrdersHelper.GetOrders(orderId, uid);
 

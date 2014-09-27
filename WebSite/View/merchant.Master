@@ -60,10 +60,10 @@
                 <ul>
                     <li class="sidebar_pms_list active"><a href="<%=DomainUrl %>/View/Position/List.aspx?sellerId=<%=SellerId%>">包厢列表</a></li>
                     <li class="sidebar_pms_add"><a href="<%=DomainUrl %>/View/Position/Add.aspx?sellerId=<%=SellerId%>">包厢新增</a></li>
-                    <li class="sidebar_pms_edit"><a href="<%=DomainUrl %>/View/Position/Edit.aspx?sellerId=<%=SellerId%>">包厢编辑</a></li>
+                    <%--<li class="sidebar_pms_edit"><a href="<%=DomainUrl %>/View/Position/Edit.aspx?sellerId=<%=SellerId%>">包厢编辑</a></li>--%>
                     <li class="sidebar_pms_op"><a href="<%=DomainUrl %>/View/Position/OrderPosition.aspx?sellerId=<%=SellerId%>">订位列表</a></li>
                     <li class="sidebar_pms_pc"><a href="<%=DomainUrl %>/View/Position/Pcategory.aspx?sellerId=<%=SellerId%>">分类管理</a></li>
-                    <li class="sidebar_pms_tm"><a href="<%=DomainUrl %>/View/Position/Timeline.aspx?sellerId=<%=SellerId%>">时间段管理</a></li>
+                    <%--<li class="sidebar_pms_tm"><a href="<%=DomainUrl %>/View/Position/Timeline.aspx?sellerId=<%=SellerId%>">时间段管理</a></li>--%>
                 </ul>
             </li>
             <li class="sidebar_orders"><a href="<%=DomainUrl %>/View/Orders/List.aspx?sellerId=<%=SellerId%>"><i class="icon icon-shopping-cart"></i><span>订单管理</span></a></li>

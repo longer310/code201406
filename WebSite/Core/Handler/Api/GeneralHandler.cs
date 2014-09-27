@@ -25,10 +25,10 @@ namespace Backstage.Core.Handler
                     GetIndexAd(); break;
                 case "getwifiad":
                     GetWifiAd(); break;
-                case "getpwdvercode":
-                    GetPwdVerCode(); break;
-                case "updatepwd":
-                    UpdatePwd(); break;
+                //case "getpwdvercode":
+                //    GetPwdVerCode(); break;
+                //case "updatepwd":
+                //    UpdatePwd(); break;
                 default: break;
             }
         }
@@ -85,70 +85,70 @@ namespace Backstage.Core.Handler
 
         }
 
-        private void GetPwdVerCode()
-        {
-            string phone = GetString("phone");
-            int sellerid = GetInt("sellerid");
-            var user = AccountHelper.GetUserByPhone(phone, sellerid);
-            if (user == null)
-            {
-                ReturnErrorMsg("手机号码不存在");
-                return;
-            }
-            var merchant = MerchantHelper.GetMerchant(sellerid);
-            if (merchant == null)
-            {
-                ReturnErrorMsg("不存在该商户");
-                return;
-            }
+        //private void GetPwdVerCode()
+        //{
+        //    string phone = GetString("phone");
+        //    int sellerid = GetInt("sellerid");
+        //    var user = AccountHelper.GetUserByPhone(phone, sellerid);
+        //    if (user == null)
+        //    {
+        //        ReturnErrorMsg("手机号码不存在");
+        //        return;
+        //    }
+        //    var merchant = MerchantHelper.GetMerchant(sellerid);
+        //    if (merchant == null)
+        //    {
+        //        ReturnErrorMsg("不存在该商户");
+        //        return;
+        //    }
 
-            var verificationCode = new VerificationCode();
-            verificationCode.Phone = phone;
-            verificationCode.SellerId = sellerid;
-            verificationCode.Code = Utility.GetVerificationCode(6);
-            verificationCode.ExpiredTime = DateTime.Now.AddMinutes(30);
-            //verificationCode.UserId = user.Id;
-            VerificationCodeHelper.SaveVerificationCode(verificationCode);
-            if (Utility._msg_opensend == "1")
-            //Utility.SendMsg(verificationCode.Code, verificationCode.Phone, Utility._modifyphone_message);
-            {
-                SendMsgClass3 jsobject = new SendMsgClass3();
-                jsobject.param1 = merchant.Name;
-                jsobject.param2 = verificationCode.Code;
-                jsobject.param3 = "30";
+        //    var verificationCode = new VerificationCode();
+        //    verificationCode.Phone = phone;
+        //    verificationCode.SellerId = sellerid;
+        //    verificationCode.Code = Utility.GetVerificationCode(6);
+        //    verificationCode.ExpiredTime = DateTime.Now.AddMinutes(30);
+        //    //verificationCode.UserId = user.Id;
+        //    VerificationCodeHelper.SaveVerificationCode(verificationCode);
+        //    if (Utility._msg_opensend == "1")
+        //    //Utility.SendMsg(verificationCode.Code, verificationCode.Phone, Utility._modifyphone_message);
+        //    {
+        //        SendMsgClass3 jsobject = new SendMsgClass3();
+        //        jsobject.param1 = merchant.Name;
+        //        jsobject.param2 = verificationCode.Code;
+        //        jsobject.param3 = "30";
 
-                if (Utility.SendMsg(verificationCode.Phone, MsgTempleId.UserRegisterCode, jsobject) != "发送成功")
-                {
-                    ReturnErrorMsg("短信发送失败");
-                    return;
-                }
-            }
-            ReturnCorrectMsg("请注意查收验证码");
-        }
+        //        if (Utility.SendMsg(verificationCode.Phone, MsgTempleId.UserRegisterCode, jsobject) != "发送成功")
+        //        {
+        //            ReturnErrorMsg("短信发送失败");
+        //            return;
+        //        }
+        //    }
+        //    ReturnCorrectMsg("请注意查收验证码");
+        //}
 
-        private void UpdatePwd()
-        {
-            string phone = GetString("phone");
-            int sellerid = GetInt("sellerid");
-            string pwd = GetString("pwd");
-            string code = GetString("code");
+        //private void UpdatePwd()
+        //{
+        //    string phone = GetString("phone");
+        //    int sellerid = GetInt("sellerid");
+        //    string pwd = GetString("pwd");
+        //    string code = GetString("code");
 
-            var user = AccountHelper.GetUserByPhone(phone, sellerid);
-            if (user == null)
-            {
-                ReturnErrorMsg("手机号码不存在");
-                return;
-            }
-            var verificationCode = VerificationCodeHelper.GetVerificationCode(sellerid, phone);
+        //    var user = AccountHelper.GetUserByPhone(phone, sellerid);
+        //    if (user == null)
+        //    {
+        //        ReturnErrorMsg("手机号码不存在");
+        //        return;
+        //    }
+        //    var verificationCode = VerificationCodeHelper.GetVerificationCode(sellerid, phone);
 
-            if (verificationCode.ExpiredTime < DateTime.Now)
-                ReturnErrorMsg("验证码已经过期了");
-            if (code != verificationCode.Code)
-                ReturnCorrectMsg("验证码错误");
-            user.Pwd = pwd;
-            AccountHelper.SaveAccount(user);
-            ReturnCorrectMsg("密码修改成功");
-        }
+        //    if (verificationCode.ExpiredTime < DateTime.Now)
+        //        ReturnErrorMsg("验证码已经过期了");
+        //    if (code != verificationCode.Code)
+        //        ReturnCorrectMsg("验证码错误");
+        //    user.Pwd = pwd;
+        //    AccountHelper.SaveAccount(user);
+        //    ReturnCorrectMsg("密码修改成功");
+        //}
 
 
         private void UpdateWeixin()

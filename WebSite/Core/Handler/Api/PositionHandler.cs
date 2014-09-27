@@ -88,6 +88,12 @@ namespace Backstage.Core.Handler
             var times = new List<object>();
             foreach (var t in timeslot)
             {
+                if (t.Date != DateTime.Now.Date)
+                {
+                    t.Date = DateTime.Now.Date;
+                    t.Status = 0;
+                    PositionHelper.UpdateTimeline(t);
+                }
                 var time_item = new
                 {
                     name = t.Title,
@@ -136,8 +142,16 @@ namespace Backstage.Core.Handler
 
                 var position = PositionHelper.GetItem(userPosition.PositionId);
                 var timeline = PositionHelper.GetTimeLine(userPosition.TimeId);
+                if (timeline.Date != DateTime.Now.Date)
+                {
+                    timeline.Date = DateTime.Now.Date;
+                    timeline.Status = 0;
+                    PositionHelper.UpdateTimeline(timeline);
+                }
+
                 if (timeline.Status == 1)
                 {
+                   
                     jt.Add("status", 0);
                     jt.Add("message", "该位置已经被预定了");
                     Response.Write(DesEncrypt(jt).ToLower());

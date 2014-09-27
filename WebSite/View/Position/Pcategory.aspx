@@ -83,7 +83,7 @@
 
     <script type="text/jquery-tmpl-x" id="j-tmpl-listitem">
         	{{each(i, v) list}}
-	        	<tr data-cid="${v.id}">
+	        	<tr data-cid="${v.Id}">
 					<td><input type="checkbox" class="j-select" /></td>
 					<td><input type="text" value="${v.Title}" class="j-categroy-title"></td>
 					<td>${v.HoldNum}</td>
@@ -163,7 +163,7 @@
                     var $checked = $("#j-categroy-list .j-select:checked");
 
                     var data_save = [];
-
+                    console.log($checked);
                     $checked.each(function () {
                         var $item = $(this).parents("tr");
                         data_save.push(
@@ -172,7 +172,7 @@
                             Title: $item.find(".j-categroy-title").val()
                         });
                     });
-
+                    console.log(data_save);
 
                     if (data_save.length > 0) {
                         Common.confirm({
@@ -183,8 +183,8 @@
                                 $.ajax({
                                     url: "../../Handler/Backstage/PositionHandler.ashx?action=savetypes&sellerId=" + sellerId,
                                     dataType: "json",
-                                    data: data_save,
-                                    type: "post"
+                                    type: "post",
+                                    data: data_save
                                 }).success(function (data) {
                                     alert("保存成功！");
                                 });
@@ -215,7 +215,7 @@
                         lowest: $.trim($("#j-type-low").val())
                     }
                     $.ajax({
-                        url: "../../Handler/Backstage/PositionHandler.ashx?action=addCateory&sellerId=" + sellerId,
+                        url: "../../Handler/Backstage/PositionHandler.ashx?action=addcateory&sellerId=" + sellerId,
                         dataType: "json",
                         data: save_data,
                         type: "post"
@@ -240,7 +240,7 @@
                     url: "../../Handler/Backstage/PositionHandler.ashx?action=categorys&sellerId=" + sellerId,
                     dataType: "json",
                     type: "get",
-                }).success(function () {
+                }).success(function (data) {
                     //$.getJSON("", { p: p, type : type}， function(json){
                     $("#j-btn-selectAll").removeAttr("checked");
                     var json = {

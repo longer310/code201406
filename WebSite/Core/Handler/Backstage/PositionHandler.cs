@@ -36,7 +36,7 @@ namespace Backstage.Core.Handler.Backstage
                     GetCategorys(); break;
                 case "updatecategory":
                     UpdateCategory(); break;
-                case "addCateory":
+                case "addcateory":
                     AddCategory(); break;
                 case "deletecategory":
                     DeleteCategory(); break;
@@ -44,15 +44,88 @@ namespace Backstage.Core.Handler.Backstage
                     SaveTypes(); break;
                 case "times":
                     GetTimes(); break;
-                case "addTime":
+                case "addtime":
                     AddTime(); break;
-                case "editTime":
+                case "edittime":
                     EditTime(); break;
                 case "deltimes":
                     DeleteTime(); break;
+                case "orders":
+                    Orders(); break;
+                case "cancelorder":
+                    CancelOrder();break;
+                case "deleteorder":
+                    DeleteOrder(); break;
                 default: break;
             }
         }
+
+        private void DeleteOrder()
+        {
+            var ids = Utility.GetListint(GetString("ids"));
+            foreach (var id in ids)
+            {
+                PositionHelper.DeleteUserPosion(id);
+            }
+        }
+
+        private void CancelOrder()
+        {
+            var orderId = GetInt("orderId");
+            var up = PositionHelper.GetUserPosition(orderId);
+            up.Status = -1;
+            PositionHelper.UpdateUserPosition(up);
+        }
+
+        private void Orders()
+        {
+            var sellerId = GetInt("sellerId");
+            var index = GetInt("start");
+            var size = GetInt("limit");
+            var pages = PositionHelper.GetPagingUserPosition(sellerId, index * size, size);
+            var list = new PagResults<object>();
+            list.TotalCount = pages.TotalCount;
+            foreach (var item in pages.Results)
+            {
+                var position = PositionHelper.GetItem(item.PositionId);
+                var boxType = PositionHelper.GetBoxType(position.BoxTypeId);
+                var timeline = PositionHelper.GetTimeLine(item.TimeId);
+                
+                list.Results.Add(new
+                {
+                    Id = item.Id,
+                    BoxNumber = position.BoxNumber,
+                    BoxTypeId = position.BoxTypeId,
+                    BoxTypeTitle = boxType.Title,
+                    Time = timeline.BeginTime.ToString("HH:mm") + "-" +  timeline.EndTime.ToString("HH:mm"),
+                    NickName = item.NickName,
+                    Phone = item.Phone,
+                    CreateTime = item.CreateTime.ToString("yyyy-MM-dd HH:mm:ss"),
+                    Status = OrderStatusToName(item.Status)
+                });
+            }
+            JsonTransfer jt = new JsonTransfer();
+            jt.Add("data", list);
+            Response.Write(DesEncrypt(jt));
+            Response.End();
+        }
+
+
+        string OrderStatusToName(int status)
+        {
+            switch (status)
+            { 
+                case 1:
+                    return "预定成功";break;
+                case 2:
+                    return "已经到店";break;
+                case -1:
+                    return "取消订单";break;
+                default:
+                    return "预定成功";break;
+            }
+        }
+
 
 
         private void SaveTypes()
@@ -224,7 +297,7 @@ namespace Backstage.Core.Handler.Backstage
             item.EndTime = GetTime("end");
             item.Date = item.BeginTime.Date;
             item.Title = GetString("title");
-            item.Status = GetInt("status");
+            item.Status = 0;
             item.SellerId = GetInt("sellerId");
             item.PositionId = GetInt("positionId");
             PositionHelper.CreateTimeline(item);

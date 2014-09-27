@@ -116,12 +116,13 @@
         	{{each(i, v) list}}
 	        	<tr data-gid="${v.Id}">
 					<td><input type="checkbox" class="j-select" /></td>
-					<td style="width:45px;">${v.BoxNumber}</td>
-					<td style="width:30px;">${v.BoxTypeTitle}</td>
-					<td>${v.Lowest}</td>
-					<td style="width:120px;">
+					<td style="width:55px;">${v.BoxNumber}</td>
+					<td style="width:50px;">${v.BoxTypeTitle}</td>
+					<td style="width:100px;">${v.Lowest}</td>
+					<td>
 						<div class="pull-right">
 							<a class="btn btn-primary btn-mini" href="Edit.aspx?id=${v.Id}"><i class="icon-pencil icon-white"></i> 编辑</a>
+							<a class="btn btn-primary btn-mini" href="Timeline.aspx?pid=${v.Id}&sellerId=${sellerId}"><i class="icon-pencil icon-white"></i> 时间段管理</a>
 							<a class="btn btn-danger btn-mini j-btn-del" href=""><i class="icon-remove icon-white"></i> 删除</a>
 						</div>
 					</td>

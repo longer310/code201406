@@ -214,7 +214,7 @@ namespace Backstage.Core.Handler
         {
             var results = new PagResults<Position>();
             int totalnum = 0;
-            string commandText = @"select * from position where sellerId = ?sellerId";
+            string commandText = @"select * from position where sellerId = ?sellerId order by CreateTime desc";
             if (cid != 0)
                 commandText += (" and BoxTypeId = " + cid);
             if (status != -1)
@@ -243,6 +243,7 @@ namespace Backstage.Core.Handler
                         p.Description = reader["Description"].ToString();
                         p.Status = (int)reader["Status"];
                         p.BoxTypeId = (int)reader["BoxTypeId"];
+                        p.CreateTime =(DateTime)reader["CreateTime"];
                         results.Results.Add(p);
                     }
 
@@ -435,15 +436,15 @@ namespace Backstage.Core.Handler
             	                                HoldNum,
             	                                Lowest,
            	                                    SellerId, 
-            	                                Title,
+            	                                Title
             	                                )
             	                                VALUES
             	                                ( 
-            	                                ?UserId, 
+            	                                ?CreateTime, 
             	                                ?HoldNum,
             	                                ?Lowest,
            	                                    ?SellerId, 
-            	                                ?Title,
+            	                                ?Title
             	                                )";
 
             List<MySqlParameter> parameters = new List<MySqlParameter>();
@@ -528,12 +529,77 @@ namespace Backstage.Core.Handler
             return up;
         }
 
-        internal static UserPosition GetUserPosition(int orderId)
+        public static PagResults<UserPosition> GetPagingUserPosition(int sellerId, int pageIndex, int pageSize)
+        {
+            var results = new PagResults<UserPosition>();
+            string commandText = @"select * from UserPosition where sellerId = ?sellerId order by CreateTime desc LIMIT ?index,?size";
+            List<MySqlParameter> parameters = new List<MySqlParameter>();
+            if (pageSize == 0)
+            {
+                commandText = @"select * from UserPosition where sellerId = ?sellerId";
+                parameters.Add(new MySqlParameter("?sellerId", sellerId));
+            }
+            else
+            {
+                parameters.Add(new MySqlParameter("?sellerId", sellerId));
+                parameters.Add(new MySqlParameter("?index", pageIndex));
+                parameters.Add(new MySqlParameter("?size", pageSize));
+            }
+            try
+            {
+                using (var conn = Utility.ObtainConn(Utility._gameDbConn))
+                {
+                    MySqlDataReader reader = MySqlHelper.ExecuteReader(conn, CommandType.Text, commandText, parameters.ToArray());
+                    while (reader.Read())
+                    {
+                        UserPosition up = new UserPosition();
+                        up.Id = reader.GetInt32(0);
+                        up.SellerId = (int)reader["SellerId"];
+                        up.CreateTime = (DateTime)reader["CreateTime"];
+                        up.Message = reader["Message"].ToString();
+                        up.NickName = reader["NickName"].ToString();
+                        up.PayId = (int)reader["PayId"];
+                        up.Phone = reader["Phone"].ToString();
+                        up.PositionId = (int)reader["PositionId"];
+                        up.Status = (int)reader["Status"];
+                        up.TimeId = (int)reader["TimeId"];
+                        up.UserId = (int)reader["UserId"];
+
+                        results.Results.Add(up);
+                    }
+                    conn.Close();
+                    conn.Dispose();
+                    conn.Open();
+
+                    commandText = @"select count(*) from UserPosition where sellerId = ?sellerId";
+                    parameters.Clear();
+                    parameters.Add(new MySqlParameter("?sellerId", sellerId));
+
+                    reader = MySqlHelper.ExecuteReader(conn, CommandType.Text, commandText, parameters.ToArray());
+                    if (reader.HasRows)
+                    {
+                        if (reader.Read())
+                        {
+                            results.TotalCount = reader.GetInt32(0);
+                        }
+                    }
+
+                }
+
+            }
+            catch (System.Exception ex)
+            {
+                throw;
+            }
+            return results;
+        }
+
+        internal static UserPosition GetUserPosition(int id)
         {
             var up = new UserPosition();
-            string commandText = @"select * from userposition where orderId = ?orderId";
+            string commandText = @"select * from userposition where id = ?id";
             List<MySqlParameter> parameters = new List<MySqlParameter>();
-            parameters.Add(new MySqlParameter("?orderId", orderId));
+            parameters.Add(new MySqlParameter("?id", id));
             try
             {
                 using (var conn = Utility.ObtainConn(Utility._gameDbConn))
@@ -609,7 +675,7 @@ namespace Backstage.Core.Handler
 
         internal static void UpdateUserPosition(UserPosition order)
         {
-            string commandText = @"UPDATE position SET
+            string commandText = @"UPDATE userposition SET
                                                     UserId = ?UserId,
                                                     PositionId = ?PositionId,
                                                     NickName = ?NickName,
@@ -617,7 +683,7 @@ namespace Backstage.Core.Handler
                                                     Phone = ?Phone,
                                                     SellerId = ?SellerId,
                                                     PayId = ?PayId,
-                                                    CreateTime = ?CreateTime
+                                                    CreateTime = ?CreateTime,
                                                     Status = ?Status
                                                 WHERE
                                                     Id = ?Id";
@@ -634,6 +700,15 @@ namespace Backstage.Core.Handler
             parameters.Add(new MySqlParameter("?CreateTime", order.CreateTime));
             parameters.Add(new MySqlParameter("?Status", order.Status));
 
+
+            MySqlHelper.ExecuteNonQuery(GlobalConfig.DbConn, CommandType.Text, commandText, parameters.ToArray());
+        }
+
+        public static void DeleteUserPosion(int id)
+        {
+            string commandText = @"DELETE FROM userposition WHERE Id = ?Id";
+            List<MySqlParameter> parameters = new List<MySqlParameter>();
+            parameters.Add(new MySqlParameter("?Id", id));
 
             MySqlHelper.ExecuteNonQuery(GlobalConfig.DbConn, CommandType.Text, commandText, parameters.ToArray());
         }
@@ -795,14 +870,15 @@ namespace Backstage.Core.Handler
         	                                )";
 
             List<MySqlParameter> parameters = new List<MySqlParameter>();
+            parameters.Add(new MySqlParameter("?Id", t.Id));
             parameters.Add(new MySqlParameter("?SellerId", t.SellerId));
             parameters.Add(new MySqlParameter("?BeginTime", t.BeginTime));
-            parameters.Add(new MySqlParameter("?Date", t.Date));
             parameters.Add(new MySqlParameter("?EndTime", t.EndTime));
+            parameters.Add(new MySqlParameter("?Date", t.Date));
             parameters.Add(new MySqlParameter("?PositionId", t.PositionId));
             parameters.Add(new MySqlParameter("?Status", t.Status));
             parameters.Add(new MySqlParameter("?Title", t.Title));
-            parameters.Add(new MySqlParameter("?Date", t.Date));
+            
 
             MySqlHelper.ExecuteNonQuery(connectionString, CommandType.Text, commandText, parameters.ToArray());
 
@@ -813,13 +889,11 @@ namespace Backstage.Core.Handler
             string commandText = @"UPDATE position SET
                                                     SellerId = ?SellerId, 
         	                                        BeginTime = ?BeginTime,
+        	                                        EndTime = ?EndTime,
         	                                        Date = ?Date,
-        	                                        BoxNumber = ?BoxNumber,
-        	                                        Price = ?Price,
-        	                                        Description = ?Description,
-        	                                        Phone = ?Phone,
-        	                                        Status = Status,
-                                                    CreateTime = CreateTime
+        	                                        PositionId = ?PositionId,
+        	                                        Status = ?Status,
+        	                                        Title = ?Title
                                                 WHERE
                                                     Id = ?Id";
 
@@ -827,12 +901,12 @@ namespace Backstage.Core.Handler
             parameters.Add(new MySqlParameter("?Id", t.Id));
             parameters.Add(new MySqlParameter("?SellerId", t.SellerId));
             parameters.Add(new MySqlParameter("?BeginTime", t.BeginTime));
-            parameters.Add(new MySqlParameter("?Date", t.Date));
             parameters.Add(new MySqlParameter("?EndTime", t.EndTime));
+            parameters.Add(new MySqlParameter("?Date", t.Date));
             parameters.Add(new MySqlParameter("?PositionId", t.PositionId));
             parameters.Add(new MySqlParameter("?Status", t.Status));
             parameters.Add(new MySqlParameter("?Title", t.Title));
-            parameters.Add(new MySqlParameter("?Date", t.Date));
+            
 
             MySqlHelper.ExecuteNonQuery(GlobalConfig.DbConn, CommandType.Text, commandText, parameters.ToArray());
 

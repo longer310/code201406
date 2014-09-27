@@ -26,7 +26,7 @@ namespace Backstage.Core.Entity
         public string NickName { get; set; }
 
         /// <summary>
-        /// 订单状态（）
+        /// 订单状态（1：预定成功，2：已经到店，-1：取消订单）
         /// </summary>
         public int Status { get; set; }
 

@@ -21,11 +21,10 @@
                         <th>包厢号</th>
                         <th>分类</th>
                         <th>时段</th>
-                        <th>状态</th>
                         <th>用户名</th>
                         <th>联系方式</th>
                         <th>预约时间</th>
-                        <th>到店时间</th>
+                        <th>状态</th>
                         <th>操作</th>
                     </tr>
                 </thead>
@@ -60,64 +59,26 @@
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="Footer" runat="server">
     <!--页面js-->
-    <script src="../public/js/ue.pager.js"></script>
-    <script src="../public/js/bootstrap-datepicker.js"></script>
+    <script src="<%=DomainUrl %>/Script/js/ue.pager.js"></script>
 
-    <%--<div id="j-comment-modal" class="modal hide">
-        <form action="#" method="get" class="form-horizontal">
-            <div class="modal-header">
-                <button data-dismiss="modal" class="close" type="button">×</button>
-                <h3>评论回复</h3>
-            </div>
-            <div class="modal-body">
-
-                <div class="control-group">
-                    <label class="control-label">联系信息</label>
-                    <div class="controls">
-                        <input type="text" id="j-time-title" />
-                    </div>
-                </div>
-
-                <div class="control-group">
-                    <label class="control-label">到店时间</label>
-                    <div class="controls">
-                        <input type="text" class="j-datepicker" id="j-time-title" />
-                    </div>
-                </div>
-
-                <div class="control-group">
-                    <label class="control-label">选择时段</label>
-                    <div class="controls">
-                        <select>
-                            <option>时段1</option>
-                            <option>时段2</option>
-                            <option>时段3</option>
-                            <option>时段4</option>
-                        </select>
-                    </div>
-                </div>
-
-
-                <div class="form-actions">
-                    <button type="submit" class="btn btn-primary">提交</button>
-                </div>
-
-            </div>
-            <div class="modal-footer">
-            </div>
-        </form>
-    </div>--%>
+    
 
     <script type="text/jquery-tmpl-x" id="j-tmpl-pkg-listitem">
         	{{each(i, v) list}}
-	        	<tr data-gid="1">
+	        	<tr data-gid="${v.Id}">
 					<td><input type="checkbox" class="j-select" /></td>
-					<td style="width:45px;">${BoxNumber}</td>
-					<td style="width:30px;">${BoxTypeTitle}</td>
-					<td>${Lowest}</td>
+					<td style="width:30px;">${BoxNumber}</td>
+					<td style="width:50px;">${BoxTypeTitle}</td>
+                    <td style="width:50px;">${Time}</td>
+					<td style="width:30px;">${NickName}</td>
+					<td style="width:50px;">${Phone}</td>
+					<td style="width:50px;">${CreateTime}</td>
+					<td style="width:50px;">${Status}</td>
 					<td style="width:120px;">
 						<div class="pull-right">
-							<a class="btn btn-primary btn-mini" href="pkg_edit.html?id=111"><i class="icon-pencil icon-white"></i> 编辑</a>
+                            {{if v.Status != "取消订单"}}
+							<a class="btn btn-primary btn-mini j-btn-cancel" href=""><i class="icon-pencil icon-white"></i>取消预约</a>
+                            {{/if}}
 							<a class="btn btn-danger btn-mini j-btn-del" href=""><i class="icon-remove icon-white"></i> 删除</a>
 						</div>
 					</td>
@@ -126,6 +87,7 @@
         </script>
 
     <script type="text/javascript">
+        var sellerId = '<%=SellerId%>';
         var MPage = {
             init: function () {
                 var mpage = this;
@@ -153,6 +115,8 @@
                     return false;
                 });
 
+                
+
                 //绑定批量删除
                 $("#j-btn-delSelected").bind("click", function () {
                     var $checked = $("#j-pkg-list .j-select:checked");
@@ -168,7 +132,7 @@
                             content: "您确定要删除当前选择的所有数据吗？",
                             confirm: function () {
                                 $.ajax({
-                                    url: "../../Handler/Backstage/PositionHandler.ashx?action=del&ids=" + ids,
+                                    url: "../../Handler/Backstage/PositionHandler.ashx?action=deleteorder&ids=" + ids,
                                     dataType: "json",
                                     type: "Get"
                                 }).success(function (data) {
@@ -176,7 +140,7 @@
                                 });
 
                                 //删除成功后刷新本页
-                                mpage.getPkgList(mpage.curPage, mpage.curType, mpage.curStatus);
+                                mpage.getPkgList(mpage.curPage);
                             },
                             cancel: function () {
                                 //执行取消回调
@@ -197,7 +161,6 @@
                     return false;
                 });
 
-                $('.j-datepicker').datepicker();
 
                 $("#j-pkg-status").bind("change", function () {
                     var status = parseInt($(this).val());
@@ -208,15 +171,11 @@
 
             //p 页码
             //type tab 类型
-            getPkgList: function (p, type, status) {
+            getPkgList: function (p) {
                 var mpage = this;
 
                 $.ajax({
-                    url: "../../Handler/Backstage/PositionHandler.ashx?action=getlist&sellerId=" + sellerId + "&start=" + (p - 1) + "&limit=8",
-                    data: {
-                        type: type,
-                        status: status
-                    },
+                    url: "../../Handler/Backstage/PositionHandler.ashx?action=orders&sellerId=" + sellerId + "&start=" + (p - 1) + "&limit=8",
                     type: "Get",
                     dataType: "json"
                     //context: document.body
@@ -275,16 +234,42 @@
 
                         Common.confirm({
                             title: "删除确认提示",
-                            content: "您确定要删除当前活动？",
+                            content: "您确定要删除？",
                             confirm: function () {
                                 //执行确认回调
                                 $.ajax({
-                                    url: "../../Handler/Backstage/PositionHandler.ashx?action=del&ids=" + id,
+                                    url: "../../Handler/Backstage/PositionHandler.ashx?action=deleteorder&ids=" + id,
                                     dataType: "json",
                                     type: "Get"
                                 }).success(function (data) {
                                     alert("删除成功");
                                     $item.remove();
+                                });
+
+                            },
+                            cancel: function () {
+                                //执行取消回调
+                                //alert('执行取消回调');
+                            }
+                        });
+                        return false;
+                    });
+
+                    $("#j-pkg-list .j-btn-cancel").bind("click", function () {
+                        var $item = $(this).parents("tr");
+                        var id = $item.attr("data-gid");
+                        Common.confirm({
+                            title: "取消预约确认提示",
+                            content: "您确定取消预约？",
+                            confirm: function () {
+                                //执行确认回调
+                                $.ajax({
+                                    url: "../../Handler/Backstage/PositionHandler.ashx?action=cancelorder&orderId=" + id,
+                                    dataType: "json",
+                                    type: "Get"
+                                }).success(function (data) {
+                                    alert("取消成功");
+                                    window.location.reload();
                                 });
 
                             },

@@ -86,6 +86,9 @@ namespace Backstage.Core.Logic
                             merchant.AndroidVersion = reader["AndroidVersion"].ToString();
                             merchant.IosVersion = reader["IosVersion"].ToString();
 
+                            merchant.SlideAdStayTime = (int)reader["SlideAdStayTime"];
+                            merchant.SlideAds = JsonTransfer.DeserializeObject<List<SlideAdItem>>(reader["SlideAds"].ToString());
+
                             //获取商户基础类型
                             var merchanttype = MerchantTypeHelper.GetMerchantType(merchant.Mid);
                             if (merchanttype != null)
@@ -165,7 +168,9 @@ namespace Backstage.Core.Logic
                                         HasDelivery                  = ?HasDelivery               ,
                                         WifiAccount                  = ?WifiAccount              ,
                                         AndroidVersion                  = ?AndroidVersion              ,
-                                        IosVersion                  = ?IosVersion                 
+                                        IosVersion                  = ?IosVersion                 ,
+                                        SlideAdStayTime                  = ?SlideAdStayTime                 ,
+                                        SlideAds                  = ?SlideAds                           
 
                                     WHERE
                                         Id = ?Id";
@@ -227,6 +232,9 @@ namespace Backstage.Core.Logic
                 parameters.Add(new MySqlParameter("?AndroidVersion", merchant.AndroidVersion));
                 parameters.Add(new MySqlParameter("?IosVersion", merchant.IosVersion));
 
+                parameters.Add(new MySqlParameter("?SlideAdStayTime", merchant.SlideAdStayTime));
+                parameters.Add(new MySqlParameter("?SlideAds", JsonTransfer.SerializeObject(merchant.SlideAds)));
+
 
             }
             else
@@ -284,7 +292,9 @@ namespace Backstage.Core.Logic
                                         HasDelivery                 ,
                                         WifiAccount                ,
                                         AndroidVersion                ,
-                                        IosVersion                
+                                        IosVersion                ,
+                                        SlideAdStayTime                ,
+                                        SlideAds                
                                         ) 
                                         values
                                         (
@@ -339,7 +349,9 @@ namespace Backstage.Core.Logic
                                         ?HasDelivery                ,
                                         ?WifiAccount                 ,
                                         ?AndroidVersion                 ,
-                                        ?IosVersion                  
+                                        ?IosVersion                   ,
+                                        ?SlideAdStayTime                   ,
+                                        ?SlideAds                  
                                         )";
                 parameters.Add(new MySqlParameter("?Id", merchant.Id));
                 parameters.Add(new MySqlParameter("?Name", merchant.Name));
@@ -396,6 +408,9 @@ namespace Backstage.Core.Logic
                 parameters.Add(new MySqlParameter("?WifiAccount", merchant.WifiAccount));
                 parameters.Add(new MySqlParameter("?AndroidVersion", merchant.AndroidVersion));
                 parameters.Add(new MySqlParameter("?IosVersion", merchant.IosVersion));
+
+                parameters.Add(new MySqlParameter("?SlideAdStayTime", merchant.SlideAdStayTime));
+                parameters.Add(new MySqlParameter("?SlideAds", JsonTransfer.SerializeObject(merchant.SlideAds)));
             }
             try
             {
@@ -498,6 +513,9 @@ namespace Backstage.Core.Logic
                         merchant.WifiAccount = reader["WifiAccount"].ToString();
                         merchant.AndroidVersion = reader["AndroidVersion"].ToString();
                         merchant.IosVersion = reader["IosVersion"].ToString();
+
+                        merchant.SlideAdStayTime = (int)reader["SlideAdStayTime"];
+                        merchant.SlideAds = JsonTransfer.DeserializeObject<List<SlideAdItem>>(reader["SlideAds"].ToString());
 
                         result.Results.Add(merchant);
                     }

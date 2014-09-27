@@ -195,8 +195,10 @@ namespace Backstage.Handler
             var imgs = GetString("imgs");
             var staytime = GetInt("staytime");
             var jumpurls = GetString("jumpurls");
+            var types = GetString("types");
+            var typeids = GetString("typeids");
 
-            if (type > 1 || string.IsNullOrEmpty(imgs) || staytime == 0)
+            if (type > 2 || string.IsNullOrEmpty(imgs) || staytime == 0)
             {
                 ReturnErrorMsg("传参有误");
                 return;
@@ -215,7 +217,7 @@ namespace Backstage.Handler
                 merchant.LoginAdStayTime = staytime;
                 merchant.LoginAdUrl = imgs;
             }
-            else
+            else if (type == 1)
             {
                 //wifi广告
                 merchant.WifiAdStayTime = staytime;
@@ -234,6 +236,30 @@ namespace Backstage.Handler
                     pitem.PicUrl = str;
                     pitem.JumpUrl = jumplist[i];
                     merchant.WifiAds.Add(pitem);
+                    i++;
+                }
+            }
+            else
+            {
+                //轮播广告
+                merchant.SlideAdStayTime = staytime;
+                var list = Utility.GetListstring(imgs);
+                var typelist = Utility.GetListstring(types);
+                var typeidlist = Utility.GetListstring(typeids);
+                if (typelist.Count == 0 || list.Count == 0 || typeidlist.Count == 0 || typelist.Count != typeidlist.Count || list.Count != typeidlist.Count)
+                {
+                    ReturnErrorMsg("传参有误");
+                    return;
+                }
+                merchant.SlideAds = new List<SlideAdItem>();
+                var i = 0;
+                foreach (var str in typelist)
+                {
+                    var sitem = new SlideAdItem();
+                    sitem.img = list[i];
+                    sitem.type = Convert.ToInt32(str);
+                    sitem.typeid = Convert.ToInt32(typeidlist[i]);
+                    merchant.SlideAds.Add(sitem);
                     i++;
                 }
             }

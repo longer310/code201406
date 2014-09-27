@@ -157,53 +157,78 @@ namespace Backstage.Handler
                 ReturnErrorMsg("不存在该商户");
                 return;
             }
+            var data = new HomeData();
 
             //单独获取产品的列表 以后得改 +图片墙+活动
             var list = new List<TSlideItem>();
-            var gads = GoodsHelper.GetGoodsList(sellerid, "", "", 0, 5).Results;
-            foreach (var gad in gads)
+            merchant.SlideAds = merchant.SlideAds ?? new List<Core.Entity.SlideAdItem>();
+            foreach (var slideAdItem in merchant.SlideAds)
             {
-                var s = new TSlideItem();
-                s.img = Utility.GetPhoneNeedUrl(gad.LogoUrl);
-                s.title = gad.Title;
-                s.type = (int)CommentType.Goods;
-                s.typeid = gad.Id;
-                s.createtime = gad.CreateTime.GetUnixTime();
-
-                list.Add(s);
+                var s = new SlideItem();
+                s.img = slideAdItem.img;
+                s.type = slideAdItem.type;
+                s.typeid = slideAdItem.typeid;
+                s.title = "";
+                if (s.type == 1)
+                {
+                    var goods = GoodsHelper.GetGoods(s.typeid);
+                    if (goods != null) s.title = goods.Title;
+                }
+                else if (s.type == 2)
+                {
+                    var active = ActiveHelper.GetItem(s.typeid);
+                    if (active != null) s.title = active.Title;
+                }
+                else if (s.type == 3)
+                {
+                    var sourceMaterialHelper = SourceMaterialHelper.GetItem(s.typeid);
+                    if (sourceMaterialHelper != null) s.title = sourceMaterialHelper.Title;
+                }
+                data.slide.Add(s);
             }
-            var aads = ActiveHelper.GetList(0, 5, "", " order by createtime desc ");
-            foreach (var aad in aads)
-            {
-                var s = new TSlideItem();
-                s.img = Utility.GetPhoneNeedUrl(aad.CoverImgUrl);
-                s.title = aad.Title;
-                s.type = (int)CommentType.Avtive;
-                s.typeid = aad.Id;
-                s.createtime = aad.CreateTime.GetUnixTime();
+            //var gads = GoodsHelper.GetGoodsList(sellerid, "", "", 0, 5).Results;
+            //foreach (var gad in gads)
+            //{
+            //    var s = new TSlideItem();
+            //    s.img = Utility.GetPhoneNeedUrl(gad.LogoUrl);
+            //    s.title = gad.Title;
+            //    s.type = (int)CommentType.Goods;
+            //    s.typeid = gad.Id;
+            //    s.createtime = gad.CreateTime.GetUnixTime();
 
-                list.Add(s);
-            }
-            var pads = SourceMaterialHelper.GetList(0, 5, "", " order by createtime desc ");
-            foreach (var pad in pads)
-            {
-                var s = new TSlideItem();
-                s.img = Utility.GetPhoneNeedUrl(pad.Url);
-                s.title = pad.Title;
-                s.type = (int)CommentType.Img;
-                s.typeid = pad.Id;
-                s.createtime = pad.CreateTime.GetUnixTime();
+            //    list.Add(s);
+            //}
+            //var aads = ActiveHelper.GetList(0, 5, "", " order by createtime desc ");
+            //foreach (var aad in aads)
+            //{
+            //    var s = new TSlideItem();
+            //    s.img = Utility.GetPhoneNeedUrl(aad.CoverImgUrl);
+            //    s.title = aad.Title;
+            //    s.type = (int)CommentType.Avtive;
+            //    s.typeid = aad.Id;
+            //    s.createtime = aad.CreateTime.GetUnixTime();
 
-                list.Add(s);
-            }
+            //    list.Add(s);
+            //}
+            //var pads = SourceMaterialHelper.GetList(0, 5, "", " order by createtime desc ");
+            //foreach (var pad in pads)
+            //{
+            //    var s = new TSlideItem();
+            //    s.img = Utility.GetPhoneNeedUrl(pad.Url);
+            //    s.title = pad.Title;
+            //    s.type = (int)CommentType.Img;
+            //    s.typeid = pad.Id;
+            //    s.createtime = pad.CreateTime.GetUnixTime();
 
-            list = list.OrderByDescending(o => o.createtime).Take(5).ToList();
+            //    list.Add(s);
+            //}
 
-            var data = new HomeData();
-            foreach (var l in list)
-            {
-                data.slide.Add(new SlideItem() { img = Utility.GetPhoneNeedUrl(l.img), title = l.title, type = l.type, typeid = l.typeid });
-            }
+            //list = list.OrderByDescending(o => o.createtime).Take(5).ToList();
+
+            //foreach (var l in list)
+            //{
+            //    data.slide.Add(new SlideItem() { img = Utility.GetPhoneNeedUrl(l.img), title = l.title, type = l.type, typeid = l.typeid });
+            //}
 
             var pcfg = ParamHelper.PlatformCfgData;
             data.ad = new AdItem() { img = Utility.GetPhoneNeedUrl(pcfg.PhoneAd.PicUrl), url = pcfg.PhoneAd.JumpUrl };
@@ -1253,7 +1278,7 @@ namespace Backstage.Handler
             var list = ShoppingCartHelper.GetList(uid, gids);
             if (list.Count != gidList.Count)
             {
-                ReturnErrorMsg("存在不属于该用户的购物车id或者找不到该id的购物车");
+                ReturnErrorMsg("不存在该商品的购物车");
                 return;
             }
             //批量删除购物车

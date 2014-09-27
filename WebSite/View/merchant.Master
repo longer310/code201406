@@ -12,6 +12,8 @@
     <link rel="stylesheet" type="text/css" href="<%=DomainUrl %>/Css/css/bootstrap-responsive.min.css" />
     <link rel="stylesheet" type="text/css" href="<%=DomainUrl %>/Css/css/unicorn.main.css" />
     <link rel="stylesheet" type="text/css" href="<%=DomainUrl %>/Css/css/unicorn.grey.css" />
+    <!--页面样式-->
+    <link href="<%=DomainUrl %>/script/kindeditor/themes/default/default.css" type="text/css" rel="stylesheet">
     <asp:ContentPlaceHolder ID="Header" runat="server">
     </asp:ContentPlaceHolder>
 </head>

@@ -276,7 +276,7 @@ namespace Backstage.Core.Logic
         }
 
         /// <summary>
-        /// 获取用户评论列表
+        /// 获取购物车列表
         /// </summary>
         /// <param name="uid"></param>
         /// <param name="gids"></param>

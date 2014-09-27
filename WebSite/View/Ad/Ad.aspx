@@ -32,14 +32,14 @@
                                     <img id="j-login-url" src="http://placehold.it/640x1138" width="200" height="356" alt="" class="j-img-placehold">
                                 </span>
                             </div>
-                            <p style="margin-top:10px;"><b class="text-error">上传图片要求：640x1138</b></p>
+                            <p style="margin-top: 10px;"><b class="text-error">上传图片要求：640x1138</b></p>
                         </div>
                     </div>
 
                     <div class="control-group">
                         <label class="control-label">停留时间：</label>
                         <div class="controls">
-                            <input id="j-login-delay" type="text" class="input-small j-ad-delay" />
+                            <input onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')" id="j-login-delay" type="text" class="input-small j-ad-delay" />
                             秒
 								
                         </div>
@@ -67,7 +67,7 @@
                             <a href="javascript:;" title="增加一个" class="icon icon-plus-sign" id="j-homeslide-add_ad"></a>
                             <a href="javascript:;" title="减少一个" class="icon icon-minus-sign" id="j-homeslide-remove_ad"></a>
                             <label class="inline" style="margin-left: 20px;">停留时间</label>
-                            <input type="text" class="input-small" id="j-homeslide-delay" value="1" />
+                            <input onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')" type="text" class="input-small" id="j-homeslide-delay" value="1" />
                             秒
 								
                         </div>
@@ -79,44 +79,44 @@
                     <div class="form-actions">
                         <a href="javascript:void(0);" id="saveslidead" class="btn btn-primary"><i class="icon-ok icon-white"></i>完成保存</a>
                     </div>
-                    </div>
-					
                 </div>
-            </div>
 
-            <div class="widget-box">
-                <div class="widget-title">
-                    <h5>wifi设备广告</h5>
-                </div>
-                <div class="widget-content">
-                    <div class="form-horizontal" id="j-wifi-addForm" />
-
-                    <div class="control-group">
-                        <div class="controls">
-                            <label class="inline">广告个数</label>
-                            <input type="text" value="1" class="input-small" readonly="readonly" id="j-wifi_count" />
-                            个
-								
-                    <a href="javascript:;" title="增加一个" class="icon icon-plus-sign" id="j-add_ad"></a>
-                            <a href="javascript:;" title="减少一个" class="icon icon-minus-sign" id="j-remove_ad"></a>
-                            <label class="inline" style="margin-left: 20px;">停留时间</label>
-                            <input type="text" class="input-small" id="j-wifi-delay" value="1" />
-                            秒
-							
-                        </div>
-                    </div>
-
-                    <div id="j-wifi-ad">
-                    </div>
-
-                    <div class="form-actions">
-                        <a href="javascript:void(0);" id="savewifiad" class="btn btn-primary"><i class="icon-ok icon-white"></i>完成保存</a>
-                    </div>
-
-
-                </div>
             </div>
         </div>
+
+        <div class="widget-box">
+            <div class="widget-title">
+                <h5>wifi设备广告</h5>
+            </div>
+            <div class="widget-content">
+                <div class="form-horizontal" id="j-wifi-addForm" />
+
+                <div class="control-group">
+                    <div class="controls">
+                        <label class="inline">广告个数</label>
+                        <input type="text" value="1" class="input-small" readonly="readonly" id="j-wifi_count" />
+                        个
+								
+                    <a href="javascript:;" title="增加一个" class="icon icon-plus-sign" id="j-add_ad"></a>
+                        <a href="javascript:;" title="减少一个" class="icon icon-minus-sign" id="j-remove_ad"></a>
+                        <label class="inline" style="margin-left: 20px;">停留时间</label>
+                        <input onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')" type="text" class="input-small" id="j-wifi-delay" value="1" />
+                        秒
+							
+                    </div>
+                </div>
+
+                <div id="j-wifi-ad">
+                </div>
+
+                <div class="form-actions">
+                    <a href="javascript:void(0);" id="savewifiad" class="btn btn-primary"><i class="icon-ok icon-white"></i>完成保存</a>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
     </div>
 
     <div id="footer">
@@ -158,16 +158,16 @@
                 </div>
 		{{/each}}
     </script>
-    
-	<script type="text/jquery-tmpl-x" id="j-tmpl-homeslide-ad-item">
-		{{each(i, v) list}}
+
+    <script type="text/jquery-tmpl-x" id="j-tmpl-homeslide-ad-item">
+		{{each(i, v) SlideAds}}
 			<div style="border:1px solid #cdcdcd; background-color:#efefef;position:relative; margin-bottom:10px;" class="j-homeslide-ad-item" data-id="${v.id}">
 				<div class="control-group">
 					<label class="control-label">广告图片</label>
 					<div class="controls">
 						<div class="clearfix">
 							<span class="thumbnail pull-left" style="margin-right:10px;">
-								<img src="${v.avatar}" height="130" width="313" alt="" class="j-img-placehold">
+								<img src="${v.img}" height="130" width="313" alt="" class="j-img-placehold">
 							</span>
                             <p style="margin-top:10px;"><b class="text-error">上传图片要求：540x224</b></p>
 							<p><a class="btn btn-info j-btn-imageUpload" href="javascript:;"><i class="icon-folder-open icon-white"></i> 本地上传</a></p>
@@ -186,7 +186,7 @@
 							<option value="3" {{if v.type ==3 }}selected="selected"{{/if}}>图片墙</option>
 						</select>
 
-						<label class="inline" style="margin-left:20px;">产品ID：</label><input class="input-small j-homeslide-goto-id" type="text" value="${v.goto_id}">
+						<label class="inline" style="margin-left:20px;">ID：</label><input class="input-small j-homeslide-goto-id" type="text" value="${v.typeid}">
 					</div>
 				</div>
 
@@ -222,10 +222,14 @@
                 $.post(mpage.hander + "getAdCfg", {}, function (data) {
                     if (!data.error) {
                         mpage.addLevel(data.data);
+                        mpage.addHomeSlideLevel(data.data);
                         $("#j-login-url").attr("src", data.data.LoginAdUrl);
                         $("#j-login-delay").val(data.data.LoginAdStayTime);
                         $("#j-wifi-delay").val(data.data.WifiAdStayTime);
                         $("#j-wifi_count").val(data.data.WifiAds.length);
+
+                        $("#j-homeslide-delay").val(data.data.SlideAdStayTime);
+                        $("#j-homeslide-count").val(data.data.SlideAds.length);
                     } else {
                         Common.tip({ type: "error", content: data.error });
                     }
@@ -237,31 +241,111 @@
                 var imgs = "";
                 var staytime = 1;
                 var jumpurls = "";
+                var types = "";
+                var typeids = "";
                 if (type == 0) {
                     //登录广告大图
                     var imglist = [];
-                    imglist.push($("#j-login-url").attr("src"));
-                    imglist.push($("#j-login-url").attr("src"));
+                    var loginurl = $("#j-login-url").attr("src");
+                    if (loginurl == "" || loginurl == "http://placehold.it/640x1138") {
+                        Common.tip({ type: "error", content: "还没上传图片~" });
+                        return;
+                    }
                     staytime = $("#j-login-delay").val();
-                } else {
+                    if (staytime == "") {
+                        Common.tip({ type: "error", content: "还没填写停留时间~" });
+                        return;
+                    }
+                    if (isNaN(staytime)) {
+                        Common.tip({ type: "error", content: "输入的停留时间格式错误~" });
+                        return;
+                    }
+                    imglist.push(loginurl);
+                    //imglist.push($("#j-login-url").attr("src"));
+                }
+                else if (type == 1) {
                     var imglist = [];
                     $("#j-wifi-ad .j-img-placehold").each(function () {
                         var $item = $(this);
                         var url = $item.attr("src");
+                        if (url == "" || url == "http://placehold.it/640x1138") {
+                            Common.tip({ type: "error", content: "还没上传图片~" });
+                            return;
+                        }
                         imglist.push(url);
                     });
                     imgs = imglist.join(",");
                     staytime = $("#j-wifi-delay").val();
+                    if (staytime == "") {
+                        Common.tip({ type: "error", content: "还没填写停留时间~" });
+                        return;
+                    }
+                    if (isNaN(staytime)) {
+                        Common.tip({ type: "error", content: "输入的停留时间格式错误~" });
+                        return;
+                    }
                     var jumplist = [];
                     $("#j-wifi-ad .j-wifi-goto").each(function () {
                         var $item = $(this);
                         var url = $item.val();
+                        if (url == "" || url == "http://placehold.it/640x1138") {
+                            Common.tip({ type: "error", content: "跳转页面不能为空~" });
+                            return;
+                        }
                         jumplist.push(url);
                     });
                     jumpurls = jumplist.join(",");
                 }
+                else {
+                    var imglist = [];
+                    $("#j-homeslide-ad .j-img-placehold").each(function () {
+                        var $item = $(this);
+                        var url = $item.attr("src");
+                        if (url == "" || url == "http://placehold.it/640x1138") {
+                            Common.tip({ type: "error", content: "还没上传图片~" });
+                            return;
+                        }
+                        imglist.push(url);
+                    });
+                    imgs = imglist.join(",");
+                    staytime = $("#j-wifi-delay").val();
+                    if (staytime == "") {
+                        Common.tip({ type: "error", content: "还没填写停留时间~" });
+                        return;
+                    }
+                    if (isNaN(staytime)) {
+                        Common.tip({ type: "error", content: "输入的停留时间格式错误~" });
+                        return;
+                    }
+                    var typelist = [];
+                    $("#j-homeslide-ad .j-homeslide-goto-type").each(function () {
+                        var $item = $(this);
+                        var stype = $item.val();
+                        if (stype == "" || stype == 0) {
+                            Common.tip({ type: "error", content: "还没有选择类型~" });
+                            return;
+                        }
+                        typelist.push(stype);
+                    });
+                    types = typelist.join(',');
+                    var typeidlist = [];
+                    $("#j-homeslide-ad .j-homeslide-goto-id").each(function () {
+                        var $item = $(this);
+                        var typeid = $item.val();
+                        if (typeid == "") {
+                            Common.tip({ type: "error", content: "还没填写相应类型ID~" });
+                            return;
+                        }
+                        if (isNaN(typeid)) {
+                            Common.tip({ type: "error", content: "输入ID格式不正确~" });
+                            return;
+                        }
+                        typeidlist.push(typeid);
+                    });
+                    typeids = typeidlist.join(",");
+                }
 
-                $.post(mpage.hander + "saveAdCfg", { type: type, staytime: staytime, imgs: imgs, jumpurls: jumpurls }, function (data) {
+                $.post(mpage.hander + "saveAdCfg", { type: type, staytime: staytime, imgs: imgs, jumpurls: jumpurls, types: types, typeids: typeids }, function (data) {
                     if (!data.error) {
                         Common.tip({ type: "success", content: data.success });
                     } else {
@@ -331,9 +415,9 @@
                     count++;
                     $("#j-homeslide-count").val(count);
                     mpage.addHomeSlideLevel({
-                        list: [
+                        SlideAds: [
                             {
-                                avatar: "http://placehold.it/128x128"
+                                img: "http://placehold.it/128x128"
                             }
                         ]
                     });
@@ -367,7 +451,7 @@
                     mpage.addLevel({
                         WifiAds: [
                             {
-                                avatar: "http://placehold.it/128x128"
+                                PicUrl: "http://placehold.it/128x128"
                             }
                         ]
                     });
@@ -407,10 +491,14 @@
                 $("#saveloginad").bind("click", function () {
                     mpage.saveInfo(0);
                 });
+
+                $("#saveslidead").bind("click", function () {
+                    mpage.saveInfo(2);
+                });
             },
             addHomeSlideLevel: function (data) {
                 var mpage = this;
-                console.log(data);
+                //console.log(data);
                 $("#j-homeslide-ad").append($("#j-tmpl-homeslide-ad-item").tmpl(data));
 
                 //图片上传绑定
@@ -457,7 +545,7 @@
             addLevel: function (data) {
                 var mpage = this;
 
-                console.log(data);
+                //console.log(data);
                 $("#j-wifi-ad").append($("#j-tmpl-wifi-ad-item").tmpl(data));
 
                 //图片上传绑定
@@ -512,9 +600,9 @@
             }
         };
 
-            $(function () {
-                MPage.init();
-            });
+        $(function () {
+            MPage.init();
+        });
 
     </script>
 </asp:Content>

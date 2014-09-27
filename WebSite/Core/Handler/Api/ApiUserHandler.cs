@@ -73,17 +73,17 @@ namespace Backstage.Handler
                 case "modifypwd"://修改密码 7.16
                     ModifyPwd();
                     break;
-                case "getmodifypwdcode"://获取修改密码验证码 7.26
-                    GetModifyPwdCode();
+                case "getresetpwdcode"://获取重置密码验证码 7.26
+                    GetResetPwdCode();
                     break;
-                case "resetpwd"://获取修改密码验证码 7.27
+                case "resetpwd"://重置密码 7.27
                     ResetPwd();
-                    break;
-                case "modifyphone"://更改绑定号码 7.17
-                    ModifyPhone();
                     break;
                 case "getmodifyphoneCode"://更改绑定号码_发送短信验证码 7.18
                     GetModifyPhoneCode();
+                    break;
+                case "modifyphone"://更改绑定号码 7.17
+                    ModifyPhone();
                     break;
                 case "modifyuserinfo"://会员资料提交 7.19
                     ModifyUserInfo(context);
@@ -1045,7 +1045,7 @@ namespace Backstage.Handler
         #endregion
 
         #region 获取重置密码验证码 7.26
-        private void GetModifyPwdCode()
+        private void GetResetPwdCode()
         {
             var phone = GetString("phone");
             var sellerId = GetInt("sellerid");

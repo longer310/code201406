@@ -232,41 +232,13 @@ namespace Backstage.Core.Entity
         /// </summary>
         public List<PicJumpItem> WifiAds { get; set; }
         /// <summary>
-        /// 登录页广告图片地址 640*1138
+        /// 首页轮播广告停留时间（秒）
         /// </summary>
-        public string LoginAdUrl_640x1138
-        {
-            get
-            {
-                var width = 640;
-                var height = 1138;
-                return Utility.GetSizePicUrl(LoginAdUrl, width, height);
-            }
-        }
+        public int SlideAdStayTime { get; set; }
         /// <summary>
-        /// 登录页广告图片地址 640*960
+        /// 首页轮播广告图片列表
         /// </summary>
-        public string LoginAdUrl_640x960
-        {
-            get
-            {
-                var width = 640;
-                var height = 960;
-                return Utility.GetSizePicUrl(LoginAdUrl, width, height);
-            }
-        }
-        /// <summary>
-        /// 登录页广告图片地址 540*960 由640*1138生成
-        /// </summary>
-        public string LoginAdUrl_540x960
-        {
-            get
-            {
-                var width = 640;
-                var height = 1138;
-                return Utility.GetSizePicUrl(LoginAdUrl, width, height);
-            }
-        }
+        public List<SlideAdItem> SlideAds { get; set; }
         public Merchant()
         {
             Name =
@@ -295,6 +267,13 @@ namespace Backstage.Core.Entity
             CnameList = new List<string>();
             Sid = 1;//默认一个签约id
         }
+    }
+
+    public class SlideAdItem
+    {
+        public string img { get; set; }
+        public int type { get; set; }
+        public int typeid { get; set; }
     }
     public class PicJumpItem
     {

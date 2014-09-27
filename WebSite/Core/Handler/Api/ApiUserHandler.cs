@@ -1096,10 +1096,10 @@ namespace Backstage.Handler
             if (Utility._msg_opensend == "1")
             {
                 SendMsgClass4 jsobject = new SendMsgClass4();
-                jsobject.param1 = user.UserName;
+                jsobject.param1 = string.IsNullOrEmpty(user.UserName) ? user.Phone : user.UserName;
                 jsobject.param2 = verificationCode.Code;
                 jsobject.param3 = "30";
-                jsobject.param4 = merchant.Name;
+                jsobject.param4 = string.IsNullOrEmpty(merchant.Name) ? "" : merchant.Name;
 
                 if (Utility.SendMsg(verificationCode.Phone, MsgTempleId.UserModifyPwd, jsobject) != "发送成功")
                 {
@@ -1504,7 +1504,7 @@ namespace Backstage.Handler
             }
             var favorite = FavoriteHelper.GetFavorite(uid);
             var wheresql = string.Empty;
-            if(favorite.GidList.Count > 0)
+            if (favorite.GidList.Count > 0)
                 wheresql = string.Format(" and a.Id in({0})", Utility.GetString(favorite.GidList));
             var goodslist = GoodsHelper.GetGoodsList(user.SellerId, wheresql).Results;
             if (goodslist.Count != favorite.GidList.Count)

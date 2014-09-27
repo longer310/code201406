@@ -246,7 +246,7 @@ namespace Backstage.Core.Logic
                             if (user != null)
                             {
                                 SendMsgClass4 jsobject2 = new SendMsgClass4();
-                                jsobject2.param1 = user.UserName;
+                                jsobject2.param1 = string.IsNullOrEmpty(user.UserName) ? user.Phone : user.UserName;
                                 jsobject2.param2 = orders.Id.ToString();
                                 jsobject2.param3 = orders.TotalPrice.ToString();
                                 jsobject2.param4 = merchant.Name;

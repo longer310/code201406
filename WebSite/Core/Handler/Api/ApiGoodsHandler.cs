@@ -165,7 +165,7 @@ namespace Backstage.Handler
             foreach (var slideAdItem in merchant.SlideAds)
             {
                 var s = new SlideItem();
-                s.img = slideAdItem.img;
+                s.img = Utility.GetPhoneNeedUrl(slideAdItem.img);
                 s.type = slideAdItem.type;
                 s.typeid = slideAdItem.typeid;
                 s.title = "";

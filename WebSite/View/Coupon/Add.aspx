@@ -242,8 +242,8 @@
                     }).success(function (data) {
                         alert("添加成功");
                         window.setTimeout(function () {
-                            window.location.reload();
-                        }, 2000);
+                            window.location.href = "List.aspx?sellerId=" + sellerId;
+                        }, 500);
                     });
                     return false;
                 });

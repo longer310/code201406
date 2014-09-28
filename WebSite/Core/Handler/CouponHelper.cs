@@ -171,7 +171,7 @@ namespace Backstage.Core.Handler
                     conn.Dispose();
                     conn.Open();
 
-                    commandText = "select count(*) from coupon where sellerId = ?sellerId";
+                    commandText = "select count(*) from coupon where sellerId = ?sellerId" + typewhere + order;
                     parameters.Clear();
                     parameters.Add(new MySqlParameter("?sellerId", sellerId));
                     reader = MySqlHelper.ExecuteReader(conn, CommandType.Text, commandText, parameters.ToArray());

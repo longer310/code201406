@@ -250,6 +250,7 @@
                         //context: document.body
                     }).success(function (data) {
                         alert("更新成功");
+                        window.location.href = "List.aspx?sellerId=" + sellerId;
                         //window.setTimeout(function () {
                         //    window.location.reload();
                         //}, 2000);

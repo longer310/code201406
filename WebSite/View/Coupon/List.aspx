@@ -18,10 +18,10 @@
         <div class="widget-content">
             <ul class="nav nav-tabs" id="j-ticket-tab">
                 <li class="active">
-                    <a href="#">所有电子券</a>
+                    <a href="#" data-type="0">所有电子券</a>
                 </li>
-                <li><a href="#">使用中电子券</a></li>
-                <li><a href="#">已下架电子券</a></li>
+                <li><a href="#" data-type="1">使用中电子券</a></li>
+                <li><a href="#" data-type="-1">已下架电子券</a></li>
             </ul>
             <table class="table table-bordered table-striped with-check">
                 <thead>
@@ -111,7 +111,11 @@
 					<td><b class="text-error">${v.usertimes}</b>次</td>
 					<td style="width:200px;">
 						<a class="btn btn-primary btn-mini" href="edit.aspx?id=${v.id}"><i class="icon-pencil icon-white"></i> 编辑</a>
+                        {{if v.enabled == 1}}
 						<a class="btn btn-info btn-mini j-btn-pause" href=""><i class="icon-pause icon-white"></i> 下架</a>
+                        {{else}}
+						<a class="btn btn-info btn-mini j-btn-pause" href=""><i class="icon-pause icon-white"></i> 上架</a>
+                        {{/if}}
 						<a class="btn btn-danger btn-mini j-btn-del" href=""><i class="icon-remove icon-white"></i> 删除</a>
 					</td>
 				</tr>
@@ -127,7 +131,7 @@
 
                 //绑定tab
                 $('#j-ticket-tab a').click(function (e) {
-                    var type = $(this).parent().index();
+                    var type = $(this).attr("data-type");
                     $(this).tab('show');
                     mpage.getTicketList(1, type);
                     return false
@@ -202,20 +206,16 @@
 
                     if (ids.length > 0) {
                         Common.confirm({
-                            title: "下架确认提示",
-                            content: "您确定要下架当前所选择的电子券？",
+                            title: "下架或者上架确认提示",
+                            content: "您确定要改变当前所选择的电子券状态？",
                             confirm: function () {
                                 //执行确认回调
-                                alert('下架成功');
                                 $.ajax({
                                     url: "../../Handler/Backstage/CouponHandler.ashx?action=negateshelf&ids=" + ids,
                                     type: "Get",
                                     dataType: "json"
                                 }).success(function (data) {
-                                    alert("下架成功");
-                                    if (type != 2)
-                                        //删除成功后刷新本页
-                                        $item.remove();
+                                    window.location.reload();
                                 });
                             },
                             cancel: function () {
@@ -264,7 +264,7 @@
                 };
 
                 $.ajax({
-                    url: "../../Handler/Backstage/CouponHandler.ashx?action=getlist&sellerId=" + sellerId + "&type" + type + "&start=" + (p - 1) + "&limit=6",
+                    url: "../../Handler/Backstage/CouponHandler.ashx?action=getlist&sellerId=" + sellerId + "&type=" + type + "&start=" + (p - 1) + "&limit=6",
                     type: "Get",
                     dataType: "json"
                     //context: document.body
@@ -332,15 +332,14 @@
                         var id = $item.attr("data-gid");
 
                         Common.confirm({
-                            title: "下架确认提示",
-                            content: "您确定要下架当前电子券？",
+                            title: "下架或者上架确认提示",
+                            content: "您确定要改变当前所选择的电子券状态？",
                             confirm: function () {
                                 $.ajax({
                                     url: "../../Handler/Backstage/CouponHandler.ashx?action=negateshelf&ids=" + id,
                                     type: "Get",
                                     dataType: "json"
                                 }).success(function (data) {
-                                    alert("下架成功");
                                     window.location.reload();
                                 });
                             },

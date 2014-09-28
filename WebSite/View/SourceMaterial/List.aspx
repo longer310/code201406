@@ -3,7 +3,7 @@
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="Content" runat="server">
     
-			<div class="widget-box" >
+					<div class="widget-box" >
 				<div class="widget-title">
 					<span class="icon">
 						<i class="icon-picture"></i>
@@ -43,7 +43,7 @@
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="Footer" runat="server">
     <!--页面js-->
-        <script src="../../script/js/ue.pager.js"></script>
+        <script src="<%=DomainUrl %>/script/js/ue.pager.js"></script>
 
         <!--活动列表模版-->
         <script type="text/jquery-tmpl-x" id="j-tmpl-image-listitem">

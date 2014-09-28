@@ -58,6 +58,8 @@ namespace Backstage.Core.Handler
                     img = Utility.GetSizePicUrl(r.Url,200,0,context),
                     title = r.Title
                 };
+                r.Views += 1;
+                SourceMaterialHelper.Update(r);
                 data.Add(d);
             }
             JsonTransfer jt = new JsonTransfer();
@@ -90,6 +92,8 @@ namespace Backstage.Core.Handler
                 views = sm.Views,
                 commentnum = sm.Commentnum
             };
+            sm.Views += 1;
+            SourceMaterialHelper.Update(sm);
             JsonTransfer jt = new JsonTransfer();
             jt.AddSuccessParam();
             jt.Add("data", data);

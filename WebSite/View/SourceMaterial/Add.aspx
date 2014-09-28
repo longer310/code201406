@@ -150,7 +150,7 @@
                     }).success(function (data) {
                         alert("添加成功");
                         window.setTimeout(function () {
-                            window.location.reload();
+                            window.location.href = "List.aspx?sellerId=" + sellerId;
                         }, 2000);
                     });
                     return false;

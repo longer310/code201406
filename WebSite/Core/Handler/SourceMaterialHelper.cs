@@ -52,9 +52,8 @@ namespace Backstage.Core
         {
             var results = new PagResults<SourceMaterial>();
             results.Results = new List<SourceMaterial>();
-            int skipnum = pageSize * pageIndex;
             int totalnum = 0;
-            string commandText = @"select * from material where sellerId = ?sellerId LIMIT ?index,?size";
+            string commandText = @"select * from material where sellerId = ?sellerId order by CreateTime desc LIMIT ?index,?size";
 
             List<MySqlParameter> parameters = new List<MySqlParameter>();
             parameters.Add(new MySqlParameter("?sellerId", sellerId));
@@ -86,7 +85,10 @@ namespace Backstage.Core
                     conn.Dispose();
                     conn.Open();
 
-                    commandText = @"select count(*) from material";
+                    commandText = @"select count(*) from material where sellerId=?sellerId";
+                    parameters.Clear();
+                    parameters.Add(new MySqlParameter("?sellerId", sellerId));
+                    
                     reader = MySqlHelper.ExecuteReader(conn, CommandType.Text, commandText, parameters.ToArray());
                     if (reader.HasRows)
                     {

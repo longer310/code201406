@@ -137,6 +137,7 @@
                             //context: document.body
                         }).success(function (data) {
                             alert('更新成功');
+                            window.location.href = "List.aspx?sellerId=" + sellerId;
                             //return false;
                         });
                     }

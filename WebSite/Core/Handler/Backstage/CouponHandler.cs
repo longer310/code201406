@@ -98,7 +98,7 @@ namespace Backstage.Core.Handler.Backstage
 
         private void NegateShelf()
         {
-            var ids = Utility.GetListint("ids");
+            var ids = Utility.GetListint(GetString("ids"));
             foreach (var id in ids)
             {
                 var item = CouponHelper.GetItem(id);
@@ -109,7 +109,7 @@ namespace Backstage.Core.Handler.Backstage
 
         private void Delete()
         {
-            var ids = Utility.GetListint("ids");
+            var ids = Utility.GetListint(GetString("ids"));
             foreach (var id in ids)
             {
                 CouponHelper.Delete(id);
@@ -268,7 +268,7 @@ namespace Backstage.Core.Handler.Backstage
                     ImgId = item.ImgId,
                     ImgUrl = item.ImgUrl == "" ? "http://placehold.it/180x90" : item.ImgUrl,
                     SellerId = item.SellerId,
-                    Status = item.Enabled,
+                    Enabled = item.Enabled,
                     Summary = item.Summary,
                     Title = item.Title,
                     Commentnum = item.Commentnum,

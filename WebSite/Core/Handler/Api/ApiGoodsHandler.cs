@@ -30,7 +30,7 @@ namespace Backstage.Handler
                     GetGoodsList(context);
                     break;
                 case "getgoodsdetail"://获取产品详情 2.2
-                    GetGoodsDetail();
+                    GetGoodsDetail(context);
                     break;
                 case "getgoodscomments"://获取产品评论 2.3
                     GetGoodsComments();
@@ -418,7 +418,7 @@ namespace Backstage.Handler
                 cname = "";
             }
         }
-        public void GetGoodsDetail()
+        public void GetGoodsDetail(HttpContext context)
         {
             int gid = GetInt("gid");
             int sellerid = GetInt("sellerid");
@@ -449,7 +449,7 @@ namespace Backstage.Handler
             //{
             //    data.images.Add(sourceMaterial.Url);
             //}
-            data.images = Utility.GetSizePicUrlList(goods.ImageUrlList, 540, 400);
+            data.images = Utility.GetSizePicUrlList(goods.ImageUrlList, 540, 400,context);
             data.gid = gid;
             data.title = goods.Title;
             data.nowprice = goods.Nowprice;

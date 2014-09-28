@@ -443,7 +443,7 @@ namespace Backstage.Core
             var index = url.LastIndexOf('.');
             if (index < 0) return url;
             var result = url.Substring(0, index) + "_" + width + "x" + height + url.Substring(index);
-            if (needcheck == 0)
+            if (needcheck == 1)
             {
                 //获取图片情况下 需检查图片是否存在
                 var isExist = false;
@@ -495,9 +495,9 @@ namespace Backstage.Core
         /// <param name="width"></param>
         /// <param name="height"></param>
         /// <param name="context"></param>
-        /// <param name="isgen">是否生成图片</param>
+        /// <param name="needcheck">是否生成图片</param>
         /// <returns></returns>
-        public static List<string> GetSizePicUrlList(List<string> urllist , int width, int height, HttpContext context = null, int isgen = 0)
+        public static List<string> GetSizePicUrlList(List<string> urllist, int width, int height, HttpContext context = null, int needcheck = 1)
         {
             var result = new List<string>();
             foreach (var item in urllist)
@@ -506,7 +506,7 @@ namespace Backstage.Core
                 var index = url.LastIndexOf('.');
                 if (index < 0) return result;
                 var urlitem = url.Substring(0, index) + "_" + width + "x" + height + url.Substring(index);
-                if (isgen == 0)
+                if (needcheck == 1)
                 {
                     //获取图片情况下 需检查图片是否存在
                     var isExist = false;

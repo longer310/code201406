@@ -181,9 +181,9 @@
 					<label class="control-label">跳转类型</label>
 					<div class="controls">
 						<select class="j-homeslide-goto-type">
-							<option value="1" {{if v.type ==1 }}selected="selected"{{/if}}>产品</option>
+							<option value="1" {{if v.type ==1 }}selected="selected"{{/if}}>图片墙</option>
 							<option value="2" {{if v.type ==2 }}selected="selected"{{/if}}>活动</option>
-							<option value="3" {{if v.type ==3 }}selected="selected"{{/if}}>图片墙</option>
+							<option value="3" {{if v.type ==3 }}selected="selected"{{/if}}>产品</option>
 						</select>
 
 						<label class="inline" style="margin-left:20px;">ID：</label><input class="input-small j-homeslide-goto-id" type="text" value="${v.typeid}">

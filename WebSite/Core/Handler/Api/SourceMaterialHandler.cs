@@ -23,9 +23,9 @@ namespace Backstage.Core.Handler
             switch (Action)
             {
                 case "getlist":
-                    GetList(); break;
+                    GetList(context); break;
                 case "getitem":
-                    GetItem(); break;
+                    GetItem(context); break;
                 case "imgcomment":
                     ImgComment(); break;
                 case "imgcommentlist":
@@ -42,7 +42,7 @@ namespace Backstage.Core.Handler
         /// 图片列表接口
         /// </summary>
         /// <returns></returns>
-        public void GetList()
+        public void GetList(HttpContext context)
         {
             int pageIndex = GetInt("start");
             int pageSize = GetInt("limit");
@@ -55,7 +55,7 @@ namespace Backstage.Core.Handler
                 var d = new
                 {
                     pid = r.Id,
-                    img = Utility.GetPhoneNeedUrl(r.Url),
+                    img = Utility.GetSizePicUrl(r.Url,200,0,context),
                     title = r.Title
                 };
                 data.Add(d);
@@ -71,7 +71,7 @@ namespace Backstage.Core.Handler
         /// 图片详情接口
         /// </summary>
         /// <returns></returns>
-        public void GetItem()
+        public void GetItem(HttpContext context)
         {
             int pid = GetInt("pid");
             SourceMaterial sm = SourceMaterialHelper.GetItem(pid);
@@ -85,7 +85,7 @@ namespace Backstage.Core.Handler
             {
                 pid = sm.Id,
                 title = sm.Title,
-                img = Utility.GetPhoneNeedUrl(sm.Url),
+                img = Utility.GetSizePicUrl(sm.Url,500,0,context),
                 description = sm.Description,
                 views = sm.Views,
                 commentnum = sm.Commentnum

@@ -24,7 +24,7 @@ namespace Backstage.Handler
             {
                 #region 商品
                 case "getpageinfo"://首页 1
-                    GetPageInfo();
+                    GetPageInfo(context);
                     break;
                 case "getgoodslist"://获取产品列表 2.1
                     GetGoodsList(context);
@@ -142,7 +142,7 @@ namespace Backstage.Handler
             public string img { get; set; }
             public int gid { get; set; }
         }
-        private void GetPageInfo()
+        private void GetPageInfo(HttpContext context)
         {
             int sellerid = GetInt("sellerid");
 
@@ -165,21 +165,21 @@ namespace Backstage.Handler
             foreach (var slideAdItem in merchant.SlideAds)
             {
                 var s = new SlideItem();
-                s.img = Utility.GetPhoneNeedUrl(slideAdItem.img);
+                s.img = Utility.GetSizePicUrl(slideAdItem.img, 540, 224, context);
                 s.type = slideAdItem.type;
                 s.typeid = slideAdItem.typeid;
                 s.title = "";
-                if (s.type == 1)
+                if (s.type == (int)CommentType.Goods)
                 {
                     var goods = GoodsHelper.GetGoods(s.typeid);
                     if (goods != null) s.title = goods.Title;
                 }
-                else if (s.type == 2)
+                else if (s.type == (int)CommentType.Avtive)
                 {
                     var active = ActiveHelper.GetItem(s.typeid);
                     if (active != null) s.title = active.Title;
                 }
-                else if (s.type == 3)
+                else if (s.type == (int)CommentType.Img)
                 {
                     var sourceMaterialHelper = SourceMaterialHelper.GetItem(s.typeid);
                     if (sourceMaterialHelper != null) s.title = sourceMaterialHelper.Title;
@@ -231,14 +231,20 @@ namespace Backstage.Handler
             //}
 
             var pcfg = ParamHelper.PlatformCfgData;
-            data.ad = new AdItem() { img = Utility.GetPhoneNeedUrl(pcfg.PhoneAd.PicUrl), url = pcfg.PhoneAd.JumpUrl };
+            data.ad = new AdItem() { img = Utility.GetSizePicUrl(pcfg.PhoneAd.PicUrl, 540, 65, context), url = pcfg.PhoneAd.JumpUrl };
+            var merchantTypes = merchant.GetMerchantTypes();
 
             if (merchant.MerType == MerchantTypes.Food)
             {
                 var glist = GoodsHelper.GetGoodsList(sellerid, " and a.IsHot = 1 ", "", 0, 8).Results;
                 foreach (var gl in glist)
                 {
-                    data.hots.Add(new HotItem() { img = Utility.GetPhoneNeedUrl(gl.LogoUrl), gid = gl.Id });
+                    if (merchantTypes == MerchantTypes.Night)
+                        data.hots.Add(new HotItem() { img = Utility.GetSizePicUrl(gl.LogoUrl, 190, 130, context), gid = gl.Id });
+                    else
+                    {
+                        data.hots.Add(new HotItem() { img = Utility.GetSizePicUrl(gl.LogoUrl, 270, 200, context), gid = gl.Id });
+                    }
                 }
             }
             else if (merchant.MerType == MerchantTypes.Night)
@@ -354,7 +360,7 @@ namespace Backstage.Handler
                 CategoriesItem citem = new CategoriesItem();
                 citem.cid = goodsCategoriese.Id;
                 citem.title = goodsCategoriese.Name;
-                citem.img = Utility.GetPhoneNeedUrl(goodsCategoriese.ImageUrl);
+                citem.img = Utility.GetSizePicUrl(goodsCategoriese.ImageUrl, 448, 126, context);
                 citem.color = goodsCategoriese.Color;
 
                 data.categories.Add(citem);
@@ -443,7 +449,7 @@ namespace Backstage.Handler
             //{
             //    data.images.Add(sourceMaterial.Url);
             //}
-            data.images = Utility.GetPhoneNeedUrlList(goods.ImageUrlList);
+            data.images = Utility.GetSizePicUrlList(goods.ImageUrlList, 540, 400);
             data.gid = gid;
             data.title = goods.Title;
             data.nowprice = goods.Nowprice;

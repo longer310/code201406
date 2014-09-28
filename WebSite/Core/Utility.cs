@@ -435,15 +435,15 @@ namespace Backstage.Core
         /// <param name="width"></param>
         /// <param name="height"></param>
         /// <param name="context"></param>
-        /// <param name="isgen">是否生成图片</param>
+        /// <param name="needcheck">是否生成图片</param>
         /// <returns></returns>
-        public static string GetSizePicUrl(string url, int width, int height, HttpContext context = null, int isgen = 0)
+        public static string GetSizePicUrl(string url, int width, int height, HttpContext context = null, int needcheck = 1)
         {
             url = GetPhoneNeedUrl(url);
             var index = url.LastIndexOf('.');
             if (index < 0) return url;
             var result = url.Substring(0, index) + "_" + width + "x" + height + url.Substring(index);
-            if (isgen == 0)
+            if (needcheck == 0)
             {
                 //获取图片情况下 需检查图片是否存在
                 var isExist = false;
@@ -485,6 +485,71 @@ namespace Backstage.Core
                     if (context != null) filePath = context.Server.MapPath(filePath);
                     MakeThumNail(filePath, width, height);
                 }
+            }
+            return result;
+        }
+        /// <summary>
+        /// 获取不同分辨率的图片地址
+        /// </summary>
+        /// <param name="urllist"></param>
+        /// <param name="width"></param>
+        /// <param name="height"></param>
+        /// <param name="context"></param>
+        /// <param name="isgen">是否生成图片</param>
+        /// <returns></returns>
+        public static List<string> GetSizePicUrlList(List<string> urllist , int width, int height, HttpContext context = null, int isgen = 0)
+        {
+            var result = new List<string>();
+            foreach (var item in urllist)
+            {
+                var url = GetPhoneNeedUrl(item);
+                var index = url.LastIndexOf('.');
+                if (index < 0) return result;
+                var urlitem = url.Substring(0, index) + "_" + width + "x" + height + url.Substring(index);
+                if (isgen == 0)
+                {
+                    //获取图片情况下 需检查图片是否存在
+                    var isExist = false;
+                    try
+                    {
+                        Ping ping = new Ping();
+                        PingReply reply = ping.Send(urlitem);
+                        if (reply != null && reply.Status.Equals(IPStatus.Success))
+                        {
+                            //可以访问
+                            isExist = true;
+                        }
+                    }
+                    catch (Exception)
+                    {
+                        isExist = false;
+                    }
+
+                    if (!isExist)
+                    {
+                        //不存在图片 按照原始图片 生成新的尺寸图片
+                        var alist = url.Split(new char[] { '/' }, StringSplitOptions.RemoveEmptyEntries);
+                        var i = 0;
+                        foreach (var s in alist)
+                        {
+                            if (s == "File" || s == "file")
+                            {
+                                break;
+                            }
+                            i++;
+                        }
+                        var filePath = "../../File/";
+                        for (int j = i + 1; j < alist.Count(); j++)
+                        {
+                            filePath += alist[j] + "/";
+                        }
+                        filePath = filePath.TrimEnd("/".ToCharArray());
+
+                        if (context != null) filePath = context.Server.MapPath(filePath);
+                        MakeThumNail(filePath, width, height);
+                    }
+                }
+                result.Add(urlitem);
             }
             return result;
         }
@@ -864,7 +929,7 @@ namespace Backstage.Core
             System.Drawing.Image originalImage = System.Drawing.Image.FromFile(originalImagePath);
             if (string.IsNullOrEmpty(thumNailPath))
             {
-                thumNailPath = Utility.GetSizePicUrl(originalImagePath, width, height, null, 1);
+                thumNailPath = Utility.GetSizePicUrl(originalImagePath, width, height, null, 0);
             }
 
             int thumWidth = width;      //缩略图的宽度

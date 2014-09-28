@@ -17,7 +17,7 @@ namespace Backstage.Core.Entity
         /// <summary>
         /// 默认分类id 1：餐饮  2：夜场 3：企业
         /// </summary>
-        public int TypeId { get; set; }
+        public MerchantTypes TypeId { get; set; }
         /// <summary>
         /// 该分类下 商户的个数
         /// </summary>

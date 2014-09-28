@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using Backstage.Core.Logic;
 
 namespace Backstage.Core.Entity
 {
@@ -266,6 +267,16 @@ namespace Backstage.Core.Entity
             CreateTime = DateTime.Now;
             CnameList = new List<string>();
             Sid = 1;//默认一个签约id
+        }
+
+        public MerchantTypes GetMerchantTypes()
+        {
+            var merchantType = MerchantTypeHelper.GetMerchantType(Mid);
+            if (merchantType != null)
+            {
+                return merchantType.TypeId;
+            }
+            return MerchantTypes.Food;
         }
     }
 

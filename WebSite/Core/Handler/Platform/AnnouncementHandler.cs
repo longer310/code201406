@@ -572,7 +572,7 @@ namespace Backstage.Handler
                 return;
             }
             var merchantType = new MerchantType();
-            merchantType.TypeId = typeid;
+            merchantType.TypeId = (MerchantTypes)typeid;
             merchantType.Name = name;
             if (MerchantTypeHelper.AddMerchantType(merchantType))
                 ReturnCorrectMsg("新增成功");

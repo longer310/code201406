@@ -25,9 +25,9 @@ namespace Backstage.Core.Handler
             switch (Action)
             {
                 case "getlist":
-                    GetList(); break;
+                    GetList(context); break;
                 case "getitem":
-                    GetItem(); break;
+                    GetItem(context); break;
                 case "activecomment":
                     ActiveComment(); break;
                 case "activecommentlist":
@@ -127,7 +127,7 @@ namespace Backstage.Core.Handler
             Response.End();
         }
 
-        private void GetItem()
+        private void GetItem(HttpContext context)
         {
             int aid = GetInt("newid");
             var item = ActiveHelper.GetItem(aid);
@@ -140,7 +140,7 @@ namespace Backstage.Core.Handler
             {
                 newid = item.Id,
                 title = item.Title,
-                img = Utility.GetPhoneNeedUrl(item.CoverImgUrl),
+                img = Utility.GetSizePicUrl(item.CoverImgUrl, 540, 400, context),
                 summary = item.Summary,
                 descrition = item.Description,
                 dateline = item.CreateTime.GetUnixTime(),
@@ -157,7 +157,7 @@ namespace Backstage.Core.Handler
             Response.End();
         }
 
-        public void GetList()
+        public void GetList(HttpContext context)
         {
             int index = GetInt("start");
             int size = GetInt("limit");
@@ -171,7 +171,7 @@ namespace Backstage.Core.Handler
                 {
                     newid = r.Id,
                     title = r.Title,
-                    img = Utility.GetPhoneNeedUrl(r.CoverImgUrl),
+                    img = Utility.GetSizePicUrl(r.CoverImgUrl, 180, 143, context),
                     dateline = r.CreateTime.GetUnixTime(),
                     summary = r.Summary,
                     descrition = r.Description,

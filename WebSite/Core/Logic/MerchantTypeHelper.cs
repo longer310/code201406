@@ -32,7 +32,7 @@ namespace Backstage.Core.Logic
                             merchantType.Id = reader.GetInt32(0);
                             merchantType.Name = reader["Name"].ToString();
                             merchantType.Count = (int) reader["Count"];
-                            merchantType.TypeId = (int) reader["TypeId"];
+                            merchantType.TypeId = (MerchantTypes) reader["TypeId"];
                         }
                     }
                 }
@@ -62,7 +62,7 @@ namespace Backstage.Core.Logic
                         merchantType.Id = reader.GetInt32(0);
                         merchantType.Name = reader["Name"].ToString();
                         merchantType.Count = (int)reader["Count"];
-                        merchantType.TypeId = (int)reader["TypeId"];
+                        merchantType.TypeId = (MerchantTypes)reader["TypeId"];
 
                         result.Add(merchantType);
                     }

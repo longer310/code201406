@@ -392,7 +392,7 @@ namespace Backstage.Handler
             data.username = user.UserName;
             data.nickname = user.NickName;
             data.phone = user.Phone;
-            data.avatar = Utility.GetPhoneNeedUrl(user.Avatar);
+            data.avatar = Utility.GetSizePicUrl(user.Avatar, 100, 100, context);
             data.sex = (int)user.Sex;
             data.money = user.Money;
             data.integral = user.Integral;

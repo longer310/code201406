@@ -17,9 +17,9 @@ namespace Backstage.Core.Handler
             switch (Action)
             {
                 case "getlist":
-                    GetList(); break;
+                    GetList(context); break;
                 case "getitem":
-                    GetItem(); break;
+                    GetItem(context); break;
                 case "usercoupon":
                     UserCoupon(); break;
                 case "couponcommentlist":
@@ -199,7 +199,7 @@ namespace Backstage.Core.Handler
             Response.End();
         }
 
-        private void GetItem()
+        private void GetItem(HttpContext context)
         {
             int cid = GetInt("couponid");
             var item = CouponHelper.GetItem(cid);
@@ -212,7 +212,7 @@ namespace Backstage.Core.Handler
             {
                 couponid = item.Id,
                 title = item.Title,
-                img = item.ImgUrl,
+                img = Utility.GetSizePicUrl(item.ImgUrl, 540, 400, context),
                 extcredit = item.Extcredit,
                 expiry = item.Expiry.GetUnixTime(),
                 description = item.Description,
@@ -226,7 +226,7 @@ namespace Backstage.Core.Handler
             Response.End();
         }
 
-        public void GetList()
+        public void GetList(HttpContext context)
         {
             int index = GetInt("start");
             int size = GetInt("limit");
@@ -241,7 +241,7 @@ namespace Backstage.Core.Handler
                 {
                     couponid = r.Id,
                     title = r.Title,
-                    img = Utility.GetPhoneNeedUrl(r.ImgUrl),
+                    img = Utility.GetSizePicUrl(r.ImgUrl, 180, 143, context),
                     extcredit = r.Extcredit,
                     expiry = r.Expiry.GetUnixTime(),
                     description = r.Description,

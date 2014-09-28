@@ -51,19 +51,19 @@ namespace Backstage.Handler
                     AddShoppingCart();
                     break;
                 case "getshoppingcartlist"://获取购物车列表 6.2
-                    GetShoppingCartList();
+                    GetShoppingCartList(context);
                     break;
                 case "addorders"://添加订单 6.3
                     AddOrders();
                     break;
                 case "getordersdetail"://获取订单详情 6.4
-                    GetOrdersDetail();
+                    GetOrdersDetail(context);
                     break;
                 case "getpaymentlist"://获取支付方式列表 6.5
                     GetPaymentList();
                     break;
                 case "updateorders"://更新订单 6.6
-                    UpdateOrders();
+                    UpdateOrders(context);
                     break;
                 case "updateordersstatus"://更新订单状态 6.7
                     UpdateOrdersStatus();
@@ -232,19 +232,14 @@ namespace Backstage.Handler
 
             var pcfg = ParamHelper.PlatformCfgData;
             data.ad = new AdItem() { img = Utility.GetSizePicUrl(pcfg.PhoneAd.PicUrl, 540, 65, context), url = pcfg.PhoneAd.JumpUrl };
-            var merchantTypes = merchant.GetMerchantTypes();
+            //var merchantTypes = merchant.GetMerchantTypes();
 
             if (merchant.MerType == MerchantTypes.Food)
             {
                 var glist = GoodsHelper.GetGoodsList(sellerid, " and a.IsHot = 1 ", "", 0, 8).Results;
                 foreach (var gl in glist)
                 {
-                    if (merchantTypes == MerchantTypes.Night)
-                        data.hots.Add(new HotItem() { img = Utility.GetSizePicUrl(gl.LogoUrl, 190, 130, context), gid = gl.Id });
-                    else
-                    {
-                        data.hots.Add(new HotItem() { img = Utility.GetSizePicUrl(gl.LogoUrl, 270, 200, context), gid = gl.Id });
-                    }
+                    data.hots.Add(new HotItem() { img = Utility.GetSizePicUrl(gl.LogoUrl, 270, 200, context), gid = gl.Id });
                 }
             }
             else if (merchant.MerType == MerchantTypes.Night)
@@ -252,7 +247,7 @@ namespace Backstage.Handler
                 var mlist = SourceMaterialHelper.GetList(sellerid, 0, 8);
                 foreach (var gl in mlist)
                 {
-                    data.hots.Add(new HotItem() { img = Utility.GetPhoneNeedUrl(gl.Url), gid = gl.Id });
+                    data.hots.Add(new HotItem() { img = Utility.GetSizePicUrl(gl.Url, 190, 130, context), gid = gl.Id });
                 }
             }
 
@@ -449,7 +444,7 @@ namespace Backstage.Handler
             //{
             //    data.images.Add(sourceMaterial.Url);
             //}
-            data.images = Utility.GetSizePicUrlList(goods.ImageUrlList, 540, 400,context);
+            data.images = Utility.GetSizePicUrlList(goods.ImageUrlList, 540, 400, context);
             data.gid = gid;
             data.title = goods.Title;
             data.nowprice = goods.Nowprice;
@@ -769,7 +764,7 @@ namespace Backstage.Handler
             public float nowprice { get; set; }
             public float originalprice { get; set; }
         }
-        public void GetShoppingCartList()
+        public void GetShoppingCartList(HttpContext context)
         {
             int uid = GetInt("uid");
 
@@ -807,7 +802,7 @@ namespace Backstage.Handler
                     item.originalprice = goods.OriginalPrice;
                     item.title = goods.Title;
                     item.content = goods.Content;
-                    item.img = Utility.GetPhoneNeedUrl(goods.LogoUrl);
+                    item.img = Utility.GetSizePicUrl(goods.LogoUrl, 180, 133, context);
 
                     item.totalprice = goods.Nowprice * shoppingCart.Num;
 
@@ -927,7 +922,7 @@ namespace Backstage.Handler
                 goodslist = new List<OrderGoddsItem>();
             }
 
-            public OrderDetailData(Orders orders)
+            public OrderDetailData(Orders orders, HttpContext context)
             {
                 goodslist = new List<OrderGoddsItem>();
                 var gidlist = orders.GidList;
@@ -941,7 +936,7 @@ namespace Backstage.Handler
                 for (int i = 0; i < gidlist.Count; i++)
                 {
                     var item = new OrderGoddsItem();
-                    item.img = Utility.GetPhoneNeedUrl(imglist[i]);
+                    item.img = Utility.GetSizePicUrl(imglist[i],180,133,context);
                     item.gid = gidlist[i];
                     item.title = titlelist[i];
                     item.content = contentlist[i];
@@ -996,7 +991,7 @@ namespace Backstage.Handler
             public float totalprice { get; set; }
             public string content { get; set; }
         }
-        public void GetOrdersDetail()
+        public void GetOrdersDetail(HttpContext context)
         {
             var uid = GetInt("uid");
             var orderId = GetInt("orderid");
@@ -1009,7 +1004,7 @@ namespace Backstage.Handler
                 return;
             }
 
-            var data = new OrderDetailData(orders);
+            var data = new OrderDetailData(orders,context);
 
             //返回信息
             ReturnCorrectData(data);
@@ -1054,7 +1049,7 @@ namespace Backstage.Handler
         #endregion
 
         #region 更新订单 6.6
-        public void UpdateOrders()
+        public void UpdateOrders(HttpContext context)
         {
             var ordertime = GetTime("ordertime");
             var orderpeople = GetInt("orderpeople");
@@ -1161,7 +1156,7 @@ namespace Backstage.Handler
 
             OrdersHelper.SaveOrders(orders);
 
-            var data = new OrderDetailData(orders);
+            var data = new OrderDetailData(orders,context);
 
             //返回信息
             ReturnCorrectData(data);

@@ -31,7 +31,7 @@ namespace Backstage.Core.Handler
                 case "activecomment":
                     ActiveComment(); break;
                 case "activecommentlist":
-                    ActiveCommentList(); break;
+                    ActiveCommentList(context); break;
                 //case "updatedata":
                 //    UpdateData(); break;
                 //case "deldata":
@@ -40,7 +40,7 @@ namespace Backstage.Core.Handler
             }
         }
 
-        private void ActiveCommentList()
+        private void ActiveCommentList(HttpContext context)
         {
             int aid = GetInt("newid");
             int index = GetInt("start");
@@ -58,7 +58,7 @@ namespace Backstage.Core.Handler
                     throw new ArgumentNullException(string.Format("userId:{0}", cm.UserId));
                 var result = new ComentsForApi
                 {
-                    Avatar = Utility.GetPhoneNeedUrl(user.Avatar),
+                    Avatar = Utility.GetSizePicUrl(user.Avatar,100,100,context),
                     UserName = user.UserName,
                     Sex = (int)user.Sex,
                     Dateline = cm.CreateTime.GetUnixTime(),
@@ -88,7 +88,7 @@ namespace Backstage.Core.Handler
             c.Content = msg;
             c.Type = CommentType.Avtive;
             //冗余两个字段
-            c.Img = Utility.GetPhoneNeedUrl(active.CoverImgUrl);
+            c.Img = active.CoverImgUrl;
             c.Title = active.Title;
 
             try

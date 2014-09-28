@@ -50,7 +50,7 @@ namespace Backstage.Handler
                     GetMerchant();
                     break;
                 case "getusercouponlist"://获取用户的电子券 7.9
-                    GetUserCouponList();
+                    GetUserCouponList(context);
                     break;
                 case "getextcreditlog"://积分使用明细 7.10
                     GetExtcreditLog();
@@ -62,13 +62,13 @@ namespace Backstage.Handler
                     GetReceiptInfo();
                     break;
                 case "getmycomment"://我的评论 7.13
-                    GetMyComment();
+                    GetMyComment(context);
                     break;
                 case "delfavorite"://删除收藏 7.14
                     DelFavorite();
                     break;
                 case "getorderslist"://获取未完成/历史订单 7.15
-                    GetOrdersList();
+                    GetOrdersList(context);
                     break;
                 case "modifypwd"://修改密码 7.16
                     ModifyPwd();
@@ -98,7 +98,7 @@ namespace Backstage.Handler
                     DelMyCommentList();
                     break;
                 case "myfavorite"://我的收藏 7.23（7.20日补充的 by lintao)
-                    MyFavorite();
+                    MyFavorite(context);
                     break;
                 case "getordercouponlist"://获取可兑换的电子券 7.24
                     GetOrderCouponList();
@@ -664,7 +664,7 @@ namespace Backstage.Handler
             public int sellerid { get; set; }
             public int status { get; set; }
         }
-        public void GetUserCouponList()
+        public void GetUserCouponList(HttpContext context)
         {
             var uid = GetInt("uid");
             var sellerid = GetInt("sellerid");
@@ -693,7 +693,7 @@ namespace Backstage.Handler
                 item.id = coupon.Id;
                 item.title = coupon.Title;
                 item.description = coupon.Description;
-                item.img = Utility.GetPhoneNeedUrl(coupon.ImgUrl);
+                item.img = Utility.GetSizePicUrl(coupon.ImgUrl, 180, 133, context);
                 item.expiry = coupon.Expiry.GetUnixTime();
                 item.sellerid = sellerid;
                 item.status = coupon.Status;
@@ -879,7 +879,7 @@ namespace Backstage.Handler
             public string img { get; set; }
             public string title { get; set; }
         }
-        public void GetMyComment()
+        public void GetMyComment(HttpContext context)
         {
             var uid = GetInt("uid");
             var sellerid = GetInt("sellerid");
@@ -909,7 +909,7 @@ namespace Backstage.Handler
                 item.type = (int)c.Type;
                 item.typeid = c.TypeId;
                 item.content = c.Content;
-                item.img = Utility.GetPhoneNeedUrl(c.Img);
+                item.img = Utility.GetSizePicUrl(c.Img, 180, 133, context);
                 item.title = c.Title;
 
                 data.commmentlist.Add(item);
@@ -968,7 +968,7 @@ namespace Backstage.Handler
                 orderslist = new List<ApiGoodsHandler.OrderDetailData>();
             }
         }
-        public void GetOrdersList()
+        public void GetOrdersList(HttpContext context)
         {
             var uid = GetInt("uid");
             var sellerid = GetInt("sellerid");
@@ -982,7 +982,7 @@ namespace Backstage.Handler
             var data = new OrdersListData();
             foreach (var orderse in orderslist.Results)
             {
-                data.orderslist.Add(new ApiGoodsHandler.OrderDetailData(orderse));
+                data.orderslist.Add(new ApiGoodsHandler.OrderDetailData(orderse, context));
             }
 
             //返回信息
@@ -1491,7 +1491,7 @@ namespace Backstage.Handler
             public int sales { get; set; }
             public string content { get; set; }
         }
-        private void MyFavorite()
+        private void MyFavorite(HttpContext context)
         {
             var uid = GetInt("uid");
             var start = GetInt("start");
@@ -1529,7 +1529,7 @@ namespace Backstage.Handler
                 var o = new MyFavoriteItem()
                 {
                     gid = goods.Id,
-                    img = Utility.GetPhoneNeedUrl(goods.LogoUrl),
+                    img = Utility.GetSizePicUrl(goods.LogoUrl, 180, 133, context),
                     title = goods.Title,
                     nowprice = goods.Nowprice,
                     originalprice = goods.OriginalPrice,

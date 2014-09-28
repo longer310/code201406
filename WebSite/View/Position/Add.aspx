@@ -74,7 +74,7 @@
             init: function () {
                 //去掉之前选中打开的项 选中产品列表
                 $("#sidebar li").removeClass("active open");
-                $("#sidebar .sadebaer_pms").addClass("active open").find(".sadebaer_pms_add").addClass("active");
+                $("#sidebar .sidebar_pms").addClass("active open").find(".sidebar_pms_add").addClass("active");
 
                 var mpage = this;
 

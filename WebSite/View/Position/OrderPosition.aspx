@@ -91,6 +91,8 @@
         var MPage = {
             init: function () {
                 var mpage = this;
+                $("#sidebar li").removeClass("active open");
+                $("#sidebar .sidebar_pms").addClass("active open").find(".sidebar_pms_op").addClass("active");
 
                 mpage.getPkgList(1, 0);
 

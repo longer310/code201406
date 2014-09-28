@@ -103,7 +103,7 @@
                 var mpage = this;
 
                 $("#sidebar li").removeClass("active open");
-                $("#sidebar .sadebaer_pms").addClass("active open").find(".sidebar_pms_pc").addClass("active");
+                $("#sidebar .sidebar_pms").addClass("active open").find(".sidebar_pms_pc").addClass("active");
 
                 mpage.getCategroyList();
 

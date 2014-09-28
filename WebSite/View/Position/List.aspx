@@ -136,6 +136,9 @@
             init: function () {
                 var mpage = this;
 
+                $("#sidebar li").removeClass("active open");
+                $("#sidebar .sidebar_pms").addClass("active open").find(".sidebar_pms_list").addClass("active");
+
                 mpage.getPkgList(1, 0);
 
                 //绑定tab

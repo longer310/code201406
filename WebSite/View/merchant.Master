@@ -56,7 +56,7 @@
                 </ul>
             </li>
             <li class="submenu sidebar_pms">
-                <a href="#"><i class="icon icon-tint"></i><span>包厢管理</span><span class="label">3</span></a>
+                <a href="#"><i class="icon icon-tint"></i><span>包厢管理</span><span class="label">4</span></a>
                 <ul>
                     <li class="sidebar_pms_list active"><a href="<%=DomainUrl %>/View/Position/List.aspx?sellerId=<%=SellerId%>">包厢列表</a></li>
                     <li class="sidebar_pms_add"><a href="<%=DomainUrl %>/View/Position/Add.aspx?sellerId=<%=SellerId%>">包厢新增</a></li>

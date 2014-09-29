@@ -53,6 +53,7 @@ namespace Backstage.Core.Entity
         {
             CreateTime = DateTime.Now;
             UpdateStatusTime = Utility.UnixEpochDateTime;
+            Status = RechargeStatus.Request;
         }
     }
 
@@ -62,8 +63,8 @@ namespace Backstage.Core.Entity
     public class ReqChargeStatItem
     {
         public int UserId { get; set; }
-        public float TotalMoney { get; set; }
-        public string Phone { get; set; }
+        public double TotalMoney { get; set; }
+        public string UserName { get; set; }
         public string Pre { get; set; }
     }
 }

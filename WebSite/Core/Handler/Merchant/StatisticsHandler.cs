@@ -68,6 +68,9 @@ namespace Backstage.Handler
                 case StatisticsType.Year:
                     data.Stat = RechargeStatisticsHelper.GetRechargeYearStatisticsList(sellerId, DateTime.Now.Year); break;
             }
+            var x = data.Stat.LMaxSingleMoneyPre;
+            var y = data.Stat.LTotalMoneyPre;
+            var z = data.Stat.LUserCountPre;
 
             var startTime = DateTime.Now;
             var endTime = DateTime.Now;
@@ -94,7 +97,7 @@ namespace Backstage.Handler
                 var item = new ReqChargeStatItem();
                 item.UserId = chargeLog.UserId;
                 item.TotalMoney = chargeLog.TotalMoney;
-                item.Phone = chargeLog.Phone;
+                item.UserName = chargeLog.UserName;
                 item.Pre = (chargeLog.TotalMoney*1.0/data.Stat.TotalMoney*100).ToString("F2");
 
                 data.List.Add(item);

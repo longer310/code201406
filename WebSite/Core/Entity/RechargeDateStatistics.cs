@@ -69,7 +69,7 @@ namespace Backstage.Core.Entity
         /// <summary>
         /// 9-10点总计
         /// </summary>
-        public float Interva9 { get; set; }
+        public float Interval9 { get; set; }
         /// <summary>
         /// 10-11点总计
         /// </summary>

@@ -121,7 +121,8 @@ public partial class wap_notify_url : System.Web.UI.Page
                                     AccountHelper.SaveAccount(user);
                                     //更新充值记录
                                     //chargeLog.OrderId = trade_no;   //更新第三方订单id
-                                    ChargeLogHelper.UpdateStatus(RechargeStatus.Success, id, trade_no);
+                                    chargeLog.Status = RechargeStatus.Success;
+                                    ChargeLogHelper.UpdateStatus(chargeLog,trade_no);
                                     logger.InfoFormat("充值成功;UserId={1},Money={0},ChargeLogId:{2},total_fee:{3}", chargeLog.Money, chargeLog.UserId, id, total_fee);
                                 }
                             }
@@ -170,9 +171,10 @@ public partial class wap_notify_url : System.Web.UI.Page
                                 logger.ErrorFormat("充值失败,充值记录未找到Id:{0}", id);
                             }
                             //关闭时才更改状态
-                            if (trade_status == "TRADE_Close")
+                            if (trade_status == "TRADE_Close" && chargeLog != null)
                             {
-                                ChargeLogHelper.UpdateStatus(RechargeStatus.Fail, id, trade_no);
+                                chargeLog.Status = RechargeStatus.Fail;
+                                ChargeLogHelper.UpdateStatus(chargeLog, trade_no);
                                 trade_status = "success";//返回success
                             }
                         }

@@ -57,7 +57,7 @@ namespace Backstage.Core.Entity
         /// <summary>
         /// 9月总计
         /// </summary>
-        public float Interva9 { get; set; }
+        public float Month9 { get; set; }
         /// <summary>
         /// 10月总计
         /// </summary>

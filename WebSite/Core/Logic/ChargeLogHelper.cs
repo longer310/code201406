@@ -270,28 +270,32 @@ namespace Backstage.Core.Logic
         /// <summary>
         /// 更新充值状态
         /// </summary>
-        /// <param name="status"></param>
-        /// <param name="id"></param>
+        /// <param name="chargeLog"></param>
         /// <param name="orderId"></param>
         /// <returns></returns>
-        public static bool UpdateStatus(RechargeStatus status, int id,string orderId)
+        public static bool UpdateStatus(ChargeLog chargeLog,string orderId)
         {
             var cmdText = string.Empty;
             List<MySqlParameter> parameters = new List<MySqlParameter>();
 
             cmdText = @"update ChargeLog set Status=?Status,UpdateStatusTime=?UpdateStatusTime,OrderId=?OrderId where Id=?Id;";
 
-            parameters.Add(new MySqlParameter("?Status", status));
+            parameters.Add(new MySqlParameter("?Status", (int)chargeLog.Status));
             parameters.Add(new MySqlParameter("?UpdateStatusTime", DateTime.Now));
             parameters.Add(new MySqlParameter("?OrderId", orderId));
-            parameters.Add(new MySqlParameter("?Id", id));
+            parameters.Add(new MySqlParameter("?Id", chargeLog.Id));
 
             try
             {
                 using (var conn = Utility.ObtainConn(Utility._gameDbConn))
                 {
-                    return MySqlHelper.ExecuteNonQuery(conn, CommandType.Text, cmdText,
+                    bool result = MySqlHelper.ExecuteNonQuery(conn, CommandType.Text, cmdText,
                         parameters.ToArray()) > 0;
+                    if (result && chargeLog.Status == RechargeStatus.Success)
+                    {
+                        RechargeStatisticsHelper.AddRechargeStatistics(chargeLog.SellerId,chargeLog.Money,chargeLog.CreateTime);
+                    }
+                    return result;
                 }
             }
             catch (Exception e)
@@ -308,7 +312,7 @@ namespace Backstage.Core.Logic
             var result = new List<ReqChargeStatItem>();
             string limitsql = start != 0 ? " LIMIT ?start,?limit" : string.Empty;
             var cmdText =
-                @"select sum(a.money) totalmoney,a.userid,b.Phone from chargelog a join account b on a.UserId=b.Id where a.SellerId=?SellerId and a.money>0 and a.`Status` =10 and a.CreateTime>=?StartTime and a.CreateTime<=?EndTime GROUP BY a.userid ORDER BY totalmoney desc; " +
+                @"select sum(a.money) totalmoney,a.userid,b.UserName from chargelog a join account b on a.UserId=b.Id where a.SellerId=?SellerId and a.money>0 and a.`Status` =10 and a.CreateTime>=?StartTime and a.CreateTime<=?EndTime GROUP BY a.userid ORDER BY totalmoney desc; " +
                 limitsql;
 
             List<MySqlParameter> parameters = new List<MySqlParameter>();
@@ -329,9 +333,9 @@ namespace Backstage.Core.Logic
                     while (reader.Read())
                     {
                         ReqChargeStatItem item = new ReqChargeStatItem();
-                        item.TotalMoney = reader.GetInt32(0);
+                        item.TotalMoney = reader.GetDouble(0);
                         item.UserId = (int)reader["UserId"];
-                        item.Phone = reader["Phone"].ToString();
+                        item.UserName = reader["UserName"].ToString();
 
                         result.Add(item);
                     }

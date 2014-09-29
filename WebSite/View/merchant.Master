@@ -90,9 +90,9 @@
             <li class="submenu sadebaer_dbs">
                 <a href="#"><i class="icon icon-hdd"></i><span>数据库统计</span> <span class="label">3</span></a>
                 <ul>
-                    <li><a href="#">销量统计</a></li>
-                    <li><a href="#">充值量统计</a></li>
-                    <li><a href="#">数据备份导出</a></li>
+                    <li class="sidebar_salestat"><a href="<%=DomainUrl %>/View/System/SaleStat.aspx?sellerId=<%=SellerId%>">销量统计</a></li>
+                    <li class="sidebar_chargestat"><a href="<%=DomainUrl %>/View/System/ChargeStat.aspx?sellerId=<%=SellerId%>">充值量统计</a></li>
+                    <li class="sidebar_dbbackup"><a href="#">数据备份导出</a></li>
                 </ul>
             </li>
             <li class="submenu sadebaer_infos">

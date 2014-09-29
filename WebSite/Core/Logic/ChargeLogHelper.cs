@@ -303,12 +303,12 @@ namespace Backstage.Core.Logic
         }
 
 
-        public static List<ChargeLog> GetRechargeLogList(int sellerId,DateTime startTime,DateTime endTime, int start = 0, int limit = 0)
+        public static List<ReqChargeStatItem> GetRechargeLogList(int sellerId, DateTime startTime, DateTime endTime, int start = 0, int limit = 0)
         {
-            var result = new List<ChargeLog>();
+            var result = new List<ReqChargeStatItem>();
             string limitsql = start != 0 ? " LIMIT ?start,?limit" : string.Empty;
             var cmdText =
-                @"sum(a.money) totalmoney,a.userid,b.UserName from chargelog a join account b on a.UserId=b.Id where a.SellerId=?SellerId a.money>0 and a.`Status` =10 and CreateTime>=?StartTime and EndTime<=?EndTime GROUP BY a.userid ORDER BY totalmoney desc " +
+                @"select sum(a.money) totalmoney,a.userid,b.Phone from chargelog a join account b on a.UserId=b.Id where a.SellerId=?SellerId and a.money>0 and a.`Status` =10 and a.CreateTime>=?StartTime and a.CreateTime<=?EndTime GROUP BY a.userid ORDER BY totalmoney desc; " +
                 limitsql;
 
             List<MySqlParameter> parameters = new List<MySqlParameter>();
@@ -328,19 +328,12 @@ namespace Backstage.Core.Logic
                         parameters.ToArray());
                     while (reader.Read())
                     {
-                        ChargeLog ChargeLog = new ChargeLog();
-                        ChargeLog.Id = reader.GetInt32(0);
-                        ChargeLog.SellerId = (int)reader["SellerId"];
-                        ChargeLog.UserId = (int)reader["UserId"];
-                        ChargeLog.Money = (float)reader["Money"];
-                        ChargeLog.Pid = (int)reader["Pid"];
-                        ChargeLog.PayName = reader["PayName"].ToString();
-                        ChargeLog.OrderId = reader["OrderId"].ToString();
-                        ChargeLog.CreateTime = (DateTime)reader["CreateTime"];
-                        ChargeLog.Status = (RechargeStatus)reader["Status"];
-                        ChargeLog.UpdateStatusTime = (DateTime)reader["UpdateStatusTime"];
+                        ReqChargeStatItem item = new ReqChargeStatItem();
+                        item.TotalMoney = reader.GetInt32(0);
+                        item.UserId = (int)reader["UserId"];
+                        item.Phone = reader["Phone"].ToString();
 
-                        result.Add(ChargeLog);
+                        result.Add(item);
                     }
 
                     //一个函数有两次连接数据库 先把连接断开 然后重连

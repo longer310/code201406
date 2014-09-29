@@ -97,6 +97,9 @@
                 init: function () {
                     var mpage = this;
 
+                    //去掉之前选中打开的项 选中产品列表
+                    $("#sidebar li").removeClass("active open");
+                    $("#sidebar .sadebaer_dbs").addClass("active open").find(".sidebar_salestat").addClass("active");
 
                     $('#j-sale-tab a').click(function (e) {
                         var type = $(this).parent().index();

@@ -55,4 +55,15 @@ namespace Backstage.Core.Entity
             UpdateStatusTime = Utility.UnixEpochDateTime;
         }
     }
+
+    /// <summary>
+    /// 充值统计界面需要下发的数据
+    /// </summary>
+    public class ReqChargeStatItem
+    {
+        public int UserId { get; set; }
+        public float TotalMoney { get; set; }
+        public string Phone { get; set; }
+        public string Pre { get; set; }
+    }
 }

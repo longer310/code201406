@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Web;
+using System.Web.Compilation;
 using Backstage.Core.Entity;
 using Backstage.Model;
 using MySql.Data.MySqlClient;
@@ -45,6 +46,41 @@ namespace Backstage.Core.Logic
             /// 环比-充值人数 
             /// </summary>
             public int LUserCount { get; set; }
+
+            public string LTotalMoneyPre
+            {
+                get
+                {
+                    var dif = TotalMoney - LTotalMoney;
+                    var pre = (int)(dif * 1.0 / LTotalMoney * 100);
+                    if (pre > 0) return "+" + pre + "%";
+                    else if (pre < 0) return "-" + pre + "%";
+                    else return pre + "%";
+                }
+            }
+            public string LMaxSingleMoneyPre
+            {
+                get
+                {
+                    var dif = MaxSingleMoney - LMaxSingleMoney;
+                    var pre = (int)(dif * 1.0 / LMaxSingleMoney * 100);
+                    if (pre > 0) return "+" + pre + "%";
+                    else if (pre < 0) return "-" + pre + "%";
+                    else return pre + "%";
+                }
+            }
+
+            public string LUserCountPre
+            {
+                get
+                {
+                    var dif = UserCount - LUserCount;
+                    var pre = (int)(dif * 1.0 / LUserCount * 100);
+                    if (pre > 0) return "+" + pre + "%";
+                    else if (pre < 0) return "-" + pre + "%";
+                    else return pre + "%";
+                }
+            }
 
             public ReqRechargeStatistics(StatisticsType type)
             {
@@ -89,7 +125,7 @@ namespace Backstage.Core.Logic
         {
             var result = new ReqRechargeStatistics(StatisticsType.Day);
             var cmdText =
-                @"select * from RechargeDateStatistics where SellerId=?SellerId and Year=?Year and Month=?Month and Day=?Day;select sum(money) totalmoney,max(money) maxmoney,count(DISTINCT userid) usercount from chargelog where money>0 and `Status` =10 and SellerId=?SellerId and CreateTime>?lStartTime and CreateTime<?lEndTime;;select sum(money) totalmoney,max(money) maxmoney,count(DISTINCT userid) usercount from chargelog where money>0 and `Status` =10 and SellerId=?SellerId and CreateTime>?StartTime and CreateTime<?EndTime;";
+                @"select * from RechargeDateStatistics where SellerId=?SellerId and Year=?Year and Month=?Month and Day=?Day;select sum(money) totalmoney,max(money) maxmoney,count(DISTINCT userid) usercount from chargelog where money>0 and `Status` =10 and SellerId=?SellerId and CreateTime>?lStartTime and CreateTime<?lEndTime;select sum(money) totalmoney,max(money) maxmoney,count(DISTINCT userid) usercount from chargelog where money>0 and `Status` =10 and SellerId=?SellerId and CreateTime>?StartTime and CreateTime<?EndTime;";
 
             List<MySqlParameter> parameters = new List<MySqlParameter>();
             parameters.Add(new MySqlParameter("?SellerId", sellerId));
@@ -138,15 +174,21 @@ namespace Backstage.Core.Logic
                     }
                     if (dataSet.Tables.Count > 1 && dataSet.Tables[1].Rows.Count > 0)
                     {
-                        result.TotalMoney = (float)dataSet.Tables[1].Rows[0]["totalmoney"];
-                        result.MaxSingleMoney = (float)dataSet.Tables[1].Rows[0]["maxmoney"];
-                        result.UserCount = (int)dataSet.Tables[1].Rows[0]["usercount"];
+                        if (dataSet.Tables[1].Rows[0]["totalmoney"] != DBNull.Value)
+                            result.LTotalMoney = (float)dataSet.Tables[1].Rows[0]["totalmoney"];
+                        if (dataSet.Tables[1].Rows[0]["maxmoney"] != DBNull.Value)
+                            result.LMaxSingleMoney = (float)dataSet.Tables[1].Rows[0]["maxmoney"];
+                        if (dataSet.Tables[1].Rows[0]["usercount"] != DBNull.Value)
+                            result.LUserCount = (int)dataSet.Tables[1].Rows[0]["usercount"];
                     }
                     if (dataSet.Tables.Count > 2 && dataSet.Tables[2].Rows.Count > 0)
                     {
-                        result.TotalMoney = (float)dataSet.Tables[2].Rows[0]["totalmoney"];
-                        result.MaxSingleMoney = (float)dataSet.Tables[2].Rows[0]["maxmoney"];
-                        result.UserCount = (int)dataSet.Tables[2].Rows[0]["usercount"];
+                        if (dataSet.Tables[2].Rows[0]["totalmoney"] != DBNull.Value)
+                            result.TotalMoney = (float)dataSet.Tables[2].Rows[0]["totalmoney"];
+                        if (dataSet.Tables[2].Rows[0]["maxmoney"] != DBNull.Value)
+                            result.LMaxSingleMoney = (float)dataSet.Tables[2].Rows[0]["maxmoney"];
+                        if (dataSet.Tables[2].Rows[0]["usercount"] != DBNull.Value)
+                            result.LUserCount = (int)dataSet.Tables[2].Rows[0]["usercount"];
                     }
                 }
 
@@ -167,10 +209,10 @@ namespace Backstage.Core.Logic
         /// <returns></returns>
         public static ReqRechargeStatistics GetRechargeMonthStatisticsList(int sellerId, int year, int month)
         {
-            var result = new ReqRechargeStatistics(StatisticsType.Day);
+            var result = new ReqRechargeStatistics(StatisticsType.Month);
             var dateTime = new DateTime(year, month, 1);
             var cmdText =
-                @"select * from RechargeDateStatistics where SellerId=?SellerId and Year=?Year and Month=?Month order by Day;select sum(money) totalmoney,max(money) maxmoney,count(DISTINCT userid) usercount from chargelog where money>0 and `Status` =10 and SellerId=?SellerId and CreateTime>?lStartTime and CreateTime<?lEndTime;;select sum(money) totalmoney,max(money) maxmoney,count(DISTINCT userid) usercount from chargelog where money>0 and `Status` =10 and SellerId=?SellerId and CreateTime>?StartTime and CreateTime<?EndTime;";
+                @"select * from RechargeDateStatistics where SellerId=?SellerId and Year=?Year and Month=?Month order by Day;select sum(money) totalmoney,max(money) maxmoney,count(DISTINCT userid) usercount from chargelog where money>0 and `Status` =10 and SellerId=?SellerId and CreateTime>?lStartTime and CreateTime<?lEndTime;select sum(money) totalmoney,max(money) maxmoney,count(DISTINCT userid) usercount from chargelog where money>0 and `Status` =10 and SellerId=?SellerId and CreateTime>?StartTime and CreateTime<?EndTime;";
 
             List<MySqlParameter> parameters = new List<MySqlParameter>();
             parameters.Add(new MySqlParameter("?SellerId", sellerId));
@@ -200,15 +242,21 @@ namespace Backstage.Core.Logic
                     }
                     if (dataSet.Tables.Count > 1 && dataSet.Tables[1].Rows.Count > 0)
                     {
-                        result.TotalMoney = (float)dataSet.Tables[1].Rows[0]["totalmoney"];
-                        result.MaxSingleMoney = (float)dataSet.Tables[1].Rows[0]["maxmoney"];
-                        result.UserCount = (int)dataSet.Tables[1].Rows[0]["usercount"];
+                        if (dataSet.Tables[1].Rows[0]["totalmoney"] != DBNull.Value)
+                            result.LTotalMoney = (float)dataSet.Tables[1].Rows[0]["totalmoney"];
+                        if (dataSet.Tables[1].Rows[0]["maxmoney"] != DBNull.Value)
+                            result.LMaxSingleMoney = (float)dataSet.Tables[1].Rows[0]["maxmoney"];
+                        if (dataSet.Tables[1].Rows[0]["usercount"] != DBNull.Value)
+                            result.LUserCount = (int)dataSet.Tables[1].Rows[0]["usercount"];
                     }
                     if (dataSet.Tables.Count > 2 && dataSet.Tables[2].Rows.Count > 0)
                     {
-                        result.TotalMoney = (float)dataSet.Tables[2].Rows[0]["totalmoney"];
-                        result.MaxSingleMoney = (float)dataSet.Tables[2].Rows[0]["maxmoney"];
-                        result.UserCount = (int)dataSet.Tables[2].Rows[0]["usercount"];
+                        if (dataSet.Tables[2].Rows[0]["totalmoney"] != DBNull.Value)
+                            result.TotalMoney = (float)dataSet.Tables[2].Rows[0]["totalmoney"];
+                        if (dataSet.Tables[2].Rows[0]["maxmoney"] != DBNull.Value)
+                            result.LMaxSingleMoney = (float)dataSet.Tables[2].Rows[0]["maxmoney"];
+                        if (dataSet.Tables[2].Rows[0]["usercount"] != DBNull.Value)
+                            result.LUserCount = (int)dataSet.Tables[2].Rows[0]["usercount"];
                     }
                 }
 
@@ -231,7 +279,7 @@ namespace Backstage.Core.Logic
             var result = new ReqRechargeStatistics(StatisticsType.Quarter);
             var dateTime = new DateTime(year, 1, 1);
             var cmdText =
-                @"select * from RechargeMonthStatistics where SellerId=?SellerId and Year=?Year;select sum(money) totalmoney,max(money) maxmoney,count(DISTINCT userid) usercount from chargelog where money>0 and `Status` =10 and SellerId=?SellerId and CreateTime>?lStartTime and CreateTime<?lEndTime;;select sum(money) totalmoney,max(money) maxmoney,count(DISTINCT userid) usercount from chargelog where money>0 and `Status` =10 and SellerId=?SellerId and CreateTime>?StartTime and CreateTime<?EndTime;";
+                @"select * from RechargeMonthStatistics where SellerId=?SellerId and Year=?Year;select sum(money) totalmoney,max(money) maxmoney,count(DISTINCT userid) usercount from chargelog where money>0 and `Status` =10 and SellerId=?SellerId and CreateTime>?lStartTime and CreateTime<?lEndTime;select sum(money) totalmoney,max(money) maxmoney,count(DISTINCT userid) usercount from chargelog where money>0 and `Status` =10 and SellerId=?SellerId and CreateTime>?StartTime and CreateTime<?EndTime;";
 
             List<MySqlParameter> parameters = new List<MySqlParameter>();
             parameters.Add(new MySqlParameter("?SellerId", sellerId));
@@ -268,15 +316,21 @@ namespace Backstage.Core.Logic
                     }
                     if (dataSet.Tables.Count > 1 && dataSet.Tables[1].Rows.Count > 0)
                     {
-                        result.TotalMoney = (float)dataSet.Tables[1].Rows[0]["totalmoney"];
-                        result.MaxSingleMoney = (float)dataSet.Tables[1].Rows[0]["maxmoney"];
-                        result.UserCount = (int)dataSet.Tables[1].Rows[0]["usercount"];
+                        if (dataSet.Tables[1].Rows[0]["totalmoney"] != DBNull.Value)
+                            result.LTotalMoney = (float)dataSet.Tables[1].Rows[0]["totalmoney"];
+                        if (dataSet.Tables[1].Rows[0]["maxmoney"] != DBNull.Value)
+                            result.LMaxSingleMoney = (float)dataSet.Tables[1].Rows[0]["maxmoney"];
+                        if (dataSet.Tables[1].Rows[0]["usercount"] != DBNull.Value)
+                            result.LUserCount = (int)dataSet.Tables[1].Rows[0]["usercount"];
                     }
                     if (dataSet.Tables.Count > 2 && dataSet.Tables[2].Rows.Count > 0)
                     {
-                        result.TotalMoney = (float)dataSet.Tables[2].Rows[0]["totalmoney"];
-                        result.MaxSingleMoney = (float)dataSet.Tables[2].Rows[0]["maxmoney"];
-                        result.UserCount = (int)dataSet.Tables[2].Rows[0]["usercount"];
+                        if (dataSet.Tables[2].Rows[0]["totalmoney"] != DBNull.Value)
+                            result.TotalMoney = (float)dataSet.Tables[2].Rows[0]["totalmoney"];
+                        if (dataSet.Tables[2].Rows[0]["maxmoney"] != DBNull.Value)
+                            result.LMaxSingleMoney = (float)dataSet.Tables[2].Rows[0]["maxmoney"];
+                        if (dataSet.Tables[2].Rows[0]["usercount"] != DBNull.Value)
+                            result.LUserCount = (int)dataSet.Tables[2].Rows[0]["usercount"];
                     }
                 }
 
@@ -299,7 +353,7 @@ namespace Backstage.Core.Logic
             var result = new ReqRechargeStatistics(StatisticsType.Year);
             var dateTime = new DateTime(year, 1, 1);
             var cmdText =
-                @"select * from RechargeMonthStatistics where SellerId=?SellerId and Year=?Year;select sum(money) totalmoney,max(money) maxmoney,count(DISTINCT userid) usercount from chargelog where money>0 and `Status` =10 and SellerId=?SellerId and CreateTime>?lStartTime and CreateTime<?lEndTime;;select sum(money) totalmoney,max(money) maxmoney,count(DISTINCT userid) usercount from chargelog where money>0 and `Status` =10 and SellerId=?SellerId and CreateTime>?StartTime and CreateTime<?EndTime;";
+                @"select * from RechargeMonthStatistics where SellerId=?SellerId and Year=?Year;select sum(money) totalmoney,max(money) maxmoney,count(DISTINCT userid) usercount from chargelog where money>0 and `Status` =10 and SellerId=?SellerId and CreateTime>?lStartTime and CreateTime<?lEndTime;select sum(money) totalmoney,max(money) maxmoney,count(DISTINCT userid) usercount from chargelog where money>0 and `Status` =10 and SellerId=?SellerId and CreateTime>?StartTime and CreateTime<?EndTime;";
 
             List<MySqlParameter> parameters = new List<MySqlParameter>();
             parameters.Add(new MySqlParameter("?SellerId", sellerId));
@@ -333,15 +387,21 @@ namespace Backstage.Core.Logic
                     }
                     if (dataSet.Tables.Count > 1 && dataSet.Tables[1].Rows.Count > 0)
                     {
-                        result.TotalMoney = (float)dataSet.Tables[1].Rows[0]["totalmoney"];
-                        result.MaxSingleMoney = (float)dataSet.Tables[1].Rows[0]["maxmoney"];
-                        result.UserCount = (int)dataSet.Tables[1].Rows[0]["usercount"];
+                        if (dataSet.Tables[1].Rows[0]["totalmoney"] != DBNull.Value)
+                            result.LTotalMoney = (float)dataSet.Tables[1].Rows[0]["totalmoney"];
+                        if (dataSet.Tables[1].Rows[0]["maxmoney"] != DBNull.Value)
+                            result.LMaxSingleMoney = (float)dataSet.Tables[1].Rows[0]["maxmoney"];
+                        if (dataSet.Tables[1].Rows[0]["usercount"] != DBNull.Value)
+                            result.LUserCount = (int)dataSet.Tables[1].Rows[0]["usercount"];
                     }
                     if (dataSet.Tables.Count > 2 && dataSet.Tables[2].Rows.Count > 0)
                     {
-                        result.TotalMoney = (float)dataSet.Tables[2].Rows[0]["totalmoney"];
-                        result.MaxSingleMoney = (float)dataSet.Tables[2].Rows[0]["maxmoney"];
-                        result.UserCount = (int)dataSet.Tables[2].Rows[0]["usercount"];
+                        if (dataSet.Tables[2].Rows[0]["totalmoney"] != DBNull.Value)
+                            result.TotalMoney = (float)dataSet.Tables[2].Rows[0]["totalmoney"];
+                        if (dataSet.Tables[2].Rows[0]["maxmoney"] != DBNull.Value)
+                            result.LMaxSingleMoney = (float)dataSet.Tables[2].Rows[0]["maxmoney"];
+                        if (dataSet.Tables[2].Rows[0]["usercount"] != DBNull.Value)
+                            result.LUserCount = (int)dataSet.Tables[2].Rows[0]["usercount"];
                     }
                 }
 

@@ -49,40 +49,39 @@
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="Footer" runat="server">
     <!--页面js-->
-    <script src="../public/js/chart.js"></script>
-    <script src="../public/js/jquery.peity.min.js"></script>
+    <script type="text/javascript" src="<%=DomainUrl %>/Script/js/chart.js"></script>
+    <script type="text/javascript" src="<%=DomainUrl %>/Script/js/jquery.peity.min.js"></script>
 
     <script type="text/jquery-tmpl-x" id="j-tmpl-charge-rankitem">
-        	{{each(i, v) list}}
+        	{{each(i, v) List}}
 	        	<tr data-gid="1">
 					<td style="width:30px;">${i+1}</td>
-					<td style="width:150px;">2012-12-23 10:12:23</td>
-					<td style="width:200px;">czonechan</td>
-					<td>56</td>
-					<td>2.1</td>
+					<td style="width:200px;">${v.Phone}</td>
+					<td>${v.Phone}</td>
+					<td>${v.Pre}</td>
 				</tr>
 			{{/each}}
         </script>
 
     <script type="text/jquery-tmpl-x" id="j-tmpl-charge-max_analysis">
         	<li>
-				<div class="left peity_bar_all"><span>2,4,9,7,12,10,12,2,4,9,7,12,10,12,2,4,9,7,12,10,12,2,4,9,7,12,10,12</span>+20%</div>
+				<div class="left peity_bar_all"><span>2,4,9,7,12,10,12,2,4,9,7,12,10,12,2,4,9,7,12,10,12,2,4,9,7,12,10,12</span>${Stat.LTotalMoneyPre}</div>
 				<div class="right">
-					<strong>36094</strong>
+					<strong>${Stat.TotalMoney}</strong>
 					总充值金额
 				</div>
 			</li>
 			<li>
-				<div class="left peity_bar_per"><span>20,15,18,14,10,9,9,9</span>0%</div>
+				<div class="left peity_bar_per"><span>20,15,18,14,10,9,9,9</span>${Stat.LMaxSingleMoneyPre}</div>
 				<div class="right">
-					<strong>1433</strong>
+					<strong>${Stat.MaxSingleMoney}</strong>
 					最高单笔充值
 				</div>
 			</li>
 			<li>
-				<div class="left peity_bar_count"><span>3,5,9,7,12,20,10</span>-50%</div>
+				<div class="left peity_bar_count"><span>3,5,9,7,12,20,10</span>${Stat.LUserCountPre}</div>
 				<div class="right">
-					<strong>8650</strong>
+					<strong>${Stat.UserCount}</strong>
 					充值人数
 				</div>
 			</li>
@@ -91,112 +90,189 @@
         var sellerId = '<%=SellerId%>';
 
         var MPage = {
+            hander: "<%=DomainUrl %>/Handler/Merchant/StatisticsHandler.ashx?sellerId=" + sellerId + "&action=",
             init: function () {
                 var mpage = this;
 
+                //去掉之前选中打开的项 选中产品列表
+                $("#sidebar li").removeClass("active open");
+                $("#sidebar .sadebaer_dbs").addClass("active open").find(".sidebar_chargestat").addClass("active");
 
                 $('#j-charge-tab a').click(function (e) {
                     var type = $(this).parent().index();
                     $(this).tab('show');
                     mpage.getDetail(type);
-                    return false
+                    return false;
                 });
 
-                mpage.getDetail(1);
+                mpage.getDetail(0);
             },
 
-            getDetail: function () {
+            getDetail: function (type) {
                 var mpage = this;
 
-                $.ajax({
-                    url: "../../Handler/Backstage/SystemHandler.ashx?action=getchargestat",
-                    type: "get",
-                    dataType: "json"
-                    //context: document.body
-                }).success(function (data) {
+                $.post(mpage.hander + "getchargestat", { type: type, start: 0, limit: 10 }, function (data) {
+                    if (!data.error) {
 
-                    //$.getJSON("", { type : type}， function(json){
-                    var json = {
-                        code: 0,
-                        msg: "",
-                        result: {
-                            list: [
-                                {},
-                                {},
-                                {},
-                                {},
-                                {},
-                                {},
-                                {},
-                                {},
-                                {},
-                                {}
-                            ],
-                            count: 0
+                        //json.result = data.data.Results;
+                        //json.result.count = data.data.TotalCount;
+
+                        //明细图表
+                        var randomScalingFactor = function () { return Math.round(Math.random() * 50) };
+                        var labels = [];
+                        var data = [];
+
+                        for (var i = 1; i <= data.data.Stat.Xvalue.length; i++) {
+                            labels.push(i);
+                            data.push(data.data.Stat.Yvalues[i]);
                         }
-                    };
 
-                    json.result = data.data.Results;
-                    json.result.count = data.data.TotalCount;
+                        var lineChartData = {
+                            labels: labels,
 
-                    //明细图表
-                    var randomScalingFactor = function () { return Math.round(Math.random() * 50) };
-                    var labels = [];
-                    var data = [];
+                            datasets: [
+                                {
+                                    label: "My First dataset",
+                                    fillColor: "rgba(220,220,220,0.2)",
+                                    strokeColor: "rgba(220,220,220,1)",
+                                    pointColor: "rgba(220,220,220,1)",
+                                    pointStrokeColor: "#fff",
+                                    pointHighlightFill: "#fff",
+                                    pointHighlightStroke: "rgba(220,220,220,1)", scaleSteps: 20,
+                                    data: data
+                                }
+                            ]
 
-                    for (var i = 1; i <= 24; i++) {
-                        labels.push(i);
-                        data.push(randomScalingFactor());
+                        }
+
+                        var ctx = document.getElementById("canvas").getContext("2d");
+                        window.myLine = new Chart(ctx).Line(lineChartData, {
+                            responsive: true
+                        });
+
+                        //总计图表
+                        $("#j-charge-max_analysis").html($("#j-tmpl-charge-max_analysis").tmpl(data.data));
+
+                        $.fn.peity.defaults.bar = {
+                            delimeter: ",",
+                            height: 24,
+                            max: null,
+                            min: 0,
+                            width: 50
+                        };
+
+                        $(".peity_bar_all span").peity("bar", {
+                            colour: "#459D1C"
+                        });
+                        $(".peity_bar_per span").peity("bar", {
+                            colour: "#BA1E20"
+                        });
+                        $(".peity_bar_count span").peity("bar", {
+                            colour: "#090f7f"
+                        });
+
+                        //排行
+                        $("#j-charge-list").html($("#j-tmpl-charge-rankitem").tmpl(data.data));
+                    } else {
+                        Common.tip({ type: "error", content: data.error });
+                        //Common.alert({
+                        //    title: "提示",
+                        //    content: data.error,
+                        //    confirm: function () {
+                        //    }
+                        //});
                     }
+                }, "JSON");
 
-                    var lineChartData = {
-                        labels: labels,
+                //$.ajax({
+                //    url: "../../Handler/Backstage/SystemHandler.ashx?action=getchargestat",
+                //    type: "get",
+                //    dataType: "json"
+                //    //context: document.body
+                //}).success(function (data) {
 
-                        datasets: [
-                            {
-                                label: "My First dataset",
-                                fillColor: "rgba(220,220,220,0.2)",
-                                strokeColor: "rgba(220,220,220,1)",
-                                pointColor: "rgba(220,220,220,1)",
-                                pointStrokeColor: "#fff",
-                                pointHighlightFill: "#fff",
-                                pointHighlightStroke: "rgba(220,220,220,1)", scaleSteps: 20,
-                                data: data
-                            }
-                        ]
+                //    //$.getJSON("", { type : type}， function(json){
+                //    var json = {
+                //        code: 0,
+                //        msg: "",
+                //        result: {
+                //            list: [
+                //                {},
+                //                {},
+                //                {},
+                //                {},
+                //                {},
+                //                {},
+                //                {},
+                //                {},
+                //                {},
+                //                {}
+                //            ],
+                //            count: 0
+                //        }
+                //    };
 
-                    }
+                //    json.result = data.data.Results;
+                //    json.result.count = data.data.TotalCount;
 
-                    var ctx = document.getElementById("canvas").getContext("2d");
-                    window.myLine = new Chart(ctx).Line(lineChartData, {
-                        responsive: true
-                    });
+                //    //明细图表
+                //    var randomScalingFactor = function () { return Math.round(Math.random() * 50) };
+                //    var labels = [];
+                //    var data = [];
 
-                    //总计图表
-                    $("#j-charge-max_analysis").html($("#j-tmpl-charge-max_analysis").tmpl(json.result));
+                //    for (var i = 1; i <= 24; i++) {
+                //        labels.push(i);
+                //        data.push(randomScalingFactor());
+                //    }
 
-                    $.fn.peity.defaults.bar = {
-                        delimeter: ",",
-                        height: 24,
-                        max: null,
-                        min: 0,
-                        width: 50
-                    };
+                //    var lineChartData = {
+                //        labels: labels,
 
-                    $(".peity_bar_all span").peity("bar", {
-                        colour: "#459D1C"
-                    });
-                    $(".peity_bar_per span").peity("bar", {
-                        colour: "#BA1E20"
-                    });
-                    $(".peity_bar_count span").peity("bar", {
-                        colour: "#090f7f"
-                    });
+                //        datasets: [
+                //            {
+                //                label: "My First dataset",
+                //                fillColor: "rgba(220,220,220,0.2)",
+                //                strokeColor: "rgba(220,220,220,1)",
+                //                pointColor: "rgba(220,220,220,1)",
+                //                pointStrokeColor: "#fff",
+                //                pointHighlightFill: "#fff",
+                //                pointHighlightStroke: "rgba(220,220,220,1)", scaleSteps: 20,
+                //                data: data
+                //            }
+                //        ]
 
-                    //排行
-                    $("#j-charge-list").html($("#j-tmpl-charge-rankitem").tmpl(json.result));
-                    //});
-                });
+                //    }
+
+                //    var ctx = document.getElementById("canvas").getContext("2d");
+                //    window.myLine = new Chart(ctx).Line(lineChartData, {
+                //        responsive: true
+                //    });
+
+                //    //总计图表
+                //    $("#j-charge-max_analysis").html($("#j-tmpl-charge-max_analysis").tmpl(json.result));
+
+                //    $.fn.peity.defaults.bar = {
+                //        delimeter: ",",
+                //        height: 24,
+                //        max: null,
+                //        min: 0,
+                //        width: 50
+                //    };
+
+                //    $(".peity_bar_all span").peity("bar", {
+                //        colour: "#459D1C"
+                //    });
+                //    $(".peity_bar_per span").peity("bar", {
+                //        colour: "#BA1E20"
+                //    });
+                //    $(".peity_bar_count span").peity("bar", {
+                //        colour: "#090f7f"
+                //    });
+
+                //    //排行
+                //    $("#j-charge-list").html($("#j-tmpl-charge-rankitem").tmpl(json.result));
+                //    //});
+                //});
             }
         }
 

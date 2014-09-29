@@ -29,7 +29,7 @@ namespace Backstage.Core.Handler
                 case "getitem":
                     GetItem(context); break;
                 case "activecomment":
-                    ActiveComment(); break;
+                    ActiveComment(context); break;
                 case "activecommentlist":
                     ActiveCommentList(context); break;
                 //case "updatedata":
@@ -74,7 +74,7 @@ namespace Backstage.Core.Handler
             Response.End();
         }
 
-        private void ActiveComment()
+        private void ActiveComment(HttpContext context)
         {
             int aid = GetInt("newid");
             int uid = GetInt("uid");

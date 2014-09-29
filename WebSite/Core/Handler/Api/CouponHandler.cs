@@ -23,7 +23,7 @@ namespace Backstage.Core.Handler
                 case "usercoupon":
                     UserCoupon(); break;
                 case "couponcommentlist":
-                    Couponcommentlist(); break;
+                    Couponcommentlist(context); break;
                 case "couponcomment":
                     CouponComment(); break;
                 case "add":
@@ -102,7 +102,7 @@ namespace Backstage.Core.Handler
             ReturnCorrectMsg("领取优惠券成功");
         }
 
-        private void Couponcommentlist()
+        private void Couponcommentlist(HttpContext context)
         {
             int cid = GetInt("couponid");
             int index = GetInt("start");
@@ -129,7 +129,7 @@ namespace Backstage.Core.Handler
                         throw new ArgumentNullException(string.Format("userId:{0}", cm.UserId));
                     var result = new ComentsForApi
                     {
-                        Avatar = user.Avatar,
+                        Avatar = Utility.GetSizePicUrl(user.Avatar, 100, 100, context),
                         UserName = user.UserName,
                         Sex = (int)user.Sex,
                         Dateline = cm.CreateTime.GetUnixTime(),

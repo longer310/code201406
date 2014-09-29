@@ -33,7 +33,7 @@ namespace Backstage.Handler
                     GetGoodsDetail(context);
                     break;
                 case "getgoodscomments"://获取产品评论 2.3
-                    GetGoodsComments();
+                    GetGoodsComments(context);
                     break;
                 case "addgoodscomment"://发表产品评论 2.4
                     AddGoodsComment();
@@ -494,7 +494,7 @@ namespace Backstage.Handler
                 dateline = DateTime.MinValue.GetUnixTime();
             }
         }
-        public void GetGoodsComments()
+        public void GetGoodsComments(HttpContext context)
         {
             int start = GetInt("start");
             int limit = GetInt("limit");
@@ -525,7 +525,7 @@ namespace Backstage.Handler
                 var user = userlist.FirstOrDefault(o => o.Id == comment.UserId);
                 if (user != null)
                 {
-                    item.avatar = Utility.GetPhoneNeedUrl(user.Avatar);
+                    item.avatar = Utility.GetSizePicUrl(user.Avatar,100,100,context);
                     item.username = user.UserName;
                     item.sex = (int)user.Sex;
                 }

@@ -37,12 +37,12 @@ namespace Backstage.Handler
         public class ChargeStatResponse
         {
             public RechargeStatisticsHelper.ReqRechargeStatistics Stat { get; set; }
-            public List<ChargeLog> List { get; set; }
+            public List<ReqChargeStatItem> List { get; set; }
 
             public ChargeStatResponse()
             {
                 Stat = new RechargeStatisticsHelper.ReqRechargeStatistics(StatisticsType.Day);
-                List = new List<ChargeLog>();
+                List = new List<ReqChargeStatItem>();
             }
         }
         /// <summary>
@@ -88,7 +88,17 @@ namespace Backstage.Handler
                     break;
             }
 
-            data.List = ChargeLogHelper.GetRechargeLogList(CurSellerId, startTime, endTime, start * limit, limit);
+            var list = ChargeLogHelper.GetRechargeLogList(CurSellerId, startTime, endTime, start * limit, limit);
+            foreach (var chargeLog in list)
+            {
+                var item = new ReqChargeStatItem();
+                item.UserId = chargeLog.UserId;
+                item.TotalMoney = chargeLog.TotalMoney;
+                item.Phone = chargeLog.Phone;
+                item.Pre = (chargeLog.TotalMoney*1.0/data.Stat.TotalMoney*100).ToString("F2");
+
+                data.List.Add(item);
+            }
 
             var jt = new JsonTransfer();
             jt.Add("data", data);

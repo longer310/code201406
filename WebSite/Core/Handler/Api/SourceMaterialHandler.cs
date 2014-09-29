@@ -29,7 +29,7 @@ namespace Backstage.Core.Handler
                 case "imgcomment":
                     ImgComment(); break;
                 case "imgcommentlist":
-                    ImgCommentList(); break;
+                    ImgCommentList(context); break;
                 case "update":
                     Update(); break;
                 case "delete":
@@ -161,7 +161,7 @@ namespace Backstage.Core.Handler
         /// 图片评论列表
         /// </summary>
         /// <returns></returns>
-        public void ImgCommentList()
+        public void ImgCommentList(HttpContext context)
         {
             int pid = GetInt("pid");
             int index = GetInt("start");
@@ -193,7 +193,7 @@ namespace Backstage.Core.Handler
                     throw new ArgumentNullException(string.Format("userId:{0}", cm.UserId));
                 var result = new ComentsForApi
                 {
-                    Avatar = Utility.GetPhoneNeedUrl(user.Avatar),
+                    Avatar = Utility.GetSizePicUrl(user.Avatar,100,100,context),
                     UserName = user.UserName,
                     Sex = (int)user.Sex,
                     Dateline = cm.CreateTime.GetUnixTime(),

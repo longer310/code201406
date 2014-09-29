@@ -469,13 +469,13 @@ namespace Backstage.Core
                     var i = 0;
                     foreach (var s in alist)
                     {
-                        if (s == "File" || s == "file")
+                        if (s == "bg" || s == "bg")
                         {
                             break;
                         }
                         i++;
                     }
-                    var filePath = "../../File/";
+                    var filePath = "../../";
                     for (int j = i + 1; j < alist.Count(); j++)
                     {
                         filePath += alist[j] + "/";
@@ -732,6 +732,8 @@ namespace Backstage.Core
         {
             if (url.StartsWith("/bg/File"))
                 url = _onlydomainurl + url;
+            if (string.IsNullOrEmpty(url))
+                url = _userdefaulthead; 
             return url;
         }
         public static List<string> GetPhoneNeedUrlList(List<string> urls)

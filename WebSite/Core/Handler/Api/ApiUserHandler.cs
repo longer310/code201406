@@ -32,7 +32,7 @@ namespace Backstage.Handler
                     Register();
                     break;
                 case "login"://登录接口 7.3 
-                    Login();
+                    Login(context);
                     break;
                 case "thirdlogin"://第三方登录接口 7.4
                     ThirdLogin(context);
@@ -89,7 +89,7 @@ namespace Backstage.Handler
                     ModifyUserInfo(context);
                     break;
                 case "getuserinfo"://获取会员信息 7.20
-                    GetUserInfo();
+                    GetUserInfo(context);
                     break;
                 case "userregist"://签到接口 7.21
                     UserRegist();
@@ -273,7 +273,7 @@ namespace Backstage.Handler
             public int sex { get; set; }
             public string avatar { get; set; }
         }
-        public void Login()
+        public void Login(HttpContext context)
         {
             var phone = GetString("phone");
             var password = GetString("password");
@@ -305,7 +305,7 @@ namespace Backstage.Handler
             data.username = user.UserName;
             data.nickname = user.NickName;
             data.phone = user.Phone;
-            data.avatar = Utility.GetPhoneNeedUrl(user.Avatar);
+            data.avatar = Utility.GetSizePicUrl(user.Avatar, 100, 100, context);
             data.sex = (int)user.Sex;
             data.money = user.Money;
             data.integral = user.Integral;
@@ -1358,7 +1358,7 @@ namespace Backstage.Handler
 
             public string nickname { get; set; }
         }
-        public void GetUserInfo()
+        public void GetUserInfo(HttpContext context)
         {
             var uid = GetInt("uid");
             var sellerid = GetInt("sellerid");
@@ -1378,7 +1378,7 @@ namespace Backstage.Handler
             data.username = user.UserName;
             data.nickname = user.NickName;
             data.phone = user.Phone;
-            data.avatar = Utility.GetPhoneNeedUrl(user.Avatar);
+            data.avatar = Utility.GetSizePicUrl(user.Avatar, 100, 100, context);
             data.sex = (int)user.Sex;
             data.money = user.Money;
             data.integral = user.Integral;

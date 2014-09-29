@@ -469,14 +469,14 @@ namespace Backstage.Core
                     var i = 0;
                     foreach (var s in alist)
                     {
-                        if (s == "bg" || s == "bg")
+                        if (s.ToLower() == "bg")
                         {
                             break;
                         }
                         i++;
                     }
                     var filePath = "../../";
-                    for (int j = i + 1; j < alist.Count(); j++)
+                    for (int j = i; j < alist.Count(); j++)
                     {
                         filePath += alist[j] + "/";
                     }

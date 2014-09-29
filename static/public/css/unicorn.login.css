@@ -3,94 +3,147 @@
  * Diablo9983 -> diablo9983@gmail.com
 **/
 html, body {
-    width: 100%;
-    height: 100%;
-    overflow:hidden;
+
 }
 body {
-	background-color: #444444;
-	background-image: -webkit-gradient(linear, 0 0%, 0 100%, from(#555555), to(#111111));
-	background-image: -webkit-linear-gradient(top, #555555 0%, #111111 100%);
-    background-image: -moz-linear-gradient(top, #555555 0%, #111111 100%);
-    background-image: -ms-linear-gradient(top, #555555 0%, #111111 100%);
-    background-image: -o-linear-gradient(top, #555555 0%, #111111 100%);
-    background-image: linear-gradient(top, #555555 0%, #111111 100%);
+	background-color: #25242a;
     padding: 0;
     margin: 0;
 }
 
-#logo, #loginbox {
-    width: 400px;
-    margin-left: auto;
-    margin-right: auto;
-    position: relative;
-}
 #logo {
-    padding: 50px 0 30px 5px;
-    font-size: 34px;
-    text-align: center;
-    color: #fff;
-    font-family: 'microsoft yahei';
-    font-weight: normal;
+    height: 278px;
+    background: url(../img/login_bg.jpg) repeat-x;
+    position: relative;
+
 }
-#logo img {
-    width: 215px;
+#logo  h1{
+    width: 450px;
+    height: 50px;
+    text-indent: -9999px;
+    background: url(../img/login_logo.png) no-repeat;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    margin-top: -25px;
+    margin-left: -225px;
+    overflow: hidden;
+}
+
+.user-input,
+.pw-input,
+.phone-input{
+    height: 38px;
+    width: 205px;
+    overflow: hidden;
+    padding-left: 60px;
+    padding-right: 10px;
+}
+
+.user-input input,
+.pw-input input,
+.phone-input input{
+    border:0;
+    width: 205px;
+    height: 18px;
+    line-height: 18px;
+    padding: 10px 0;
+    color: #333;
+}
+.user-input input:focus,
+.pw-input input:focus,
+.phone-input input:focus{
+    outline: 0;
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
+}
+.user-input{background: url(../img/user_input.png);}
+.pw-input{background: url(../img/pw_input.png);}
+.phone-input{background: url(../img/phone_input.png);}
+
+#loginform,
+#recoverform,
+#resetform{
+    width: 275px;
     margin: 0 auto;
-    display: block;
+    position: absolute;
+    top: 360px;
+    left: 50%;
+    margin-left: -137px;
 }
-#loginbox {
-    height: 196px;
-	background: #ffffff;
-    box-shadow: 0 0 4px #000000;
-    border-radius: 7px;
-    overflow: hidden !important;
+
+#recoverform{
+    top: 320px;
+}
+
+#loginform .tip,
+#recoverform .tip{
+    color: #fff;
+}
+
+.s-btn{
+    width: 85px !important;
+    height: 38px;
+    line-height: 38px;
     text-align: center;
-    position: relative;   
+    font-size: 14px;
+    font-weight: bold;
+    color: #fff;
+    background: url(../img/btn.png);
+    border:0;
+    float: right;
 }
 
-#loginbox form{
-	width:100%;
-	height:100%;
-	position:absolute;
-	top:0;
-	left:0;
+.flip-link{
+    color: #fff;
+    font-size: 14px;
+    float: left;
+    margin-top: 9px;
 }
-#loginbox p {
+
+.checkbox{
+    color: #fff;
+    padding: 0;
+    float: left;
+    line-height: 38px;
+    height: 38px;
+    margin-right: 5px;
+}
+
+.radio input[type="radio"], .checkbox input[type="checkbox"]{
+    float: left;
+    margin-left: 0;
+    margin-top: 13px;
+    margin-right: 5px;
+}
+
+.radio.inline, .checkbox.inline{
+    padding-top: 0;
+}
+.control-group{
     margin-top: 20px;
-    padding: 0 20px;
 }
 
-#loginbox .form-actions {
-	padding: 14px 20px 15px;
-}
-#loginbox .form-actions .pull-left {
-	margin-top: 2px;
+#recoverform,
+#resetform{
+    display: none;
 }
 
-#loginbox form#loginform {
-	z-index: 200;
+#footer{
+    width: 230px;
+    height: 50px;
+    background:url(../img/footer.png) no-repeat;
+    margin: 300px auto 30px;
 }
 
-#loginbox form#recoverform {
-	z-index: 100;
-	opacity: 0;
-    display:none;
-}
-
-#loginbox form#recoverform .form-actions {
-    margin-top: 27px;
-}
-
-#loginbox form#recoverform .control-group {
-	margin: 23px 0;
-}
-
-.form-vertical, .form-actions {
-    margin-bottom: 0;
-}
-
-@media (max-width: 480px){
-    #logo, #loginbox {
-        width: 80%; 
-    }    
+.btn-g{
+    height: 38px;
+    line-height: 38px;
+    text-align: center;
+    display: block;
+    font-size: 14px;
+    color: #000;
+    background: #bfbfbf;
+    border-radius: 10px;
 }

@@ -5,19 +5,35 @@
 $(document).ready(function(){
 
 	var login = $('#loginform');
-	var recover = $('#recoverform');
+    var recover = $('#recoverform');
+	var reset = $('#resetform');
 	var speed = 400;
 
 	$('#to-recover').click(function(){
 		login.fadeTo(speed,0.01).css('z-index','100');
 		recover.fadeTo(speed,1).css('z-index','200');
+        return false;
 	});
 
 	$('#to-login').click(function(){
 		recover.fadeTo(speed,0.01).css('z-index','100');
 		login.fadeTo(speed,1).css('z-index','200');
+        return false;
 	});
-    
+
+    $("#to-reset").bind("click", function(){
+        recover.fadeTo(speed,0.01).css('z-index','100');
+        reset.fadeTo(speed,1).css('z-index','200');
+        return false;
+    });
+
+    $("#back-recover").bind("click", function(){
+        reset.fadeTo(speed,0.01).css('z-index','100');
+        recover.fadeTo(speed,1).css('z-index','200');
+        return false;
+    });
+
+
     if($.browser.msie == true && $.browser.version.slice(0,3) < 10) {
         $('input[placeholder]').each(function(){ 
        

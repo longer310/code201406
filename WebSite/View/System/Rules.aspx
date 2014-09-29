@@ -180,10 +180,10 @@
                 $("#j-rule_form").bind("submit", function () {
                     var save_data = {
                         levels: mpage.getsubmitLevels(),
-                        cmi: $("j-comment").val(),
-                        costi: $("j-cost").val(),
-                        ri: $("j-charge").val(),
-                        si: $("j-share").val(),
+                        cmi: $("#j-comment").val(),
+                        costi: $("#j-cost").val(),
+                        ri: $("#j-charge").val(),
+                        si: $("#j-share").val(),
                         fe: $("#j-freight").val(),
                         nffe: $("#j-freefreight").val()
                     };
@@ -218,7 +218,6 @@
                 });
 
                 var json = JSON.stringify(levels);
-                console.log(json);
                 return json;
             },
             initForm: function () {

@@ -226,12 +226,12 @@ namespace Backstage.Core.Handler.Backstage
             var data = new
             {
                 Userlevels = userlevels.ToList(),
-                CommentIntegral = seller.CommentIntegral,
-                ConsumptionIntegral = seller.ConsumptionIntegral,
+                CommentIntegral = ParamHelper.ExtcreditCfgData.Comment,
+                ConsumptionIntegral = ParamHelper.ExtcreditCfgData.Consume,
                 Freight = seller.Freight,
                 NeedToFreeFreight = seller.NeedToFreeFreight,
-                ReChargeIntegral = seller.ReChargeIntegral,
-                ShareIntegral = seller.ShareIntegral
+                ReChargeIntegral = ParamHelper.ExtcreditCfgData.Charge,
+                ShareIntegral = ParamHelper.ExtcreditCfgData.Share
             };
             JsonTransfer jt = new JsonTransfer();
             jt.Add("data", data);
@@ -246,10 +246,11 @@ namespace Backstage.Core.Handler.Backstage
             
             //var userlevels = SystemHelper.GetUserLevels(sellerId);
             var userlevels = Newtonsoft.Json.JsonConvert.DeserializeObject<List<UserLevel>>(GetString("levels"));
-            seller.CommentIntegral = GetInt("cmi");
-            seller.ConsumptionIntegral = GetInt("costi");
-            seller.ReChargeIntegral = GetInt("ri");
-            seller.ShareIntegral = GetInt("si");
+            ParamHelper.ExtcreditCfgData.Comment = GetInt("cmi");
+            ParamHelper.ExtcreditCfgData.Consume = GetInt("costi");
+            ParamHelper.ExtcreditCfgData.Charge = GetInt("ri");
+            ParamHelper.ExtcreditCfgData.Share = GetInt("si");
+            ParamHelper.UpdateParamvalue("ExtcreditCfg", ParamHelper.ExtcreditCfgData);
 
             seller.Freight = GetInt("fe");
             seller.NeedToFreeFreight = GetInt("nffe");

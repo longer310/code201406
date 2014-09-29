@@ -194,22 +194,25 @@ namespace Backstage.Handler
             UploadType type = (UploadType)Convert.ToInt32(context.Request.QueryString["type"]);
             switch (type)
             {
-                case UploadType.All: typeName = ""; break;
-                case UploadType.Img: typeName = "/img"; break;
-                case UploadType.Active: typeName = "/active"; break;
-                case UploadType.Goods: typeName = "/goods"; break;
-                case UploadType.GoodCategories: typeName = "/goodcategories"; break;
-                case UploadType.User: typeName = "/user"; break;
-                case UploadType.Coupon: typeName = "/coupon"; break;
+                case UploadType.All:
+                case UploadType.User:
+                    typeName = ""; break;
+                case UploadType.Img: typeName = "/tupianqiang"; break;
+                case UploadType.Active: typeName = "/huodong"; break;
+                case UploadType.Goods: typeName = "/shangpin"; break;
+                case UploadType.GoodCategories: typeName = "/fenlei"; break;
+                case UploadType.Coupon: typeName = "/dianziquan"; break;
                 case UploadType.MerchantLoginAd:
                 case UploadType.MerchantWifiAd: typeName = "/guanggao"; break;
+                case UploadType.Position: typeName = "/weizi"; break;
+
                 case UploadType.Package: typeName = "/package"; break;
 
                 //开发商上传的图片都在一个文件夹
                 case UploadType.PlatformAd:
                 case UploadType.FastLinks:
                 case UploadType.FastLinksList: typeName = ""; break;
-                default: break;
+                default: typeName = ""; break;
             }
             return typeName;
         }

@@ -128,13 +128,13 @@
                     //图片上传编辑
                     mpage.image_editor = image_editor = K.editor({
                         uploadJson: '<%=DomainUrl %>/Handler/FileManager/UploadHandler.ashx?type=110',
-                        fileManagerJson: '<%=DomainUrl %>/Handler/FileManager/FileManagerHandler.ashx?type=110',
+                        fileManagerJson: '<%=DomainUrl %>/Handler/FileManager/FileManagerHandler.ashx?type=0',
                     });
                     
                     //列表上传编辑
                     mpage.image_editor_list = image_editor_list = K.editor({
                         uploadJson: '<%=DomainUrl %>/Handler/FileManager/UploadHandler.ashx?type=111',
-                        fileManagerJson: '<%=DomainUrl %>/Handler/FileManager/FileManagerHandler.ashx?type=111',
+                        fileManagerJson: '<%=DomainUrl %>/Handler/FileManager/FileManagerHandler.ashx?type=0',
                     });
 
                     //图片上传绑定

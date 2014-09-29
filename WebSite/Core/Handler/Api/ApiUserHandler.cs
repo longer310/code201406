@@ -993,12 +993,12 @@ namespace Backstage.Handler
         #region 修改密码 7.16
         public void ModifyPwd()
         {
-            var id = GetInt("id");
+            var uid = GetInt("uid");
             var sellerid = GetInt("sellerid");
             var oldpwd = GetString("oldpwd");
             var newpwd = GetString("newpwd");
 
-            var user = AccountHelper.GetUser(id);//AccountHelper.GetUserByPhone(phone, sellerid);
+            var user = AccountHelper.GetUser(uid);//AccountHelper.GetUserByPhone(phone, sellerid);
             if (user == null)
             {
                 ReturnErrorMsg("不存在该用户");
@@ -1503,41 +1503,43 @@ namespace Backstage.Handler
                 return;
             }
             var favorite = FavoriteHelper.GetFavorite(uid);
+            var data = new MyFavoriteData();
             var wheresql = string.Empty;
             if (favorite.GidList.Count > 0)
+            {
                 wheresql = string.Format(" and a.Id in({0})", Utility.GetString(favorite.GidList));
-            var goodslist = GoodsHelper.GetGoodsList(user.SellerId, wheresql).Results;
-            if (goodslist.Count != favorite.GidList.Count)
-            {
-                //存在已删除的商品
-                for (int i = favorite.GidList.Count - 1; i >= 0; i--)
+                var goodslist = GoodsHelper.GetGoodsList(user.SellerId, wheresql).Results;
+                if (goodslist.Count != favorite.GidList.Count)
                 {
-                    var item = goodslist.FirstOrDefault(o => o.Id == favorite.GidList[i]);
-                    if (item == null)
+                    //存在已删除的商品
+                    for (int i = favorite.GidList.Count - 1; i >= 0; i--)
                     {
-                        favorite.GidList.Remove(favorite.GidList[i]);
+                        var item = goodslist.FirstOrDefault(o => o.Id == favorite.GidList[i]);
+                        if (item == null)
+                        {
+                            favorite.GidList.Remove(favorite.GidList[i]);
+                        }
                     }
-                }
 
-                FavoriteHelper.SaveFavorite(favorite);
-            }
-            goodslist = goodslist.Skip(start * limit).Take(limit).ToList();
-            var data = new MyFavoriteData();
-            foreach (var goods in goodslist)
-            {
-                //Goods goods = GoodsHelper.GetGoods(gid);
-                var o = new MyFavoriteItem()
+                    FavoriteHelper.SaveFavorite(favorite);
+                }
+                goodslist = goodslist.Skip(start * limit).Take(limit).ToList();
+                foreach (var goods in goodslist)
                 {
-                    gid = goods.Id,
-                    img = Utility.GetSizePicUrl(goods.LogoUrl, 180, 133, context),
-                    title = goods.Title,
-                    nowprice = goods.Nowprice,
-                    originalprice = goods.OriginalPrice,
-                    sales = goods.Sales,
-                    content = goods.Content
-                };
-                data.lists.Add(o);
-                data.num++;
+                    //Goods goods = GoodsHelper.GetGoods(gid);
+                    var o = new MyFavoriteItem()
+                    {
+                        gid = goods.Id,
+                        img = Utility.GetSizePicUrl(goods.LogoUrl, 180, 133, context),
+                        title = goods.Title,
+                        nowprice = goods.Nowprice,
+                        originalprice = goods.OriginalPrice,
+                        sales = goods.Sales,
+                        content = goods.Content
+                    };
+                    data.lists.Add(o);
+                    data.num++;
+                }
             }
 
             //返回信息

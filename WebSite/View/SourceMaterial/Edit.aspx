@@ -74,7 +74,7 @@
                     //图片上传编辑
                     image_editor = image_editor = K.editor({
                         uploadJson: '../../Handler/FileManager/UploadHandler.ashx?type=101&sellerid=' + sellerId,
-                        fileManagerJson: '../../Handler/FileManager/FileManagerHandler.ashx?type=101&sellerid=' + sellerId,
+                        fileManagerJson: '../../Handler/FileManager/FileManagerHandler.ashx?type=0&sellerid=' + sellerId,
                     });
 
 

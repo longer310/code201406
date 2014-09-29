@@ -493,14 +493,14 @@
 
                     //图片上传编辑
                     mpage.image_editor = image_editor = K.editor({
-                        uploadJson: '<%=DomainUrl %>/Handler/FileManager/UploadHandler.ashx?type=3',
-                        fileManagerJson: '<%=DomainUrl %>/Handler/FileManager/FileManagerHandler.ashx?type=3',
+                        uploadJson: '<%=DomainUrl %>/Handler/FileManager/UploadHandler.ashx?type=0',
+                        fileManagerJson: '<%=DomainUrl %>/Handler/FileManager/FileManagerHandler.ashx?type=0',
                     });
 
                     //图片上传编辑
                     mpage.file_editor = file_editor = K.editor({
-                        uploadJson: '<%=DomainUrl %>/Handler/FileManager/UploadHandler.ashx?type=100',
-                        fileManagerJson: '<%=DomainUrl %>/Handler/FileManager/FileManagerHandler.ashx?type=100',
+                        uploadJson: '<%=DomainUrl %>/Handler/FileManager/UploadHandler.ashx?type=0',
+                        fileManagerJson: '<%=DomainUrl %>/Handler/FileManager/FileManagerHandler.ashx?type=0',
                     });
 
                     //图片上传绑定

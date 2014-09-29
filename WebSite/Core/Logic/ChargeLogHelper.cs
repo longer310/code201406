@@ -18,7 +18,7 @@ namespace Backstage.Core.Logic
             result.Results = new List<ChargeLog>();
             string limitsql = start != 0 ? " LIMIT ?start,?limit" : string.Empty;
             var cmdText =
-                @"select * from ChargeLog where SellerId=?SellerId and UserId=?UserId order by createtime desc " +
+                @"select * from ChargeLog where SellerId=?SellerId and UserId=?UserId and Status=10 order by createtime desc " +
                 limitsql;
 
             List<MySqlParameter> parameters = new List<MySqlParameter>();

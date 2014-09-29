@@ -123,7 +123,7 @@
                     //图片上传编辑
                     mpage.image_editor = image_editor = K.editor({
                         uploadJson: '../../Handler/FileManager/UploadHandler.ashx?type=102&sellerid=' + sellerId,
-                        fileManagerJson: '../../Handler/FileManager/FileManagerHandler.ashx?type=102&sellerid=' + sellerId,
+                        fileManagerJson: '../../Handler/FileManager/FileManagerHandler.ashx?type=0&sellerid=' + sellerId,
                     });
                    
                     //图片上传绑定

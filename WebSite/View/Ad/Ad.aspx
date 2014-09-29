@@ -364,17 +364,17 @@
                     //图片上传编辑
                     mpage.image_editor = image_editor = K.editor({
                         uploadJson: '<%=DomainUrl %>/Handler/FileManager/UploadHandler.ashx?type=107&sellerid=' + sellerId,
-                        fileManagerJson: '<%=DomainUrl %>/Handler/FileManager/FileManagerHandler.ashx?type=107&sellerid=' + sellerId,
+                        fileManagerJson: '<%=DomainUrl %>/Handler/FileManager/FileManagerHandler.ashx?type=0&sellerid=' + sellerId,
                     });
                     //图片上传编辑
                     mpage.image_editor_homeslide = image_editor_homeslide = K.editor({
                         uploadJson: '<%=DomainUrl %>/Handler/FileManager/UploadHandler.ashx?type=108&sellerid=' + sellerId,
-                        fileManagerJson: '<%=DomainUrl %>/Handler/FileManager/FileManagerHandler.ashx?type=108&sellerid=' + sellerId,
+                        fileManagerJson: '<%=DomainUrl %>/Handler/FileManager/FileManagerHandler.ashx?type=0&sellerid=' + sellerId,
                     });
                     //图片上传编辑
                     mpage.image_editor_wifi = image_editor_wifi = K.editor({
                         uploadJson: '<%=DomainUrl %>/Handler/FileManager/UploadHandler.ashx?type=108&sellerid=' + sellerId,
-                        fileManagerJson: '<%=DomainUrl %>/Handler/FileManager/FileManagerHandler.ashx?type=108&sellerid=' + sellerId,
+                        fileManagerJson: '<%=DomainUrl %>/Handler/FileManager/FileManagerHandler.ashx?type=0&sellerid=' + sellerId,
                     });
 
                     //图片上传绑定

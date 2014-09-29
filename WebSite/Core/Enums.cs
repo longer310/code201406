@@ -381,6 +381,12 @@ namespace Backstage.Core
         /// 快捷方式列表
         /// </summary>
         FastLinksList = 111,
+        /// <summary>
+        /// 位子管理
+        /// </summary>
+        Position = 112,
+
+
 
 
         //-----文件类型-----

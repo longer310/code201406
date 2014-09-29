@@ -150,7 +150,7 @@
                     //图片上传编辑
                     mpage.image_editor = image_editor = K.editor({
                         uploadJson: '<%=DomainUrl %>/Handler/FileManager/UploadHandler.ashx?type=106&sellerid=' + sellerId,
-                        fileManagerJson: '<%=DomainUrl %>/Handler/FileManager/FileManagerHandler.ashx?type=106&sellerid=' + sellerId,
+                        fileManagerJson: '<%=DomainUrl %>/Handler/FileManager/FileManagerHandler.ashx?type=0&sellerid=' + sellerId,
                     });
 
                     //图片上传绑定

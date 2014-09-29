@@ -145,12 +145,12 @@
                     //图片上传编辑
                     mpage.image_editor = image_editor = K.editor({
                         uploadJson: '<%=DomainUrl %>/Handler/FileManager/UploadHandler.ashx?type=104&sellerid=' + sellerId,
-                        fileManagerJson: '<%=DomainUrl %>/Handler/FileManager/FileManagerHandler.ashx?type=104&sellerid=' + sellerId,
+                        fileManagerJson: '<%=DomainUrl %>/Handler/FileManager/FileManagerHandler.ashx?type=0&sellerid=' + sellerId,
                     });
                     //图片上传编辑
                     mpage.image_editor_list = image_editor_list = K.editor({
                         uploadJson: '<%=DomainUrl %>/Handler/FileManager/UploadHandler.ashx?type=104&sellerid=' + sellerId,
-                        fileManagerJson: '<%=DomainUrl %>/Handler/FileManager/FileManagerHandler.ashx?type=104&sellerid=' + sellerId,
+                        fileManagerJson: '<%=DomainUrl %>/Handler/FileManager/FileManagerHandler.ashx?type=0&sellerid=' + sellerId,
                     });
 
                     //从资料库选择图片

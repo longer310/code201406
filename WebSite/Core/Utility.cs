@@ -476,7 +476,7 @@ namespace Backstage.Core
                         i++;
                     }
                     var filePath = "../../";
-                    for (int j = i; j < alist.Count(); j++)
+                    for (int j = i+1; j < alist.Count(); j++)
                     {
                         filePath += alist[j] + "/";
                     }

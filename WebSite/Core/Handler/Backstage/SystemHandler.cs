@@ -225,7 +225,7 @@ namespace Backstage.Core.Handler.Backstage
 
             var data = new
             {
-                userlevels = userlevels.ToList(),
+                Userlevels = userlevels.ToList(),
                 CommentIntegral = seller.CommentIntegral,
                 ConsumptionIntegral = seller.ConsumptionIntegral,
                 Freight = seller.Freight,
@@ -243,27 +243,20 @@ namespace Backstage.Core.Handler.Backstage
         {
             var sellerId = GetInt("sellerid");
             var seller = MerchantHelper.GetMerchant(sellerId);
+            
             //var userlevels = SystemHelper.GetUserLevels(sellerId);
-            var userlevels = Newtonsoft.Json.JsonConvert.DeserializeObject<List<UserLevel>>("levels");
+            var userlevels = Newtonsoft.Json.JsonConvert.DeserializeObject<List<UserLevel>>(GetString("levels"));
+            seller.CommentIntegral = GetInt("cmi");
+            seller.ConsumptionIntegral = GetInt("costi");
+            seller.ReChargeIntegral = GetInt("ri");
+            seller.ShareIntegral = GetInt("si");
 
+            seller.Freight = GetInt("fe");
+            seller.NeedToFreeFreight = GetInt("nffe");
+            MerchantHelper.SaveMerchant(seller);
             SystemHelper.UpdateUserLevels(userlevels);
         }
 
-
-
-
-        private void GetMsgs()
-        {
-
-
-            throw new NotImplementedException();
-        }
-
-        private void AddSystemMsg()
-        {
-
-            throw new NotImplementedException();
-        }
 
         private void UpdateSellerInfo()
         {

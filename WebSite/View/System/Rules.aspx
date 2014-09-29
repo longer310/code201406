@@ -1,8 +1,8 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/View/merchant.Master" AutoEventWireup="true" CodeBehind="Rules.aspx.cs" Inherits="Backstage.View.System.Rules" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="Header" runat="server">
-    <link href="../Script/kindeditor/themes/default/default.css" type="text/css" rel="stylesheet" />
-    <link href="../css/css/select2.css" type="text/css" rel="stylesheet" />
+    <link href="<%=DomainUrl %>/Script/kindeditor/themes/default/default.css" type="text/css" rel="stylesheet" />
+    <link href="<%=DomainUrl %>/css/css/select2.css" type="text/css" rel="stylesheet" />
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="Content" runat="server">
     <div class="widget-box">
@@ -33,8 +33,8 @@
                             <label class="inline" style="margin-left: 20px;">级别判断</label>
                             <select id="j-level_condition_type">
                                 <option value="0">消费总额</option>
-                                <option value="1">充值总额</option>
-                                <option value="2">获得积分</option>
+                                <%--<option value="1">充值总额</option>
+                                <option value="2">获得积分</option>--%>
                             </select>
                         </div>
                     </div>
@@ -56,6 +56,7 @@
                             <label class="inline">充值获得比例：1元=</label>
                             <input type="text" value="3" class="input-small" id="j-charge" />
                             分 
+                           
                             <label class="inline" style="margin-left: 20px;">留言评论获得：</label>
                             <input type="text" value="3" class="input-small" id="j-comment" />
                             分 
@@ -89,15 +90,13 @@
                     <div class="control-group">
                         <div class="controls">
                             <label class="inline">运费</label>
-                            <input type="text" value="3" class="input-small" id="j-charge" />
+                            <input type="text" value="3" class="input-small" id="j-freight" />
                             元 
-
-									
-
+                           
                             <label class="inline" style="margin-left: 20px;">满</label>
-                            <input type="text" value="3" class="input-small" id="j-comment" />
+                            <input type="text" value="3" class="input-small" id="j-freefreight" />
                             免运费 
-								
+                       
                         </div>
                     </div>
                 </div>
@@ -113,26 +112,27 @@
 
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="Footer" runat="server">
-    <script src="../scirpts/js/ue.pager.js"></script>
+    <script src="<%=DomainUrl %>/Script/js/ue.pager.js"></script>
 
     <script type="text/jquery-x-tmpl" id="j-tmpl-level">
-      		{{each(i, v) list}}
-	      		<div class="control-group">
+      		
+	      		<div class="control-group css-levels" data-id="${Id}" data-level="${Level}">
 					<div class="controls">
-						<label class="inline">级别${v.id}名称</label>
-						<input type="text" value="${v.name}" class="input-small j-level_name" />
+						<label class="inline">级别${Level}名称</label>
+						<input type="text" value="${Title}" class="input-small j-level_name" />
 						<label class="inline" style="margin-left:20px;">享受折扣</label>
-						<input type="text" value="${v.discount}" class="input-mini j-level_discount" /> 折
-						<label class="inline j-level_condition_text" style="margin-left:20px;">{{if type == 0}}消费总额{{else type == 1}}充值总额{{else}}获得积分{{/if}}需</label>
-						<input type="text" value="${v.condition}" class="input-small j-level_condition" /> 元
+						<input type="text" value="${Discount}" class="input-mini j-level_discount" /> 折
+						<label class="inline j-level_condition_text" style="margin-left:20px;">消费总额需</label>
+						<input type="text" value="${NeedMoney}" class="input-small j-level_condition" /> 元
 					</div>
 				</div>
-			{{/each}}
+			
       	</script>
 
     <script type="text/javascript">
         var sellerId = '<%=SellerId%>';
         var MPage = {
+            levels: [],
             init: function () {
                 var mpage = this;
                 var count;
@@ -158,16 +158,10 @@
                     count++;
                     $("#j-level_count").val(count);
                     mpage.addLevel({
-                        type: type,
-                        list: [
-                            {
-                                id: count
-                            }
-                        ]
+
+                        Id: 0,
+                        Level: count
                     });
-                    
-
-
                 });
 
                 $("#j-remove_level").bind("click", function () {
@@ -184,25 +178,49 @@
 
                 //绑定提交表单
                 $("#j-rule_form").bind("submit", function () {
-                    //var data = {
+                    var save_data = {
+                        levels: mpage.getsubmitLevels(),
+                        cmi: $("j-comment").val(),
+                        costi: $("j-cost").val(),
+                        ri: $("j-charge").val(),
+                        si: $("j-share").val(),
+                        fe: $("#j-freight").val(),
+                        nffe: $("#j-freefreight").val()
+                    };
 
-                    //};
-
-                    //$.ajax({
-                    //    url: "../../Handler/Backstage/DevSystemHandler.ashx?action=addadmin",
-                    //    type: "POST",
-                    //    data: save_data,
-                    //    dataType: "json"
-                    //    //context: document.body
-                    //}).success(function (data) {
-                       
-                    //});
+                    $.ajax({
+                        url: "../../Handler/Backstage/SystemHandler.ashx?action=updaterules&sellerId=" + sellerId,
+                        type: "POST",
+                        data: save_data,
+                        dataType: "json"
+                        //context: document.body
+                    }).success(function (data) {
+                        alert("更新成功");
+                    });
                     return false;
                 });
 
                 mpage.initForm();
             },
+            getsubmitLevels: function () {
+                var $arr = $(".css-levels");
+                var levels = [];
+                $arr.each(function () {
+                    var level = {
+                        Id: parseInt($(this).attr("data-id")),
+                        Level: parseInt($(this).attr("data-level")),
+                        Title: $(this).find(".j-level_name").val(),
+                        Discount: $(this).find(".j-level_discount").val(),
+                        SellerId: sellerId,
+                        NeedMoney: $(this).find(".j-level_condition").val()
+                    }
+                    levels.push(level);
+                });
 
+                var json = JSON.stringify(levels);
+                console.log(json);
+                return json;
+            },
             initForm: function () {
                 var mpage = this;
 
@@ -211,39 +229,29 @@
                         type: 1,
                         list: [
                             {
-                                id: 1,
-                                name: "白金会员",
-                                discount: "6.0",
-                                condition: "10000"
-                            },
-
-                            {
-                                id: 2,
-                                name: "黄金会员",
-                                discount: "7.0",
-                                condition: "8000"
-                            },
-
-                            {
-                                id: 3,
-                                name: "铜牌会员",
-                                discount: "7.5",
-                                condition: "6000"
-                            },
-
-                            {
-                                id: 4,
-                                name: "普通会员",
-                                discount: "8.0",
-                                condition: "2000"
+                                Level: 1,
+                                Title: "",
+                                Discount: "6.0",
+                                NeedMoney: "10000"
                             }
                         ]
                     }
                 }
-
-                mpage.addLevel(rule_data.levels);
-                $("#j-level_condition_type").val(rule_data.levels.type);
-                $("#j-level_count").val(rule_data.levels.list.length);
+                $.ajax({
+                    url: "../../Handler/Backstage/SystemHandler.ashx?action=getrules&sellerId=" + sellerId,
+                    dataType: "json",
+                    type: "get"
+                }).success(function (data) {
+                    mpage.levels = data.data.Userlevels;
+                    $("#j-charge").val(data.data.ReChargeIntegral);
+                    $("#j-comment").val(data.data.CommentIntegral);
+                    $("#j-cost").val(data.data.ConsumptionIntegral);
+                    $("#j-share").val(data.data.ShareIntegral);
+                    $("#j-level_count").val(data.data.Userlevels.length);
+                    $("#j-freight").val(data.data.Freight);
+                    $("#j-freefreight").val(data.data.NeedToFreeFreight);
+                    mpage.addLevel(data.data.Userlevels);
+                });
             },
 
             addLevel: function (data) {

@@ -28,9 +28,8 @@ namespace Backstage.Core.Handler
                     {
                         UserLevel ul = new UserLevel();
                         ul.Id = reader.GetInt32(0);
-
+                        ul.Level = (int)reader["Level"];
                         ul.SellerId = (int)reader["SellerId"];
-                        //ul.CreateTime = (DateTime)reader["CreateTime"];
                         ul.Discount = (int)reader["Discount"];
                         ul.NeedMoney = (int)reader["NeedMoney"];
                         ul.Title = reader["Title"].ToString();
@@ -55,25 +54,25 @@ namespace Backstage.Core.Handler
         	                                ( 
         	                                Title, 
         	                                Discount,
+        	                                Level,
         	                                NeedMoney, 
-        	                                SellerId,
-        	                                CreateTime
+        	                                SellerId
         	                                )
         	                                VALUES
         	                                ( 
         	                                ?Title, 
         	                                ?Discount,
+        	                                ?Level,
         	                                ?NeedMoney, 
-        	                                ?SellerId,
-        	                                ?CreateTime
+        	                                ?SellerId
         	                                )";
 
             List<MySqlParameter> parameters = new List<MySqlParameter>();
             parameters.Add(new MySqlParameter("?Title", userLevel.Title));
             parameters.Add(new MySqlParameter("?Discount", userLevel.Discount));
             parameters.Add(new MySqlParameter("?NeedMoney", userLevel.NeedMoney));
+            parameters.Add(new MySqlParameter("?Level", userLevel.Level));
             parameters.Add(new MySqlParameter("?SellerId", userLevel.SellerId));
-            parameters.Add(new MySqlParameter("?CreateTime", userLevel.CreateTime));
             MySqlHelper.ExecuteNonQuery(connectionString, CommandType.Text, commandText, parameters.ToArray());
         }
 
@@ -82,9 +81,9 @@ namespace Backstage.Core.Handler
             string commandText = @"UPDATE userLevel SET
                                         Title = ?Title,
                                         Discount = ?Discount,
+                                        Level = ?Level,
                                         NeedMoney = ?NeedMoney,
-                                        SellerId = ?SellerId,
-                                        CreateTime = ?CreateTime
+                                        SellerId = ?SellerId
                                     WHERE
                                         Id = ?Id";
 
@@ -93,8 +92,8 @@ namespace Backstage.Core.Handler
             parameters.Add(new MySqlParameter("?Title", userLevel.Title));
             parameters.Add(new MySqlParameter("?Discount", userLevel.Discount));
             parameters.Add(new MySqlParameter("?NeedMoney", userLevel.NeedMoney));
+            parameters.Add(new MySqlParameter("?Level", userLevel.Level));
             parameters.Add(new MySqlParameter("?SellerId", userLevel.SellerId));
-            parameters.Add(new MySqlParameter("?CreateTime", userLevel.CreateTime));
 
             MySqlHelper.ExecuteNonQuery(GlobalConfig.DbConn, CommandType.Text, commandText, parameters.ToArray());
         }

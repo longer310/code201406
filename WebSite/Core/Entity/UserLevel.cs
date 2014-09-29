@@ -17,8 +17,6 @@ namespace Backstage.Core.Entity
 
         public int Level { get; set; }
 
-        public DateTime CreateTime { get; set; }
-
         public int SellerId { get; set; }
 
         //public int  { get; set; }

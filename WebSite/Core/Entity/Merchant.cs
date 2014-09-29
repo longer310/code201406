@@ -85,7 +85,7 @@ namespace Backstage.Core.Entity
         public string PointY { get; set; }
 
         /// <summary>
-        /// 消费所获积分比例（每元）
+        /// 充值所获积分比例（每元）
         /// </summary>
         public int ReChargeIntegral { get; set; }
 

@@ -332,20 +332,23 @@ namespace Backstage.Core.Handler
             	                                UserId, 
             	                                CouponId,
             	                                CreateTime,
-                                                Status
+                                                Status,
+                                                SellerId
             	                                )
             	                                VALUES
             	                                ( 
             	                                ?UserId, 
             	                                ?CouponId, 
             	                                ?CreateTime,
-            	                                ?Status
+            	                                ?Status,
+            	                                ?SellerId
             	                                )";
 
             List<MySqlParameter> parameters = new List<MySqlParameter>();
             parameters.Add(new MySqlParameter("?UserId", userCoupon.UserId));
             parameters.Add(new MySqlParameter("?CouponId", userCoupon.CouponId));
             parameters.Add(new MySqlParameter("?CreateTime", DateTime.Now));
+            parameters.Add(new MySqlParameter("?SellerId", userCoupon.SellerId));
             parameters.Add(new MySqlParameter("?Status", userCoupon.Status));//刚领取 未使用
 
             MySqlHelper.ExecuteNonQuery(connectionString, CommandType.Text, commandText, parameters.ToArray());
@@ -428,6 +431,7 @@ namespace Backstage.Core.Handler
                         item.Id = reader.GetInt32(0);
                         item.UserId = (int)reader["UserId"];
                         item.CouponId = (int)reader["CouponId"];
+                        item.SellerId = (int)reader["SellerId"];
                         item.CreateTime = (DateTime)reader["CreateTime"];
                         item.Status = (int)reader["Status"];
                     }

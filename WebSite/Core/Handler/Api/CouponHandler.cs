@@ -74,7 +74,8 @@ namespace Backstage.Core.Handler
                 {
                     CouponId = couponid,
                     UserId = userId,
-                    Status = 0
+                    Status = 0,
+                    SellerId = coupon.SellerId
                 };
                 var old = CouponHelper.GetUserCoupon(userId, couponid);
                 if (old != null && old.Id != 0)

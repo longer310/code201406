@@ -162,16 +162,23 @@ namespace Backstage.Core.Handler
             int index = GetInt("start");
             int size = GetInt("limit");
             int sid = GetInt("sellerid");
+            var merchant = MerchantHelper.GetMerchant(sid);
 
             var results = ActiveHelper.GetPagings(sid, index * size, size);
             var data = new List<object>();
             foreach (var r in results.Results)
             {
+                string url = string.Empty;
+                if (merchant.MerType == MerchantTypes.Night)
+                    url = Utility.GetSizePicUrl(r.CoverImgUrl, 450, 190, context);
+                else
+                    url = Utility.GetSizePicUrl(r.CoverImgUrl, 180, 143, context);
+                    
                 var d = new
                 {
                     newid = r.Id,
                     title = r.Title,
-                    img = Utility.GetSizePicUrl(r.CoverImgUrl, 180, 143, context),
+                    img = url,
                     dateline = r.CreateTime.GetUnixTime(),
                     summary = r.Summary,
                     descrition = r.Description,

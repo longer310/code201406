@@ -22,6 +22,7 @@ using log4net;
 using MySql.Data.MySqlClient;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using System.Runtime.InteropServices;
 
 namespace Backstage.Core
 {
@@ -481,7 +482,7 @@ namespace Backstage.Core
                         filePath += alist[j] + "/";
                     }
                     filePath = filePath.TrimEnd("/".ToCharArray());
-
+                    
                     if (context != null) filePath = context.Server.MapPath(filePath);
                     MakeThumNail(filePath, width, height);
                 }
@@ -992,9 +993,10 @@ namespace Backstage.Core
 
             //在指定位置并且按指定大小绘制原图片的指定部分
             graphic.DrawImage(originalImage, new System.Drawing.Rectangle(0, 0, thumWidth, thumHeight), new System.Drawing.Rectangle(x, y, originalWidth, originalHeight), System.Drawing.GraphicsUnit.Pixel);
-
             try
             {
+                
+                //新建bmp图片副本
                 bitmap.Save(thumNailPath, System.Drawing.Imaging.ImageFormat.Jpeg);
             }
             catch (Exception ex)
@@ -1003,12 +1005,39 @@ namespace Backstage.Core
             }
             finally
             {
-                originalImage.Dispose();
                 bitmap.Dispose();
+                originalImage.Dispose();
                 graphic.Dispose();
             }
         }
 
         # endregion
+
+        internal static int GetImgHeight(string url, HttpContext context)
+        {
+            var alist = url.Split(new char[] { '/' }, StringSplitOptions.RemoveEmptyEntries);
+            var i = 0;
+            foreach (var s in alist)
+            {
+                if (s == "File" || s == "file")
+                {
+                    break;
+                }
+                i++;
+            }
+            var filePath = "../../File/";
+            for (int j = i + 1; j < alist.Count(); j++)
+            {
+                filePath += alist[j] + "/";
+            }
+            filePath = filePath.TrimEnd("/".ToCharArray());
+
+            if (context != null) filePath = context.Server.MapPath(filePath);
+            System.Drawing.Image originalImage = System.Drawing.Image.FromFile(filePath);
+            int heght = originalImage.Height;
+            originalImage.Dispose();
+
+            return heght;
+        }
     }
 }

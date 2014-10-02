@@ -52,10 +52,12 @@ namespace Backstage.Core.Handler
             var data = new List<object>();
             foreach (var r in results.Results)
             {
+                var imgurl = Utility.GetSizePicUrl(r.Url,200,0,context);
                 var d = new
                 {
                     pid = r.Id,
-                    img = Utility.GetSizePicUrl(r.Url,200,0,context),
+                    img = imgurl,
+                    height = Utility.GetImgHeight(imgurl, context),
                     title = r.Title
                 };
                 r.Views += 1;

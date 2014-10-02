@@ -201,6 +201,16 @@
                 });
 
                 mpage.initForm();
+                $.ajax({
+                    url: "../../Handler/Api/ApiGoodsHandler.ashx?action=getpageinfo",
+                    type: "POST",
+                    data: { sellerid: 100 },
+                    dataType: "json"
+                    //context: document.body
+                }).success(function (data) {
+                    console.log(data);
+                });
+
             },
             getsubmitLevels: function () {
                 var $arr = $(".css-levels");

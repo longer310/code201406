@@ -101,7 +101,7 @@ namespace Backstage.Handler
         {
             public List<SlideItem> slide { get; set; }
 
-            public AdItem ad { get; set; }
+            public AdItem guanggao { get; set; }
 
             public List<HotItem> hots { get; set; }
 
@@ -110,7 +110,7 @@ namespace Backstage.Handler
             public HomeData()
             {
                 slide = new List<SlideItem>();
-                ad = new AdItem();
+                guanggao = new AdItem();
                 hots = new List<HotItem>();
             }
         }
@@ -231,7 +231,7 @@ namespace Backstage.Handler
             //}
 
             var pcfg = ParamHelper.PlatformCfgData;
-            data.ad = new AdItem() { img = Utility.GetSizePicUrl(pcfg.PhoneAd.PicUrl, 540, 65, context), url = pcfg.PhoneAd.JumpUrl };
+            data.guanggao = new AdItem() { img = Utility.GetSizePicUrl(pcfg.PhoneAd.PicUrl, 540, 65, context), url = pcfg.PhoneAd.JumpUrl };
             //var merchantTypes = merchant.GetMerchantTypes();
 
             if (merchant.MerType == MerchantTypes.Food)

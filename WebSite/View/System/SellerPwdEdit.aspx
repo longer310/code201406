@@ -1,6 +1,6 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/View/merchant.Master" AutoEventWireup="true" CodeBehind="SellerPwdEdit.aspx.cs" Inherits="Backstage.View.System.SellerPwdEdit" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="Header" runat="server">
-    <link href="../public/kindeditor/themes/default/default.css" type="text/css" rel="stylesheet">
+    <link href="<%=DomainUrl %>/script/kindeditor/themes/default/default.css" type="text/css" rel="stylesheet">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="Content" runat="server">
     <div class="widget-box" >
@@ -47,10 +47,10 @@
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="Footer" runat="server">
      <!--页面js-->
-        <script src="../public/js/ue.pager.js"></script>
+        <script src="<%=DomainUrl %>/script/js/ue.pager.js"></script>
 
-        <script charset="utf-8" src="../public/kindeditor/kindeditor-min.js"></script>
-		<script charset="utf-8" src="../public/kindeditor/lang/zh_CN.js"></script>
+        <script charset="utf-8" src="<%=DomainUrl %>/script/kindeditor/kindeditor-min.js"></script>
+		<script charset="utf-8" src="<%=DomainUrl %>/script/kindeditor/lang/zh_CN.js"></script>
 
         <script type="text/javascript">
             var sellerId = '<%=SellerId%>';

@@ -48,7 +48,7 @@
             </div>
             <div class="form-actions">
                 <button type="reset" class="btn"><i class="icon-refresh"></i>清除重置</button>
-                <button type="input" class="btn btn-primary"><i class="icon-ok icon-white"></i>完成保存</button>
+                <button type="submit" class="btn btn-primary"><i class="icon-ok icon-white"></i>完成保存</button>
             </div>
             </form>
 			
@@ -170,7 +170,7 @@
                     $('#j-ticket-selectModal').modal('show');
                 });
 
-                $("#j-activity-editForm").bind("click", function () {
+                $("#j-activity-editForm").bind("submit", function () {
                     //已经加载到数据
                     if (mpage.activityDetailData) {
                         var save_data = {
@@ -189,6 +189,7 @@
                             //context: document.body
                         }).success(function (data) {
                             alert("更新成功");
+                            window.location.href = "List.aspx?sellerId=" + sellerId;
                             //window.setTimeout(function () {
                             //    window.location.reload();
                             //}, 2000);

@@ -177,6 +177,7 @@
                         //context: document.body
                     }).success(function (data) {
                         alert("添加成功");
+                        window.location.href = "List.aspx?sellerId=" + sellerId;
                         //window.setTimeout(function () {
                         //    window.location.reload();
                         //}, 2000);

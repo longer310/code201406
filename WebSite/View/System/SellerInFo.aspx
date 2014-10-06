@@ -1,7 +1,7 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/View/merchant.Master" AutoEventWireup="true" CodeBehind="SellerInFo.aspx.cs" Inherits="Backstage.View.System.SellerInFo" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="Header" runat="server">
-    <link href="../scripts/kindeditor/themes/default/default.css" type="text/css" rel="stylesheet">
+    <link href="../../script/kindeditor/themes/default/default.css" type="text/css" rel="stylesheet">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="Content" runat="server">
     <div class="widget-box">

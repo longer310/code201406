@@ -175,7 +175,7 @@
                         type: "post",
                         data: save_data
                     }).success(function () {
-                        alert('提交数据');
+                        alert('添加成功');
                         //添加成功后重新获取分类列表
                         mpage.getimes();
                         return false;

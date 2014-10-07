@@ -31,7 +31,7 @@
                             <img src="http://placehold.it/160x160" height="160" alt="" id="j-img-placehold">
                         </span>
                     </div>
-                    <p style="margin-top:10px;"><b class="text-error">上传图片要求：宽度为500最佳 高度不限</b></p>
+                    <p style="margin-top: 10px;"><b class="text-error">上传图片要求：宽度为500最佳 高度不限</b></p>
                 </div>
             </div>
 
@@ -70,7 +70,7 @@
 					</div>
 				</li>
 			{{/each}}
-        </script>
+    </script>
 
     <script type="text/javascript">
         var sellerId = '<%=SellerId%>';
@@ -150,9 +150,7 @@
                         //context: document.body
                     }).success(function (data) {
                         alert("添加成功");
-                        window.setTimeout(function () {
-                            window.location.href = "List.aspx?sellerId=" + sellerId;
-                        }, 2000);
+                        window.location.href = "List.aspx?sellerId=" + sellerId;
                     });
                     return false;
                 });
@@ -171,5 +169,5 @@
             MPage.init();
         });
 
-        </script>
+    </script>
 </asp:Content>

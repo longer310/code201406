@@ -12,12 +12,12 @@ namespace Backstage.View.Dev.UserCenter
     public partial class Edit : BasePage
     {
         public Account account;
-
+        public int Id;
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            int id = Int32.Parse(Request.QueryString["id"]);
-            account = AccountHelper.GetUser(id);
+            Id = Int32.Parse(Request.QueryString["id"]);
+            account = AccountHelper.GetUser(Id);
         }
     }
 }

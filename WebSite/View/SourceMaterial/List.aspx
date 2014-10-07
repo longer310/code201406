@@ -54,10 +54,6 @@
 						<div class="article-thumb" style="width:200px;height:140px;">
 							<img alt="User" src="${v.url}" width="200" height="140"  />
 						</div>
-
-						<p class="post-desc">
-							${v.description}
-						</p>
 						<div class="article-post">
 							<p class="post-meta">
 								<span>浏览：<span class="text-error">${v.views}</span> 

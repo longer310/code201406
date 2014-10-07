@@ -15,7 +15,7 @@
 						<div class="control-group">
 							<label class="control-label">登陆账号</label>
 							<div class="controls">
-								<span class="text-error"><%=_UserName %></span>
+								<span class="text-error"><%=Seller.Name %></span>
 							</div>
 						</div>
 						<div class="control-group">
@@ -70,13 +70,13 @@
                             alert("两次密码输入不一致");
                         }
                         $.ajax({
-                            url: "../../Handler/Backstage/SystemHandler.ashx?action=sellerinfo&sellerid=" + sellerId,
+                            url: "../../Handler/Backstage/SystemHandler.ashx?action=updatepwd&sellerid=" + sellerId,
                             data: save_data,
                             type: "POST",
                             dataType: "json"
                             //context: document.body
                         }).success(function (data) {
-                            alert(data.msg);
+                            alert(data.message);
                         });
                         return false;
                     });

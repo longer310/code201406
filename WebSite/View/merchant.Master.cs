@@ -53,8 +53,8 @@ namespace WebSite.View
                         return MerchantHelper.GetMerchant(Convert.ToInt32(SellerId));
                     }
                 }
-                var account = AccountHelper.GetUser(id);
-                return MerchantHelper.GetMerchant(account.SellerId);
+                //var account = AccountHelper.GetUser(id);
+                return MerchantHelper.GetMerchant(id);
             }
         }
         public Account Account

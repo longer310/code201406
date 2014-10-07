@@ -75,6 +75,9 @@ namespace Backstage.Handler
                     jt.Add("success", "1");
                 else if (user.RoleType < RoleType.Merchant)
                     jt.Add("success", "2");
+
+                user.LastLoginTime = DateTime.Now;
+                AccountHelper.SaveAccount(user);
             }
             Response.Write(jt.ToJson());
         }

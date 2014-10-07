@@ -32,7 +32,7 @@
             <dd><span class="muted">可提现金额：</span><b class="text-error">￥<%=Money %></b></dd>
         </dl>
         <ul class="nav btn-group">
-            <li class="btn btn-inverse"><a title="" href="<%=DomainUrl %>/View/Cash/List.aspx"><i class="icon icon-share"></i><span class="text">提现</span></a></li>
+            <li class="btn btn-inverse"><a title="" href="<%=DomainUrl %>/View/Cash/List.aspx?sellerId=<%=SellerId %>"><i class="icon icon-share"></i><span class="text">提现</span></a></li>
             <li class="btn btn-inverse"><a title="" href="javascript:void(0);" onclick="page.alertlogout();"><i class="icon icon-off"></i><span class="text">退出登陆</span></a></li>
         </ul>
     </div>

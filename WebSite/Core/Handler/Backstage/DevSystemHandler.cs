@@ -100,11 +100,14 @@ namespace Backstage.Core.Handler.Backstage
 
         private void DeleteAdmin()
         {
-            var id = GetInt("id");
-            var admin = AccountHelper.GetUser(id);
-            if (admin == null)
-                throw new ArgumentNullException("管理员为空Id:" + id);
-            AccountHelper.DelUser(id);
+            var ids = Utility.GetListint(GetString("ids"));
+            foreach (var id in ids)
+            {
+                var admin = AccountHelper.GetUser(id);
+                if (admin == null)
+                    throw new ArgumentNullException("管理员为空Id:" + id);
+                AccountHelper.DelUser(id);
+            }
         }
 
         private void UpdateAdmin()
@@ -120,7 +123,8 @@ namespace Backstage.Core.Handler.Backstage
         private void AddAdmin()
         {
             var admin = new Account();
-            admin.RoleType = RoleType.SuperManage;
+            admin.RoleType = (RoleType)GetInt("roletype");
+            admin.LastLoginTime = DateTime.Now;
             admin.NickName = GetString("nickname");
             admin.UserName = GetString("username");
             admin.Pwd = GetString("pwd");
@@ -147,11 +151,40 @@ namespace Backstage.Core.Handler.Backstage
             int size = GetInt("limit");
             var admins = AccountHelper.GetPagAdmins(index * size, size);
 
+            var result = new PagResults<object>();
+            result.TotalCount = admins.TotalCount;
+            foreach (var admin in admins.Results)
+            {
+                result.Results.Add(new
+                {
+                    Id = admin.Id,
+                    NickName = admin.NickName,
+                    RoleType = GetRoleTypeName(admin.RoleType),
+                    LastLoginTime = admin.LastLoginTime.ToString("yyyy-MM-dd HH:mm:ss")
+                });
+            }
+
+
             JsonTransfer jt = new JsonTransfer();
-            jt.Add("data", admins);
+            jt.Add("data", result);
             Response.Write(DesEncrypt(jt));
             Response.End();
 
+        }
+
+        string GetRoleTypeName(RoleType type)
+        {
+            switch (type)
+            { 
+                case RoleType.Manage:
+                    return "管理员";
+                case RoleType.SuperManage:
+                    return  "超级管理员";
+                case RoleType.Merchant:
+                    return "商家";
+                default:
+                    return "";
+            }
         }
 
         private void UpdateCash()

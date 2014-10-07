@@ -50,6 +50,7 @@ namespace Backstage.Core.Handler.Backstage
             var newpwd = GetString("newpwd");
 
             var user = AccountHelper.GetCurUser();
+            user = AccountHelper.GetUser(user.Id);
             if (oldpwd != user.Pwd)
                 ReturnErrorMsg("原密码错误，请重新输入");
             user.Pwd = newpwd;

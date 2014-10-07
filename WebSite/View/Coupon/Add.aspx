@@ -27,7 +27,6 @@
                 <label class="control-label">有效期</label>
                 <div class="controls">
                     <input type="text" data-date="12-02-2014" data-date-format="dd-mm-yyyy" value="12-02-2014" class="input-medium j-datepicker" id="j-ticket-expire_date" />
-                    
                 </div>
             </div>
 
@@ -184,13 +183,6 @@
 
                 $('.j-datepicker').datepicker();
 
-                $("#j-ticket-date_forever").bind("change", function () {
-                    if ($(this).attr("checked")) {
-                        $("#j-ticket-expire_date").attr("disabled", "disabled");
-                    } else {
-                        $("#j-ticket-expire_date").removeAttr("disabled");
-                    }
-                });
 
                 //绑定选择商品
                 $("#j-goods-select").bind("click", function () {
@@ -224,7 +216,7 @@
 
                     var save_data = {
                         title: $.trim($("#j-ticket-title").val()),
-                        expire_date: $("#j-ticket-date_forever").attr("checked") ? -1 : $("#j-ticket-expire_date").val(),
+                        expire_date:  $("#j-ticket-expire_date").val(),
                         thumbnail: $('#j-img-placehold').attr("src"),
                         score: $("#j-ticket-score").val(),
                         total: $("#j-ticket-total").val(),
@@ -252,7 +244,6 @@
                 //绑定重置表单
                 $("#j-ticket-addForm").bind("reset", function () {
                     $("#j-ticket-title").val('');
-                    $("#j-ticket-date_forever").removeAttr("checked");
                     $('#j-img-placehold').attr("src", 'http://placehold.it/128x128');
                     $("#j-ticket-score").val('');
                     $("#j-ticket-total").val('');

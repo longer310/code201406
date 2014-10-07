@@ -12,9 +12,9 @@
         </div>
         <div class="widget-content">
             <ul class="nav nav-tabs">
-                <li><a href="admin_list.html">管理员列表</a></li>
-                <li class="active"><a href="admin_add.html">添加管理员</a></li>
-                <li><a href="change_pw.html">密码修改</a></li>
+                                <li><a href="List.aspx">管理员列表</a></li>
+                <li class="active"><a href="Add.aspx">添加管理员</a></li>
+                <li><a href="PwdEdit.aspx">密码修改</a></li>
             </ul>
             <form action="#" method="get" class="form-horizontal" id="j-addForm">
                 <div class="control-group">
@@ -77,7 +77,7 @@
                         pwd: $("#j-password").val()
                     }
                     $.ajax({
-                        url: "../../Handler/Backstage/DevSystemHandler.ashx?action=addadmin",
+                        url: "../../../Handler/Backstage/DevSystemHandler.ashx?action=addadmin",
                         type: "POST",
                         data: save_data,
                         dataType: "json"

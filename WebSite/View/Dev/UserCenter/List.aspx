@@ -15,9 +15,9 @@
         </div>
         <div class="widget-content">
             <ul class="nav nav-tabs">
-                <li class="active"><a href="admin_list.html">管理员列表</a></li>
-                <li><a href="admin_add.html">添加管理员</a></li>
-                <li><a href="change_pw.html">密码修改</a></li>
+                                <li class="active"><a href="List.aspx">管理员列表</a></li>
+                <li><a href="Add.aspx">添加管理员</a></li>
+                <li><a href="PwdEdit.aspx">密码修改</a></li>
             </ul>
             <table class="table table-bordered table-striped with-check">
                 <thead>
@@ -47,18 +47,18 @@
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="Footer" runat="server">
     <!--页面js-->
-    <script src="../public/js/ue.pager.js"></script>
+    <script src="<%=DomainUrl %>/script/js/ue.pager.js"></script>
 
     <script type="text/jquery-tmpl-x" id="j-tmpl-listitem">
         	{{each(i, v) list}}
-	        	<tr data-gid="1">
+	        	<tr data-gid="${v.Id}">
 					<td><input type="checkbox" class="j-select" /></td>
                     <td>${v.Id}</td>
                     <td>${v.NickName}</td>
 					<td>${v.RoleType}</td>
 					<td style="width:140px;">${v.LastLoginTime}</td>
 					<td style="width:120px;">
-                        <a href="admin_edit.html?id=1" class="btn btn-primary btn-mini"><i class="icon-pencil icon-white"></i> 编辑</a>
+                        <a href="Edit.aspx?id=${v.Id}" class="btn btn-primary btn-mini"><i class="icon-pencil icon-white"></i> 编辑</a>
 						<a class="btn btn-danger btn-mini j-btn-del" href="javascript:;"><i class="icon-remove icon-white"></i> 删除</a>
 					</td>
 				</tr>
@@ -66,6 +66,7 @@
         </script>
 
     <script type="text/javascript">
+
         var MPage = {
             cid: 0,//当前分类 默认是全部分类
             pageNum: 1,//当前页
@@ -101,14 +102,18 @@
                             content: "您确定要删除当前选择的所有数据吗？",
                             confirm: function () {
                                 //执行确认回调
-                                alert('执行确认回调');
-
-                                //删除成功后刷新本页
-                                mpage.getList(mpage.pageNum);
+                                $.ajax({
+                                    url: "../../../Handler/Backstage/DevSystemHandler.ashx?action=deladmin&ids="+ids,
+                                    type: "get",
+                                    dataType: "json"
+                                    //context: document.body
+                                }).success(function (data) {
+                                    //删除成功后刷新本页
+                                    mpage.getList(mpage.pageNum);
+                                });
                             },
                             cancel: function () {
                                 //执行取消回调
-                                alert('执行取消回调');
                             }
                         });
                     } else {
@@ -117,7 +122,6 @@
                             content: "请至少选择一项",
                             confirm: function () {
                                 //执行确认回调
-                                alert('执行确认回调');
                             }
                         });
                     }
@@ -150,7 +154,7 @@
                     }
                 };
                 $.ajax({
-                    url: "../../Handler/Backstage/DevSystemHandler.ashx?action=getadmins&start=" + (p - 1) + "&limit=8",
+                    url: "../../../Handler/Backstage/DevSystemHandler.ashx?action=getadmins&start=" + (p - 1) + "&limit=8",
                     type: "Get",
                     dataType: "json"
                     //context: document.body
@@ -193,7 +197,7 @@
                             content: "您确定要删除当前管理员？",
                             confirm: function () {
                                 $.ajax({
-                                    url: "../../Handler/Backstage/DevSystemHandler.ashx?action=deladmin&id" + id,
+                                    url: "../../../Handler/Backstage/DevSystemHandler.ashx?action=deladmin&id=" + id,
                                     type: "Get",
                                     dataType: "json"
                                     //context: document.body

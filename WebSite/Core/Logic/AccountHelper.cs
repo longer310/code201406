@@ -100,7 +100,7 @@ namespace Backstage.Core
         public static PagResults<Account> GetPagAdmins(int index, int size)
         {
             var items = new PagResults<Account>();
-            string cmdText = @"select * from account where roletype = ?roletype limit ?index,?size";
+            string cmdText = @"select * from account where roletype=1 or roletype=2 limit ?index,?size";
             List<MySqlParameter> parameters = new List<MySqlParameter>();
             parameters.Add(new MySqlParameter("?index", index));
             parameters.Add(new MySqlParameter("?size", size));
@@ -108,7 +108,7 @@ namespace Backstage.Core
             {
                 using (var conn = Utility.ObtainConn(Utility._gameDbConn))
                 {
-                    MySqlDataReader reader = MySqlHelper.ExecuteReader(conn, CommandType.Text, cmdText);
+                    MySqlDataReader reader = MySqlHelper.ExecuteReader(conn, CommandType.Text, cmdText,parameters.ToArray());
                     while (reader.Read())
                     {
                         Account user = new Account();
@@ -137,20 +137,19 @@ namespace Backstage.Core
                         user.Remark = reader["Remark"].ToString();
 
                         items.Results.Add(user);
+                    }
+                    //一个函数有两次连接数据库 先把连接断开 然后重连
+                    conn.Close();
+                    conn.Dispose();
+                    conn.Open();
 
-                        //一个函数有两次连接数据库 先把连接断开 然后重连
-                        conn.Close();
-                        conn.Dispose();
-                        conn.Open();
-
-                        cmdText = @"select count(*) from account where roletype = " + RoleType.SuperManage;
-                        reader = MySqlHelper.ExecuteReader(conn, CommandType.Text, cmdText);
-                        if (reader.HasRows)
+                    cmdText = @"select count(*) from account where roletype=1 or roletype=2" ;
+                    reader = MySqlHelper.ExecuteReader(conn, CommandType.Text, cmdText);
+                    if (reader.HasRows)
+                    {
+                        if (reader.Read())
                         {
-                            if (reader.Read())
-                            {
-                                items.TotalCount = reader.GetInt32(0);
-                            }
+                            items.TotalCount = reader.GetInt32(0);
                         }
                     }
                 }

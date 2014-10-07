@@ -43,6 +43,8 @@ namespace Backstage.Core.Handler.Backstage
             sm.SellerId = GetInt("sellerid");
             sm.Title = GetString("title");
             sm.Url = GetString("thumbnail");
+            var text = GetString("text");
+            //sm.Summary = text.Length > 20 ? text.Substring(0, 20) : text;
             sm.Description = GetString("content");
             sm.CreateTime = DateTime.Now;
             sm.ImageType = UploadType.Img;
@@ -55,6 +57,8 @@ namespace Backstage.Core.Handler.Backstage
             var sm = SourceMaterialHelper.GetItem(id);
             sm.Title = GetString("title");
             sm.Url = GetString("thumbnail");
+            var text = GetString("text");
+            //sm.Summary = text.Length > 20 ? text.Substring(0, 20) : text;
             sm.Description = GetString("content");
             SourceMaterialHelper.Update(sm);
         }

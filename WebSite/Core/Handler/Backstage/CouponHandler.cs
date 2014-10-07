@@ -48,7 +48,9 @@ namespace Backstage.Core.Handler.Backstage
             item.Enabled = 1;
             item.GoodsIds = Utility.GetListint(GetString("goods_selected"));
             item.Description = GetString("content");
-            item.Summary = item.Description.Substring(0, 20);
+            var text = GetString("text");
+            item.Summary = text.Length > 20 ? text.Substring(0, 20) : text;
+            //item.Summary = item.Description.Substring(0, 20);
 
             CouponHelper.CreateCoupon(item);
         }
@@ -67,7 +69,9 @@ namespace Backstage.Core.Handler.Backstage
             item.Enabled = 1;
             item.GoodsIds = Utility.GetListint(GetString("goods_selected"));
             item.Description = GetString("content");
-            item.Summary = item.Description.Length > 20 ? item.Description.Substring(0, 20) : item.Description;
+            var text = GetString("text");
+            item.Summary = text.Length > 20 ? text.Substring(0, 20) : text;
+            //item.Summary = item.Description.Length > 20 ? item.Description.Substring(0, 20) : item.Description;
 
             CouponHelper.CreateCoupon(item);
         }

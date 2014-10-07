@@ -39,7 +39,7 @@
 
     <div id="sidebar">
         <ul>
-            <li class="active open"><a href="<%=DomainUrl %>/View/Index.aspx"><i class="icon icon-home"></i><span>首页</span></a></li>
+            <li class="active open"><a href="<%=DomainUrl %>/View/Index.aspx?sellerId=<%=SellerId %>"><i class="icon icon-home"></i><span>首页</span></a></li>
             <li class="submenu">
                 <a href="#"><i class="icon icon-gift"></i><span>活动管理</span> <span class="label">2</span></a>
                 <ul>
@@ -55,6 +55,7 @@
                     <li class="sidebar_categories"><a href="<%=DomainUrl %>/View/Goods/Categroy.aspx?sellerId=<%=SellerId%>">分类管理</a></li>
                 </ul>
             </li>
+            <%if(Merchant.MerType != Backstage.Core.MerchantTypes.Food){ %>
             <li class="submenu sidebar_pms">
                 <a href="#"><i class="icon icon-tint"></i><span>包厢管理</span><span class="label">4</span></a>
                 <ul>
@@ -66,6 +67,7 @@
                     <%--<li class="sidebar_pms_tm"><a href="<%=DomainUrl %>/View/Position/Timeline.aspx?sellerId=<%=SellerId%>">时间段管理</a></li>--%>
                 </ul>
             </li>
+             <%}%>
             <li class="sidebar_orders"><a href="<%=DomainUrl %>/View/Orders/List.aspx?sellerId=<%=SellerId%>"><i class="icon icon-shopping-cart"></i><span>订单管理</span></a></li>
             <li class="submenu sidebaer_imgs">
                 <a href="#"><i class="icon icon-picture"></i><span>图片墙管理</span> <span class="label">2</span></a>

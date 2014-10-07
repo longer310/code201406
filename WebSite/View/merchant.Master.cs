@@ -49,7 +49,8 @@ namespace WebSite.View
                 {
                     if (Utility.IsNum(SellerId))
                     {
-                        id = Convert.ToInt32(SellerId);
+
+                        return MerchantHelper.GetMerchant(Convert.ToInt32(SellerId));
                     }
                 }
                 var account = AccountHelper.GetUser(id);

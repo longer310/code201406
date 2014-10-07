@@ -54,7 +54,7 @@
                 </ul>
             </li>
             <li class="sidebar_settlement"><a href="<%=DomainUrl %>/View/Dev/Settlement/Settlement.aspx"><i class="icon icon-shopping-cart"></i><span>结算管理</span></a></li>
-            <li class="submenu">
+            <%--<li class="submenu">
                 <a href="#"><i class="icon icon-hdd"></i><span>数据库统计</span> <span class="label">4</span></a>
                 <ul>
                     <li><a href="pv.html">营业额统计</a></li>
@@ -62,10 +62,10 @@
                     <li><a href="charge.html">用户统计</a></li>
                     <li><a href="backup.html">数据备份导出</a></li>
                 </ul>
-            </li>
-            <li>
+            </li>--%>
+            <%-- <li>
                 <a href="#"><i class="icon icon-picture"></i><span>素材库管理</span> <span class="label">2</span></a>
-            </li>
+            </li>--%>
             <li class="submenu sidebar_templemanager">
                 <a href="<%=DomainUrl %>/View/Dev/Temple/TempleList.aspx"><i class="icon icon-tags"></i><span>模版管理</span> <span class="label">2</span></a>
                 <ul>
@@ -82,10 +82,8 @@
                 <a href="#"><i class="icon icon-cog"></i><span>系统设置</span> <span class="label">5</span></a>
                 <ul>
                     <li><a href="<%=DomainUrl %>/View/Dev/UserCenter/List.aspx">账户设置</a></li>
-                    <li><a href="profile.html">资料设置</a></li>
-                    <li><a href="message.html">友情链接</a></li>
                     <li class="sidebar_payment"><a href="<%=DomainUrl %>/View/Dev/System/Payment.aspx">支付接口</a></li>
-                    <li><a href="<%=DomainUrl %>/View/Dev/System/FastLinks.aspx">快捷设置</a></li>
+                    <%--<li><a href="<%=DomainUrl %>/View/Dev/System/FastLinks.aspx">快捷设置</a></li>--%>
                 </ul>
             </li>
         </ul>

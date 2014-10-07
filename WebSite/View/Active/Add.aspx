@@ -36,7 +36,7 @@
                             <img src="http://placehold.it/540x400" alt="" width="180" height="133" id="j-img-placehold">
                         </span>
                     </div>
-                    <p style="margin-top:10px;"><b class="text-error">上传图片要求：540*400</b></p>
+                    <p style="margin-top: 10px;"><b class="text-error">上传图片要求：540*400</b></p>
                 </div>
             </div>
 
@@ -166,6 +166,7 @@
                         title: $.trim($("#j-activity-title").val()),
                         ticket_id: $("#j-btn-ticket-selected").attr("data-id"),
                         thumbnail: $('#j-img-placehold').attr("src"),
+                        text: $.trim(text_editor.text()),
                         content: text_editor.html(),
                         sellerid: sellerId
                     }
@@ -221,7 +222,7 @@
                     dataType: "json"
                     //context: document.body
                 }).success(function (data) {
-    
+
                     json.result.count = data.data.totalcount;
                     json.result.list = data.data.results;
                     $("#j-ticket-list").html($("#j-tmpl-ticket-listitem").tmpl(json.result));

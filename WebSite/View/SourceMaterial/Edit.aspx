@@ -125,6 +125,7 @@
                         var save_data = {
                             title: $.trim($("#j-image-title").val()),
                             thumbnail: $('#j-img-placehold').attr("src"),
+                            text: $.trim(text_editor.text()),
                             content: text_editor.html()
 
                         }

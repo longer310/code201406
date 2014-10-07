@@ -230,6 +230,7 @@
                         total: $("#j-ticket-total").val(),
                         discount: $("#j-ticket-discount").val(),
                         goods_selected: goods_selected,
+                        text: $.trim(text_editor.text()),
                         content: text_editor.html()
                     }
 

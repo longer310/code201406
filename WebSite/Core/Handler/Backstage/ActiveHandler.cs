@@ -39,12 +39,15 @@ namespace Backstage.Core.Handler.Backstage
         private void Create()
         {
             var active = new Active();
+            
             active.SellerId = GetInt("SellerId");
             active.CouponId = GetInt("ticket_id");
             active.Title = GetString("Title");
             active.CoverImgUrl = GetString("thumbnail");
             active.Description = GetString("content");
-            active.Summary = active.Description.Length > 20 ? active.Description.Substring(0, 20) : active.Description;
+            var text = GetString("text");
+            active.Summary = text.Length > 20 ? text.Substring(0, 20) : text;
+            //active.Summary = active.Description.Length > 20 ? active.Description.Substring(0, 20) : active.Description;
             active.CreateTime = DateTime.Now;
             ActiveHelper.Create(active);
         }
@@ -67,7 +70,9 @@ namespace Backstage.Core.Handler.Backstage
             active.Title = GetString("Title");
             active.CoverImgUrl = GetString("thumbnail");
             active.Description = GetString("content");
-            active.Summary = active.Description.Length > 20 ? active.Description.Substring(0, 20) : active.Description;
+            var text = GetString("text");
+            active.Summary = text.Length > 20 ? text.Substring(0, 20) : text;
+            //active.Summary = active.Description.Length > 20 ? active.Description.Substring(0, 20) : active.Description;
 
             ActiveHelper.Update(active);
         }

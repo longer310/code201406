@@ -100,7 +100,7 @@
     <!--电子券列表模版-->
     <script type="text/jquery-tmpl-x" id="j-tmpl-ticket-listitem">
         	{{each(i, v) list}}
-	        	<li data-id="${v.Id}"><a href="#">${v.Title}</a></li>
+	        	<li data-id="${v.id}"><a href="#">${v.title}</a></li>
 			{{/each}}
         </script>
 
@@ -177,8 +177,8 @@
                             title: $.trim($("#j-activity-title").val()),
                             ticket_id: $("#j-btn-ticket-selected").attr("data-id"),
                             thumbnail: $('#j-img-placehold').attr("src"),
+                            text: $.trim(text_editor.text()),
                             content: text_editor.html()
-
                         }
 
                         $.ajax({
@@ -282,8 +282,8 @@
                     dataType: "json"
                     //context: document.body
                 }).success(function (data) {
-                    json.result.count = data.data.TotalCount;
-                    json.result.list = data.data.Results;
+                    json.result.count = data.data.totalcount;
+                    json.result.list = data.data.results;
 
                     $("#j-ticket-list").html($("#j-tmpl-ticket-listitem").tmpl(json.result));
 

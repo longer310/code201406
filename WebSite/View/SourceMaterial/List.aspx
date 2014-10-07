@@ -65,7 +65,7 @@
 							</p>
 							<div class="post-action">
 								<div class="checker"><span><input type="checkbox" name="radios"></span></div>
-								<a href="Edit.aspx?id=${v.id}" class="btn btn-primary btn-mini"><i class="icon-pencil icon-white"></i> 编辑</a>
+								<a href="Edit.aspx?id=${v.id}&sellerid=${sellerId}" class="btn btn-primary btn-mini"><i class="icon-pencil icon-white"></i> 编辑</a>
 								<a href="#" class="btn btn-danger btn-mini j-btn-del"><i class="icon-remove icon-white"></i> 删除</a>
 							</div>
 						</div>

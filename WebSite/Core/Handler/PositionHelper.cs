@@ -886,7 +886,7 @@ namespace Backstage.Core.Handler
 
         public static void UpdateTimeline(Timeline t)
         {
-            string commandText = @"UPDATE position SET
+            string commandText = @"UPDATE timeline SET
                                                     SellerId = ?SellerId, 
         	                                        BeginTime = ?BeginTime,
         	                                        EndTime = ?EndTime,

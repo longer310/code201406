@@ -9,7 +9,7 @@
 					</span>
 					<h5>提现管理</h5>
 					<div class="buttons">
-						<a href="Add.aspx" class="btn btn-primary btn-mini"><i class="icon-share-alt icon-white"></i> 提现</a>
+						<a href="Add.aspx?sellerId=<%=SellerId %>" class="btn btn-primary btn-mini"><i class="icon-share-alt icon-white"></i> 提现</a>
 					</div>
 				</div>
 				<div class="widget-content">

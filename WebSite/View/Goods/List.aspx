@@ -20,7 +20,6 @@
                 <li class="active">
                     <a href="#">所有商品</a>
                 </li>
-                <li><a href="#">推荐商品</a></li>
                 <li><a href="#">热销商品</a></li>
             </ul>
             <table class="table table-bordered table-striped with-check">
@@ -83,7 +82,7 @@
 					<td>${v.Cname}</td>
 				    <td style="width:250px;">
 					    <div class="pull-left" style="height:45px;">
-						    <label class="checkbox"><input type="checkbox" {{if v.IsRecommend>0}} checked="checked" {{/if}}  class="j-isrecommend"> 推荐</label>
+						    <%--<label class="checkbox"><input type="checkbox" {{if v.IsRecommend>0}} checked="checked" {{/if}}  class="j-isrecommend"> 推荐</label>--%>
 						    <label class="checkbox"><input type="checkbox" {{if v.IsHot>0}} checked="checked" {{/if}} class="j-ishot"> 热销</label>
 					    </div>
 
@@ -219,7 +218,7 @@
                     Id: $item.attr("data-gid"),
                     Nowprice: $item.find(".j-price").val(),
                     OriginalPrice: $item.find(".j-preprice").val(),
-                    IsRecommend: $item.find(".j-isrecommend").attr("checked") ? 1 : 0,
+                    //IsRecommend: $item.find(".j-isrecommend").attr("checked") ? 1 : 0,
                     IsHot: $item.find(".j-ishot").attr("checked") ? 1 : 0
                 });
 

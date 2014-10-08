@@ -21,11 +21,11 @@
                 </div>
             </div>
             <div class="control-group">
-                <label class="control-label">推荐和热销</label>
+                <label class="control-label">热销</label>
                 <div class="controls">
-                    <label class="checkbox">
+                    <%--<label class="checkbox">
                         <input type="checkbox" id="j-goods-isrecommend">
-                        推荐</label>
+                        推荐</label>--%>
                     <label class="checkbox">
                         <input type="checkbox" id="j-goods-ishot">
                         热销</label>

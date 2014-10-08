@@ -239,9 +239,9 @@ namespace Backstage.Handler
                 switch (type)
                 {
                     case 1:
-                        wheresql += " and IsRecommend>0 "; break;
-                    case 2:
                         wheresql += " and IsHot>0 "; break;
+                    case 2:
+                        wheresql += " and IsRecommend>0 "; break;
                     default: break;
                 }
             }
@@ -351,7 +351,7 @@ namespace Backstage.Handler
             var cid = GetInt("cid");
             var content = GetString("content");
             var isHot = GetInt("isHot");
-            var isRecommend = GetInt("isRecommend");
+            //var isRecommend = GetInt("isRecommend");
 
             var goods = new Goods();
             if (id > 0)
@@ -379,7 +379,7 @@ namespace Backstage.Handler
             goods.Cid = cid;
             goods.Content = content;
             goods.IsHot = isHot;
-            goods.IsRecommend = isRecommend;
+            //goods.IsRecommend = isRecommend;
             goods.SellerId = CurSellerId;
             var num = GoodsHelper.SaveGoods(goods);
             if (num > 0)
@@ -399,8 +399,8 @@ namespace Backstage.Handler
             public float Nowprice { get; set; }
             [XmlElement("OriginalPrice")]
             public float OriginalPrice { get; set; }
-            [XmlElement("IsRecommend")]
-            public int IsRecommend { get; set; }
+            //[XmlElement("IsRecommend")]
+            //public int IsRecommend { get; set; }
             [XmlElement("IsHot")]
             public int IsHot { get; set; }
         }
@@ -435,7 +435,7 @@ namespace Backstage.Handler
                 }
                 goods.Nowprice = changeGoodse.Nowprice;
                 goods.OriginalPrice = changeGoodse.OriginalPrice;
-                goods.IsRecommend = changeGoodse.IsRecommend;
+                //goods.IsRecommend = changeGoodse.IsRecommend;
                 goods.IsHot = changeGoodse.IsHot;
 
                 saveList.Add(goods);

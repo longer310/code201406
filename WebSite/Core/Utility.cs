@@ -441,6 +441,7 @@ namespace Backstage.Core
         public static string GetSizePicUrl(string url, int width, int height, HttpContext context = null, int needcheck = 1)
         {
             url = GetPhoneNeedUrl(url);
+            if (!url.Contains("bg")) return url;//第三方的地址，直接返回，不做尺寸处理
             var index = url.LastIndexOf('.');
             if (index < 0) return url;
             var result = url.Substring(0, index) + "_" + width + "x" + height + url.Substring(index);

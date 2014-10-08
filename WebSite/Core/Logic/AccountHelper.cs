@@ -100,7 +100,7 @@ namespace Backstage.Core
         public static PagResults<Account> GetPagAdmins(int index, int size)
         {
             var items = new PagResults<Account>();
-            string cmdText = @"select * from account where roletype=1 or roletype=2 limit ?index,?size";
+            string cmdText = @"select * from account where (roletype=1 or roletype=2) and Status != -1 limit ?index,?size";
             List<MySqlParameter> parameters = new List<MySqlParameter>();
             parameters.Add(new MySqlParameter("?index", index));
             parameters.Add(new MySqlParameter("?size", size));
@@ -388,11 +388,11 @@ namespace Backstage.Core
         /// <returns></returns>
         public static int DelUser(int id)
         {
-            var cmdText = String.Format("update account set status = -1 where Id={0}", id);
-            cmdText += String.Format("update AccountBinding set status = -1 where Id={0}", id);
-
             try
             {
+                var cmdText = String.Format("update account set status = -1 where Id={0}", id);
+                MySqlHelper.ExecuteNonQuery(Utility._gameDbConn, CommandType.Text, cmdText);
+                cmdText = String.Format("update AccountBinding set status = -1 where Id={0}", id);
                 return MySqlHelper.ExecuteNonQuery(Utility._gameDbConn, CommandType.Text, cmdText);
             }
             catch (Exception ex)

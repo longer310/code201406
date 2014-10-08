@@ -93,7 +93,7 @@
 
                     var ids = [];
                     $checked.each(function () {
-                        ids.push($(this).parents("tr").attr("data-id"));
+                        ids.push($(this).parents("tr").attr("data-gid"));
                     });
 
                     if (ids.length > 0) {
@@ -190,14 +190,14 @@
                     //绑定提款
                     $("#j-list .j-btn-del").bind("click", function () {
                         var $item = $(this).parents("tr");
-                        var id = $item.attr("data-id");
+                        var id = $item.attr("data-gid");
 
                         Common.confirm({
                             title: "删除确认提示",
                             content: "您确定要删除当前管理员？",
                             confirm: function () {
                                 $.ajax({
-                                    url: "../../../Handler/Backstage/DevSystemHandler.ashx?action=deladmin&id=" + id,
+                                    url: "../../../Handler/Backstage/DevSystemHandler.ashx?action=deladmin&ids=" + id,
                                     type: "Get",
                                     dataType: "json"
                                     //context: document.body

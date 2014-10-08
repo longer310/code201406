@@ -130,6 +130,7 @@ namespace Backstage.Core.Handler.Backstage
                     Views = item.Views,
                     Commentnum = item.Commentnum,
                     ImgId = item.CoverImgId,
+                    HasCoupon = item.CouponId != 0,
                     ImgUrl = item.CoverImgUrl == "" ? "http://placehold.it/128x128" : item.CoverImgUrl,
                     CreateTime = item.CreateTime.ToString("yyyy-MM-dd HH:mm:ss"),
                     Description = item.Description

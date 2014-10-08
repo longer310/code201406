@@ -57,7 +57,7 @@
 						<div class="article-post">
 							<span class="post-title">${v.title}</span>
 							<p class="post-desc">
-								${v.description}
+								${v.summary}
 							</p>
 							<p class="post-meta">
 								<span class="pull-left">浏览：<span class="text-error">${v.views}</span> 

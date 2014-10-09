@@ -273,6 +273,7 @@ namespace Backstage.Core.Handler.Backstage
             merchant.ManagerPhone = GetString("managephone");
             merchant.Address = GetString("address");
             merchant.WinXinAccount = GetString("weixin");
+            merchant.WxQRCode = GetString("wxqrcode");
             merchant.Qq = GetString("qq");
             merchant.Remark = GetString("email");//直接把商户邮箱改为备注了 邮箱字段建勇说不需要
             merchant.Description = GetString("content");

@@ -73,6 +73,21 @@
                     <input type="text" id="j-sysytem-profile-wechat_id" value="<%=Seller.WinXinAccount %>" />
                 </div>
             </div>
+            <div class="control-group">
+                <label class="control-label">微信二维码</label>
+                <div class="controls">
+
+                    <a class="btn btn-info" href="javascript:;" id="j-btn-imageUpload_qrcode"><i class="icon-folder-open icon-white"></i>本地上传</a>
+                    <a class="btn btn-success" href="javascript:;" id="j-btn-imageManager_qrcode"><i class="icon-picture icon-white"></i>素材库选择</a>
+                    <span class="help-inline">上传过的图片可以直接从素材库选择</span>
+                    <div class="clearfix" style="margin-top: 10px;">
+                        <span class="thumbnail pull-left">
+                            <img src="<%=Seller.WxQRCode == "" ? "http://placehold.it/300x300" : Seller.WxQRCode%>" width="60" height="60" alt="" id="j-sysytem-profile-qrcode">
+                        </span>
+                    </div>
+                    <p style="margin-top: 10px;"><b class="text-error">上传图片要求：300x300</b></p>
+                </div>
+            </div>
 
             <div class="control-group">
                 <label class="control-label">服务QQ号</label>
@@ -127,11 +142,11 @@
                     //图片上传编辑
                     mpage.image_editor = image_editor = K.editor({
                         uploadJson: '<%=DomainUrl %>/Handler/FileManager/UploadHandler.ashx?type=0&sellerid=' + sellerId,
-                            fileManagerJson: '<%=DomainUrl %>/Handler/FileManager/FileManagerHandler.ashx?type=0&sellerid=' + sellerId,
-                        });
+                        fileManagerJson: '<%=DomainUrl %>/Handler/FileManager/FileManagerHandler.ashx?type=0&sellerid=' + sellerId,
+                    });
 
                     //图片上传绑定
-                    K('#j-btn-imageManager_logo,#j-btn-imageManager_qrcode').click(function () {
+                    K('#j-btn-imageManager_logo').click(function () {
                         var $btn = $(this);
 
                         image_editor.loadPlugin('filemanager', function () {
@@ -147,7 +162,7 @@
                     });
 
                     //从资料库选择图片
-                    K('#j-btn-imageUpload_logo,#j-btn-imageUpload_qrcode').click(function () {
+                    K('#j-btn-imageUpload_logo').click(function () {
                         var $btn = $(this);
                         image_editor.loadPlugin('image', function () {
                             image_editor.plugin.imageDialog({
@@ -206,6 +221,7 @@
                         managephone: $.trim($("#j-sysytem-profile-admin_phone").val()),
                         address: $.trim($("#j-sysytem-profile-address").val()),
                         weixin: $.trim($("#j-sysytem-profile-wechat_id").val()),
+                        wxqrcode: $.trim($("#j-sysytem-profile-qrcode").attr("src")),
                         qq: $.trim($("#j-sysytem-profile-qq").val()),
                         email: $.trim($("#j-sysytem-profile-email").val()),
                         content: text_editor.html()

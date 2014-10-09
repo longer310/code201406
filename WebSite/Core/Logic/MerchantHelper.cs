@@ -43,6 +43,7 @@ namespace Backstage.Core.Logic
                             merchant.AndroidUrl = reader["AndroidUrl"].ToString();
                             merchant.IosUrl = reader["IosUrl"].ToString();
                             merchant.WxUrl = reader["WxUrl"].ToString();
+                            merchant.WxQRCode = reader["WxQRCode"].ToString();
                             merchant.PointX = reader["PointX"].ToString();
                             merchant.PointY = reader["PointY"].ToString();
                             merchant.ReChargeIntegral = (int)reader["ReChargeIntegral"];
@@ -132,6 +133,7 @@ namespace Backstage.Core.Logic
                                         AndroidUrl     = ?AndroidUrl  ,
                                         IosUrl         = ?IosUrl      ,
                                         WxUrl          = ?WxUrl       ,
+                                        WxQRCode       = ?WxQRCode    ,
                                         PointX         = ?PointX      ,
                                         PointY         = ?PointY      ,
                                         ReChargeIntegral        = ?ReChargeIntegral,
@@ -188,6 +190,8 @@ namespace Backstage.Core.Logic
                 parameters.Add(new MySqlParameter("?AndroidUrl", merchant.AndroidUrl));
                 parameters.Add(new MySqlParameter("?IosUrl", merchant.IosUrl));
                 parameters.Add(new MySqlParameter("?WxUrl", merchant.WxUrl));
+                parameters.Add(new MySqlParameter("?WxQRCode", merchant.WxQRCode));
+
                 parameters.Add(new MySqlParameter("?Id", merchant.Id));
                 parameters.Add(new MySqlParameter("?PointX", merchant.PointX));
                 parameters.Add(new MySqlParameter("?PointY", merchant.PointY));
@@ -255,6 +259,7 @@ namespace Backstage.Core.Logic
                                         AndroidUrl   ,
                                         IosUrl       ,
                                         WxUrl        ,
+                                        WxQRCode        ,
                                         PointX       ,
                                         PointY        ,
 
@@ -312,6 +317,7 @@ namespace Backstage.Core.Logic
                                         ?AndroidUrl   ,
                                         ?IosUrl       ,
                                         ?WxUrl        ,
+                                        ?WxQRCode     ,
                                         ?PointX       ,
                                         ?PointY       ,
 
@@ -367,6 +373,8 @@ namespace Backstage.Core.Logic
                 parameters.Add(new MySqlParameter("?AndroidUrl", merchant.AndroidUrl));
                 parameters.Add(new MySqlParameter("?IosUrl", merchant.IosUrl));
                 parameters.Add(new MySqlParameter("?WxUrl", merchant.WxUrl));
+                parameters.Add(new MySqlParameter("?WxQRCode", merchant.WxQRCode));
+                
                 parameters.Add(new MySqlParameter("?PointX", merchant.PointX));
                 parameters.Add(new MySqlParameter("?PointY", merchant.PointY));
 
@@ -472,6 +480,7 @@ namespace Backstage.Core.Logic
                         merchant.AndroidUrl = reader["AndroidUrl"].ToString();
                         merchant.IosUrl = reader["IosUrl"].ToString();
                         merchant.WxUrl = reader["WxUrl"].ToString();
+                        merchant.WxQRCode = reader["WxQRCode"].ToString();
                         merchant.PointX = reader["PointX"].ToString();
                         merchant.PointY = reader["PointY"].ToString();
                         merchant.ReChargeIntegral = (int)reader["ReChargeIntegral"];

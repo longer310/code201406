@@ -80,6 +80,11 @@ namespace Backstage.Core.Entity
         /// </summary>
         public string WxUrl { get; set; }
 
+        /// <summary>
+        /// 微信二维码
+        /// </summary>
+        public string WxQRCode { get; set; }
+
         public string PointX { get; set; }
 
         public string PointY { get; set; }

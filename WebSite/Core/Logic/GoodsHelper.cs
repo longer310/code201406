@@ -416,5 +416,62 @@ namespace Backstage.Core.Logic
                 throw;
             }
         }
+
+        /// <summary>
+        /// 根据产品id列表获取商品信息
+        /// </summary>
+        /// <param name="gids"></param>
+        /// <returns></returns>
+        public static List<Goods> GetGoodsList(List<int> gids)
+        {
+            var result = new List<Goods>();
+            if (gids == null || gids.Count == 0) return result;
+            var cmdText = @"select a.*,b.Name Cname from Goods a join GoodsCategories b on a.Cid=b.Id ?wheresql;";
+
+            List<MySqlParameter> parameters = new List<MySqlParameter>();
+            parameters.Add(new MySqlParameter("?wheresql", Utility.GetWhereSql(gids)));
+            try
+            {
+                using (var conn = Utility.ObtainConn(Utility._gameDbConn))
+                {
+                    MySqlDataReader reader = MySqlHelper.ExecuteReader(conn, CommandType.Text, cmdText,
+                    parameters.ToArray());
+                    while (reader.Read())
+                    {
+                        Goods goods = new Goods();
+                        goods.Id = reader.GetInt32(0);
+                        goods.SellerId = (int)reader["SellerId"];
+                        //goods.Logo = (int)reader["Logo"];
+                        //goods.ImgIdList = Utility.GetListint(reader["ImgIds"].ToString());
+                        goods.Sales = (int)reader["Sales"];
+                        goods.Title = reader["Title"].ToString();
+                        goods.Cid = (int)reader["Cid"];
+                        goods.Nowprice = (float)reader["Nowprice"];
+                        goods.OriginalPrice = (float)reader["OriginalPrice"];
+                        goods.Score = (float)reader["Score"];
+                        goods.CreateTime = (DateTime)reader["CreateTime"];
+                        goods.FavCount = (int)reader["FavCount"];
+                        goods.ShareCount = (int)reader["ShareCount"];
+                        goods.TagList = Utility.GetListstring(reader["Tag"].ToString());
+                        goods.Content = reader["Content"].ToString();
+                        goods.LogoUrl = reader["LogoUrl"].ToString();
+                        goods.ImageUrlList = Utility.GetListstring(reader["ImagesUrl"].ToString());
+                        goods.CommentCount = (int)reader["CommentCount"];
+                        goods.BrowseCount = (int)reader["BrowseCount"];
+                        goods.IsHot = (int)reader["IsHot"];
+                        goods.IsRecommend = (int)reader["IsRecommend"];
+                        goods.Cname = reader["Cname"].ToString();
+
+                        result.Add(goods);
+                    }
+                }
+
+            }
+            catch (System.Exception ex)
+            {
+                throw;
+            }
+            return result;
+        }
     }
 }

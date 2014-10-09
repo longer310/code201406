@@ -2,6 +2,7 @@
 using System.Data;
 using System.Configuration;
 using System.Collections;
+using System.Linq;
 using System.Web;
 using System.Web.Security;
 using System.Web.UI;
@@ -112,6 +113,9 @@ public partial class notify_ordersurl : System.Web.UI.Page
                                     chargeLog.OrderId = orders.Id.ToString();
                                     chargeLog.PayName = payMent.Id == 0 ? "账户余额" : payMent.Name;
                                     chargeLog.Status = RechargeStatus.Success;
+                                    chargeLog.GidList = orders.GidList;
+                                    chargeLog.NumList = orders.NumList;
+                                    chargeLog.Num = orders.NumList.Sum(o => o);
                                     //记录消费记录
                                     ChargeLogHelper.AddChargeLog(chargeLog);
 

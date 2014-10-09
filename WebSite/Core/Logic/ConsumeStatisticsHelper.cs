@@ -12,9 +12,9 @@ namespace Backstage.Core.Logic
 {
  //   select sum(abs(money)) totalmoney,sum(num) totalnum,count(*) total,count(DISTINCT userid) totaluser
  //from chargelog where Money<0 and `Status`=10 and OrderId>0;
-    public static class RechargeStatisticsHelper
+    public static class ConsumeStatisticsHelper
     {
-        public class ReqRechargeStatistics
+        public class ReqConsumeStatistics
         {
             /// <summary>
             /// x轴点集合
@@ -25,29 +25,37 @@ namespace Backstage.Core.Logic
             /// </summary>
             public List<float> Yvalues { get; set; }
             /// <summary>
-            /// 总充值金额 
+            /// 总消费金额 
             /// </summary>
             public double TotalMoney { get; set; }
             /// <summary>
-            /// 最高单笔充值 
+            /// 销售商品总数 
             /// </summary>
-            public double MaxSingleMoney { get; set; }
+            public int TotalGoodsNum { get; set; }
             /// <summary>
-            /// 充值人数 
+            /// 消费人数 
             /// </summary>
             public int UserCount { get; set; }
             /// <summary>
-            /// 环比-总充值金额 
+            /// 订单数量 
+            /// </summary>
+            public int OrdersNum { get; set; }
+            /// <summary>
+            /// 总消费金额 
             /// </summary>
             public double LTotalMoney { get; set; }
             /// <summary>
-            /// 环比-最高单笔充值 
+            /// 销售商品总数 
             /// </summary>
-            public double LMaxSingleMoney { get; set; }
+            public int LTotalGoodsNum { get; set; }
             /// <summary>
-            /// 环比-充值人数 
+            /// 消费人数 
             /// </summary>
             public int LUserCount { get; set; }
+            /// <summary>
+            /// 订单数量 
+            /// </summary>
+            public int LOrdersNum { get; set; }
 
             public string LTotalMoneyPre
             {
@@ -61,13 +69,14 @@ namespace Backstage.Core.Logic
                     else return pre + "%";
                 }
             }
-            public string LMaxSingleMoneyPre
+
+            public string LTotalGoodsNumPre
             {
                 get
                 {
-                    if (LMaxSingleMoney <= 0 || MaxSingleMoney <= 0) return "0%";
-                    var dif = MaxSingleMoney - LMaxSingleMoney;
-                    var pre = (int)(dif * 1.0 / LMaxSingleMoney * 100);
+                    if (LTotalGoodsNum <= 0 || TotalGoodsNum <= 0) return "0%";
+                    var dif = TotalGoodsNum - LTotalGoodsNum;
+                    var pre = (int)(dif * 1.0 / LTotalGoodsNum * 100);
                     if (pre > 0) return "+" + pre + "%";
                     else if (pre < 0) return "-" + pre + "%";
                     else return pre + "%";
@@ -87,7 +96,20 @@ namespace Backstage.Core.Logic
                 }
             }
 
-            public ReqRechargeStatistics(StatisticsType type)
+            public string LOrdersNumPre
+            {
+                get
+                {
+                    if (LOrdersNum <= 0 || OrdersNum <= 0) return "0%";
+                    var dif = OrdersNum - LOrdersNum;
+                    var pre = (int)(dif * 1.0 / LUserCount * 100);
+                    if (pre > 0) return "+" + pre + "%";
+                    else if (pre < 0) return "-" + pre + "%";
+                    else return pre + "%";
+                }
+            }
+
+            public ReqConsumeStatistics(StatisticsType type)
             {
                 Xvalues = new List<int>();
                 Yvalues = new List<float>();
@@ -121,16 +143,16 @@ namespace Backstage.Core.Logic
         }
 
         /// <summary>
-        /// 获取日充值统计
+        /// 获取日消费统计
         /// </summary>
         /// <param name="sellerId"></param>
         /// <param name="dateTime"></param>
         /// <returns></returns>
-        public static ReqRechargeStatistics GetRechargeDateStatisticsList(int sellerId, DateTime dateTime)
+        public static ReqConsumeStatistics GetConsumeDateStatisticsList(int sellerId, DateTime dateTime)
         {
-            var result = new ReqRechargeStatistics(StatisticsType.Day);
+            var result = new ReqConsumeStatistics(StatisticsType.Day);
             var cmdText =
-                @"select * from RechargeDateStatistics where SellerId=?SellerId and Year=?Year and Month=?Month and Day=?Day;select sum(money) totalmoney,max(money) maxmoney,count(DISTINCT userid) usercount from chargelog where money>0 and `Status` =10 and SellerId=?SellerId and CreateTime>?lStartTime and CreateTime<?lEndTime;select sum(money) totalmoney,max(money) maxmoney,count(DISTINCT userid) usercount from chargelog where money>0 and `Status` =10 and SellerId=?SellerId and CreateTime>?StartTime and CreateTime<?EndTime;";
+                @"select * from ConsumeDateStatistics where SellerId=?SellerId and Year=?Year and Month=?Month and Day=?Day;select sum(abs(money)) totalmoney,sum(num) totalgoodsnum,count(*) ordersnum,count(DISTINCT userid) usercount from chargelog where money<0 and orderId>0 and `Status` =10 and SellerId=?SellerId and CreateTime>?lStartTime and CreateTime<?lEndTime;select sum(abs(money)) totalmoney,sum(num) totalgoodsnum,count(*) ordersnum,count(DISTINCT userid) usercount from chargelog where money<0 and orderId>0 and `Status` =10 and SellerId=?SellerId and CreateTime>?StartTime and CreateTime<?EndTime;";
 
             List<MySqlParameter> parameters = new List<MySqlParameter>();
             parameters.Add(new MySqlParameter("?SellerId", sellerId));
@@ -180,20 +202,24 @@ namespace Backstage.Core.Logic
                     if (dataSet.Tables.Count > 1 && dataSet.Tables[1].Rows.Count > 0)
                     {
                         if (dataSet.Tables[1].Rows[0]["totalmoney"] != DBNull.Value)
-                            result.TotalMoney = Convert.ToDouble(dataSet.Tables[1].Rows[0]["totalmoney"]);
-                        if (dataSet.Tables[1].Rows[0]["maxmoney"] != DBNull.Value)
-                            result.MaxSingleMoney = Convert.ToDouble(dataSet.Tables[1].Rows[0]["maxmoney"]);
+                            result.LTotalMoney = Convert.ToDouble(dataSet.Tables[1].Rows[0]["totalmoney"]);
+                        if (dataSet.Tables[1].Rows[0]["totalgoodsnum"] != DBNull.Value)
+                            result.LTotalGoodsNum = Convert.ToInt32(dataSet.Tables[1].Rows[0]["totalgoodsnum"]);
                         if (dataSet.Tables[1].Rows[0]["usercount"] != DBNull.Value)
-                            result.UserCount = Convert.ToInt32(dataSet.Tables[1].Rows[0]["usercount"]);
+                            result.LUserCount = Convert.ToInt32(dataSet.Tables[1].Rows[0]["usercount"]);
+                        if (dataSet.Tables[1].Rows[0]["ordersnum"] != DBNull.Value)
+                            result.LOrdersNum = Convert.ToInt32(dataSet.Tables[1].Rows[0]["ordersnum"]);
                     }
                     if (dataSet.Tables.Count > 2 && dataSet.Tables[2].Rows.Count > 0)
                     {
                         if (dataSet.Tables[2].Rows[0]["totalmoney"] != DBNull.Value)
-                            result.LTotalMoney = Convert.ToDouble(dataSet.Tables[2].Rows[0]["totalmoney"]);
-                        if (dataSet.Tables[2].Rows[0]["maxmoney"] != DBNull.Value)
-                            result.LMaxSingleMoney = Convert.ToDouble(dataSet.Tables[2].Rows[0]["maxmoney"]);
+                            result.TotalMoney = Convert.ToDouble(dataSet.Tables[2].Rows[0]["totalmoney"]);
+                        if (dataSet.Tables[2].Rows[0]["totalgoodsnum"] != DBNull.Value)
+                            result.TotalGoodsNum = Convert.ToInt32(dataSet.Tables[2].Rows[0]["totalgoodsnum"]);
                         if (dataSet.Tables[2].Rows[0]["usercount"] != DBNull.Value)
-                            result.LUserCount = Convert.ToInt32(dataSet.Tables[2].Rows[0]["usercount"]);
+                            result.UserCount = Convert.ToInt32(dataSet.Tables[2].Rows[0]["usercount"]);
+                        if (dataSet.Tables[2].Rows[0]["ordersnum"] != DBNull.Value)
+                            result.OrdersNum = Convert.ToInt32(dataSet.Tables[2].Rows[0]["ordersnum"]);
                     }
                 }
 
@@ -206,18 +232,18 @@ namespace Backstage.Core.Logic
         }
 
         /// <summary>
-        /// 获取月充值统计
+        /// 获取月消费统计
         /// </summary>
         /// <param name="sellerId"></param>
         /// <param name="year"></param>
         /// <param name="month"></param>
         /// <returns></returns>
-        public static ReqRechargeStatistics GetRechargeMonthStatisticsList(int sellerId, int year, int month)
+        public static ReqConsumeStatistics GetConsumeMonthStatisticsList(int sellerId, int year, int month)
         {
-            var result = new ReqRechargeStatistics(StatisticsType.Month);
+            var result = new ReqConsumeStatistics(StatisticsType.Month);
             var dateTime = new DateTime(year, month, 1);
             var cmdText =
-                @"select * from RechargeDateStatistics where SellerId=?SellerId and Year=?Year and Month=?Month order by Day;select sum(money) totalmoney,max(money) maxmoney,count(DISTINCT userid) usercount from chargelog where money>0 and `Status` =10 and SellerId=?SellerId and CreateTime>?lStartTime and CreateTime<?lEndTime;select sum(money) totalmoney,max(money) maxmoney,count(DISTINCT userid) usercount from chargelog where money>0 and `Status` =10 and SellerId=?SellerId and CreateTime>?StartTime and CreateTime<?EndTime;";
+                @"select * from ConsumeDateStatistics where SellerId=?SellerId and Year=?Year and Month=?Month order by Day;select sum(abs(money)) totalmoney,sum(num) totalgoodsnum,count(*) ordersnum,count(DISTINCT userid) usercount from chargelog where money<0 and orderId>0 and `Status` =10 and SellerId=?SellerId and CreateTime>?lStartTime and CreateTime<?lEndTime;select sum(abs(money)) totalmoney,sum(num) totalgoodsnum,count(*) ordersnum,count(DISTINCT userid) usercount from chargelog where money<0 and orderId>0 and `Status` =10 and SellerId=?SellerId and CreateTime>?StartTime and CreateTime<?EndTime;";
 
             List<MySqlParameter> parameters = new List<MySqlParameter>();
             parameters.Add(new MySqlParameter("?SellerId", sellerId));
@@ -249,19 +275,23 @@ namespace Backstage.Core.Logic
                     {
                         if (dataSet.Tables[1].Rows[0]["totalmoney"] != DBNull.Value)
                             result.LTotalMoney = Convert.ToDouble(dataSet.Tables[1].Rows[0]["totalmoney"]);
-                        if (dataSet.Tables[1].Rows[0]["maxmoney"] != DBNull.Value)
-                            result.LMaxSingleMoney = Convert.ToDouble(dataSet.Tables[1].Rows[0]["maxmoney"]);
+                        if (dataSet.Tables[1].Rows[0]["totalgoodsnum"] != DBNull.Value)
+                            result.LTotalGoodsNum = Convert.ToInt32(dataSet.Tables[1].Rows[0]["totalgoodsnum"]);
                         if (dataSet.Tables[1].Rows[0]["usercount"] != DBNull.Value)
                             result.LUserCount = Convert.ToInt32(dataSet.Tables[1].Rows[0]["usercount"]);
+                        if (dataSet.Tables[1].Rows[0]["ordersnum"] != DBNull.Value)
+                            result.LOrdersNum = Convert.ToInt32(dataSet.Tables[1].Rows[0]["ordersnum"]);
                     }
                     if (dataSet.Tables.Count > 2 && dataSet.Tables[2].Rows.Count > 0)
                     {
                         if (dataSet.Tables[2].Rows[0]["totalmoney"] != DBNull.Value)
                             result.TotalMoney = Convert.ToDouble(dataSet.Tables[2].Rows[0]["totalmoney"]);
-                        if (dataSet.Tables[2].Rows[0]["maxmoney"] != DBNull.Value)
-                            result.MaxSingleMoney = Convert.ToDouble(dataSet.Tables[2].Rows[0]["maxmoney"]);
+                        if (dataSet.Tables[2].Rows[0]["totalgoodsnum"] != DBNull.Value)
+                            result.TotalGoodsNum = Convert.ToInt32(dataSet.Tables[2].Rows[0]["totalgoodsnum"]);
                         if (dataSet.Tables[2].Rows[0]["usercount"] != DBNull.Value)
                             result.UserCount = Convert.ToInt32(dataSet.Tables[2].Rows[0]["usercount"]);
+                        if (dataSet.Tables[2].Rows[0]["ordersnum"] != DBNull.Value)
+                            result.OrdersNum = Convert.ToInt32(dataSet.Tables[2].Rows[0]["ordersnum"]);
                     }
                 }
 
@@ -274,17 +304,17 @@ namespace Backstage.Core.Logic
         }
 
         /// <summary>
-        /// 获取季度充值统计
+        /// 获取季度消费统计
         /// </summary>
         /// <param name="sellerId"></param>
         /// <param name="year"></param>
         /// <returns></returns>
-        public static ReqRechargeStatistics GetRechargeQuarterStatisticsList(int sellerId, int year)
+        public static ReqConsumeStatistics GetConsumeQuarterStatisticsList(int sellerId, int year)
         {
-            var result = new ReqRechargeStatistics(StatisticsType.Quarter);
+            var result = new ReqConsumeStatistics(StatisticsType.Quarter);
             var dateTime = new DateTime(year, 1, 1);
             var cmdText =
-                @"select * from RechargeMonthStatistics where SellerId=?SellerId and Year=?Year;select sum(money) totalmoney,max(money) maxmoney,count(DISTINCT userid) usercount from chargelog where money>0 and `Status` =10 and SellerId=?SellerId and CreateTime>?lStartTime and CreateTime<?lEndTime;select sum(money) totalmoney,max(money) maxmoney,count(DISTINCT userid) usercount from chargelog where money>0 and `Status` =10 and SellerId=?SellerId and CreateTime>?StartTime and CreateTime<?EndTime;";
+                @"select * from ConsumeMonthStatistics where SellerId=?SellerId and Year=?Year;select sum(abs(money)) totalmoney,sum(num) totalgoodsnum,count(*) ordersnum,count(DISTINCT userid) usercount from chargelog where money<0 and orderId>0 and `Status` =10 and SellerId=?SellerId and CreateTime>?lStartTime and CreateTime<?lEndTime;select sum(abs(money)) totalmoney,sum(num) totalgoodsnum,count(*) ordersnum,count(DISTINCT userid) usercount from chargelog where money<0 and orderId>0 and `Status` =10 and SellerId=?SellerId and CreateTime>?StartTime and CreateTime<?EndTime;";
 
             List<MySqlParameter> parameters = new List<MySqlParameter>();
             parameters.Add(new MySqlParameter("?SellerId", sellerId));
@@ -323,19 +353,23 @@ namespace Backstage.Core.Logic
                     {
                         if (dataSet.Tables[1].Rows[0]["totalmoney"] != DBNull.Value)
                             result.LTotalMoney = Convert.ToDouble(dataSet.Tables[1].Rows[0]["totalmoney"]);
-                        if (dataSet.Tables[1].Rows[0]["maxmoney"] != DBNull.Value)
-                            result.LMaxSingleMoney = Convert.ToDouble(dataSet.Tables[1].Rows[0]["maxmoney"]);
+                        if (dataSet.Tables[1].Rows[0]["totalgoodsnum"] != DBNull.Value)
+                            result.LTotalGoodsNum = Convert.ToInt32(dataSet.Tables[1].Rows[0]["totalgoodsnum"]);
                         if (dataSet.Tables[1].Rows[0]["usercount"] != DBNull.Value)
                             result.LUserCount = Convert.ToInt32(dataSet.Tables[1].Rows[0]["usercount"]);
+                        if (dataSet.Tables[1].Rows[0]["ordersnum"] != DBNull.Value)
+                            result.LOrdersNum = Convert.ToInt32(dataSet.Tables[1].Rows[0]["ordersnum"]);
                     }
                     if (dataSet.Tables.Count > 2 && dataSet.Tables[2].Rows.Count > 0)
                     {
                         if (dataSet.Tables[2].Rows[0]["totalmoney"] != DBNull.Value)
                             result.TotalMoney = Convert.ToDouble(dataSet.Tables[2].Rows[0]["totalmoney"]);
-                        if (dataSet.Tables[2].Rows[0]["maxmoney"] != DBNull.Value)
-                            result.MaxSingleMoney = Convert.ToDouble(dataSet.Tables[2].Rows[0]["maxmoney"]);
+                        if (dataSet.Tables[2].Rows[0]["totalgoodsnum"] != DBNull.Value)
+                            result.TotalGoodsNum = Convert.ToInt32(dataSet.Tables[2].Rows[0]["totalgoodsnum"]);
                         if (dataSet.Tables[2].Rows[0]["usercount"] != DBNull.Value)
                             result.UserCount = Convert.ToInt32(dataSet.Tables[2].Rows[0]["usercount"]);
+                        if (dataSet.Tables[2].Rows[0]["ordersnum"] != DBNull.Value)
+                            result.OrdersNum = Convert.ToInt32(dataSet.Tables[2].Rows[0]["ordersnum"]);
                     }
                 }
 
@@ -348,17 +382,17 @@ namespace Backstage.Core.Logic
         }
 
         /// <summary>
-        /// 获取年充值统计
+        /// 获取年消费统计
         /// </summary>
         /// <param name="sellerId"></param>
         /// <param name="year"></param>
         /// <returns></returns>
-        public static ReqRechargeStatistics GetRechargeYearStatisticsList(int sellerId, int year)
+        public static ReqConsumeStatistics GetConsumeYearStatisticsList(int sellerId, int year)
         {
-            var result = new ReqRechargeStatistics(StatisticsType.Year);
+            var result = new ReqConsumeStatistics(StatisticsType.Year);
             var dateTime = new DateTime(year, 1, 1);
             var cmdText =
-                @"select * from RechargeMonthStatistics where SellerId=?SellerId and Year=?Year;select sum(money) totalmoney,max(money) maxmoney,count(DISTINCT userid) usercount from chargelog where money>0 and `Status` =10 and SellerId=?SellerId and CreateTime>?lStartTime and CreateTime<?lEndTime;select sum(money) totalmoney,max(money) maxmoney,count(DISTINCT userid) usercount from chargelog where money>0 and `Status` =10 and SellerId=?SellerId and CreateTime>?StartTime and CreateTime<?EndTime;";
+                @"select * from ConsumeMonthStatistics where SellerId=?SellerId and Year=?Year;select sum(abs(money)) totalmoney,sum(num) totalgoodsnum,count(*) ordersnum,count(DISTINCT userid) usercount from chargelog where money<0 and orderId>0 and `Status` =10 and SellerId=?SellerId and CreateTime>?lStartTime and CreateTime<?lEndTime;select sum(abs(money)) totalmoney,sum(num) totalgoodsnum,count(*) ordersnum,count(DISTINCT userid) usercount from chargelog where money<0 and orderId>0 and `Status` =10 and SellerId=?SellerId and CreateTime>?StartTime and CreateTime<?EndTime;";
 
             List<MySqlParameter> parameters = new List<MySqlParameter>();
             parameters.Add(new MySqlParameter("?SellerId", sellerId));
@@ -394,19 +428,23 @@ namespace Backstage.Core.Logic
                     {
                         if (dataSet.Tables[1].Rows[0]["totalmoney"] != DBNull.Value)
                             result.LTotalMoney = Convert.ToDouble(dataSet.Tables[1].Rows[0]["totalmoney"]);
-                        if (dataSet.Tables[1].Rows[0]["maxmoney"] != DBNull.Value)
-                            result.LMaxSingleMoney = Convert.ToDouble(dataSet.Tables[1].Rows[0]["maxmoney"]);
+                        if (dataSet.Tables[1].Rows[0]["totalgoodsnum"] != DBNull.Value)
+                            result.LTotalGoodsNum = Convert.ToInt32(dataSet.Tables[1].Rows[0]["totalgoodsnum"]);
                         if (dataSet.Tables[1].Rows[0]["usercount"] != DBNull.Value)
                             result.LUserCount = Convert.ToInt32(dataSet.Tables[1].Rows[0]["usercount"]);
+                        if (dataSet.Tables[1].Rows[0]["ordersnum"] != DBNull.Value)
+                            result.LOrdersNum = Convert.ToInt32(dataSet.Tables[1].Rows[0]["ordersnum"]);
                     }
                     if (dataSet.Tables.Count > 2 && dataSet.Tables[2].Rows.Count > 0)
                     {
                         if (dataSet.Tables[2].Rows[0]["totalmoney"] != DBNull.Value)
                             result.TotalMoney = Convert.ToDouble(dataSet.Tables[2].Rows[0]["totalmoney"]);
-                        if (dataSet.Tables[2].Rows[0]["maxmoney"] != DBNull.Value)
-                            result.MaxSingleMoney = Convert.ToDouble(dataSet.Tables[2].Rows[0]["maxmoney"]);
+                        if (dataSet.Tables[2].Rows[0]["totalgoodsnum"] != DBNull.Value)
+                            result.TotalGoodsNum = Convert.ToInt32(dataSet.Tables[2].Rows[0]["totalgoodsnum"]);
                         if (dataSet.Tables[2].Rows[0]["usercount"] != DBNull.Value)
                             result.UserCount = Convert.ToInt32(dataSet.Tables[2].Rows[0]["usercount"]);
+                        if (dataSet.Tables[2].Rows[0]["ordersnum"] != DBNull.Value)
+                            result.OrdersNum = Convert.ToInt32(dataSet.Tables[2].Rows[0]["ordersnum"]);
                     }
                 }
 
@@ -424,9 +462,9 @@ namespace Backstage.Core.Logic
         /// <param name="sellerId"></param>
         /// <param name="cTime"></param>
         /// <returns></returns>
-        public static RechargeDateStatistics GetRechargeDateStatistics(int sellerId, DateTime cTime)
+        public static ConsumeDateStatistics GetConsumeDateStatistics(int sellerId, DateTime cTime)
         {
-            var sql = @"select * from RechargeDateStatistics where SellerId=?SellerId and Year=?Year and Month=?Month and Day=?Day;";
+            var sql = @"select * from ConsumeDateStatistics where SellerId=?SellerId and Year=?Year and Month=?Month and Day=?Day;";
             List<MySqlParameter> parameters = new List<MySqlParameter>();
             parameters.Add(new MySqlParameter("?SellerId", sellerId));
             parameters.Add(new MySqlParameter("?Year", cTime.Year));
@@ -441,7 +479,7 @@ namespace Backstage.Core.Logic
                     {
                         if (reader.Read())
                         {
-                            RechargeDateStatistics rechargeDateStatistics = new RechargeDateStatistics();
+                            ConsumeDateStatistics rechargeDateStatistics = new ConsumeDateStatistics();
                             rechargeDateStatistics.Id = reader.GetInt32(0);
                             rechargeDateStatistics.SellerId = (int)reader["SellerId"];
                             rechargeDateStatistics.Year = (int)reader["Year"];
@@ -490,13 +528,13 @@ namespace Backstage.Core.Logic
         /// </summary>
         /// <param name="rechargeDateStatistics"></param>
         /// <returns></returns>
-        public static int SaveRechargeDateStatistics(RechargeDateStatistics rechargeDateStatistics)
+        public static int SaveConsumeDateStatistics(ConsumeDateStatistics rechargeDateStatistics)
         {
             var cmdText = string.Empty;
             List<MySqlParameter> parameters = new List<MySqlParameter>();
             if (rechargeDateStatistics.Id > 0)
             {
-                cmdText = @"UPDATE RechargeDateStatistics SET
+                cmdText = @"UPDATE ConsumeDateStatistics SET
                                         Total                  = ?Total     ,
                                         Interval0              = ?Interval0 ,
                                         Interval1              = ?Interval1 ,
@@ -553,7 +591,7 @@ namespace Backstage.Core.Logic
             }
             else
             {
-                cmdText = @"insert into RechargeDateStatistics
+                cmdText = @"insert into ConsumeDateStatistics
                                         (
                                         SellerId          ,
                                         Year              ,
@@ -667,9 +705,9 @@ namespace Backstage.Core.Logic
         /// <param name="sellerId"></param>
         /// <param name="cTime"></param>
         /// <returns></returns>
-        public static RechargeMonthStatistics GetRechargeMonthStatistics(int sellerId, DateTime cTime)
+        public static ConsumeMonthStatistics GetConsumeMonthStatistics(int sellerId, DateTime cTime)
         {
-            var sql = @"select * from RechargeMonthStatistics where SellerId=?SellerId and Year=?Year;";
+            var sql = @"select * from ConsumeMonthStatistics where SellerId=?SellerId and Year=?Year;";
             List<MySqlParameter> parameters = new List<MySqlParameter>();
             parameters.Add(new MySqlParameter("?SellerId", sellerId));
             parameters.Add(new MySqlParameter("?Year", cTime.Year));
@@ -682,7 +720,7 @@ namespace Backstage.Core.Logic
                     {
                         if (reader.Read())
                         {
-                            RechargeMonthStatistics rechargeMonthStatistics = new RechargeMonthStatistics();
+                            ConsumeMonthStatistics rechargeMonthStatistics = new ConsumeMonthStatistics();
                             rechargeMonthStatistics.Id = reader.GetInt32(0);
                             rechargeMonthStatistics.SellerId = (int)reader["SellerId"];
                             rechargeMonthStatistics.Year = (int)reader["Year"];
@@ -717,13 +755,13 @@ namespace Backstage.Core.Logic
         /// </summary>
         /// <param name="rechargeMonthStatistics"></param>
         /// <returns></returns>
-        public static int SaveRechargeMonthStatistics(RechargeMonthStatistics rechargeMonthStatistics)
+        public static int SaveConsumeMonthStatistics(ConsumeMonthStatistics rechargeMonthStatistics)
         {
             var cmdText = string.Empty;
             List<MySqlParameter> parameters = new List<MySqlParameter>();
             if (rechargeMonthStatistics.Id > 0)
             {
-                cmdText = @"UPDATE RechargeMonthStatistics SET
+                cmdText = @"UPDATE ConsumeMonthStatistics SET
                                         Total                  = ?Total     ,
                                         Month1              = ?Month1 ,
                                         Month2              = ?Month2 ,
@@ -756,7 +794,7 @@ namespace Backstage.Core.Logic
             }
             else
             {
-                cmdText = @"insert into RechargeDateStatistics
+                cmdText = @"insert into ConsumeDateStatistics
                                         (
                                         SellerId          ,
                                         Year              ,
@@ -824,12 +862,12 @@ namespace Backstage.Core.Logic
         }
 
         /// <summary>
-        /// 添加充值到统计表
+        /// 添加消费到统计表
         /// </summary>
         /// <param name="money"></param>
         /// <param name="sellerId"></param>
         /// <param name="cTime"></param>
-        public static void AddRechargeStatistics(int sellerId, float money, DateTime cTime)
+        public static void AddConsumeStatistics(int sellerId, float money, DateTime cTime)
         {
             var year = cTime.Year;
             var month = cTime.Month;
@@ -837,9 +875,9 @@ namespace Backstage.Core.Logic
             var hour = cTime.Hour;
 
             //保存日统计
-            var rechargeDateStatistics = GetRechargeDateStatistics(sellerId, cTime);
+            var rechargeDateStatistics = GetConsumeDateStatistics(sellerId, cTime);
             if (rechargeDateStatistics == null)
-                rechargeDateStatistics = new RechargeDateStatistics();
+                rechargeDateStatistics = new ConsumeDateStatistics();
             rechargeDateStatistics.Total += money;
             switch (hour)
             {
@@ -868,10 +906,10 @@ namespace Backstage.Core.Logic
                 case 22: rechargeDateStatistics.Interval22 += money; break;
                 case 23: rechargeDateStatistics.Interval23 += money; break;
             }
-            SaveRechargeDateStatistics(rechargeDateStatistics);
+            SaveConsumeDateStatistics(rechargeDateStatistics);
 
             //保存月统计
-            var rechargeMonthStatistics = GetRechargeMonthStatistics(sellerId, cTime);
+            var rechargeMonthStatistics = GetConsumeMonthStatistics(sellerId, cTime);
             rechargeMonthStatistics.Total += money;
             switch (month)
             {                                         
@@ -888,7 +926,7 @@ namespace Backstage.Core.Logic
                 case 11: rechargeMonthStatistics.Month11 += money; break;
                 case 12: rechargeMonthStatistics.Month12 += money; break;
             }
-            SaveRechargeMonthStatistics(rechargeMonthStatistics);
+            SaveConsumeMonthStatistics(rechargeMonthStatistics);
         }
     }
 }

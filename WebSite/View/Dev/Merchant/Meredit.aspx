@@ -221,7 +221,7 @@
             
             <div class="widget-box" >
 					<div class="widget-title">
-						<h5>软件版本更新（上传新安装包后，版本号记得加1）</h5>
+						<h5>软件版本更新（还未上传软件时，版本号不需要填写！上传新安装包后，版本号记得加1）</h5>
 					</div>
 					<div class="widget-content">
 
@@ -821,36 +821,36 @@
                 //    Common.tip({ type: "error", content: "备注不能为空" });
                 //    return;
                 //}
-                if (data_save.IosUrl == "") {
-                    Common.tip({ type: "error", content: "Ios地址不能为空，请点击右边的本地上传" });
-                    return;
-                }
-                if (data_save.AndroidUrl == "") {
-                    Common.tip({ type: "error", content: "安卓地址不能为空，请点击右边的本地上传" });
-                    return;
-                }
-                if (data_save.IosVer == "") {
+                //if (data_save.IosUrl == "") {
+                //    Common.tip({ type: "error", content: "Ios地址不能为空，请点击右边的本地上传" });
+                //    return;
+                //}
+                //if (data_save.AndroidUrl == "") {
+                //    Common.tip({ type: "error", content: "安卓地址不能为空，请点击右边的本地上传" });
+                //    return;
+                //}
+                if (data_save.IosUrl != "" && data_save.IosVer == "") {
                     Common.tip({ type: "error", content: "Ios版本不能为空" });
                     return;
                 }
-                if (isNaN(data_save.IosVer)) {
+                if (data_save.IosVer != "" && isNaN(data_save.IosVer)) {
                     alert("Ios版本号应为数字，例如1");
                     return;
                 }
-                if (mpage.merchantdata.mer.IosUrl != data_save.IosUrl && mpage.merchantdata.mer.IosVersion != "" &&
+                if (data_save.IosVer != "" && mpage.merchantdata.mer.IosUrl != data_save.IosUrl && mpage.merchantdata.mer.IosVersion != "" &&
                     parseInt(mpage.merchantdata.mer.IosVersion) >= parseInt(data_save.IosVer)) {
                     Common.tip({ type: "error", content: "上传IOS版本后，版本号得增加1" });
                     return;
                 }
-                if (data_save.AndroidVer == "") {
+                if (data_save.AndroidUrl != "" && data_save.AndroidVer == "") {
                     Common.tip({ type: "error", content: "安卓版本不能为空" });
                     return;
                 }
-                if (isNaN(data_save.AndroidVer)) {
+                if (data_save.AndroidVer != "" && isNaN(data_save.AndroidVer)) {
                     alert("Android版本号应为数字，例如1");
                     return;
                 }
-                if (mpage.merchantdata.mer.AndroidUrl != data_save.AndroidUrl &&
+                if (data_save.AndroidVer != "" && mpage.merchantdata.mer.AndroidUrl != data_save.AndroidUrl &&
                     parseInt(mpage.merchantdata.mer.AndroidVersion) >= parseInt(data_save.AndroidVer)) {
                     Common.tip({ type: "error", content: "上传安卓版本后，版本号得增加1" });
                     return;

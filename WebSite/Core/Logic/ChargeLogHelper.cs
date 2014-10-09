@@ -48,6 +48,9 @@ namespace Backstage.Core.Logic
                         ChargeLog.CreateTime = (DateTime)reader["CreateTime"];
                         ChargeLog.Status = (RechargeStatus)reader["Status"];
                         ChargeLog.UpdateStatusTime = (DateTime)reader["UpdateStatusTime"];
+                        ChargeLog.GidList = Utility.GetListint(reader["Gids"].ToString());
+                        ChargeLog.NumList = Utility.GetListint(reader["Nums"].ToString());
+                        ChargeLog.Num = (int)reader["Num"];
 
                         result.Results.Add(ChargeLog);
                     }
@@ -82,7 +85,7 @@ namespace Backstage.Core.Logic
             return result;
         }
 
-        public static PagResults<ChargeLog> GetChargeLogs(int sellerId,  int start = 0, int limit = 0,
+        public static PagResults<ChargeLog> GetChargeLogs(int sellerId, int start = 0, int limit = 0,
            int ifgetcount = 0)
         {
             var result = new PagResults<ChargeLog>();
@@ -118,6 +121,10 @@ namespace Backstage.Core.Logic
                         ChargeLog.CreateTime = (DateTime)reader["CreateTime"];
                         ChargeLog.Status = (RechargeStatus)reader["Status"];
                         ChargeLog.UpdateStatusTime = (DateTime)reader["UpdateStatusTime"];
+                        ChargeLog.UpdateStatusTime = (DateTime)reader["UpdateStatusTime"];
+                        ChargeLog.GidList = Utility.GetListint(reader["Gids"].ToString());
+                        ChargeLog.NumList = Utility.GetListint(reader["Nums"].ToString());
+                        ChargeLog.Num = (int)reader["Num"];
 
                         result.Results.Add(ChargeLog);
                     }
@@ -183,9 +190,9 @@ namespace Backstage.Core.Logic
                             result.CreateTime = (DateTime)reader["CreateTime"];
                             result.Status = (RechargeStatus)reader["Status"];
                             result.UpdateStatusTime = (DateTime)reader["UpdateStatusTime"];
-                            result.Gids = reader["Gids"].ToString();
-                            result.Mums = reader["Mums"].ToString();
-                            result.Mum = (int)reader["Mum"];
+                            result.GidList = Utility.GetListint(reader["Gids"].ToString());
+                            result.NumList = Utility.GetListint(reader["Nums"].ToString());
+                            result.Num = (int)reader["Num"];
                         }
                     }
                 }
@@ -218,7 +225,10 @@ namespace Backstage.Core.Logic
                                         PayName,
                                         CreateTime,
                                         Status,
-                                        UpdateStatusTime
+                                        UpdateStatusTime,
+                                        Gids,
+                                        Nums,
+                                        Num
                                         ) 
                                         values 
                                         (
@@ -230,7 +240,10 @@ namespace Backstage.Core.Logic
                                         ?PayName,
                                         ?CreateTime,
                                         ?Status,
-                                        ?UpdateStatusTime
+                                        ?UpdateStatusTime,
+                                        ?Gids,
+                                        ?Nums,
+                                        ?Num
                                         )";
             parameters.Add(new MySqlParameter("?UserId", chargeLog.UserId));
             parameters.Add(new MySqlParameter("?Money", chargeLog.Money));
@@ -241,6 +254,9 @@ namespace Backstage.Core.Logic
             parameters.Add(new MySqlParameter("?CreateTime", chargeLog.CreateTime));
             parameters.Add(new MySqlParameter("?Status", chargeLog.Status));
             parameters.Add(new MySqlParameter("?UpdateStatusTime", chargeLog.UpdateStatusTime));
+            parameters.Add(new MySqlParameter("?Gids", Utility.GetString(chargeLog.GidList)));
+            parameters.Add(new MySqlParameter("?Nums", Utility.GetString(chargeLog.NumList)));
+            parameters.Add(new MySqlParameter("?Num", chargeLog.Num));
             try
             {
                 using (var conn = Utility.ObtainConn(Utility._gameDbConn))
@@ -276,7 +292,7 @@ namespace Backstage.Core.Logic
         /// <param name="chargeLog"></param>
         /// <param name="orderId"></param>
         /// <returns></returns>
-        public static bool UpdateStatus(ChargeLog chargeLog,string orderId)
+        public static bool UpdateStatus(ChargeLog chargeLog, string orderId)
         {
             var cmdText = string.Empty;
             List<MySqlParameter> parameters = new List<MySqlParameter>();
@@ -296,7 +312,16 @@ namespace Backstage.Core.Logic
                         parameters.ToArray()) > 0;
                     if (result && chargeLog.Status == RechargeStatus.Success)
                     {
-                        RechargeStatisticsHelper.AddRechargeStatistics(chargeLog.SellerId,chargeLog.Money,chargeLog.CreateTime);
+                        if (chargeLog.Money > 0)
+                        {
+                            //充值统计
+                            RechargeStatisticsHelper.AddRechargeStatistics(chargeLog.SellerId, chargeLog.Money, chargeLog.CreateTime);
+                        }
+                        else if(chargeLog.Money < 0)
+                        {
+                            //消费统计
+                            ConsumeStatisticsHelper.AddConsumeStatistics(chargeLog.SellerId, Math.Abs(chargeLog.Money), chargeLog.CreateTime);
+                        }
                     }
                     return result;
                 }
@@ -309,7 +334,15 @@ namespace Backstage.Core.Logic
             return false;
         }
 
-
+        /// <summary>
+        /// 获取统计充值记录列表信息
+        /// </summary>
+        /// <param name="sellerId"></param>
+        /// <param name="startTime"></param>
+        /// <param name="endTime"></param>
+        /// <param name="start"></param>
+        /// <param name="limit"></param>
+        /// <returns></returns>
         public static List<ReqChargeStatItem> GetRechargeLogList(int sellerId, DateTime startTime, DateTime endTime, int start = 0, int limit = 0)
         {
             var result = new List<ReqChargeStatItem>();
@@ -339,6 +372,86 @@ namespace Backstage.Core.Logic
                         item.TotalMoney = reader.GetDouble(0);
                         item.UserId = (int)reader["UserId"];
                         item.UserName = reader["UserName"].ToString();
+
+                        result.Add(item);
+                    }
+
+                    //一个函数有两次连接数据库 先把连接断开 然后重连
+                    //conn.Close();
+                    //conn.Dispose();
+                    //conn.Open();
+
+                    //cmdText = @"select count(*) from ChargeLog where SellerId=?SellerId and Money>0 and CreateTime>=?StartTime and EndTime<=?EndTime;";
+                    //parameters = new List<MySqlParameter>();
+                    //parameters.Add(new MySqlParameter("?SellerId", sellerId));
+                    //parameters.Add(new MySqlParameter("?StartTime", startTime));
+                    //parameters.Add(new MySqlParameter("?EndTime", endTime));
+                    //reader = MySqlHelper.ExecuteReader(conn, CommandType.Text, cmdText, parameters.ToArray());
+                    //if (reader.HasRows)
+                    //{
+                    //    if (reader.Read())
+                    //    {
+                    //        result.TotalCount = reader.GetInt32(0);
+                    //    }
+                    //}
+                }
+
+            }
+            catch (System.Exception ex)
+            {
+                throw;
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// 获取统计充值记录列表信息
+        /// </summary>
+        /// <param name="sellerId"></param>
+        /// <param name="startTime"></param>
+        /// <param name="endTime"></param>
+        /// <param name="start"></param>
+        /// <param name="limit"></param>
+        /// <returns></returns>
+        public static List<ChargeLog> GetChargeLogList(int sellerId, DateTime startTime, DateTime endTime, int start = 0, int limit = 0)
+        {
+            var result = new List<ChargeLog>();
+            string limitsql = start != 0 ? " LIMIT ?start,?limit" : string.Empty;
+            var cmdText =
+                @"select * from chargelog where SellerId=?SellerId and money<0 and orderid>0 and `Status` =10 and CreateTime>=?StartTime and CreateTime<=?EndTime;" +
+                limitsql;
+
+            List<MySqlParameter> parameters = new List<MySqlParameter>();
+            if (limit != 0)
+            {
+                parameters.Add(new MySqlParameter("?start", start));
+                parameters.Add(new MySqlParameter("?limit", limit));
+            }
+            parameters.Add(new MySqlParameter("?SellerId", sellerId));
+            parameters.Add(new MySqlParameter("?StartTime", startTime));
+            parameters.Add(new MySqlParameter("?EndTime", endTime));
+            try
+            {
+                using (var conn = Utility.ObtainConn(Utility._gameDbConn))
+                {
+                    MySqlDataReader reader = MySqlHelper.ExecuteReader(conn, CommandType.Text, cmdText,
+                        parameters.ToArray());
+                    while (reader.Read())
+                    {
+                        ChargeLog item = new ChargeLog();
+                        item.Id = reader.GetInt32(0);
+                        item.SellerId = (int)reader["SellerId"];
+                        item.UserId = (int)reader["UserId"];
+                        item.Money = (float)reader["Money"];
+                        item.Pid = (int)reader["Pid"];
+                        item.PayName = reader["PayName"].ToString();
+                        item.OrderId = reader["OrderId"].ToString();
+                        item.CreateTime = (DateTime)reader["CreateTime"];
+                        item.Status = (RechargeStatus)reader["Status"];
+                        item.UpdateStatusTime = (DateTime)reader["UpdateStatusTime"];
+                        item.GidList = Utility.GetListint(reader["Gids"].ToString());
+                        item.NumList = Utility.GetListint(reader["Nums"].ToString());
+                        item.Num = (int)reader["Num"];
 
                         result.Add(item);
                     }

@@ -51,21 +51,24 @@ namespace Backstage.Core.Entity
         /// <summary>
         /// 订单关联的商品数量总数——用于直接查询
         /// </summary>
-        public int Mum { get; set; }
+        public int Num { get; set; }
         /// <summary>
         /// 订单关联的商品id列表
         /// </summary>
-        public string Gids { get; set; }
+        public List<int> GidList { get; set; }
         /// <summary>
         /// 订单关联的商品数量列表
         /// </summary>
-        public string Mums { get; set; }
+        public List<int> NumList { get; set; }
 
         public ChargeLog()
         {
             CreateTime = DateTime.Now;
             UpdateStatusTime = Utility.UnixEpochDateTime;
             Status = RechargeStatus.Request;
+
+            GidList = new List<int>();
+            NumList = new List<int>();
         }
     }
 
@@ -74,9 +77,44 @@ namespace Backstage.Core.Entity
     /// </summary>
     public class ReqChargeStatItem
     {
+        /// <summary>
+        /// 用户id
+        /// </summary>
         public int UserId { get; set; }
+        /// <summary>
+        /// 总充值金额
+        /// </summary>
         public double TotalMoney { get; set; }
+        /// <summary>
+        /// 用户名
+        /// </summary>
         public string UserName { get; set; }
+        /// <summary>
+        /// 所占百分比
+        /// </summary>
+        public string Pre { get; set; }
+    }
+
+    /// <summary>
+    /// 消费统计界面需要下发的数据
+    /// </summary>
+    public class ReqConsumeStatItem
+    {
+        /// <summary>
+        /// 商品名称
+        /// </summary>
+        public string GoodsName { get; set; }
+        /// <summary>
+        /// 商品分类名称
+        /// </summary>
+        public string GoodsCategoriesName { get; set; }
+        /// <summary>
+        /// 销量
+        /// </summary>
+        public int Num { get; set; }
+        /// <summary>
+        /// 所占百分比
+        /// </summary>
         public string Pre { get; set; }
     }
 }

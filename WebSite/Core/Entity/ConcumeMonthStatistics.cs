@@ -8,7 +8,7 @@ namespace Backstage.Core.Entity
     /// <summary>
     /// 销量月统计
     /// </summary>
-    public class ConcumeMonthStatistics : KVEntity
+    public class ConsumeMonthStatistics : KVEntity
     {
         /// <summary>
         /// 商户id
@@ -57,7 +57,7 @@ namespace Backstage.Core.Entity
         /// <summary>
         /// 9月总计
         /// </summary>
-        public float Interva9 { get; set; }
+        public float Month9 { get; set; }
         /// <summary>
         /// 10月总计
         /// </summary>

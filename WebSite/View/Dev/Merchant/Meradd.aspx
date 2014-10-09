@@ -222,7 +222,7 @@
             
             <div class="widget-box" >
 					<div class="widget-title">
-						<h5>软件版本更新</h5>
+						<h5>软件版本更新（还未上传软件时，版本号不需要填写！）</h5>
 					</div>
 					<div class="widget-content">
 
@@ -774,27 +774,27 @@
                     Common.tip({ type: "error", content: "Email不能为空" });
                     return;
                 }
-                if (data_save.IosUrl == "") {
-                    Common.tip({ type: "error", content: "Ios地址不能为空，请点击右边的本地上传" });
-                    return;
-                }
-                if (data_save.AndroidUrl == "") {
-                    Common.tip({ type: "error", content: "安卓地址不能为空，请点击右边的本地上传" });
-                    return;
-                }
-                if (data_save.IosVer == "") {
+                //if (data_save.IosUrl == "") {
+                //    Common.tip({ type: "error", content: "Ios地址不能为空，请点击右边的本地上传" });
+                //    return;
+                //}
+                //if (data_save.AndroidUrl == "") {
+                //    Common.tip({ type: "error", content: "安卓地址不能为空，请点击右边的本地上传" });
+                //    return;
+                //}
+                if (data_save.IosUrl != "" && data_save.IosVer == "") {
                     Common.tip({ type: "error", content: "Ios版本号不能为空" });
                     return;
                 }
-                if (isNaN(data_save.IosVer)) {
+                if (data_save.IosVer != "" && isNaN(data_save.IosVer)) {
                     alert("Ios版本号应为数字，例如1");
                     return;
                 }
-                if (data_save.AndroidVer == "") {
+                if (data_save.AndroidUrl != "" && data_save.AndroidVer == "") {
                     Common.tip({ type: "error", content: "安卓版本号不能为空" });
                     return;
                 }
-                if (isNaN(data_save.AndroidVer)) {
+                if (data_save.AndroidVer != "" && isNaN(data_save.AndroidVer)) {
                     alert("Android版本号应为数字，例如1");
                     return;
                 }

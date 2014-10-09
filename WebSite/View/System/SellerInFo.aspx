@@ -63,6 +63,8 @@
                         <td style="width: 16.66%"><span class="text-info"><%=Seller.CreateTime.ToString("yyyy-MM-dd HH:mm:ss") %></span></td>
                         <th style="width: 16.66%">服务期至：</th>
                         <td style="width: 16.66%"><span class="text-error"><%=Seller.ServerEndTime.ToString("yyyy-MM-dd HH:mm:ss") %></td>
+                        <th style="width: 16.66%">签约模式：</th>
+                        <td style="width: 16.66%"><span class="text-info"><%=SignList.Find(s=>s.Id == Seller.Sid).Name %></span></td>
                     </tr>
                 </tbody>
             </table>

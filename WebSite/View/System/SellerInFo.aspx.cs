@@ -13,9 +13,12 @@ namespace Backstage.View.System
     public partial class SellerInFo : BasePage
     {
         public Merchant Seller = new Merchant();
+        public List<Backstage.Core.Logic.ParamHelper.SignTypeItem> SignList;
         protected void Page_Load(object sender, EventArgs e)
         {
             Seller = MerchantHelper.GetMerchant(Int32.Parse(SellerId));
+            SignList = ParamHelper.PlatformCfgData.SignList;
+
         }
     }
 }

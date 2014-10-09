@@ -183,6 +183,9 @@ namespace Backstage.Core.Logic
                             result.CreateTime = (DateTime)reader["CreateTime"];
                             result.Status = (RechargeStatus)reader["Status"];
                             result.UpdateStatusTime = (DateTime)reader["UpdateStatusTime"];
+                            result.Gids = reader["Gids"].ToString();
+                            result.Mums = reader["Mums"].ToString();
+                            result.Mum = (int)reader["Mum"];
                         }
                     }
                 }

@@ -10,6 +10,8 @@ using MySql.Data.MySqlClient;
 
 namespace Backstage.Core.Logic
 {
+ //   select sum(abs(money)) totalmoney,sum(num) totalnum,count(*) total,count(DISTINCT userid) totaluser
+ //from chargelog where Money<0 and `Status`=10 and OrderId>0;
     public static class RechargeStatisticsHelper
     {
         public class ReqRechargeStatistics

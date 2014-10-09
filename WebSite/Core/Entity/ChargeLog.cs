@@ -23,7 +23,7 @@ namespace Backstage.Core.Entity
         /// </summary>
         public int Pid { get; set; }
         /// <summary>
-        /// 订单id
+        /// 充值记录：第三方充值流水号，消费记录：订单表的id
         /// </summary>
         public string OrderId { get; set; }
         /// <summary>
@@ -48,6 +48,18 @@ namespace Backstage.Core.Entity
         /// 更新状态时间
         /// </summary>
         public DateTime UpdateStatusTime { get; set; }
+        /// <summary>
+        /// 订单关联的商品数量总数——用于直接查询
+        /// </summary>
+        public int Mum { get; set; }
+        /// <summary>
+        /// 订单关联的商品id列表
+        /// </summary>
+        public string Gids { get; set; }
+        /// <summary>
+        /// 订单关联的商品数量列表
+        /// </summary>
+        public string Mums { get; set; }
 
         public ChargeLog()
         {

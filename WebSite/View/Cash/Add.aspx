@@ -22,7 +22,7 @@
                     <div class="control-group control-group-text">
                         <label class="control-label">当前账户可提现金额</label>
                         <div class="controls">
-                            ￥3233.00
+                            ￥<%=Account.Money %>
 								
                         </div>
                     </div>
@@ -30,7 +30,7 @@
                     <div class="control-group control-group-text">
                         <label class="control-label">冻结金额</label>
                         <div class="controls">
-                            ￥3233.00
+                            <%=Account.Money %>
 								
                         </div>
                     </div>
@@ -38,8 +38,7 @@
                     <div class="control-group control-group-text">
                         <label class="control-label">您的签约模式</label>
                         <div class="controls text-error">
-                            模式B，所有提现将扣除5%的手续费
-								
+                            <%=SignList.Find(s=>s.Id == Seller.Sid).Name %>
                         </div>
                     </div>
 

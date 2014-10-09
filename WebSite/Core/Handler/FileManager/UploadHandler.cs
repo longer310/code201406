@@ -203,7 +203,7 @@ namespace Backstage.Handler
                 case UploadType.GoodCategories: typeName = "/fenlei"; break;
                 case UploadType.Coupon: typeName = "/dianziquan"; break;
                 case UploadType.MerchantLoginAd:
-                case UploadType.MerchantWifiAd: typeName = "/guanggao"; break;
+                case UploadType.MerchantWifiAd: typeName = "/hd"; break;
                 case UploadType.Position: typeName = "/weizi"; break;
 
                 case UploadType.Package: typeName = "/package"; break;

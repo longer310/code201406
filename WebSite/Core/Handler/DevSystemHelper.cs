@@ -152,7 +152,7 @@ namespace Backstage.Core.Handler
         internal static SystemStat GetSystemStat()
         {
             SystemStat s = new SystemStat();
-            string[] statString = new string[] { "account", "active", "goods", "material", "orders","money" };
+            string[] statString = new string[] { "account", "active", "goods", "material", "orders","money","merchant" };
             List<MySqlParameter> parameters = new List<MySqlParameter>();
             foreach (var stat in statString)
             {
@@ -181,6 +181,8 @@ namespace Backstage.Core.Handler
                                     s.OrderNumber = reader.GetInt32(0); break;
                                 case "money":
                                     s.MoneyCount = reader.GetFloat(0);break;
+                                case "merchant":
+                                    s.MerchantCount = reader.GetInt32(0);break;
                                 default:
                                     break;
                             }

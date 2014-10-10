@@ -12,21 +12,7 @@
 				</div>
 				<div class="widget-content">
 					<div class="widget-box nest-box" >
-						<div class="widget-title">
-							<h5>快捷链接</h5>
-						</div>
-						<div class="widget-content">
-							<ul class="home-links clearfix">
-                                <%foreach(var item in Fastlinkslist){ %>
-								<li>
-									<a href="<%=item.Url %>" class="thumbnail">
-										<img src="<%=item.ImgUrl %>" alt="" id="j-sysytem-profile-logo">
-										<span><%=item.Title %></span>
-									</a>
-								</li>
-								<%} %>
-							</ul>
-						</div>
+						
 					</div>
 
 					<div class="widget-box nest-box" >

@@ -55,10 +55,10 @@
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="Footer" runat="server">
     <!--页面js-->
-        <script src="../public/js/ue.pager.js"></script>
+        <script src="<%=DomainUrl %>/script/js/ue.pager.js"></script>
 
-        <script charset="utf-8" src="../public/kindeditor/kindeditor-min.js"></script>
-		<script charset="utf-8" src="../public/kindeditor/lang/zh_CN.js"></script>
+        <script charset="utf-8" src="<%=DomainUrl %>/script/kindeditor/kindeditor-min.js"></script>
+		<script charset="utf-8" src="<%=DomainUrl %>/script/kindeditor/lang/zh_CN.js"></script>
 
 		<!--选择电子券弹窗-->
 		<div id="j-selectModal" class="modal hide">
@@ -98,7 +98,7 @@
 		<!--电子券列表模版-->
 		<script type="text/jquery-tmpl-x" id="j-tmpl-listitem">
         	{{each(i, v) list}}
-	        	<li data-id="1"><a href="#">电子券名称电子券名称电子券名称电子券名称电子券名称</a></li>
+	        	<li data-id="${v.Id}"><a href="#">${v.Title}</a></li>
 			{{/each}}
         </script>
 

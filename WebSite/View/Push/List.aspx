@@ -10,7 +10,7 @@
 					</span>
 					<h5>推送服务</h5>
 					<div class="buttons">
-						<a href="message_add.html" class="btn btn-primary btn-mini"><i class="icon-plus icon-white"></i> 添加</a>
+						<a href="Add.aspx?sellerId=<%=SellerId %>" class="btn btn-primary btn-mini"><i class="icon-plus icon-white"></i> 添加</a>
 					</div>
 				</div>
 				<div class="widget-content">
@@ -39,21 +39,22 @@
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="Footer" runat="server">
      <!--页面js-->
-        <script src="../public/js/ue.pager.js"></script>
+        <script src="<%=DomainUrl %>/script/js/ue.pager.js"></script>
 
         <script type="text/jquery-tmpl-x" id="j-tmpl-message-listitem">
         	{{each(i, v) list}}
 	        	<tr data-gid="1">
 					<td style="width:30px;">1</td>
-					<td>${v.Type}商品推送</td>
-					<td>${v.Title}</td>
-					<td>${v.Content}</td>
-					<td>${v.CreateTime}</td>
+					<td>${v.type}商品推送</td>
+					<td>${v.title}</td>
+					<td>${v.content}</td>
+					<td>${v.createtime}</td>
 				</tr>
 			{{/each}}
         </script>
 
         <script type="text/javascript">
+            var sellerId = '<%=SellerId%>'
             var MPage = {
                 init: function () {
                     var mpage = this;
@@ -105,7 +106,7 @@
                         }
                     };
                     $.ajax({
-                        url: "../../Handler/Backstage/SourceMaterialHandler.ashx?action=getlist&sellerId=" + sellerId + "&start=" + (p - 1) + "&limit=8",
+                        url: "../../Handler/Backstage/SystemHandler.ashx?action=getpushs&sellerId=" + sellerId + "&start=" + (p - 1) + "&limit=8",
                         type: "Get",
                         dataType: "json"
                         //context: document.body

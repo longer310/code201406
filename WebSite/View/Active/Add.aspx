@@ -57,10 +57,10 @@
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="Footer" runat="server">
     <!--页面js-->
-    <script src="../../script/js/ue.pager.js"></script>
+    <script src="<%=DomainUrl %>/script/js/ue.pager.js"></script>
 
-    <script charset="utf-8" src="../../script/kindeditor/kindeditor-min.js"></script>
-    <script charset="utf-8" src="../../script/kindeditor/lang/zh_CN.js"></script>
+    <script charset="utf-8" src="<%=DomainUrl %>/script/kindeditor/kindeditor-min.js"></script>
+    <script charset="utf-8" src="<%=DomainUrl %>/script/kindeditor/lang/zh_CN.js"></script>
 
     <!--选择电子券弹窗-->
     <div id="j-ticket-selectModal" class="modal hide">
@@ -171,7 +171,7 @@
                         sellerid: sellerId
                     }
                     $.ajax({
-                        url: "../../Handler/Backstage/ActiveHandler.ashx?action=create",
+                        url: "../../Handler/Backstage/SystemHandler.ashx?action=addpush",
                         data: save_data,
                         type: "POST",
                         dataType: "json"

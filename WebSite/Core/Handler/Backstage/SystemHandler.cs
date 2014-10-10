@@ -147,6 +147,8 @@ namespace Backstage.Core.Handler.Backstage
             seller.CardNumber = item.CardNumber;
             seller.Bank = item.Bank;
             seller.AccountName = item.AccountName;
+            float fee = ParamHelper.PlatformCfgData.SignList.FirstOrDefault(s => s.Id == seller.Sid).Prec * item.Money;
+            item.Fee = fee;
             MerchantHelper.SaveMerchant(seller);
 
             //发短信
@@ -170,7 +172,7 @@ namespace Backstage.Core.Handler.Backstage
             }
 
             //提现表更新
-            item.Balance = user.Money;
+            item.Balance = user.Money - item.Money - item.Fee;
             item.UserAccount = user.UserName;//存储商户账户
             ExtractMoneyHelper.Create(item);
             ReturnCorrectMsg("提现申请成功，请耐心等待后台人员处理");

@@ -330,7 +330,7 @@
     </script>
     <script type="text/jquery-tmpl-x" id="j-tmpl-sign-listitem">
         	{{each(i, v) list}}
-        		<option value="${v.Id}">${v.Name}</option>
+        		<option value="${v.Id}">${v.Name}-扣率${v.Prec}%</option>
         	{{/each}}
     </script>
 

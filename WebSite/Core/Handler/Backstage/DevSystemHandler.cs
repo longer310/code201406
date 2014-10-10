@@ -156,6 +156,7 @@ namespace Backstage.Core.Handler.Backstage
             admin.NickName = GetString("nickname");
             admin.UserName = GetString("username");
             admin.Pwd = GetString("pwd");
+            admin.RegisterTime = DateTime.Now;
             var user = AccountHelper.FindUser(admin.UserName);
             if (user != null)
             {
@@ -167,11 +168,12 @@ namespace Backstage.Core.Handler.Backstage
             }
             else
             {
+                AccountHelper.SaveAccount(admin);
                 JsonTransfer jt = new JsonTransfer();
                 jt.Add("data", new { status = true, msg = "添加成功！" });
                 Response.Write(DesEncrypt(jt));
                 Response.End();
-                AccountHelper.SaveAccount(admin);
+                
             }
         }
 

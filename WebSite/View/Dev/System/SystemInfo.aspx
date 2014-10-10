@@ -11,11 +11,7 @@
             <h5>资料设置</h5>
         </div>
         <div class="widget-content">
-            <ul class="nav nav-tabs">
-                <li class="active"><a href="profile.html">基本资料</a></li>
-                <li><a href="profile_service.html">服务协议</a></li>
-                <li><a href="profile_other.html">特别说明</a></li>
-            </ul>
+            
             <form action="#" method="get" class="form-horizontal" id="j-profile-form">
 
             <div class="control-group">
@@ -49,6 +45,9 @@
         var MPage = {
             init: function () {
                 var mpage = this;
+                //去掉之前选中打开的项 选中产品列表
+                $("#sidebar li").removeClass("active open");
+                $("#sidebar .sidebar_sys").addClass("active open").find(".sidebar_systeminfo").addClass("active");
 
                 //var text_editor,
                 //    image_editor;

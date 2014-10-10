@@ -83,6 +83,7 @@
                 <ul>
                     <li><a href="<%=DomainUrl %>/View/Dev/UserCenter/List.aspx">账户设置</a></li>
                     <li class="sidebar_payment"><a href="<%=DomainUrl %>/View/Dev/System/Payment.aspx">支付接口</a></li>
+                    <li class="sidebar_systeminfo"><a href="<%=DomainUrl %>/View/Dev/System/SystemInfo.aspx">扣率设置</a></li>
                     <%--<li><a href="<%=DomainUrl %>/View/Dev/System/FastLinks.aspx">快捷设置</a></li>--%>
                 </ul>
             </li>

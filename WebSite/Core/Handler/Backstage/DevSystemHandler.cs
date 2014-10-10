@@ -156,7 +156,23 @@ namespace Backstage.Core.Handler.Backstage
             admin.NickName = GetString("nickname");
             admin.UserName = GetString("username");
             admin.Pwd = GetString("pwd");
-            AccountHelper.SaveAccount(admin);
+            var user = AccountHelper.FindUser(admin.UserName);
+            if (user != null)
+            {
+                JsonTransfer jt = new JsonTransfer();
+                jt.Add("data", new  { status=false,msg="账户已经存在,登录名重复:" +admin.UserName});
+                Response.Write(DesEncrypt(jt));
+                Response.End();
+                return;
+            }
+            else
+            {
+                JsonTransfer jt = new JsonTransfer();
+                jt.Add("data", new { status = true, msg = "添加成功！" });
+                Response.Write(DesEncrypt(jt));
+                Response.End();
+                AccountHelper.SaveAccount(admin);
+            }
         }
 
         private void PwdEdit()

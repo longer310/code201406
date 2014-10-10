@@ -143,7 +143,7 @@ namespace Backstage.Core
                     conn.Dispose();
                     conn.Open();
 
-                    cmdText = @"select count(*) from account where roletype=1 or roletype=2" ;
+                    cmdText = @"select count(*) from account where (roletype=1 or roletype=2) and Status != -1 ";
                     reader = MySqlHelper.ExecuteReader(conn, CommandType.Text, cmdText);
                     if (reader.HasRows)
                     {
@@ -572,7 +572,7 @@ namespace Backstage.Core
 
         public static Account FindUser(string userName)
         {
-            var sql = @"select * from account where username=?username and roletype <>?roletype limit 1;";
+            var sql = @"select * from account where username=?username and roletype <>?roletype and Status != -1 limit 1;";
             List<MySqlParameter> parameters = new List<MySqlParameter>();
             parameters.Add(new MySqlParameter("?username", userName));
             parameters.Add(new MySqlParameter("?roletype", (int)RoleType.ThirdUser));//第三方账号可能用户名会重复！

@@ -38,7 +38,7 @@
             </div>
             <div class="form-actions">
                 <span class="pull-left"><a href="#" class="flip-link" id="to-recover">找回密码?</a></span>
-                <span class="tip-error">请输入正确帐号和密码</span>
+                <span class="tip-error" style="display:none;">请输入正确帐号和密码</span>
                 <span class="pull-right">
 
                     <input type="submit" id="login-submit" class="btn btn-inverse" value="登陆" />

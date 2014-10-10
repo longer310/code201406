@@ -102,8 +102,9 @@
         <asp:ContentPlaceHolder ID="Content" runat="server">
         </asp:ContentPlaceHolder>
         <div id="footer">
-            <p>关于淘宝合作伙伴营销中心廉正举报联系客服开放平台诚征英才联系我们网站地图法律声明© 2003-2014 Taobao.com 版权所有</p>
-            <p>网络文化经营许可证：文网文[2010]040号|增值电信业务经营许可证：浙B2-20080224-1|信息网络传播视听节目许可证：1109364号 </p>
+            <p>福建省商友网络科技有限公司 Copyright 2014-2024 ALL Rights Reserved</p>
+            <p>公司地址：福州市仓山万达B1区7号楼1905　服务热线：0591-83050630</p>
+            <p>邮箱：2994833896@qq.com　闽ICP备14012518号</p>
         </div>
     </div>
 

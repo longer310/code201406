@@ -16,7 +16,7 @@
             <div class="control-group">
                 <label class="control-label">商户名称</label>
                 <div class="controls">
-                    <input type="text" id="j-sysytem-profile-name" value="<%=Seller.Name %>" />
+                    <input type="text" id="j-sysytem-profile-name" value="<%=_Account.UserName %>" />
                 </div>
             </div>
             <div class="control-group">

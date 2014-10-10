@@ -93,6 +93,10 @@ $(document).ready(function () {
                 window.location.href = "View/Index.aspx";
             else if (data.success == "2")  //ƽ̨
                 window.location.href = "View/Dev/Index.aspx";
+            
+            $(".tip-error").html(data.error).show();
+        }).error(function (data) {
+            $(".tip-error").show();
         });
     }
 

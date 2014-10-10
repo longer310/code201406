@@ -83,9 +83,16 @@
                         dataType: "json"
                         //context: document.body
                     }).success(function (data) {
-                        alert("新增成功");
-                        window.location.href = "List.aspx";
-                    });
+                        if (data.data.status) {
+                            alert(data.data.msg);
+                            window.location.href = "List.aspx";
+                        }
+                        else {
+                            alert(data.data.msg);
+                        }
+                       
+                    }).error(function (data) {
+                    })
                 });
 
 

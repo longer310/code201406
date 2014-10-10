@@ -41,8 +41,36 @@ namespace Backstage.Core.Handler.Backstage
                     GetFastlinksItem(); break;
                 case "updatefastlinks":
                     UpdateFastlinks(); break;
+                case "styleinfo":
+                    StyleInfo(); break;
                 default: break;
             }
+        }
+
+        private void StyleInfo()
+        {
+            var signList = ParamHelper.PlatformCfgData.SignList;
+            List<ParamHelper.SignTypeItem> items = new List<ParamHelper.SignTypeItem>();
+            items.Add(new ParamHelper.SignTypeItem()
+            {
+                Id = signList.First().Id,
+                Name = signList.First().Name,
+                Prec = GetFloat("first")
+            });
+            items.Add(new ParamHelper.SignTypeItem()
+            {
+                Id = signList.First().Id,
+                Name = signList.First().Name,
+                Prec = GetFloat("second")
+            });
+            items.Add(new ParamHelper.SignTypeItem()
+            {
+                Id = signList.First().Id,
+                Name = signList.First().Name,
+                Prec = GetFloat("third")
+            });
+            ParamHelper.PlatformCfgData.SignList = items;
+            ParamHelper.UpdateParamvalue("PlatformCfg", ParamHelper.PlatformCfgData);
         }
 
         private void UpdateFastlinks()
@@ -175,11 +203,11 @@ namespace Backstage.Core.Handler.Backstage
         string GetRoleTypeName(RoleType type)
         {
             switch (type)
-            { 
+            {
                 case RoleType.Manage:
                     return "管理员";
                 case RoleType.SuperManage:
-                    return  "超级管理员";
+                    return "超级管理员";
                 case RoleType.Merchant:
                     return "商家";
                 default:

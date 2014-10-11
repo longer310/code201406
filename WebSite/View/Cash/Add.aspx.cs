@@ -15,12 +15,14 @@ namespace Backstage.View.Cash
         public Merchant Seller;
         public Account Account;
         public List<Backstage.Core.Logic.ParamHelper.SignTypeItem> SignList;
+        public float _LockMoney;
 
         protected void Page_Load(object sender, EventArgs e)
         {
             Seller = MerchantHelper.GetMerchant(Int32.Parse(SellerId));
             Account = AccountHelper.GetUser(Int32.Parse(SellerId));
             SignList = ParamHelper.PlatformCfgData.SignList;
+            _LockMoney = Account.Money - Seller.Money;
         }
     }
 }

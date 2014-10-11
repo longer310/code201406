@@ -30,7 +30,7 @@
                     <div class="control-group control-group-text">
                         <label class="control-label">冻结金额</label>
                         <div class="controls">
-                            <%=Account.Money %>
+                            ￥<%=_LockMoney %>
 								
                         </div>
                     </div>
@@ -54,7 +54,7 @@
                     <div class="control-group control-group-text">
                         <label class="control-label"></label>
                         <div class="controls text-error">
-                            （注：体现周期为1个工作日，节假日不可到帐）
+                            （注：提现周期为1个工作日，节假日不可到帐）
 								
                         </div>
                     </div>
@@ -76,7 +76,7 @@
                     <form action="#" method="get" class="form-horizontal" id="j-activity-bank-edit" />
 
                     <div class="control-group">
-                        <label class="control-label">开户行</label>
+                        <label class="control-label">开户行（填写具体哪个开户行）</label>
                         <div class="controls">
                             <input type="text" value="<%=Seller.Bank %>" id="j-bank_open" />
                         </div>
@@ -170,7 +170,8 @@
                         data: data,
                         dataType: "json"
                     }).success(function (data) {
-                        console.log("suc"+data);
+                        alert(data.message);
+                        window.location.href = "List.aspx?sellerId=" + sellerId;
                     }).error(function (data) {
                         console.log("erorr" + data);
                     });

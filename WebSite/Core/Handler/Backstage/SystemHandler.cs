@@ -28,7 +28,7 @@ namespace Backstage.Core.Handler.Backstage
                     GetCashList(); break;
                 case "getseller":
                     GetMerchant(); break;
-                case "withdraw ": //提现
+                case "withdraw": //提现
                     Withdraw(); break;
                 case "bankedit":
                     BankEdit();break;
@@ -151,6 +151,7 @@ namespace Backstage.Core.Handler.Backstage
             if (user == null)
                 throw new ArgumentNullException("user为空：" + item.SellerId);
 
+           
             //目前商户的用户信息分三张表存储
             //提现确认打款后才扣钱
             //user.Money -= item.Money;
@@ -163,6 +164,7 @@ namespace Backstage.Core.Handler.Backstage
             seller.AccountName = item.AccountName;
             float fee = ParamHelper.PlatformCfgData.SignList.FirstOrDefault(s => s.Id == seller.Sid).Prec * item.Money;
             item.Fee = fee;
+            seller.Money = seller.Money - item.Money - item.Fee;
             MerchantHelper.SaveMerchant(seller);
 
             //发短信

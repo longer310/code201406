@@ -94,6 +94,7 @@ public partial class notify_url : System.Web.UI.Page
                             {
                                 //添加
                                 var user = AccountHelper.GetUser(chargeLog.UserId);
+                                var seller = MerchantHelper.GetMerchant(chargeLog.UserId);
                                 if (user == null)
                                 {
                                     logger.ErrorFormat("不存在用户Id={0}", chargeLog.UserId);
@@ -119,6 +120,8 @@ public partial class notify_url : System.Web.UI.Page
                                     user.TotalRecharge += chargeLog.Money;
                                     //保存用户信息
                                     AccountHelper.SaveAccount(user);
+                                    seller.Money = user.Money;
+                                    MerchantHelper.SaveMerchant(seller);
                                     //更新充值记录
                                     //chargeLog.OrderId = trade_no;   //更新第三方订单id
                                     chargeLog.Status = RechargeStatus.Success;

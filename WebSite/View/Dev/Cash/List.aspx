@@ -24,6 +24,7 @@
 								<th>银行</th>
 								<th>卡号</th>
                                 <th>提现时间</th>
+                                <th>打款时间</th>
 								<th>状态</th>
 								<th>操作</th>
 							</tr>
@@ -55,6 +56,7 @@
 					<td>${v.Bank}</td>
 					<td>${v.CardNumber}td>
 					<td>${v.CreateTime}</td>
+					<td>${v.SendTime}</td>
                     <td class="j-status"><b class="text-error">${v.Status}</b></td>
                     ${if v.Status == 0}
 					<td style="width:60px;">
@@ -70,14 +72,14 @@
                 cid: 0,//当前分类 默认是全部分类
                 pageNum: 1,//当前页
 
-                init: function () {
+                init: function() {
                     var mpage = this;
 
                     mpage.getList(1, 0);
 
                 },
 
-                getList: function (p, type) {
+                getList: function(p, type) {
                     var mpage = this;
 
                     //$.getJSON("", { p: p, type : type}, function(json){
@@ -101,7 +103,7 @@
                         type: "Get",
                         dataType: "json"
                         //context: document.body
-                    }).success(function (data) {
+                    }).success(function(data) {
 
                         json.result.count = data.data.TotalCount;
                         json.result.list = data.data.Results;
@@ -126,30 +128,30 @@
                             maxPage: 5,//显示的最多页数
                             per: 6,//每页显示几个
                             count: json.result.count,
-                            onchange: function (page) {//切换页数回调函数
+                            onchange: function(page) { //切换页数回调函数
                                 mpage.getList(page, type);
                             }
                         });
 
                         //绑定提款
-                        $("#j-list .j-btn-pay").bind("click", function () {
+                        $("#j-list .j-btn-pay").bind("click", function() {
                             var $item = $(this).parents("tr");
                             var id = $item.attr("data-id");
 
                             Common.confirm({
                                 title: "打款确认提示",
                                 content: "您确定更改该提款申请为已处理？",
-                                confirm: function () {
+                                confirm: function() {
                                     $.ajax({
                                         url: "../../Handler/Backstage/DevSystemHandler.ashx?action=updatecash&id=" + id,
                                         type: "Get",
                                         dataType: "json"
                                         //context: document.body
-                                    }).success(function (data) {
+                                    }).success(function(data) {
                                         $item.find(".j-status").html('<b class="text-success">已处理</b>');
                                     });
                                 },
-                                cancel: function () {
+                                cancel: function() {
                                     //执行取消回调
                                     alert('执行取消回调');
                                 }
@@ -162,7 +164,7 @@
                     //});
 
                 }
-            }
+            };
 
             $(function () {
                 MPage.init();

@@ -525,7 +525,7 @@ namespace Backstage.Handler
                 var user = userlist.FirstOrDefault(o => o.Id == comment.UserId);
                 if (user != null)
                 {
-                    item.avatar = Utility.GetSizePicUrl(user.Avatar,100,100,context);
+                    item.avatar = Utility.GetSizePicUrl(user.Avatar, 100, 100, context);
                     item.username = user.UserName;
                     item.sex = (int)user.Sex;
                 }
@@ -870,6 +870,17 @@ namespace Backstage.Handler
                 orders.Address = user.Address;
             }
             orders.TotalPrice = (float)(orders.StotalPrice * 1.0 * user.Discount / 10);//打折！
+
+            orders.SendPrice = 0;
+            orders.FreeSendPrice = 100;
+            var merchant = MerchantHelper.GetMerchant(orders.SellerId);
+            orders.HasDelivery = 0;
+            if (merchant != null)
+            {
+                orders.FreeSendPrice = merchant.NeedToFreeFreight;
+                orders.HasDelivery = merchant.HasDelivery;
+            }
+
             orders.SellerId = sellerId;
 
             var orderid = OrdersHelper.SaveOrders(orders);
@@ -936,7 +947,7 @@ namespace Backstage.Handler
                 for (int i = 0; i < gidlist.Count; i++)
                 {
                     var item = new OrderGoddsItem();
-                    item.img = Utility.GetSizePicUrl(imglist[i],180,133,context);
+                    item.img = Utility.GetSizePicUrl(imglist[i], 180, 133, context);
                     item.gid = gidlist[i];
                     item.title = titlelist[i];
                     item.content = contentlist[i];
@@ -953,16 +964,17 @@ namespace Backstage.Handler
                 orderpeople = orders.OrderPeople;
                 ordertype = (int)orders.OrderType;
                 status = (int)orders.Status;
-                sendprice = 5;
-                freesendprice = 100;
-                var merchant = MerchantHelper.GetMerchant(orders.SellerId);
-                hasdelivery = 0;
-                if (merchant != null)
-                {
-                    sendprice = merchant.Freight;
-                    freesendprice = merchant.NeedToFreeFreight;
-                    hasdelivery = merchant.HasDelivery;
-                }
+                sendprice = orders.SendPrice;
+                freesendprice = orders.FreeSendPrice;
+                hasdelivery = orders.HasDelivery;
+                //var merchant = MerchantHelper.GetMerchant(orders.SellerId);
+                //hasdelivery = 0;
+                //if (merchant != null)
+                //{
+                //    sendprice = merchant.Freight;
+                //    freesendprice = merchant.NeedToFreeFreight;
+                //    hasdelivery = merchant.HasDelivery;
+                //}
 
                 totalprice = orders.TotalPrice;
                 extcredit = (int)(orders.TotalPrice * 1.0 / ParamHelper.ExtcreditCfgData.Consume);
@@ -1004,7 +1016,7 @@ namespace Backstage.Handler
                 return;
             }
 
-            var data = new OrderDetailData(orders,context);
+            var data = new OrderDetailData(orders, context);
 
             //返回信息
             ReturnCorrectData(data);
@@ -1107,7 +1119,13 @@ namespace Backstage.Handler
 
             if (orders.OrderType != OrderType.Shop)
             {
-                orders.TotalPrice += merchant.Freight;
+                if (orders.TotalPrice >= orders.FreeSendPrice)
+                    orders.SendPrice = 0;   //  满多少免运费
+                else
+                {
+                    orders.SendPrice = merchant.Freight;
+                    orders.TotalPrice += merchant.Freight;
+                }
             }
             if (orderpeople != 0) orders.OrderPeople = orderpeople;
             if (!string.IsNullOrEmpty(address)) orders.Address = address;
@@ -1156,7 +1174,7 @@ namespace Backstage.Handler
 
             OrdersHelper.SaveOrders(orders);
 
-            var data = new OrderDetailData(orders,context);
+            var data = new OrderDetailData(orders, context);
 
             //返回信息
             ReturnCorrectData(data);
@@ -1235,7 +1253,7 @@ namespace Backstage.Handler
                 log.UserId = uid;
                 log.SellerId = user.SellerId;
                 log.SourceId = orders.Id;
-                log.Extcredit = (int)(orders.TotalPrice * 1.0 / ParamHelper.ExtcreditCfgData.Consume);
+                log.Extcredit = (int)((orders.TotalPrice-orders.SendPrice) * 1.0 / ParamHelper.ExtcreditCfgData.Consume);
                 log.Type = ExtcreditSourceType.Consume;
                 log.CreateTime = DateTime.Now;
 

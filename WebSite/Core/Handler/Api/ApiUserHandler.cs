@@ -368,6 +368,10 @@ namespace Backstage.Handler
                 userbinding.SellerId = sellerid;
                 //添加第三方绑定
                 AccountBindingHelper.AddAccountBinding(userbinding);
+
+                //商户统计用户量
+                merchant.UserCount++;
+                MerchantHelper.SaveMerchant(merchant);
             }
             else
             {//查找用户

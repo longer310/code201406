@@ -141,8 +141,7 @@ namespace Backstage.Core.Logic
                                         CommentIntegral         = ?CommentIntegral      ,
                                         ShareIntegral           = ?ShareIntegral       ,
                                         Freight                 = ?Freight      ,
-                                        NeedToFreeFreight       = ?NeedToFreeFreight  ,    
-
+                                        NeedToFreeFreight       = ?NeedToFreeFreight  ,  
                                         ServerEndTime                 = ?ServerEndTime      ,
                                         LogoUrl                           = ?LogoUrl                ,
                                         Mid                           = ?Mid                ,

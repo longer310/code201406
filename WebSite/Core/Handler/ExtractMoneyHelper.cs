@@ -37,6 +37,7 @@ namespace Backstage.Core.Handler
                         e.Status = (int)reader["Status"];
                         e.Fee = (float)reader["Fee"];
                         e.UserAccount = reader["UserAccount"].ToString();
+                        e.SendTime = (DateTime)reader["SendTime"];
                     }
                 }
             }
@@ -96,6 +97,7 @@ namespace Backstage.Core.Handler
                         e.Status = (int)reader["Status"];
                         e.Fee = (float)reader["Fee"];
                         e.UserAccount = reader["UserAccount"].ToString();
+                        e.SendTime = (DateTime)reader["SendTime"];
 
                         results.Results.Add(e);
                     }
@@ -181,7 +183,8 @@ namespace Backstage.Core.Handler
                                         AccountName = ?AccountName,
                                         CreateTime = ?CreateTime,
                                         Status = ?Status,
-                                        Fee = ?Fee
+                                        Fee = ?Fee,
+                                        SendTime = ?SendTime
                                     WHERE
                                         Id = ?Id";
 
@@ -196,6 +199,7 @@ namespace Backstage.Core.Handler
             parameters.Add(new MySqlParameter("?AccountName", item.AccountName));
             parameters.Add(new MySqlParameter("?Status", item.Status));
             parameters.Add(new MySqlParameter("?Fee", item.Fee));
+            parameters.Add(new MySqlParameter("?SendTime", item.SendTime));
 
             return MySqlHelper.ExecuteNonQuery(GlobalConfig.DbConn, CommandType.Text, commandText, parameters.ToArray()) > 0;
         }

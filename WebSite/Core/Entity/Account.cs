@@ -110,14 +110,18 @@ namespace Backstage.Core.Entity
             Discount = 10;//默认不打折
         }
 
-        public bool Concume(float price)
+        public bool Concume(float price,int pid = 0)
         {
-            if (Money < price) return false;
-            Money -= price;
+            if (pid == 0)
+            {
+                //余额付款
+                if (Money < price) return false;
+                Money -= price;
+            }
             TotalConsume += price;
             TotalOrdersCount++;//完成付款的订单数
 
-            //添加到该商户
+            //资金添加到该商户！
             if (SellerId > 0)
             {
                 var merchant = AccountHelper.GetUser(SellerId);

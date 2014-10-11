@@ -52,5 +52,10 @@ namespace Backstage.Core.Entity
         /// 1:已提现成功，0:未提现，-1：处理失败
         /// </summary>
         public int Status { get; set; }
+
+        /// <summary>
+        /// 打款时间
+        /// </summary>
+        public DateTime SendTime { get; set; }
     }
 }

@@ -27,7 +27,8 @@
                         <th style="width: 40px;"><a href="javascript:;" class="j-orderby" data-orderby="0">编号<i class="icon-arrow-down icon-green" style="display: none;"></i></a></th>
                         <th>图片</th>
                         <th style="width: 100px;">名称</th>
-                        <th><a href="javascript:;" class="j-orderby" data-orderby="1">服务期<i class="icon-arrow-up icon-green" style="display: none;"></i></a></th>
+                        <th><a href="javascript:;" class="j-orderby" data-orderby="1">入驻时间<i class="icon-arrow-up icon-green" style="display: none;"></i></a></th>
+                        <th>开发人员</th>
                         <th>分类</th>
                         <th><a href="javascript:;" class="j-orderby" data-orderby="2">用户量<i class="icon-arrow-up icon-green" style="display: none;"></i></a></th>
                         <th><a href="javascript:;" class="j-orderby" data-orderby="3">营业额<i class="icon-arrow-up icon-green" style="display: none;"></i></a></th>
@@ -56,7 +57,8 @@
 				<td style="width:40px;">${v.Id}</td>
 				<td style="width:60px;"><img src="${v.LogoUrl}" width="60" height="60"></td>
 				<td>${v.Name}</td>
-				<td>${v.ServerEndTime.ToDate().Format("yyyy-MM-dd hh:mm:ss")}</td>
+				<td>${v.CreateTime.ToDate().Format("yyyy-MM-dd hh:mm:ss")}</td>
+				<td>${v.DevName}</td>
 				<td>${v.Cname}</td>
 				<td>${v.UserCount}</td>
 				<td>${v.Money}</td>
@@ -107,7 +109,13 @@
                 //去掉之前选中打开的项 选中产品列表
                 $("#sidebar li").removeClass("active open");
                 $("#sidebar .sidebar_merchant").addClass("active open").find(".sidebar_merlist").addClass("active");
-
+                
+                //解析url中的Mid
+                /\?mid=(\d+)/.test(document.location.href);
+                var mTypeid = RegExp.$1;
+                if (mTypeid) {
+                    mpage.mid = mTypeid;
+                }
                 mpage.showShopCategoryTab();
                 mpage.getShopList(mpage.start, mpage.mid, mpage.orderBy, mpage.orderByType);
 

@@ -67,14 +67,14 @@
                         </div>
                     </div>
 
-                    <div class="control-group">
+                    <%--<div class="control-group">
                         <label class="control-label">服务期至</label>
                         <div class="controls">
                             <span class="static-text" id="j_mer_serverendtime">2014-02-12</span>
                             <a href="javascript:void(0);" id="j_add_oneyear" class="btn btn-primary btn-mini"><i class="icon-plus icon-white"></i>增加一年</a>
                             <a href="javascript:void(0);" id="j_sub_oneyear" class="btn btn-primary btn-mini"><i class="icon-minus icon-white"></i>减少一年</a>
                         </div>
-                    </div>
+                    </div>--%>
                     <div class="control-group">
 						<label class="control-label">是否使用【易wifi】</label>
 						<div class="controls">
@@ -559,22 +559,22 @@
                     });
                 });
 
-                //增加一年
-                $("#j_add_oneyear").bind("click", function () {
-                    var date = $('#j_mer_serverendtime').html();
-                    var d = new Date(date);
-                    d.setYear(d.getFullYear() + 1);
-                    $('#j_mer_serverendtime').html(d.Format("yyyy-MM-dd"));
-                    return false;
-                });
-                //减少一年
-                $("#j_sub_oneyear").bind("click", function () {
-                    var date = $('#j_mer_serverendtime').html();
-                    var d = new Date(date);
-                    d.setYear(d.getFullYear() - 1);
-                    $('#j_mer_serverendtime').html(d.Format("yyyy-MM-dd"));
-                    return false;
-                });
+                ////增加一年
+                //$("#j_add_oneyear").bind("click", function () {
+                //    var date = $('#j_mer_serverendtime').html();
+                //    var d = new Date(date);
+                //    d.setYear(d.getFullYear() + 1);
+                //    $('#j_mer_serverendtime').html(d.Format("yyyy-MM-dd"));
+                //    return false;
+                //});
+                ////减少一年
+                //$("#j_sub_oneyear").bind("click", function () {
+                //    var date = $('#j_mer_serverendtime').html();
+                //    var d = new Date(date);
+                //    d.setYear(d.getFullYear() - 1);
+                //    $('#j_mer_serverendtime').html(d.Format("yyyy-MM-dd"));
+                //    return false;
+                //});
 
                 //提交表单
                 $("#save").bind("click", function () {
@@ -649,7 +649,7 @@
                 $('#j-img-placehold').attr("src", "http://placehold.it/128x128");
                 $("#j-subCategory-list").val(0).trigger("change");
                 $('#j_user_createtime').html(new Date().Format("yyyy-MM-dd"));
-                $('#j_mer_serverendtime').html(new Date().Format("yyyy-MM-dd"));
+                //$('#j_mer_serverendtime').html(new Date().Format("yyyy-MM-dd"));
                 $("#j-is_wifi").removeAttr("checked");
                 $("#j-is_print").removeAttr("checked");
                 $("#j-sign-list").val(1);
@@ -689,7 +689,7 @@
                 data_save.Mid = $("#j-subCategory-list").val();
                 data_save.Tid = $("#j-template-list").val();
                 data_save.CreateTime = new Date($('#j_user_createtime').html());
-                data_save.ServerEndTime = new Date($('#j_mer_serverendtime').html());
+                //data_save.ServerEndTime = new Date($('#j_mer_serverendtime').html());
                 data_save.HasWifi = $("#j-is_wifi").attr("checked") == "checked" ? 1 : 0;
                 data_save.WifiAccount = $("#j-wifi-account").val();
                 data_save.HasPrint = $("#j-is_print").attr("checked") == "checked" ? 1 : 0;
@@ -734,10 +734,10 @@
                     Common.tip({ type: "error", content: "商户logo不能为空" });
                     return;
                 }
-                if (data_save.CreateTime >= data_save.ServerEndTime) {
-                    Common.tip({ type: "error", content: "服务期截止时间不能小于等于入驻时间" });
-                    return;
-                }
+                //if (data_save.CreateTime >= data_save.ServerEndTime) {
+                //    Common.tip({ type: "error", content: "服务期截止时间不能小于等于入驻时间" });
+                //    return;
+                //}
                 if (data_save.DevName == "") {
                     Common.tip({ type: "error", content: "开发员不能为空" });
                     return;

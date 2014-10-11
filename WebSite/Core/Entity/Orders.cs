@@ -130,6 +130,20 @@ namespace Backstage.Core.Entity
         /// 包厢号 夜场类 商户才有 包厢名称+包厢类型
         /// </summary>
         public string Boxno { get; set; }
+        /// <summary>
+        /// 运费
+        /// </summary>
+        public float SendPrice { get; set; }
+
+        /// <summary>
+        /// 满多少免运费
+        /// </summary>
+        public float FreeSendPrice { get; set; }
+        /// <summary>
+        /// 是否送餐
+        /// </summary>
+        public int HasDelivery { get; set; }
+
 
         public Orders()
         {

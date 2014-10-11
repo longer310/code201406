@@ -65,6 +65,9 @@ namespace Backstage.Core.Logic
                         orders.Ccontent = reader["Ccontent"].ToString();
                         orders.Boxno = reader["Boxno"].ToString();
                         orders.CouponTitle = reader["CouponTitle"].ToString();
+                        orders.SendPrice = (float)reader["SendPrice"];
+                        orders.FreeSendPrice = (float)reader["FreeSendPrice"];
+                        orders.HasDelivery = (int)reader["HasDelivery"];
 
                         result.Results.Add(orders);
                     }
@@ -136,6 +139,9 @@ namespace Backstage.Core.Logic
                             orders.Ccontent = reader["Ccontent"].ToString();
                             orders.Boxno = reader["Boxno"].ToString();
                             orders.CouponTitle = reader["CouponTitle"].ToString();
+                            orders.SendPrice = (float)reader["SendPrice"];
+                            orders.FreeSendPrice = (float)reader["FreeSendPrice"];
+                            orders.HasDelivery = (int)reader["HasDelivery"];
                             return orders;
                         }
                     }
@@ -186,6 +192,9 @@ namespace Backstage.Core.Logic
                                         Ccontent                      = ?Ccontent        ,
                                         CreateTime                  = ?CreateTime    ,
                                         Boxno                  = ?Boxno    ,
+                                        CouponTitle                  = ?CouponTitle   ,
+                                        SendPrice                  = ?SendPrice   ,
+                                        FreeSendPrice                  = ?FreeSendPrice   ,
                                         CouponTitle                  = ?CouponTitle    
                                     WHERE
                                         Id = ?Id";
@@ -215,6 +224,9 @@ namespace Backstage.Core.Logic
                 parameters.Add(new MySqlParameter("?SellerId", orders.SellerId));
                 parameters.Add(new MySqlParameter("?Ccontent", orders.Ccontent));
                 parameters.Add(new MySqlParameter("?Boxno", orders.Boxno));
+                parameters.Add(new MySqlParameter("?CouponTitle", orders.CouponTitle));
+                parameters.Add(new MySqlParameter("?SendPrice", orders.SendPrice));
+                parameters.Add(new MySqlParameter("?FreeSendPrice", orders.FreeSendPrice));
                 parameters.Add(new MySqlParameter("?CouponTitle", orders.CouponTitle));
 
                 if (orders.Status == OrderStatus.Pay)
@@ -298,7 +310,10 @@ namespace Backstage.Core.Logic
                                         SellerId       ,
                                         Ccontent       ,
                                         CreateTime    ,
-                                        CouponTitle    
+                                        CouponTitle    ,
+                                        SendPrice    ,
+                                        FreeSendPrice    ,
+                                        HasDelivery    
                                         ) 
                                         values
                                         (
@@ -326,7 +341,10 @@ namespace Backstage.Core.Logic
                                         ?SellerId      ,
                                         ?Ccontent      ,
                                         ?CreateTime ,
-                                        ?CouponTitle 
+                                        ?CouponTitle ,
+                                        ?SendPrice ,
+                                        ?FreeSendPrice ,
+                                        ?HasDelivery 
                                         )";
                 parameters.Add(new MySqlParameter("?UserId", orders.UserId));
                 parameters.Add(new MySqlParameter("?Gids", Utility.GetString(orders.GidList)));
@@ -353,6 +371,9 @@ namespace Backstage.Core.Logic
                 parameters.Add(new MySqlParameter("?SellerId", orders.SellerId));
                 parameters.Add(new MySqlParameter("?Ccontent", orders.Ccontent));
                 parameters.Add(new MySqlParameter("?CouponTitle", orders.CouponTitle));
+                parameters.Add(new MySqlParameter("?SendPrice", orders.SendPrice));
+                parameters.Add(new MySqlParameter("?FreeSendPrice", orders.FreeSendPrice));
+                parameters.Add(new MySqlParameter("?HasDelivery", orders.HasDelivery));
             }
             try
             {

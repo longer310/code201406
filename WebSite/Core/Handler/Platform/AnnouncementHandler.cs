@@ -380,6 +380,7 @@ namespace Backstage.Handler
                 return;
             }
             extractmoney.Status = status;
+            extractmoney.SendTime = DateTime.Now;
 
             var user = AccountHelper.GetUser(extractmoney.SellerId);
             if (user == null)
@@ -642,7 +643,8 @@ namespace Backstage.Handler
             public int UserCount { get; set; }
             public float Money { get; set; }
             public string Cname { get; set; }
-            public DateTime ServerEndTime { get; set; }
+            public string DevName { get; set; }
+            public DateTime CreateTime { get; set; }
             public string Name { get; set; }
             public string LogoUrl { get; set; }
         }
@@ -682,7 +684,8 @@ namespace Backstage.Handler
                     return;
                 }
                 merchantitem.Cname = mertype.Name;
-                merchantitem.ServerEndTime = merchant.ServerEndTime;
+                merchantitem.CreateTime = merchant.CreateTime;
+                merchantitem.DevName = merchant.DevName;
                 merchantitem.Name = merchant.Name;
                 merchantitem.LogoUrl = merchant.LogoUrl;
 
@@ -714,8 +717,8 @@ namespace Backstage.Handler
             public int Tid { get; set; }
             [XmlElement("CreateTime")]
             public DateTime CreateTime { get; set; }
-            [XmlElement("ServerEndTime")]
-            public DateTime ServerEndTime { get; set; }
+            //[XmlElement("ServerEndTime")]
+            //public DateTime ServerEndTime { get; set; }
             [XmlElement("HasWifi")]
             public int HasWifi { get; set; }
             [XmlElement("HasPrint")]
@@ -818,7 +821,7 @@ namespace Backstage.Handler
             merchant.Mid = merchantinfo.Mid;
 
             merchant.Tid = merchantinfo.Tid;
-            merchant.ServerEndTime = merchantinfo.ServerEndTime;
+            //merchant.ServerEndTime = merchantinfo.ServerEndTime;
             merchant.HasWifi = merchantinfo.HasWifi;
             merchant.HasPrint = merchantinfo.HasPrint;
             merchant.HasDelivery = merchantinfo.HasDelivery;

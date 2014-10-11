@@ -28,10 +28,11 @@
                         <th>商户账户</th>
                         <th>金额</th>
                         <th>手续费</th>
-                        <th>开户行</th>
+                        <th>开户行及支行</th>
                         <th>卡号</th>
                         <th>开户名</th>
                         <th>提现时间</th>
+                        <th>打款时间</th>
                         <th>状态</th>
                         <th>操作</th>
                     </tr>
@@ -64,6 +65,7 @@
 					<td>${v.CardNumber}</td>
 					<td>${v.AccountName}</td>
 					<td>${v.CreateTime.ToDate().Format("yyyy-MM-dd hh:mm:ss")}</td>
+					<td>${v.SendTime.ToDate().Format("yyyy-MM-dd hh:mm:ss")}</td>
                     <td class="j-status">
                     <b class="text-error">
                         {{if v.Status == 0}}未处理

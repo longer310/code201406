@@ -124,13 +124,14 @@ public partial class wap_notify_ordersurl : System.Web.UI.Page
                                     log.UserId = orders.UserId;
                                     log.SellerId = user.SellerId;
                                     log.SourceId = orders.Id;
-                                    log.Extcredit = (int)(orders.TotalPrice * 1.0 / ParamHelper.ExtcreditCfgData.Consume);
+                                    log.Extcredit = (int)((orders.TotalPrice - orders.SendPrice) * 1.0 / ParamHelper.ExtcreditCfgData.Consume);
                                     log.Type = ExtcreditSourceType.Consume;
                                     log.CreateTime = DateTime.Now;
 
                                     ExtcreditLogHelper.AddExtcreditLog(log);
 
                                     user.Integral += log.Extcredit;
+                                    user.Concume(orders.TotalPrice, 1);
 
                                     //保存用户信息
                                     AccountHelper.SaveAccount(user);

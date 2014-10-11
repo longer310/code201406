@@ -1,10 +1,10 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/View/merchant.Master" AutoEventWireup="true" CodeBehind="Add.aspx.cs" Inherits="Backstage.View.Coupon.Add" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="Header" runat="server">
-    		<!--页面样式-->
-		<link href="../../script/kindeditor/themes/default/default.css" type="text/css" rel="stylesheet">
-		<link href="../../css/css/datepicker.css" type="text/css" rel="stylesheet">
-		<link href="../../css/css/select2.css" type="text/css" rel="stylesheet">
+    <!--页面样式-->
+    <link href="<%=DomainUrl %>/script/kindeditor/themes/default/default.css" type="text/css" rel="stylesheet" />
+    <link href="<%=DomainUrl %>/css/css/datepicker.css" type="text/css" rel="stylesheet" />
+    <link href="<%=DomainUrl %>/css/css/select2.css" type="text/css" rel="stylesheet" />
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="Content" runat="server">
     <div class="widget-box">

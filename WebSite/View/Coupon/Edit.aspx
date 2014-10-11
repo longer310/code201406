@@ -2,9 +2,9 @@
 
 <asp:Content ID="Content1" ContentPlaceHolderID="Header" runat="server">
     <!--页面样式-->
-    <link href="../public/kindeditor/themes/default/default.css" type="text/css" rel="stylesheet" />
-    <link href="../public/css/datepicker.css" type="text/css" rel="stylesheet" />
-    <link href="../public/css/select2.css" type="text/css" rel="stylesheet" />
+    <link href="<%=DomainUrl %>/script/kindeditor/themes/default/default.css" type="text/css" rel="stylesheet" />
+    <link href="<%=DomainUrl %>/css/css/datepicker.css" type="text/css" rel="stylesheet" />
+    <link href="<%=DomainUrl %>/css/css/select2.css" type="text/css" rel="stylesheet" />
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="Content" runat="server">
     <div class="widget-box">
@@ -26,10 +26,7 @@
             <div class="control-group">
                 <label class="control-label">有效期</label>
                 <div class="controls">
-                    <input type="text" data-date="12-02-2012" data-date-format="dd-mm-yyyy" value="12-02-2012" class="input-medium j-datepicker" id="j-ticket-expire_date" />
-                    <label class="checkbox inline">
-                        <input type="checkbox" id="j-ticket-date_forever">
-                        长期有效</label>
+                    <input type="text" data-date="" data-date-format="dd-mm-yyyy" value="" class="input-medium j-datepicker" id="j-ticket-expire_date" />
                 </div>
             </div>
 
@@ -57,14 +54,12 @@
             </div>
 
             <div class="control-group">
-                <label class="control-label">兑换所需积分</label>
+                <label class="control-label">满</label>
                 <div class="controls">
-                    满
                     <input type="text" id="j-ticket-total" class="input-small" />
                     元，减
                     <input type="text" id="j-ticket-discount" class="input-small" />
                     元
-						
                 </div>
             </div>
 
@@ -317,22 +312,22 @@
 
                 $("#j-ticket-title").val(detail.title);
 
-                if (detail.expire_date == -1) {
-                    $("#j-ticket-date_forever").attr("checked", "checked");
-                    $("#j-ticket-expire_date").attr("disabled", "disabled");
-                } else {
-                    $("#j-ticket-expire_date").removeAttr("checked");
-                    $("#j-ticket-date_forever").removeAttr("disabled", "disabled").val(detail.expire_date);
-                }
-
+                //if (detail.expire_date == -1) {
+                //    $("#j-ticket-date_forever").attr("checked", "checked");
+                //    $("#j-ticket-expire_date").attr("disabled", "disabled");
+                //} else {
+                //    $("#j-ticket-expire_date").removeAttr("checked");
+                //    $("#j-ticket-date_forever").removeAttr("disabled", "disabled").val(detail.expire_date);
+                //}
+                $("#j-ticket-expire_date").val(detail.expiry);
                 $('#j-img-placehold').attr("src", 'http://placehold.it/128x128');
-                $("#j-ticket-score").val(detail.score);
-                $("#j-ticket-total").val(detail.total);
-                $("#j-ticket-discount").val(detail.discount);
+                $("#j-ticket-score").val(detail.extcredit);
+                $("#j-ticket-total").val(detail.fullmoney);
+                $("#j-ticket-discount").val(detail.discountmoney);
                 $("#j-goods-selected").html($("#j-tmpl-goods-selecteditem").tmpl({
-                    goods_selected: detail.goods_selected
+                    goods_selected: detail.goodstitles
                 }));
-                mpage.text_editor.html(detail.content);
+                mpage.text_editor.html(detail.description);
             },
 
             getGoodsList: function (p) {

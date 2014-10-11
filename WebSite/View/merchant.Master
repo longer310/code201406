@@ -98,11 +98,11 @@
                 </ul>
             </li>
             <li class="submenu sadebaer_infos">
-                <a href="#"><i class="icon icon-cog"></i><span>系统设置</span> <span class="label">5</span></a>
+                <a href="#"><i class="icon icon-cog"></i><span>系统设置</span> <span class="label">4</span></a>
                 <ul>
                     <li><a href="<%=DomainUrl %>/View/System/SellerPwdEdit.aspx?sellerId=<%=SellerId %>">登陆设置</a></li>
                     <li><a href="<%=DomainUrl %>/View/System/SellerInFo.aspx?sellerId=<%=SellerId %>">资料设置</a></li>
-                    <li><a href="<%=DomainUrl %>/View/Push/List.aspx?sellerId=<%=SellerId %>">推送服务</a></li>
+                    <%--<li><a href="<%=DomainUrl %>/View/Push/List.aspx?sellerId=<%=SellerId %>">推送服务</a></li>--%>
                     <li><a href="<%=DomainUrl %>/View/System/Rules.aspx?sellerId=<%=SellerId %>">规则设置</a></li>
                     <li><a href="<%=DomainUrl %>/View/Cash/List.aspx?sellerId=<%=SellerId %>">提现管理</a></li>
                 </ul>

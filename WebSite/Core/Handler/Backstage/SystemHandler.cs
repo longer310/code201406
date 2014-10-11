@@ -140,7 +140,7 @@ namespace Backstage.Core.Handler.Backstage
         private void Withdraw()
         {
             var item = new ExtractMoney();
-            item.SellerId = GetInt("sellerid");
+            item.SellerId = GetInt("sellerId");
             item.Money = GetFloat("money");
             item.Bank = GetString("bank");
             item.CardNumber = GetLong("cardnumber");

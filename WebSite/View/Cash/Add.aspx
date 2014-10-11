@@ -3,7 +3,7 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="Header" runat="server">
     <!--页面样式-->
     <link href="../../script/kindeditor/themes/default/default.css" type="text/css" rel="stylesheet" />
-    <link href="../../script/css/select2.css" type="text/css" rel="stylesheet" />
+    <link href="../../css/css/select2.css" type="text/css" rel="stylesheet" />
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="Content" runat="server">
     <div class="widget-box">
@@ -165,14 +165,14 @@
                         money: $("#j-money").val()
                     };
                     $.ajax({
-                        url: "../../Handler/Backstage/SystemHandler.ashx?action=withdraw&sellerId=" + sellerId,
+                        url: "../../Handler/Backstage/SystemHandler.ashx?action=withdraw&sellerid=" + sellerId,
                         type: "POST",
                         data: data,
                         dataType: "json"
                     }).success(function (data) {
-                        if (data != null) {
-                            alert(data.data.message);
-                        }
+                        console.log("suc"+data);
+                    }).error(function (data) {
+                        console.log("erorr" + data);
                     });
 
                     return false;

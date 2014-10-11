@@ -54,7 +54,7 @@
                     <div class="control-group control-group-text">
                         <label class="control-label"></label>
                         <div class="controls text-error">
-                            （注：提现周期为1个工作日，节假日不可到帐）
+                            （注：提现周期为3~5个工作日，节假日不可到帐）
 								
                         </div>
                     </div>

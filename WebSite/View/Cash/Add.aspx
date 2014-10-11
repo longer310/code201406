@@ -159,11 +159,15 @@
 
                 $("#j-activity-addForm").bind("submit", function () {
                     var data = {
-                        bank: $("#j-bank_open").val(),
-                        cardnumber: $("#j-card").val(),
-                        accountname: $("#j-realname").val(),
-                        money: $("#j-money").val()
+                        bank: $.trim($("#j-bank_open").val()),
+                        cardnumber: $.trim($("#j-card").val()),
+                        accountname: $.trim($("#j-realname").val()),
+                        money: $.trim($("#j-money").val())
                     };
+                    if (data.bank.length < 1 || data.cardnumber.length < 1 || data.accountname.length < 1 || data.money < 1)
+                    {
+                        alert("请填写页面完整信息");
+                    }
                     $.ajax({
                         url: "../../Handler/Backstage/SystemHandler.ashx?action=withdraw&sellerid=" + sellerId,
                         type: "POST",

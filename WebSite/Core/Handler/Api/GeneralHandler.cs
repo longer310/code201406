@@ -22,7 +22,7 @@ namespace Backstage.Core.Handler
                 case "updateweixin":
                     UpdateWeixin(); break;
                 case "getindexad":
-                    GetIndexAd(); break;
+                    GetIndexAd(context); break;
                 case "getwifiad":
                     GetWifiAd(); break;
                 //case "getpwdvercode":
@@ -62,7 +62,7 @@ namespace Backstage.Core.Handler
             Response.End();
         }
 
-        private void GetIndexAd()
+        private void GetIndexAd(HttpContext context)
         {
             var sellerId = GetInt("sellerid");
             var merchant = MerchantHelper.GetMerchant(sellerId);
@@ -71,10 +71,30 @@ namespace Backstage.Core.Handler
                 ReturnErrorMsg("不存在改id的商户");
                 return;
             }
-            //var cfg = ParamHelper.GetMerchantCfgData(sellerId, merchant.Name);//ParamHelper.MerchantCfgData;
+            var imgs = new List<object>();
+            imgs.Add(new 
+            {
+                width =640,
+                height= 960,
+                url = Utility.GetPhoneNeedUrl(Utility.GetSizePicUrl(merchant.LoginAdUrl, 640, 960, context))
+            });
+            imgs.Add(new 
+            {
+                width =640,
+                height= 1138,
+                url = Utility.GetPhoneNeedUrl(Utility.GetSizePicUrl(merchant.LoginAdUrl, 640, 1138, context))
+            });
+            imgs.Add(new 
+            {
+                width =1280,
+                height= 800,
+                url = Utility.GetPhoneNeedUrl(Utility.GetSizePicUrl(merchant.LoginAdUrl, 1280, 800, context))
+            });
+
             var data = new
             {
-                img = Utility.GetPhoneNeedUrl(merchant.LoginAdUrl),
+                
+                img = imgs,
                 time = merchant.LoginAdStayTime
             };
             JsonTransfer jt = new JsonTransfer();

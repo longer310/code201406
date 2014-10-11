@@ -237,15 +237,39 @@ namespace Backstage.Core.Handler.Backstage
         {
             int cid = GetInt("id");
             var item = CouponHelper.GetItem(cid);
+            var goodsTitles = new List<object>();
+            var delGoodsIds = new List<int>();
+            foreach (var id in item.GoodsIds)
+            {
+                var good = GoodsHelper.GetGoods(id);
+                if (good == null)
+                {
+                    delGoodsIds.Add(id);
+                }
+                else
+                {
+                    goodsTitles.Add(new { id = id, title = good.Title });
+                }
+            }
+            if (delGoodsIds.Count > 0)
+            {
+                foreach (var id in delGoodsIds)
+                {
+                    item.GoodsIds.Remove(id);
+                }
+                CouponHelper.Update(item);
+            }
             var data = new
             {
                 couponid = item.Id,
                 title = item.Title,
                 img = item.ImgUrl,
                 extcredit = item.Extcredit,
-                expiry = item.Expiry.GetUnixTime(),
+                fullmoney = item.FullMoney,
+                discountmoney = item.DiscountMoney,
+                goodstitles = goodsTitles,
+                expiry = item.Expiry.ToString("yyyy-MM-dd"),
                 description = item.Description
-
             };
             JsonTransfer jt = new JsonTransfer();
             jt.AddSuccessParam();

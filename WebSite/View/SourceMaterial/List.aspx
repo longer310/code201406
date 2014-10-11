@@ -110,7 +110,7 @@
                                 confirm: function () {
                                     //执行确认回调
                                     $.ajax({
-                                        url: "../../Handler/Backstage/SourceMaterialHandler.ashx?action=delete?ids=" + ids,
+                                        url: "../../Handler/Backstage/SourceMaterialHandler.ashx?action=delete&ids=" + ids.join(","),
                                         type: "Get",
                                         dataType: "json"
                                         //context: document.body

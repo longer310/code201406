@@ -30,6 +30,8 @@ namespace Backstage.Core.Handler.Backstage
                     GetMerchant(); break;
                 case "withdraw ": //提现
                     Withdraw(); break;
+                case "bankedit":
+                    BankEdit();break;
                 case "getannouncement":
                     GetAnnouncement(); break;
                 case "getpushs":
@@ -43,6 +45,7 @@ namespace Backstage.Core.Handler.Backstage
                 default: break;
             }
         }
+
 
         private void UpdateMerchantPwd()
         {
@@ -121,6 +124,17 @@ namespace Backstage.Core.Handler.Backstage
             jt.Add("data", seller);
             Response.Write(DesEncrypt(jt));
             Response.End();
+        }
+
+        private void BankEdit()
+        {
+            int sellerId = GetInt("sellerid");
+            var seller = MerchantHelper.GetMerchant(sellerId);
+            seller.CardNumber = GetLong("cardnumber");
+            seller.Bank = GetString("bank");
+            seller.AccountName = GetString("accountname");
+
+            MerchantHelper.SaveMerchant(seller);
         }
 
         private void Withdraw()

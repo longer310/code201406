@@ -45,7 +45,7 @@
                     <div class="control-group">
                         <label class="control-label">提现金额</label>
                         <div class="controls">
-                            <input type="text" id="j-realname" />
+                            <input type="text" id="j-money" />
                             元
 								
                         </div>
@@ -78,21 +78,21 @@
                     <div class="control-group">
                         <label class="control-label">开户行</label>
                         <div class="controls">
-                            <input type="text" id="j-bank_open" />
+                            <input type="text" value="<%=Seller.Bank %>" id="j-bank_open" />
                         </div>
                     </div>
 
                     <div class="control-group">
                         <label class="control-label">银行卡号</label>
                         <div class="controls">
-                            <input type="text" id="j-card" />
+                            <input type="text" id="j-card" value="<%=Seller.CardNumber %>" />
                         </div>
                     </div>
 
                     <div class="control-group">
                         <label class="control-label">开户名</label>
                         <div class="controls">
-                            <input type="text" id="j-realname" />
+                            <input type="text" id="j-realname" value="<%=Seller.AccountName %>" />
                         </div>
                     </div>
 
@@ -140,15 +140,12 @@
                         AccountName: $("#j-realname").val()
                     };
                     $.ajax({
-                        url: "../../Handler/Backstage/SystemHandler.ashx?action=withdraw&sellerId=" + sellerId,
+                        url: "../../Handler/Backstage/SystemHandler.ashx?action=bankedit&sellerId=" + sellerId,
                         type: "POST",
                         data: data,
                         dataType: "json"
                     }).success(function (data) {
-                        if (data != null)
-                        {
-                            alert(data.msg);
-                        }
+                        alert("更新成功！");
                     });
 
                     return false;
@@ -159,6 +156,28 @@
 
             initForm: function () {
                 var mpage = this;
+
+                $("#j-activity-addForm").bind("submit", function () {
+                    var data = {
+                        bank: $("#j-bank_open").val(),
+                        cardnumber: $("#j-card").val(),
+                        accountname: $("#j-realname").val(),
+                        money: $("#j-money").val()
+                    };
+                    $.ajax({
+                        url: "../../Handler/Backstage/SystemHandler.ashx?action=withdraw&sellerId=" + sellerId,
+                        type: "POST",
+                        data: data,
+                        dataType: "json"
+                    }).success(function (data) {
+                        if (data != null) {
+                            alert(data.data.message);
+                        }
+                    });
+
+                    return false;
+                });
+
             }
         }
 

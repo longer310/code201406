@@ -208,7 +208,7 @@ namespace Backstage.Core.Handler
 
             List<MySqlParameter> parameters = new List<MySqlParameter>();
             parameters.Add(new MySqlParameter("?Title", push.Title));
-            parameters.Add(new MySqlParameter("?SellerId", push.Title));
+            parameters.Add(new MySqlParameter("?SellerId", push.SellerId));
             parameters.Add(new MySqlParameter("?PushType", push.PushType));
             parameters.Add(new MySqlParameter("?Content", push.Content));
             parameters.Add(new MySqlParameter("?TypeId", push.TypeId));

@@ -368,15 +368,15 @@
                     }
                 };
                 $.ajax({
-                    url: "../../Handler/Backstage/CouponHandler.ashx?action=getlist&sellerid=" + sellerId + "&start=" + (p - 1) + "&limit=" + 6,
+                    url: "../../Handler/Backstage/CouponHandler.ashx?action=getgoods&sellerid=" + sellerId + "&start=" + (p - 1) + "&limit=" + 6,
                     type: "get",
                     dataType: "json"
                     //context: document.body
                 }).success(function (data) {
-                    json.result.count = data.data.TotalCount;
-                    json.result.list = data.data.Results;
-                    $("#j-goods-list").html($("#j-tmpl-goods-listitem").tmpl(json.result));
+                    json.result.count = data.data.totalcount;
+                    json.result.list = data.data.results;
 
+                    $("#j-goods-list").html($("#j-tmpl-goods-listitem").tmpl(json.result));
                     $("#j-goods-list li").unbind("click").bind("click", function () {
                         var id = $(this).attr("data-id"),
                             title = $(this).find(".j-title").text();

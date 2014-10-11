@@ -76,9 +76,9 @@
                     <form action="#" method="get" class="form-horizontal" id="j-activity-bank-edit" />
 
                     <div class="control-group">
-                        <label class="control-label">开户行（填写具体哪个开户行）</label>
+                        <label class="control-label">开户行</label>
                         <div class="controls">
-                            <input type="text" value="<%=Seller.Bank %>" id="j-bank_open" />
+                            <input type="text" value="<%=Seller.Bank %>" id="j-bank_open" />（填写具体哪个开户行）
                         </div>
                     </div>
 

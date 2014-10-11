@@ -100,6 +100,7 @@ namespace Backstage.Handler
         public class HomeData
         {
             public List<SlideItem> slide { get; set; }
+            public int slidetime { get; set; }
 
             public AdItem ad { get; set; }
 
@@ -160,7 +161,7 @@ namespace Backstage.Handler
             var data = new HomeData();
 
             //单独获取产品的列表 以后得改 +图片墙+活动
-            var list = new List<TSlideItem>();
+            //var list = new List<TSlideItem>();
             merchant.SlideAds = merchant.SlideAds ?? new List<Core.Entity.SlideAdItem>();
             foreach (var slideAdItem in merchant.SlideAds)
             {
@@ -186,6 +187,7 @@ namespace Backstage.Handler
                 }
                 data.slide.Add(s);
             }
+            data.slidetime = merchant.SlideAdStayTime;
             //var gads = GoodsHelper.GetGoodsList(sellerid, "", "", 0, 5).Results;
             //foreach (var gad in gads)
             //{
@@ -873,10 +875,12 @@ namespace Backstage.Handler
 
             orders.SendPrice = 0;
             orders.FreeSendPrice = 100;
+            orders.SendPrice = 5;
             var merchant = MerchantHelper.GetMerchant(orders.SellerId);
             orders.HasDelivery = 0;
             if (merchant != null)
             {
+                orders.SendPrice = merchant.Freight;
                 orders.FreeSendPrice = merchant.NeedToFreeFreight;
                 orders.HasDelivery = merchant.HasDelivery;
             }
@@ -967,17 +971,17 @@ namespace Backstage.Handler
                 sendprice = orders.SendPrice;
                 freesendprice = orders.FreeSendPrice;
                 hasdelivery = orders.HasDelivery;
-                //var merchant = MerchantHelper.GetMerchant(orders.SellerId);
-                //hasdelivery = 0;
-                //if (merchant != null)
-                //{
-                //    sendprice = merchant.Freight;
+                var merchant = MerchantHelper.GetMerchant(orders.SellerId);
+                hasdelivery = 0;
+                if (merchant != null && orders.Status < OrderStatus.Pay)
+                {
+                    sendprice = merchant.Freight;//订单还未付款前 统一下发商户的运费信息
                 //    freesendprice = merchant.NeedToFreeFreight;
                 //    hasdelivery = merchant.HasDelivery;
-                //}
+                }
 
                 totalprice = orders.TotalPrice;
-                extcredit = (int)(orders.TotalPrice * 1.0 / ParamHelper.ExtcreditCfgData.Consume);
+                extcredit = (int)((orders.TotalPrice - orders.SendPrice) * 1.0 / ParamHelper.ExtcreditCfgData.Consume);
                 couponid = orders.CouponId;
                 coupontitle = orders.CouponTitle;
                 ccontent = orders.Ccontent;
@@ -1087,7 +1091,7 @@ namespace Backstage.Handler
 
             if (orders == null)
             {
-                ReturnErrorMsg("参数出错");
+                ReturnErrorMsg("不存在该用户的该订单");
                 return;
             }
             var merchant = MerchantHelper.GetMerchant(orders.SellerId);
@@ -1117,7 +1121,11 @@ namespace Backstage.Handler
                 return;
             }
 
-            if (orders.OrderType != OrderType.Shop)
+            if (orders.OrderType == OrderType.Shop)
+            {
+                orders.SendPrice = 0;
+            }
+            else
             {
                 if (orders.TotalPrice >= orders.FreeSendPrice)
                     orders.SendPrice = 0;   //  满多少免运费
@@ -1253,7 +1261,7 @@ namespace Backstage.Handler
                 log.UserId = uid;
                 log.SellerId = user.SellerId;
                 log.SourceId = orders.Id;
-                log.Extcredit = (int)((orders.TotalPrice-orders.SendPrice) * 1.0 / ParamHelper.ExtcreditCfgData.Consume);
+                log.Extcredit = (int)((orders.TotalPrice - orders.SendPrice) * 1.0 / ParamHelper.ExtcreditCfgData.Consume);
                 log.Type = ExtcreditSourceType.Consume;
                 log.CreateTime = DateTime.Now;
 

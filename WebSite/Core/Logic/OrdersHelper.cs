@@ -195,7 +195,7 @@ namespace Backstage.Core.Logic
                                         CouponTitle                  = ?CouponTitle   ,
                                         SendPrice                  = ?SendPrice   ,
                                         FreeSendPrice                  = ?FreeSendPrice   ,
-                                        CouponTitle                  = ?CouponTitle    
+                                        HasDelivery                  = ?HasDelivery    
                                     WHERE
                                         Id = ?Id";
                 parameters.Add(new MySqlParameter("?Id", orders.Id));
@@ -227,7 +227,7 @@ namespace Backstage.Core.Logic
                 parameters.Add(new MySqlParameter("?CouponTitle", orders.CouponTitle));
                 parameters.Add(new MySqlParameter("?SendPrice", orders.SendPrice));
                 parameters.Add(new MySqlParameter("?FreeSendPrice", orders.FreeSendPrice));
-                parameters.Add(new MySqlParameter("?CouponTitle", orders.CouponTitle));
+                parameters.Add(new MySqlParameter("?HasDelivery", orders.HasDelivery));
 
                 if (orders.Status == OrderStatus.Pay)
                 {

@@ -272,6 +272,11 @@
                     }
                 });
 
+                if (cid == null || cid == 0) {
+                    Common.tip({ type: "error", content: "商品分类不能为空" });
+                    return;
+                }
+
                 if (title == "") {
                     Common.tip({ type: "error", content: "商品标题不能为空" });
                     return;
@@ -313,7 +318,6 @@
                         tags.push(tag);
                     }
                 });
-
                 $.post(mpage.hander + "savegoods", {
                     id: id, title: title, imgUrls: imgUrls.join(","),
                     logoUrl: logoUrl, nowPrice: nowPrice, originalPrice: originalPrice,
@@ -381,6 +385,9 @@
                 var mpage = this;
                 $.post(mpage.hander + "getGoodsCategoriesList", {}, function (data) {
                     if (!data.error) {
+                        if (data.count == 0) {
+                            Common.tip({ type: "error", content: "还没有商品分类，请先添加商品分类~！" });
+                        }
                         $("#j-categroy-list").html($("#j-tmpl-categroy-listitem").tmpl(data));
                     }
                 }, "JSON");

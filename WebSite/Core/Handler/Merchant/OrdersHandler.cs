@@ -24,7 +24,7 @@ namespace Backstage.Handler
                 case "getOrdersList":
                     GetOrdersList(); break;
                 case "getOrdersDetail":
-                    GetOrdersDetail(); break;
+                    GetOrdersDetail(context); break;
                 case "setOrdersDelivered":
                     SetOrdersDelivered(); break;
                 #endregion
@@ -80,6 +80,8 @@ namespace Backstage.Handler
                     break;
                 default: break;
             }
+            if (string.IsNullOrEmpty(wheresql)) wheresql = string.Format(" where sellerId={0}", CurSellerId);
+            else wheresql += string.Format(" and sellerId={0}", CurSellerId);
 
             var result = OrdersHelper.GetOrdersList(wheresql, "", start * limit, limit, 1);
             var list = new List<OrdersItem>();
@@ -163,7 +165,7 @@ namespace Backstage.Handler
         /// <summary>
         /// 获取订单详情
         /// </summary>
-        public void GetOrdersDetail()
+        public void GetOrdersDetail(HttpContext context)
         {
             var orderid = GetInt("orderid");
             var orders = OrdersHelper.GetOrders(orderid);
@@ -219,6 +221,7 @@ namespace Backstage.Handler
                 item.TotalPrice = item.NowPrice * item.Num;
 
                 data.list.Add(item);
+                i++;
             }
 
             var jt = new JsonTransfer();

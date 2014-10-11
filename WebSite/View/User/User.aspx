@@ -58,7 +58,7 @@
         	{{each(i, v) list}}
 	        	<tr data-gid="${v.Id}">
 					<td><input type="checkbox" class="j-select" /></td>
-					<td>${v.RegisterTime.ToDate().Format("yyyy-MM-dd hh:mm:ss")}</td>
+					<td>${v.CreateTime.ToDate().Format("yyyy-MM-dd hh:mm:ss")}</td>
 					<td>${v.UserName}</td>
 					<td>${v.NickName}</td>
 					<td>

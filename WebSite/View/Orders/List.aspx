@@ -68,7 +68,7 @@
         {{if list.length > 0}}
         	{{each(i, v) list}}
 	        	<tr data-oid="${v.Id}">
-					<td><input type="checkbox" {{if v.Status != 3}} disabled="true" {{/if}} class="j-select" /></td>
+					<td><input type="checkbox" {{if v.Type == 0 || v.Status == 3}} disabled="true" {{/if}} class="j-select" /></td>
 					<td >${v.Id}</td>
 					<td>${v.UserId}</td>
 					<td>${v.GoodsCount}</td>

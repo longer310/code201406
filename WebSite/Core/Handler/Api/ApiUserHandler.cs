@@ -248,6 +248,7 @@ namespace Backstage.Handler
             account.Pwd = password;
             account.RoleType = RoleType.User;
             account.SellerId = sellerid;
+            account.RegisterTime = DateTime.Now;
             //保存用户
             AccountHelper.SaveAccount(account);
 
@@ -354,6 +355,7 @@ namespace Backstage.Handler
                 user.Sex = (SexType)sex;
                 user.SellerId = sellerid;
                 user.Phone = string.Empty;
+                user.RegisterTime = DateTime.Now;
 
                 var id = AccountHelper.SaveAccount(user);
                 user.Id = id;

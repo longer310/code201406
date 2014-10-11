@@ -31,7 +31,7 @@ namespace Backstage.Core.Entity
         /// </summary>
         public SexType Sex { get; set; }
         /// <summary>
-        /// 创建时间或者修改时间
+        /// 创建时间_注册时间
         /// </summary>
         public DateTime CreateTime { get; set; }
         /// <summary>

@@ -68,7 +68,7 @@
     <script type="text/jquery-tmpl-x" id="j-tmpl-orderDetail-listitem">
         	{{each(i, v) list}}
 	        	<tr data-oid="1">
-					<td style="width:100px;"><img src="${v.ImgUrl}"></td>
+					<td style="width:100px;"><img width="131" height="101" alt="" class="j-img-placehold" src="${v.ImgUrl}"></td>
 					<td>${v.Title}</td>
 					<td class="muted" style="width:80px;"><b class="text-error">${v.NowPrice}</b>元</td>
 					<td class="muted" style="width:40px;"><b class="text-error">${v.Num}</b>份</td>
@@ -89,9 +89,8 @@
 				<dd class="text-info">
                     {{if Status == 1}}未付款
                     {{else Status == 2}}已付款
-                    {{else Status == 3}}待发货
+                    {{else Status == 3}}已待发货
                     <a class="btn btn-success btn-mini" id="j-btn-orderDetail-reach" href="javascript:;" data-oid="1"><i class="icon-ok icon-white"></i> 已发货</a>
-                    {{else Status == 4}}已发货
                     {{else}}已完结
                     {{/if}}
                     </dd>

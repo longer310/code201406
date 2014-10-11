@@ -261,6 +261,7 @@
                         return;
                     }
                     imglist.push(loginurl);
+                    imgs = imglist.join(",");
                     //imglist.push($("#j-login-url").attr("src"));
                 }
                 else if (type == 1) {
@@ -343,6 +344,11 @@
                         typeidlist.push(typeid);
                     });
                     typeids = typeidlist.join(",");
+                }
+                
+                if (imgs == "") {
+                    Common.tip({ type: "error", content: "至少得保留一个广告~" });
+                    return;
                 }
 
                 $.post(mpage.hander + "saveAdCfg", { type: type, staytime: staytime, imgs: imgs, jumpurls: jumpurls, types: types, typeids: typeids }, function (data) {

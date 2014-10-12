@@ -981,7 +981,7 @@ namespace Backstage.Handler
                 }
 
                 totalprice = orders.TotalPrice;
-                extcredit = (int)((orders.TotalPrice - orders.SendPrice) * 1.0 / ParamHelper.ExtcreditCfgData.Consume);
+                extcredit = (int)(orders.TotalPrice * 1.0 / ParamHelper.ExtcreditCfgData.Consume);
                 couponid = orders.CouponId;
                 coupontitle = orders.CouponTitle;
                 ccontent = orders.Ccontent;

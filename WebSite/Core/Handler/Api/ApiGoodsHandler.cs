@@ -875,12 +875,12 @@ namespace Backstage.Handler
 
             orders.SendPrice = 0;
             orders.FreeSendPrice = 100;
-            orders.SendPrice = 5;
+            //orders.SendPrice = 5;
             var merchant = MerchantHelper.GetMerchant(orders.SellerId);
             orders.HasDelivery = 0;
             if (merchant != null)
             {
-                orders.SendPrice = merchant.Freight;
+                //orders.SendPrice = merchant.Freight;
                 orders.FreeSendPrice = merchant.NeedToFreeFreight;
                 orders.HasDelivery = merchant.HasDelivery;
             }
@@ -971,14 +971,14 @@ namespace Backstage.Handler
                 sendprice = orders.SendPrice;
                 freesendprice = orders.FreeSendPrice;
                 hasdelivery = orders.HasDelivery;
-                var merchant = MerchantHelper.GetMerchant(orders.SellerId);
-                hasdelivery = 0;
-                if (merchant != null && orders.Status < OrderStatus.Pay)
-                {
-                    sendprice = merchant.Freight;//订单还未付款前 统一下发商户的运费信息
-                //    freesendprice = merchant.NeedToFreeFreight;
-                //    hasdelivery = merchant.HasDelivery;
-                }
+                //var merchant = MerchantHelper.GetMerchant(orders.SellerId);
+                //hasdelivery = 0;
+                //if (merchant != null && orders.Status < OrderStatus.Pay)
+                //{
+                //    sendprice = merchant.Freight;//订单还未付款前 统一下发商户的运费信息
+                ////    freesendprice = merchant.NeedToFreeFreight;
+                ////    hasdelivery = merchant.HasDelivery;
+                //}
 
                 totalprice = orders.TotalPrice;
                 extcredit = (int)(orders.TotalPrice * 1.0 / ParamHelper.ExtcreditCfgData.Consume);

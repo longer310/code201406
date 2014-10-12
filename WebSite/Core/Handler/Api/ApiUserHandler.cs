@@ -653,6 +653,8 @@ namespace Backstage.Handler
         {
             public int extcredit { get; set; }
             public List<CouponItem> couponlist { get; set; }
+            public float sendprice { get; set; }//送餐费
+            public float freesendprice { get; set; }//免费送餐价格
 
             public UserCouponData()
             {
@@ -689,6 +691,12 @@ namespace Backstage.Handler
                 ReturnErrorMsg("商户无此用户");
                 return;
             }
+            var merchant = MerchantHelper.GetMerchant(sellerid);
+            if (merchant == null)
+            {
+                ReturnErrorMsg("不存在该账户");
+                return;
+            }
             var data = new UserCouponData();
             data.extcredit = user.Integral;
 
@@ -706,6 +714,8 @@ namespace Backstage.Handler
                 item.extcredit = coupon.Extcredit;
                 data.couponlist.Add(item);
             }
+            data.sendprice = merchant.Freight;
+            data.freesendprice = merchant.NeedToFreeFreight;
 
             //返回信息
             ReturnCorrectData(data);
@@ -1571,6 +1581,12 @@ namespace Backstage.Handler
                 ReturnErrorMsg("商户无此用户");
                 return;
             }
+            var merchant = MerchantHelper.GetMerchant(sellerid);
+            if (merchant == null)
+            {
+                ReturnErrorMsg("不存在该账户");
+                return;
+            }
             var orders = OrdersHelper.GetOrders(orderid);
             if (orders == null)
             {
@@ -1597,6 +1613,8 @@ namespace Backstage.Handler
                     data.couponlist.Add(item);
                 }
             }
+            data.sendprice = merchant.Freight;
+            data.freesendprice = merchant.NeedToFreeFreight;
 
             //返回数据
             ReturnCorrectData(data);

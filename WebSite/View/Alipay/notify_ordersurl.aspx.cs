@@ -124,7 +124,7 @@ public partial class notify_ordersurl : System.Web.UI.Page
                                     log.UserId = orders.UserId;
                                     log.SellerId = user.SellerId;
                                     log.SourceId = orders.Id;
-                                    log.Extcredit = (int)((orders.TotalPrice-orders.SendPrice) * 1.0 / ParamHelper.ExtcreditCfgData.Consume);
+                                    log.Extcredit = (int)(orders.TotalPrice * 1.0 / ParamHelper.ExtcreditCfgData.Consume);
                                     log.Type = ExtcreditSourceType.Consume;
                                     log.CreateTime = DateTime.Now;
 

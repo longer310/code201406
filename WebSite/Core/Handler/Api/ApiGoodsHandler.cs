@@ -1261,7 +1261,7 @@ namespace Backstage.Handler
                 log.UserId = uid;
                 log.SellerId = user.SellerId;
                 log.SourceId = orders.Id;
-                log.Extcredit = (int)((orders.TotalPrice - orders.SendPrice) * 1.0 / ParamHelper.ExtcreditCfgData.Consume);
+                log.Extcredit = (int)(orders.TotalPrice * 1.0 / ParamHelper.ExtcreditCfgData.Consume);
                 log.Type = ExtcreditSourceType.Consume;
                 log.CreateTime = DateTime.Now;
 

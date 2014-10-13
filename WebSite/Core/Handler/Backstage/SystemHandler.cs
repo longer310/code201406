@@ -172,23 +172,23 @@ namespace Backstage.Core.Handler.Backstage
             //Utility.SendMsg(verificationCode.Code, verificationCode.Phone, Utility._modifyphone_message);
             {
                 SendMsgClass4 jsobject = new SendMsgClass4();
-                var merchant = MerchantHelper.GetMerchant(item.SellerId);
-                jsobject.param1 = merchant.Name;
+
+                jsobject.param1 = seller.Name;
                 jsobject.param2 = item.Money.ToString();
                 jsobject.param3 = "1";
                 jsobject.param4 = Utility._3vurl;
 
-                if (Utility.SendMsg(merchant.Phone, MsgTempleId.MerchantWithdraw, jsobject) != "发送成功")
+                if (Utility.SendMsg(seller.Phone, MsgTempleId.MerchantWithdraw, jsobject) != "发送成功")
                 {
                     logger.InfoFormat("短信模板：{0},Phone:{3},发送失败merchantId：{1},Name:{2}",
-                        (int)MsgTempleId.MerchantWithdraw, merchant.Id, merchant.Name, merchant.Phone);
+                        (int)MsgTempleId.MerchantWithdraw, seller.Id, seller.Name, seller.Phone);
                     ReturnErrorMsg("短信发送失败");
                     return;
                 }
             }
 
             //提现表更新
-            item.Balance = user.Money - item.Money - item.Fee;
+            item.Balance = seller.Money - item.Money - item.Fee;
             item.UserAccount = user.UserName;//存储商户账户
             ExtractMoneyHelper.Create(item);
             ReturnCorrectMsg("提现申请成功，请耐心等待后台人员处理");

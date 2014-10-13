@@ -188,7 +188,7 @@ namespace Backstage.Core.Handler.Backstage
             }
 
             //提现表更新
-            item.Balance = seller.Money - item.Money - item.Fee;
+            item.Balance = seller.Money;
             item.UserAccount = user.UserName;//存储商户账户
             ExtractMoneyHelper.Create(item);
             ReturnCorrectMsg("提现申请成功，请耐心等待后台人员处理");

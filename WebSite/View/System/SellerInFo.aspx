@@ -16,7 +16,7 @@
             <div class="control-group">
                 <label class="control-label">商户名称</label>
                 <div class="controls">
-                    <input type="text" id="j-sysytem-profile-name" value="<%=_Account.UserName %>" />
+                    <input type="text" id="j-sysytem-profile-name" value="<%=Seller.Name %>" />
                 </div>
             </div>
             <div class="control-group">
@@ -63,7 +63,7 @@
                         <td style="width: 16.66%"><span class="text-info"><%=Seller.CreateTime.ToString("yyyy-MM-dd HH:mm:ss") %></span></td>
                       
                         <th style="width: 16.66%">签约模式：</th>
-                        <td style="width: 16.66%"><span class="text-info"><%=SignList.Find(s=>s.Id == Seller.Sid).Name %></span></td>
+                        <td style="width: 16.66%"><span class="text-info"><%=SignList.Find(s=>s.Id == Seller.Sid).Name+","+SignList.Find(s=>s.Id == Seller.Sid).Prec + "%" %></span></td>
                     </tr>
                 </tbody>
             </table>

@@ -18,6 +18,7 @@
 							<tr>
 								<th>提现日期</th>
 								<th>提现金额</th>
+                                <th>手续费</th>
 								<th>余额</th>
 								<th>提现银行</th>
 								<th>卡号</th>
@@ -46,6 +47,7 @@
 	        	<tr data-gid="1">
 					<td>${v.CreateTime}</td>
 					<td>￥${v.Money}</td>
+                    <td>￥${v.Fee}</td>
 					<td>￥${v.Balance}</td>
 					<td>￥${v.Bank}</td>
 					<td>￥${v.CardNumber}</td>

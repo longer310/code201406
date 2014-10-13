@@ -162,7 +162,7 @@ namespace Backstage.Core.Handler.Backstage
             seller.CardNumber = item.CardNumber;
             seller.Bank = item.Bank;
             seller.AccountName = item.AccountName;
-            float fee = ParamHelper.PlatformCfgData.SignList.FirstOrDefault(s => s.Id == seller.Sid).Prec * item.Money;
+            float fee = ParamHelper.PlatformCfgData.SignList.FirstOrDefault(s => s.Id == seller.Sid).Prec * item.Money /100;
             item.Fee = fee;
             seller.Money = seller.Money - item.Money - item.Fee;
             MerchantHelper.SaveMerchant(seller);
@@ -191,7 +191,7 @@ namespace Backstage.Core.Handler.Backstage
             item.Balance = seller.Money;
             item.UserAccount = user.UserName;//存储商户账户
             ExtractMoneyHelper.Create(item);
-            ReturnCorrectMsg("提现申请成功，请耐心等待后台人员处理");
+            ReturnCorrectMsg(string.Format("提现{1}申请成功，手续费：{0}，请耐心等待后台人员处理", item.Money, item.Fee));
         }
 
 
@@ -212,10 +212,11 @@ namespace Backstage.Core.Handler.Backstage
                     Id = item.Id,
                     CreateTime = item.CreateTime.ToString("yyyy-MM-dd HH:mm:ss"),
                     Money = item.Money,
+                    Fee = item.Fee,
                     Balance = item.Balance,
                     Bank = item.Bank,
                     CardNumber = item.CardNumber,
-                    Status = item.Status == 1 ? "提现成功" : "未提现",
+                    Status = item.Status == 1 ? "提现成功" : "处理中",
                     SellerId = item.SellerId
                 };
                 data.Results.Add(d);

@@ -36,7 +36,7 @@
                     <div class="control-group control-group-text">
                         <label class="control-label">您的签约模式</label>
                         <div class="controls text-error">
-                            <%=SignList.Find(s=>s.Id == Seller.Sid).Name %>
+                            <%=SignList.Find(s=>s.Id == Seller.Sid).Name+"："+SignList.Find(s=>s.Id == Seller.Sid).Prec + "%" %>
                         </div>
                     </div>
 
@@ -171,9 +171,9 @@
                         data: data,
                         dataType: "json"
                     }).success(function (data) {
-                        if (data.suucess) {
+                        if (data.success) {
                             alert(data.success);
-                            //window.location.href = "List.aspx?sellerId=" + sellerId;
+                            window.location.href = "List.aspx?sellerId=" + sellerId;
                         }
                         else
                             alert(data.error);

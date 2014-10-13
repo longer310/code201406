@@ -50,26 +50,39 @@ namespace Backstage.Core.Handler.Backstage
         private void StyleInfo()
         {
             var signList = ParamHelper.PlatformCfgData.SignList;
-            List<ParamHelper.SignTypeItem> items = new List<ParamHelper.SignTypeItem>();
-            items.Add(new ParamHelper.SignTypeItem()
+            for (var i = 0; i < signList.Count; i++)
             {
-                Id = signList.First().Id,
-                Name = signList.First().Name,
-                Prec = GetFloat("first")
-            });
-            items.Add(new ParamHelper.SignTypeItem()
-            {
-                Id = signList.First().Id,
-                Name = signList.First().Name,
-                Prec = GetFloat("second")
-            });
-            items.Add(new ParamHelper.SignTypeItem()
-            {
-                Id = signList.First().Id,
-                Name = signList.First().Name,
-                Prec = GetFloat("third")
-            });
-            ParamHelper.PlatformCfgData.SignList = items;
+                switch (i)
+                { 
+                    case 0:
+                        signList[i].Prec = GetFloat("first");break;
+                    case 1:
+                        signList[i].Prec = GetFloat("second"); break;
+                    case 2:
+                        signList[i].Prec = GetFloat("third"); break;
+                }
+            }
+
+                //List<ParamHelper.SignTypeItem> items = new List<ParamHelper.SignTypeItem>();
+                //items.Add(new ParamHelper.SignTypeItem()
+                //{
+                //    Id = signList.First().Id,
+                //    Name = signList.First().Name,
+                //    Prec = GetFloat("first")
+                //});
+                //items.Add(new ParamHelper.SignTypeItem()
+                //{
+                //    Id = signList.First().Id,
+                //    Name = signList.First().Name,
+                //    Prec = GetFloat("second")
+                //});
+                //items.Add(new ParamHelper.SignTypeItem()
+                //{
+                //    Id = signList.First().Id,
+                //    Name = signList.First().Name,
+                //    Prec = GetFloat("third")
+                //});
+            ParamHelper.PlatformCfgData.SignList = signList;
             ParamHelper.UpdateParamvalue("PlatformCfg", ParamHelper.PlatformCfgData);
         }
 

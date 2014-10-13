@@ -76,6 +76,7 @@ namespace Backstage.Core.Handler.Backstage
                     CreateTime = item.CreateTime.ToString("yyyy-MM-dd HH:mm:ss"),
                     Type = EnumHelper.CommentTypeToName(item.Type),
                     UserId = item.UserId,
+                    UserName = user.UserName,
                     NickName = user.NickName
                 };
                 data.Results.Add(o);

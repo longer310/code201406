@@ -43,7 +43,7 @@
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="Footer" runat="server">
     <!--页面js-->
-    <script src="../public/js/ue.pager.js"></script>
+     <script src="../../script/js/ue.pager.js"></script>
 
     <script type="text/jquery-tmpl-x" id="j-tmpl-comment-listitem">
         	{{each(i, v) list}}
@@ -101,7 +101,7 @@
     </div>
 
     <script type="text/javascript">
-        var sellerid = '<%=SellerId%>';
+        var sellerId = '<%=SellerId%>';
         var MPage = {
             currentid: 0,
             init: function () {
@@ -213,7 +213,7 @@
                 };
 
                 $.ajax({
-                    url: "../../Handler/Backstage/CommentHandler.ashx?action=getlist&sellerId=" + sellerId + "&start=" + (p - 1) + "&limit=6",
+                    url: "../../Handler/Backstage/CommentHandler.ashx?action=getlist&sellerid=" + sellerId + "&start=" + (p - 1) + "&limit=6",
                     type: "Get",
                     dataType: "json"
                     //context: document.body
@@ -268,7 +268,7 @@
                                 }).success(function (data) {
                                     alert("删除成功");
                                     //删除成功后刷新本页
-                                    $item.remove();
+                                    window.location.reload();
                                 });
 
                             },
@@ -295,7 +295,7 @@
                         }
                         $('#j-comment-modal .j-comment-title').html(comment_item.title);
                         $('#j-comment-modal .j-comment-content').html(comment_item.content);
-
+                        $('#j-comment-reply').val(comment_item.feedback);
                         $('#j-comment-modal').modal('show');
                         $("#j-comment-modal").height("auto");
                         var height = $("#j-comment-modal").height();
@@ -310,21 +310,22 @@
                     $("#j-comment-modal form").unbind("submit").bind("submit", function () {
                         var title = $('#j-comment-modal .j-comment-title').html();
                         var content = $('#j-comment-modal .j-comment-content').html();
-                        var feedback = $('#j-comment-reply').html();
+                        var feedback = $('#j-comment-reply').val();
                         var save_data = {
                             title: title,
                             content: content,
                             feedback: feedback
                         };
                         $.ajax({
-                            url: "../../Handler/Backstage/CouponHandler.ashx?action=update&id=" + currentid,
+                            url: "../../Handler/Backstage/CommentHandler.ashx?action=update&id=" + currentid,
                             type: "POST",
                             data: save_data,
                             dataType: "json"
                         }).success(function (data) {
-                            alert("删除成功");
-                            //删除成功后刷新本页
-                            $item.remove();
+                            alert("回复成功");
+                            //刷新本页
+                            window.location.reload();
+                            //$item.remove();
                         });
                         return false;
                     });

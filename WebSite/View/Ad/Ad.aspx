@@ -61,13 +61,13 @@
                     <div class="control-group">
                         <div class="controls">
                             <label class="inline">广告个数</label>
-                            <input type="text" value="2" class="input-small" readonly="readonly" id="j-homeslide-count" />
+                            <input type="text" value="0" class="input-small" readonly="readonly" id="j-homeslide-count" />
                             个
 									
                             <a href="javascript:;" title="增加一个" class="icon icon-plus-sign" id="j-homeslide-add_ad"></a>
                             <a href="javascript:;" title="减少一个" class="icon icon-minus-sign" id="j-homeslide-remove_ad"></a>
                             <label class="inline" style="margin-left: 20px;">停留时间</label>
-                            <input onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')" type="text" class="input-small" id="j-homeslide-delay" value="1" />
+                            <input onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')" type="text" class="input-small" id="j-homeslide-delay" value="0" />
                             秒
 								
                         </div>
@@ -94,13 +94,13 @@
                 <div class="control-group">
                     <div class="controls">
                         <label class="inline">广告个数</label>
-                        <input type="text" value="1" class="input-small" readonly="readonly" id="j-wifi_count" />
+                        <input type="text" value="0" class="input-small" readonly="readonly" id="j-wifi_count" />
                         个
 								
                     <a href="javascript:;" title="增加一个" class="icon icon-plus-sign" id="j-add_ad"></a>
                         <a href="javascript:;" title="减少一个" class="icon icon-minus-sign" id="j-remove_ad"></a>
                         <label class="inline" style="margin-left: 20px;">停留时间</label>
-                        <input onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')" type="text" class="input-small" id="j-wifi-delay" value="1" />
+                        <input onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')" type="text" class="input-small" id="j-wifi-delay" value="0" />
                         秒
 							
                     </div>

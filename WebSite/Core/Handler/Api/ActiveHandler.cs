@@ -178,7 +178,7 @@ namespace Backstage.Core.Handler
                 {
                     newid = r.Id,
                     title = r.Title,
-                    img = url,
+                    img = Utility.GetPhoneNeedUrl(url),
                     dateline = r.CreateTime.GetUnixTime(),
                     summary = r.Summary,
                     descrition = r.Description,

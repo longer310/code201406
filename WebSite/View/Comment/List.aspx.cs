@@ -10,7 +10,6 @@ namespace Backstage.View.Comment
 {
     public partial class List : BasePage
     {
-        public string SellerId = "";
         protected void Page_Load(object sender, EventArgs e)
         {
 

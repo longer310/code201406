@@ -78,6 +78,7 @@ namespace Backstage.Core.Handler.Backstage
                     UserId = item.UserId,
                     NickName = user.NickName
                 };
+                data.Results.Add(o);
             }
             data.TotalCount = result.TotalCount;
             JsonTransfer jt = new JsonTransfer();

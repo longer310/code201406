@@ -97,6 +97,7 @@ namespace Backstage.Core
                         c.UserId = (int)reader["UserId"];
                         c.Img = reader["Img"].ToString();
                         c.Title = reader["Title"].ToString();
+                        c.Feedback = reader["Feedback"].ToString();
                         results.Results.Add(c);
                     }
 
@@ -104,8 +105,11 @@ namespace Backstage.Core
                     conn.Close();
                     conn.Dispose();
                     conn.Open();
-
-                    commandText = "select count(*) from comment where sellerId = ?sellerId and type = ?type and typeId = ?typeId";
+                    if (type == CommentType.All)
+                        commandText = @"select count(*) from comment where sellerId = ?sellerId ";
+                    else
+                        commandText = "select count(*) from comment where sellerId = ?sellerId and type = ?type and typeId = ?typeId";
+                    
                     parameters.Clear();
                     parameters.Add(new MySqlParameter("?sellerId", sellerId));
                     parameters.Add(new MySqlParameter("?type", (int)type));
@@ -172,7 +176,7 @@ namespace Backstage.Core
 
         public static void Update(Comment c)
         {
-            string commandText = @"UPDATE active SET
+            string commandText = @"UPDATE comment SET
                                         Type = ?Type,
                                         TypeId = ?TypeId,
                                         Content = ?Content,
@@ -180,7 +184,7 @@ namespace Backstage.Core
                                         Title = ?Title,
                                         UserId = ?UserId,
                                         CreateTime = ?CreateTime,
-                                        Feedback = ?Feedback,
+                                        Feedback = ?Feedback
                                     WHERE
                                         Id = ?Id";
 

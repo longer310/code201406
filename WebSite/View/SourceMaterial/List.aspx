@@ -56,7 +56,7 @@
 						</div>
 						<div class="article-post">
 							<p class="post-meta">
-								<span>浏览：<span class="text-error">${v.views}</span> 
+								<span>ID：<span class="text-error">${v.id}</span> ，浏览：<span class="text-error">${v.views}</span> 
 								评论：<span class="text-error">${v.commentnum}</span>条</span> 
 							</p>
 							<div class="post-action">

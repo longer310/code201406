@@ -732,7 +732,7 @@ namespace Backstage.Core
         /// <returns></returns>
         public static string GetPhoneNeedUrl(string url)
         {
-            if (url.StartsWith("/bg/File"))
+            if (url.StartsWith("/bg/File") || url.StartsWith("/bg/file"))
                 url = _onlydomainurl + url;
             if (string.IsNullOrEmpty(url))
                 url = _userdefaulthead; 

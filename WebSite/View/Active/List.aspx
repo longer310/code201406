@@ -60,7 +60,7 @@
 								${v.summary}
 							</p>
 							<p class="post-meta">
-								<span class="pull-left">浏览：<span class="text-error">${v.views}</span> 
+								<span class="pull-left">ID:<span class="text-error">${v.id}</span> ，浏览：<span class="text-error">${v.views}</span> 
 								评论：<span class="text-error">${v.commentnum}</span>条</span> 
 								发布时间：<span class="text-error">${v.createtime}</span> 
 							</p>

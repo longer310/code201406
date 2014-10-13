@@ -84,11 +84,12 @@ namespace WebSite.View
             if (Account != null)
             {
                 UserName = Account.UserName;
-                Money = Account.Money;
+                
             }
             if (Merchant != null)
             {
                 MerchantName = Merchant.Name;
+                Money = Merchant.Money;
             }
         }
     }

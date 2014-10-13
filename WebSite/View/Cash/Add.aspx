@@ -22,7 +22,7 @@
                     <div class="control-group control-group-text">
                         <label class="control-label">当前账户可提现金额</label>
                         <div class="controls">
-                            ￥<%=Account.Money %>
+                            ￥<%=Seller.Money %>
 								
                         </div>
                     </div>
@@ -78,7 +78,7 @@
                     <div class="control-group">
                         <label class="control-label">开户行</label>
                         <div class="controls">
-                            <input type="text" value="<%=Seller.Bank %>" id="j-bank_open" />（填写具体哪个开户行）
+                            <input type="text" value="<%=Seller.Bank %>" id="j-bank_open" />（具体到开户支行）
                         </div>
                     </div>
 
@@ -174,7 +174,7 @@
                         data: data,
                         dataType: "json"
                     }).success(function (data) {
-                        alert(data.message);
+                        alert(data.success);
                         window.location.href = "List.aspx?sellerId=" + sellerId;
                     }).error(function (data) {
                         console.log("erorr" + data);

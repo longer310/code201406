@@ -9,12 +9,12 @@ using log4net;
 
 namespace Backstage.Core.Handler.Backstage
 {
-    public class SystemHandler : BaseApiHandler
+    public class SystemHandler : BaseHandler
     {
         private static ILog logger = LogManager.GetLogger("SystemHandler");
         public override void ProcessRequest(HttpContext context)
         {
-            base.SetApiName("SystemHandler");
+            //base.SetApiName("SystemHandler");
             base.ProcessRequest(HttpContext.Current);
             switch (Action)
             {

@@ -1602,15 +1602,27 @@ namespace Backstage.Handler
             {
                 if (coupon.FullMoney <= orders.StotalPrice)
                 {
-                    var item = new CouponItem();
-                    item.id = coupon.Id;
-                    item.title = coupon.Title;
-                    item.description = coupon.Description;
-                    item.img = Utility.GetPhoneNeedUrl(coupon.ImgUrl);
-                    item.expiry = coupon.Expiry.GetUnixTime();
-                    item.sellerid = sellerid;
+                    bool exist = false;
+                    foreach (var i in orders.GidList)
+                    {
+                        if (coupon.GoodsIds.Contains(i))
+                        {
+                            exist = true;
+                            break;
+                        }
+                    }
+                    if (!exist)
+                    {
+                        var item = new CouponItem();
+                        item.id = coupon.Id;
+                        item.title = coupon.Title;
+                        item.description = coupon.Description;
+                        item.img = Utility.GetPhoneNeedUrl(coupon.ImgUrl);
+                        item.expiry = coupon.Expiry.GetUnixTime();
+                        item.sellerid = sellerid;
 
-                    data.couponlist.Add(item);
+                        data.couponlist.Add(item);
+                    }
                 }
             }
             data.sendprice = merchant.Freight;

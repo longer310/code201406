@@ -175,7 +175,7 @@ namespace Backstage.Core.Handler.Backstage
 
                 jsobject.param1 = seller.Name;
                 jsobject.param2 = item.Money.ToString();
-                jsobject.param3 = "1";
+                jsobject.param3 = "3~5";
                 jsobject.param4 = Utility._3vurl;
 
                 if (Utility.SendMsg(seller.Phone, MsgTempleId.MerchantWithdraw, jsobject) != "发送成功")

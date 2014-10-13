@@ -23,7 +23,6 @@
                         <label class="control-label">当前账户可提现金额</label>
                         <div class="controls">
                             ￥<%=Seller.Money %>
-								
                         </div>
                     </div>
 
@@ -31,7 +30,6 @@
                         <label class="control-label">冻结金额</label>
                         <div class="controls">
                             ￥<%=_LockMoney %>
-								
                         </div>
                     </div>
 
@@ -164,8 +162,7 @@
                         accountname: $.trim($("#j-realname").val()),
                         money: $.trim($("#j-money").val())
                     };
-                    if (data.bank.length < 1 || data.cardnumber.length < 1 || data.accountname.length < 1 || data.money < 1)
-                    {
+                    if (data.bank.length < 1 || data.cardnumber.length < 1 || data.accountname.length < 1 || data.money < 1) {
                         alert("请填写页面完整信息");
                     }
                     $.ajax({
@@ -174,8 +171,12 @@
                         data: data,
                         dataType: "json"
                     }).success(function (data) {
-                        alert(data.success);
-                        window.location.href = "List.aspx?sellerId=" + sellerId;
+                        if (data.suucess) {
+                            alert(data.success);
+                            //window.location.href = "List.aspx?sellerId=" + sellerId;
+                        }
+                        else
+                            alert(data.error);
                     }).error(function (data) {
                         console.log("erorr" + data);
                     });

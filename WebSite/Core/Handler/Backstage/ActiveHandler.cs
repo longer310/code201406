@@ -39,10 +39,10 @@ namespace Backstage.Core.Handler.Backstage
         private void Create()
         {
             var active = new Active();
-            
-            active.SellerId = GetInt("SellerId");
+
+            active.SellerId = GetInt("sellerid");
             active.CouponId = GetInt("ticket_id");
-            active.Title = GetString("Title");
+            active.Title = GetString("title");
             active.CoverImgUrl = GetString("thumbnail");
             active.Description = GetString("content");
             var text = GetString("text");

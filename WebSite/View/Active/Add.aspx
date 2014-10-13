@@ -171,13 +171,14 @@
                         sellerid: sellerId
                     }
                     $.ajax({
-                        url: "../../Handler/Backstage/SystemHandler.ashx?action=addpush",
+                        url: "../../Handler/Backstage/ActiveHandler.ashx?action=create",
                         data: save_data,
                         type: "POST",
                         dataType: "json"
                         //context: document.body
                     }).success(function (data) {
                         alert("添加成功");
+                        //console.log(data);
                         window.location.href = "List.aspx?sellerId=" + sellerId;
                         //window.setTimeout(function () {
                         //    window.location.reload();

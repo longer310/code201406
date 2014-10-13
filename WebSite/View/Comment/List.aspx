@@ -53,7 +53,7 @@
 					<td><span class="text-warning">${v.type}</span></td>
 					<td>${v.title}</td>
 					<td>${v.nickname}</td>
-					<td>${v.userid}</td>
+					<td>${v.username}</td>
 					<td><span class="text-error">${v.feedbackstatus}</span></td>
 					<td style="width:120px;">
 						<a class="btn btn-primary btn-mini j-btn-edit"><i class="icon-pencil icon-white"></i> 编辑</a>

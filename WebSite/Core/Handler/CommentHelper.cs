@@ -90,8 +90,8 @@ namespace Backstage.Core
                         Comment c = new Comment();
                         c.Id = (int)reader["Id"];
                         c.SellerId = (int)reader["SellerId"];
-                        c.Type = type;
-                        c.TypeId = typeId;
+                        c.Type = (CommentType)reader["Type"];
+                        c.TypeId = (int)reader["TypeId"];
                         c.Content = reader["Content"].ToString();
                         c.CreateTime = (DateTime)reader["CreateTime"];
                         c.UserId = (int)reader["UserId"];

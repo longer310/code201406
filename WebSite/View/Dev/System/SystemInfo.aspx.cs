@@ -11,10 +11,10 @@ namespace Backstage.View.Dev.System
 {
     public partial class SystemInfo :BasePage
     {
-        public List<Backstage.Core.Logic.ParamHelper.SignTypeItem> SignList;
+        public Backstage.Core.Logic.ParamHelper.PlatformCfg PlatformCfg;
         protected void Page_Load(object sender, EventArgs e)
         {
-            SignList = ParamHelper.PlatformCfgData.SignList;
+            PlatformCfg = ParamHelper.PlatformCfgData;
 
         }
     }

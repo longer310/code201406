@@ -49,20 +49,23 @@ namespace Backstage.Core.Handler.Backstage
 
         private void StyleInfo()
         {
-            var signList = ParamHelper.PlatformCfgData.SignList;
-            for (var i = 0; i < signList.Count; i++)
+            var cfg = ParamHelper.PlatformCfgData;
+            
+            for (var i = 0; i < cfg.SignList.Count; i++)
             {
                 switch (i)
                 { 
                     case 0:
-                        signList[i].Prec = GetFloat("first");break;
+                        cfg.SignList[i].Prec = GetFloat("first");break;
                     case 1:
-                        signList[i].Prec = GetFloat("second"); break;
+                        cfg.SignList[i].Prec = GetFloat("second"); break;
                     case 2:
-                        signList[i].Prec = GetFloat("third"); break;
+                        cfg.SignList[i].Prec = GetFloat("third"); break;
                 }
             }
-
+            cfg.ServiceProtocol = GetString("sp");
+            cfg.DevInfo = GetString("di");
+            cfg.SpecialExplain = GetString("se");
                 //List<ParamHelper.SignTypeItem> items = new List<ParamHelper.SignTypeItem>();
                 //items.Add(new ParamHelper.SignTypeItem()
                 //{
@@ -82,7 +85,6 @@ namespace Backstage.Core.Handler.Backstage
                 //    Name = signList.First().Name,
                 //    Prec = GetFloat("third")
                 //});
-            ParamHelper.PlatformCfgData.SignList = signList;
             ParamHelper.UpdateParamvalue("PlatformCfg", ParamHelper.PlatformCfgData);
         }
 

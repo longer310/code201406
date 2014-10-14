@@ -25,12 +25,29 @@ namespace Backstage.Core.Handler
                     GetIndexAd(context); break;
                 case "getwifiad":
                     GetWifiAd(); break;
+                case "systeminfo":
+                    SystemInfo();break;
                 //case "getpwdvercode":
                 //    GetPwdVerCode(); break;
                 //case "updatepwd":
                 //    UpdatePwd(); break;
                 default: break;
             }
+        }
+
+        private void SystemInfo()
+        {
+            var cfg = ParamHelper.PlatformCfgData;
+            var data = new { 
+                devinfo= cfg.DevInfo,
+                serviceprotocol =cfg.ServiceProtocol,
+                specialexplain = cfg.SpecialExplain
+            };
+            JsonTransfer jt = new JsonTransfer();
+            jt.AddSuccessParam();
+            jt.Add("data", data);
+            Response.Write(DesEncrypt(jt).ToLower());
+            Response.End();
         }
 
         private void GetWifiAd()

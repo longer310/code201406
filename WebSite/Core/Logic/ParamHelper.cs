@@ -104,6 +104,23 @@ namespace Backstage.Core.Logic
         }
         public class PlatformCfg
         {
+
+            /// <summary>
+            /// 开发商信息
+            /// </summary>
+            public string DevInfo { get; set; }
+
+            /// <summary>
+            /// 服务协议
+            /// </summary>
+            public string ServiceProtocol { get; set; }
+
+            /// <summary>
+            /// 特别说明
+            /// </summary>
+            public string SpecialExplain { get; set; }
+
+
             /// <summary>
             /// 手机软件端广告
             /// </summary>

@@ -48,7 +48,7 @@ namespace Backstage.Core.Entity
         public int DiscountMoney { get; set; }
 
         /// <summary>
-        /// 限定使用商品（制定的Id不能使用优惠券）
+        /// 限定使用商品（其他的Id不能使用优惠券，空代表全部都作用）
         /// </summary>
         public IList<int> GoodsIds { get; set; }
 

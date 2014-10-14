@@ -191,7 +191,7 @@ namespace Backstage.Core.Handler.Backstage
             item.Balance = seller.Money;
             item.UserAccount = user.UserName;//存储商户账户
             ExtractMoneyHelper.Create(item);
-            ReturnCorrectMsg(string.Format("提现{1}申请成功，手续费：{0}，请耐心等待后台人员处理", item.Money, item.Fee));
+            ReturnCorrectMsg(string.Format("提现{0}申请成功，手续费：{1}，请耐心等待后台人员处理", item.Money, item.Fee));
         }
 
 

@@ -11,26 +11,44 @@
             <h5>资料设置</h5>
         </div>
         <div class="widget-content">
-            
+
             <form action="#" method="get" class="form-horizontal" id="j-profile-form">
 
-            <div class="control-group">
-               
-                <label class="control-label">模式A扣率</label>
-                <div class="controls">
-                    <input type="text" id="j-pattern-a" value="<%=SignList.First().Prec %>" class="input-small" />
-                    <label class="col3-label">模式B扣率</label>
-                    <input type="text" id="j-pattern-b" value="<%=SignList.ElementAt(1).Prec %>" class="input-small" />
-                    <label class="col3-label">模式C扣率</label>
-                    <input type="text" id="j-pattern-c" value="<%=SignList.ElementAt(2).Prec %>" class="input-small" />
+                <div class="control-group">
+
+                    <label class="control-label">模式A扣率</label>
+                    <div class="controls">
+                        <input type="text" id="j-pattern-a" value="<%=PlatformCfg.SignList.First().Prec %>" class="input-small" />
+                        <label class="col3-label">模式B扣率</label>
+                        <input type="text" id="j-pattern-b" value="<%=PlatformCfg.SignList.ElementAt(1).Prec %>" class="input-small" />
+                        <label class="col3-label">模式C扣率</label>
+                        <input type="text" id="j-pattern-c" value="<%=PlatformCfg.SignList.ElementAt(2).Prec %>" class="input-small" />
+                    </div>
                 </div>
-            </div>
-            <div class="form-actions">
-                <button type="reset" class="btn"><i class="icon-refresh"></i>清除重置</button>
-                <button type="submit" class="btn btn-primary"><i class="icon-ok icon-white"></i>完成保存</button>
-            </div>
+                <div class="control-group">
+                    <label class="control-label">开发商信息</label>
+                    <div class="controls">
+                        <textarea rows="4" id="j-devinfo"><%=PlatformCfg.DevInfo %></textarea>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label">服务协议</label>
+                    <div class="controls">
+                        <textarea rows="4" id="j-service"><%=PlatformCfg.ServiceProtocol %></textarea>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label">特别说明</label>
+                    <div class="controls">
+                        <textarea rows="4" id="j-explain"><%=PlatformCfg.SpecialExplain %></textarea>
+                    </div>
+                </div>
+                <div class="form-actions">
+                    <button type="reset" class="btn"><i class="icon-refresh"></i>清除重置</button>
+                    <button type="submit" class="btn btn-primary"><i class="icon-ok icon-white"></i>完成保存</button>
+                </div>
             </form>
-			
+
         </div>
     </div>
 </asp:Content>
@@ -99,6 +117,9 @@
                 //绑定提交表单
                 $("#j-profile-form").bind("submit", function () {
                     var save_data = {
+                        sp: $("#j-devinfo").val(),
+                        di: $("#j-service").val(),
+                        se: $("#j-explain").val(),
                         first: $("#j-pattern-a").val(),
                         second: $("#j-pattern-b").val(),
                         third: $("#j-pattern-c").val()
@@ -119,6 +140,9 @@
                     $("#j-pattern-a").val("");
                     $("#j-pattern-b").val("");
                     $("#j-pattern-c").val("");
+                    $("#j-devinfo").val("");
+                    $("#j-service").val("");
+                    $("#j-explain").val("");
                     //$('#j-img-placehold').attr("src", 'http://placehold.it/128x128');
                     //mpage.text_editor.html('');
                     return false;
@@ -126,9 +150,9 @@
             }
         }
 
-        $(function () {
-            MPage.init();
-        });
+            $(function () {
+                MPage.init();
+            });
 
         </script>
 </asp:Content>

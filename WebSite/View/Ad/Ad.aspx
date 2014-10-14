@@ -80,7 +80,6 @@
                         <a href="javascript:void(0);" id="saveslidead" class="btn btn-primary"><i class="icon-ok icon-white"></i>完成保存</a>
                     </div>
                 </div>
-
             </div>
         </div>
 
@@ -225,11 +224,12 @@
                         mpage.addHomeSlideLevel(data.data);
                         $("#j-login-url").attr("src", data.data.LoginAdUrl);
                         $("#j-login-delay").val(data.data.LoginAdStayTime);
-                        $("#j-wifi-delay").val(data.data.WifiAdStayTime);
-                        $("#j-wifi_count").val(data.data.WifiAds.length);
 
                         $("#j-homeslide-delay").val(data.data.SlideAdStayTime);
                         $("#j-homeslide-count").val(data.data.SlideAds.length);
+
+                        $("#j-wifi-delay").val(data.data.WifiAdStayTime);
+                        $("#j-wifi_count").val(data.data.WifiAds.length);
                     } else {
                         Common.tip({ type: "error", content: data.error });
                     }

@@ -438,13 +438,22 @@ namespace Backstage.Core
         /// <param name="context"></param>
         /// <param name="needcheck">是否生成图片</param>
         /// <returns></returns>
-        public static string GetSizePicUrl(string url, int width, int height, HttpContext context = null, int needcheck = 1)
+        public static string GetSizePicUrl(string url, int width, int height, HttpContext context = null, int needcheck = 1, int ifloginad = 0)
         {
             url = GetPhoneNeedUrl(url);
             if (!url.ToLower().Contains("bg") && !url.ToLower().Contains("file") && !url.ToLower().Contains("images")) return url;//第三方的地址，直接返回，不做尺寸处理
             var index = url.LastIndexOf('.');
+            var gindex = url.LastIndexOf('/');
+            if(gindex == -1)
+                gindex = url.LastIndexOf('\\');
             if (index < 0) return url;
-            var result = url.Substring(0, index) + "_" + width + "x" + height + url.Substring(index);
+            var result = "";
+            if(ifloginad == 0)
+                result = url.Substring(0, index) + "_" + width + "x" + height + url.Substring(index);
+            else
+            {
+                result = url.Substring(0, gindex+1) + width + "x" + height + url.Substring(index);
+            }
             if (needcheck == 1)
             {
                 //获取图片情况下 需检查图片是否存在
@@ -485,7 +494,7 @@ namespace Backstage.Core
                     filePath = filePath.TrimEnd("/".ToCharArray());
                     
                     if (context != null) filePath = context.Server.MapPath(filePath);
-                    MakeThumNail(filePath, width, height);
+                    MakeThumNail(filePath, width, height,1);
                 }
             }
             return result;
@@ -928,12 +937,12 @@ namespace Backstage.Core
         /// <param name="width">缩放图的宽</param>
         /// <param name="height">缩放图的高</param>
         /// <param name="model">缩放模式</param>
-        public static void MakeThumNail(string originalImagePath, int width, int height, string model = "Cut", string thumNailPath = "")
+        public static void MakeThumNail(string originalImagePath, int width, int height, int ifloginad = 0, string model = "Cut", string thumNailPath = "")
         {
             System.Drawing.Image originalImage = System.Drawing.Image.FromFile(originalImagePath);
             if (string.IsNullOrEmpty(thumNailPath))
             {
-                thumNailPath = Utility.GetSizePicUrl(originalImagePath, width, height, null, 0);
+                thumNailPath = Utility.GetSizePicUrl(originalImagePath, width, height, null, 0, ifloginad);
             }
 
             int thumWidth = width;      //缩略图的宽度

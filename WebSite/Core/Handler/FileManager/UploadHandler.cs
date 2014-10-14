@@ -66,7 +66,7 @@ namespace Backstage.Handler
             int maxSize = 1073741824;
 
             HttpPostedFile imgFile = context.Request.Files["imgFile"];
-            
+
             if (imgFile == null)
             {
                 showError("请选择文件。");
@@ -112,8 +112,9 @@ namespace Backstage.Handler
             {
                 Directory.CreateDirectory(dirPath);
             }
-            //管理员素材库统一到一个文件夹即可
-            if (isManager == 0)
+            UploadType type = (UploadType)Convert.ToInt32(context.Request.QueryString["type"]);
+            //管理员素材库统一到一个文件夹即可 登录页大图IOS那边需要固定地址图片http://XXX/{sellerid}/XXX/1280x800.jpg
+            if (isManager == 0 && type != UploadType.MerchantLoginAd)
             {
                 String ymd = DateTime.Now.ToString("yyyyMMdd", DateTimeFormatInfo.InvariantInfo);
                 dirPath += ymd + "/";
@@ -140,7 +141,7 @@ namespace Backstage.Handler
             }
             imgFile.SaveAs(filePath);
 
-            if ((int) ((int) imgType/100) == 1)
+            if ((int)((int)imgType / 100) == 1)
             {
                 //图片处理 生成不同尺寸图片
                 var list = ImgSizeCfgHelper.GetImgSizeCfgList(imgType);
@@ -202,7 +203,7 @@ namespace Backstage.Handler
                 case UploadType.Goods: typeName = "/shangpin"; break;
                 case UploadType.GoodCategories: typeName = "/fenlei"; break;
                 case UploadType.Coupon: typeName = "/dianziquan"; break;
-                case UploadType.MerchantLoginAd:
+                case UploadType.MerchantLoginAd: typeName = ""; break;
                 case UploadType.MerchantWifiAd: typeName = "/hd"; break;
                 case UploadType.Position: typeName = "/weizi"; break;
 

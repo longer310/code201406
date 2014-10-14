@@ -77,6 +77,7 @@ namespace Backstage.Core.Logic
                             merchant.LoginAdUrl = reader["LoginAdUrl"].ToString();
                             merchant.WifiAdStayTime = (int)reader["WifiAdStayTime"];
                             merchant.WifiAds = JsonTransfer.DeserializeObject<List<PicJumpItem>>(reader["WifiAds"].ToString());
+                            merchant.WifiAds = merchant.WifiAds ?? new List<PicJumpItem>();
 
                             merchant.MachineCode = reader["MachineCode"].ToString();
                             merchant.MachineKey = reader["MachineKey"].ToString();
@@ -89,6 +90,7 @@ namespace Backstage.Core.Logic
 
                             merchant.SlideAdStayTime = (int)reader["SlideAdStayTime"];
                             merchant.SlideAds = JsonTransfer.DeserializeObject<List<SlideAdItem>>(reader["SlideAds"].ToString());
+                            merchant.SlideAds = merchant.SlideAds ?? new List<SlideAdItem>();
 
                             //获取商户基础类型
                             var merchanttype = MerchantTypeHelper.GetMerchantType(merchant.Mid);

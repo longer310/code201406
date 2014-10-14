@@ -621,6 +621,54 @@ namespace Backstage.Core.Handler
             return c;
         }
 
+        /// <summary>
+        /// 根据玩家获取优惠券
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="sellerId"></param>
+        /// <param name="couponId"></param>
+        /// <returns></returns>
+        public static Coupon GetCouponIngronStatus(int couponId, int userId, int sellerId)
+        {
+            string commandText = @"select a.* from coupon a left join usercoupon b on a.id=b.CouponId where b.userId = ?userId and a.SellerId=?sellerId and b.id=?id;";
+
+            List<MySqlParameter> parameters = new List<MySqlParameter>();
+            parameters.Add(new MySqlParameter("?userId", userId));
+            parameters.Add(new MySqlParameter("?sellerId", sellerId));
+            parameters.Add(new MySqlParameter("?id", couponId));
+
+            Coupon c = null;
+            try
+            {
+                using (var conn = new MySqlConnection(GlobalConfig.DbConn))
+                {
+                    MySqlDataReader reader = MySqlHelper.ExecuteReader(conn, CommandType.Text, commandText, parameters.ToArray());
+                    while (reader.Read())
+                    {
+                        c = new Coupon();
+                        c.Id = reader.GetInt32(0);
+                        c.ImgId = (int)reader["ImgId"];
+                        c.ImgUrl = reader["ImgUrl"].ToString();
+                        c.Title = reader["Title"].ToString();
+                        c.Description = reader["Description"].ToString();
+                        c.Expiry = (DateTime)reader["Expiry"];
+                        c.Extcredit = (int)reader["Extcredit"];
+                        c.FullMoney = (int)reader["FullMoney"];
+                        c.DiscountMoney = (int)reader["DiscountMoney"];
+                        c.GoodsIds = Utility.GetListint(reader["GoodsIds"].ToString());
+                        c.Commentnum = (int)reader["Commentnum"];
+                        c.Views = (int)reader["Views"];
+                        c.SellerId = (int)reader["SellerId"];
+                    }
+                }
+            }
+            catch (System.Exception ex)
+            {
+                throw;
+            }
+            return c;
+        }
+
 
         public static bool UpdateUserCouponStatus(int id, int status)
         {

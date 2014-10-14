@@ -85,7 +85,7 @@
                     <li><a href="<%=DomainUrl %>/View/Coupon/Add.aspx?sellerId=<%=SellerId%>">新增电子券</a></li>
                 </ul>
             </li>
-            <li class="sidebar_a">
+            <li class="sidebar_ad">
                 <a href="<%=DomainUrl %>/View/Ad/Ad.aspx?sellerId=<%=SellerId%>"><i class="icon icon-bullhorn"></i><span>广告设置</span></a>
             </li>
             

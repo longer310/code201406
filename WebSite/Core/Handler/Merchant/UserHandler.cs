@@ -183,7 +183,8 @@ namespace Backstage.Handler
 
             var jt = new JsonTransfer();
             jt.Add("data", merchant);
-            Response.Write(jt.ToJson());
+            var str = jt.ToJson();
+            Response.Write(str);
             Response.End();
         }
         /// <summary>

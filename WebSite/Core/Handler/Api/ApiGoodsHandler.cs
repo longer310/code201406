@@ -985,6 +985,12 @@ namespace Backstage.Handler
                 extcredit = (int)(orders.TotalPrice * 1.0 / ParamHelper.ExtcreditCfgData.Consume);
                 couponid = orders.CouponId;
                 coupontitle = orders.CouponTitle;
+                if (string.IsNullOrEmpty(coupontitle))
+                {
+                    var coupon = CouponHelper.GetCouponIngronStatus(orders.CouponId, orders.UserId, orders.SellerId);
+                    if (coupon != null)
+                        coupontitle = string.Format("满{0}减{1}元电子券", coupon.FullMoney, coupon.DiscountMoney);
+                }
                 ccontent = orders.Ccontent;
                 stotalprice = orders.StotalPrice;
                 remark = orders.Remark;
@@ -1163,9 +1169,10 @@ namespace Backstage.Handler
                     if (ifdiscount)
                     {
                         //discount = (float)(coupon.Extcredit * 1.0) / 100;
-                        if (orders.TotalPrice > coupon.FullMoney)
+                        if (orders.TotalPrice >= coupon.FullMoney)
                             discount = coupon.DiscountMoney;
-                        orders.Ccontent = string.Format("满{0}减{1}元电子券", coupon.FullMoney, coupon.DiscountMoney);
+                        orders.Ccontent = coupon.Description;
+                            //string.Format("满{0}减{1}元电子券", coupon.FullMoney, coupon.DiscountMoney);
                     }
                     coupon.UsedTimes++;
                     CouponHelper.Update(coupon);
@@ -1174,6 +1181,8 @@ namespace Backstage.Handler
                     orders.TotalPrice -= discount;
                     orders.CtotalPrice = discount;
                     orders.CouponTitle = coupon.Title;
+                    if (string.IsNullOrEmpty(orders.CouponTitle)) 
+                        orders.CouponTitle = string.Format("满{0}减{1}元电子券", coupon.FullMoney, coupon.DiscountMoney);
                     if (orders.TotalPrice < 0) orders.TotalPrice = 0;
                 }
             }

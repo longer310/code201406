@@ -26,7 +26,7 @@ namespace Backstage.Core.Handler
                 case "getwifiad":
                     GetWifiAd(); break;
                 case "systeminfo":
-                    SystemInfo();break;
+                    SystemInfo(); break;
                 //case "getpwdvercode":
                 //    GetPwdVerCode(); break;
                 //case "updatepwd":
@@ -38,9 +38,10 @@ namespace Backstage.Core.Handler
         private void SystemInfo()
         {
             var cfg = ParamHelper.PlatformCfgData;
-            var data = new { 
-                devinfo= cfg.DevInfo,
-                serviceprotocol =cfg.ServiceProtocol,
+            var data = new
+            {
+                devinfo = cfg.DevInfo,
+                serviceprotocol = cfg.ServiceProtocol,
                 specialexplain = cfg.SpecialExplain
             };
             JsonTransfer jt = new JsonTransfer();
@@ -62,7 +63,7 @@ namespace Backstage.Core.Handler
             //var cfg = ParamHelper.GetMerchantCfgData(sellerId, merchant.Name);//ParamHelper.MerchantCfgData;
             var ads = merchant.WifiAds;
             var data = new List<object>();
-            foreach(var ad in ads)
+            foreach (var ad in ads)
             {
                 var d = new
                 {
@@ -89,28 +90,27 @@ namespace Backstage.Core.Handler
                 return;
             }
             var imgs = new List<object>();
-            imgs.Add(new 
+            imgs.Add(new
             {
-                width =640,
-                height= 960,
-                url = Utility.GetPhoneNeedUrl(Utility.GetSizePicUrl(merchant.LoginAdUrl, 640, 960, context))
+                width = 640,
+                height = 960,
+                url = Utility.GetSizePicUrl(merchant.LoginAdUrl, 640, 960, context, 1, 1)
             });
-            imgs.Add(new 
+            imgs.Add(new
             {
-                width =640,
-                height= 1138,
-                url = Utility.GetPhoneNeedUrl(Utility.GetSizePicUrl(merchant.LoginAdUrl, 640, 1138, context))
+                width = 640,
+                height = 1138,
+                url = Utility.GetSizePicUrl(merchant.LoginAdUrl, 640, 1138, context, 1, 1)
             });
-            imgs.Add(new 
+            imgs.Add(new
             {
-                width =1280,
-                height= 800,
-                url = Utility.GetPhoneNeedUrl(Utility.GetSizePicUrl(merchant.LoginAdUrl, 1280, 800, context))
+                width = 1280,
+                height = 800,
+                url = Utility.GetSizePicUrl(merchant.LoginAdUrl, 1280, 800, context, 1, 1)
             });
 
             var data = new
             {
-                
                 img = imgs,
                 time = merchant.LoginAdStayTime
             };

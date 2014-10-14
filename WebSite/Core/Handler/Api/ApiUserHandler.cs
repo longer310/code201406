@@ -1597,7 +1597,7 @@ namespace Backstage.Handler
             var data = new UserCouponData();
             data.extcredit = user.Integral;
 
-            var result = CouponHelper.GetOrderCouponList(uid, sellerid, gids);
+            var result = CouponHelper.GetOrderCouponList(uid, sellerid);//, gids
             foreach (var coupon in result.Results)
             {
                 if (coupon.FullMoney <= orders.StotalPrice)

@@ -529,16 +529,16 @@ namespace Backstage.Core.Handler
         /// <param name="sellerId"></param>
         /// <param name="gids"></param>
         /// <returns></returns>
-        public static PagResults<Coupon> GetOrderCouponList(int userId, int sellerId, string gids)
+        public static PagResults<Coupon> GetOrderCouponList(int userId, int sellerId)//, string gids
         {
             var results = new PagResults<Coupon>();
             results.Results = new List<Coupon>();
-            string commandText = @"select a.*,b.Id as userCouponId from coupon a left join usercoupon b on a.id=b.CouponId where b.userId = ?userId and a.SellerId=?sellerId and b.Status = 0 and a.GoodsIds not LIKE ?gids order by Expiry desc ";
+            string commandText = @"select a.*,b.Id as userCouponId from coupon a left join usercoupon b on a.id=b.CouponId where b.userId = ?userId and a.SellerId=?sellerId and b.Status = 0  order by Expiry desc ";//and a.GoodsIds not LIKE ?gids
 
             List<MySqlParameter> parameters = new List<MySqlParameter>();
             parameters.Add(new MySqlParameter("?userId", userId));
             parameters.Add(new MySqlParameter("?sellerId", sellerId));
-            parameters.Add(new MySqlParameter("?gids", gids + "%"));
+            //parameters.Add(new MySqlParameter("?gids", gids + "%"));
 
             try
             {

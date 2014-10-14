@@ -254,17 +254,25 @@ namespace Backstage.Core
         }
         public string GetString(string paramName)
         {
-            string defaultVale = "";
-            var p1 = Request.Form[paramName];
-            if (string.IsNullOrEmpty(p1))
+            try
             {
-                p1 = Request.QueryString[paramName];
+                string defaultVale = "";
+                var p1 = Request.Form[paramName];
                 if (string.IsNullOrEmpty(p1))
                 {
-                    return defaultVale;
+                    p1 = Request.QueryString[paramName];
+                    if (string.IsNullOrEmpty(p1))
+                    {
+                        return defaultVale;
+                    }
                 }
+                return p1;
             }
-            return p1;
+            catch (Exception ex)
+            {
+                var msg = ex.Message;
+                throw;
+            }
         }
 
         public DateTime GetTime(string paramName, DateTime defaultVale)

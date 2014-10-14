@@ -385,7 +385,7 @@
                 var mpage = this;
                 $.post(mpage.hander + "getGoodsCategoriesList", {}, function (data) {
                     if (!data.error) {
-                        if (data.count == 0) {
+                        if (data.list.length == 0) {
                             Common.tip({ type: "error", content: "还没有商品分类，请先添加商品分类~！" });
                         }
                         $("#j-categroy-list").html($("#j-tmpl-categroy-listitem").tmpl(data));
@@ -408,7 +408,7 @@
             MPage.init();
         });
 
-</script>
+    </script>
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="Footer" runat="server">
 </asp:Content>

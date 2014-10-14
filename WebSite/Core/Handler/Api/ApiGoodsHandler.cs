@@ -873,6 +873,7 @@ namespace Backstage.Handler
             }
             orders.TotalPrice = (float)(orders.StotalPrice * 1.0 * user.Discount / 10);//打折！
 
+            orders.Discount = user.Discount;
             orders.SendPrice = 0;
             orders.FreeSendPrice = 100;
             //orders.SendPrice = 5;

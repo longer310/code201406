@@ -231,11 +231,20 @@ namespace Backstage.Core.Handler
         {
             int index = GetInt("start");
             int size = GetInt("limit");
-            int sellerid = GetInt("sellerid");
-            int type = GetInt("type");
+            int sid = GetInt("sellerid");
             int uid = GetInt("uid");
 
-            var results = CouponHelper.GetPagings(sellerid, index * size, size);
+            //var results = CouponHelper.GetPagings(sid, 0, 0);
+            PagResults<Coupon> results = new PagResults<Coupon>();
+            if (uid != 0)
+            {
+                results = CouponHelper.GetPagingUnGetCoupon(uid,sid, index * size, size);
+            }
+            else
+            {
+                results = CouponHelper.GetPagings(sid, index * size, size);
+            }
+
             var data = new List<object>();
             foreach (var r in results.Results)
             {

@@ -70,8 +70,12 @@ namespace Backstage.Core.Handler
 
             List<MySqlParameter> parameters = new List<MySqlParameter>();
             parameters.Add(new MySqlParameter("?sellerId", sellerId));
-            parameters.Add(new MySqlParameter("?start", start));
-            parameters.Add(new MySqlParameter("?limit", limit));
+            if (limit != 0)
+            {
+                parameters.Add(new MySqlParameter("?start", start));
+                parameters.Add(new MySqlParameter("?limit", limit));
+            }
+
 
             try
             {
@@ -193,22 +197,21 @@ namespace Backstage.Core.Handler
 
 
         /// <summary>
-        /// 优惠券列表
+        /// 用户领取的优惠券列表
         /// </summary>
         /// <param name="start"></param>
         /// <param name="limit"></param>
         /// <param name="wheresql"></param>
         /// <param name="ordersql"></param>
         /// <returns></returns>
-        public static IList<Coupon> GetList(int start, int limit, string wheresql = "", string ordersql = "")
+        public static IList<UserCoupon> GetUserCouponListForApi(int sellerId, int userId)
         {
-            var results = new List<Coupon>();
-            string limitsql = limit == 0 ? string.Empty : " LIMIT ?start,?limit ";
-            string commandText = @"select * from coupon " + wheresql + ordersql + limitsql;
+            var results = new List<UserCoupon>();
+            string commandText = @"select * from usercoupon where sellerId = ?sellerId and userId = ?userId";
 
             List<MySqlParameter> parameters = new List<MySqlParameter>();
-            parameters.Add(new MySqlParameter("?start", start));
-            parameters.Add(new MySqlParameter("?limit", limit));
+            parameters.Add(new MySqlParameter("?sellerId", sellerId));
+            parameters.Add(new MySqlParameter("?userId", userId));
 
             try
             {
@@ -217,24 +220,14 @@ namespace Backstage.Core.Handler
                     MySqlDataReader reader = MySqlHelper.ExecuteReader(conn, CommandType.Text, commandText, parameters.ToArray());
                     while (reader.Read())
                     {
-                        Coupon c = new Coupon();
-                        c.Id = reader.GetInt32(0);
-                        c.ImgId = (int)reader["ImgId"];
-                        c.ImgUrl = reader["ImgUrl"].ToString();
-                        c.Title = reader["Title"].ToString();
-                        c.Description = reader["Description"].ToString();
-                        c.Expiry = (DateTime)reader["Expiry"];
-                        c.Extcredit = (int)reader["Extcredit"];
-                        c.FullMoney = (int)reader["FullMoney"];
-                        c.DiscountMoney = (int)reader["DiscountMoney"];
-                        c.GoodsIds = Utility.GetListint(reader["GoodsIds"].ToString());
-                        c.Commentnum = (int)reader["Commentnum"];
-                        c.Views = (int)reader["Views"];
-                        c.SellerId = (int)reader["SellerId"];
-                        c.DownloadTimes = (int)reader["DownloadTimes"];
-                        c.UsedTimes = (int)reader["UsedTimes"];
-                        c.Enabled = (int)reader["Status"];
-                        results.Add(c);
+                        UserCoupon item = new UserCoupon();
+                        item.Id = reader.GetInt32(0);
+                        item.UserId = (int)reader["UserId"];
+                        item.CouponId = (int)reader["CouponId"];
+                        item.SellerId = (int)reader["SellerId"];
+                        item.CreateTime = (DateTime)reader["CreateTime"];
+                        item.Status = (int)reader["Status"];
+                        results.Add(item);
                     }
                 }
             }
@@ -464,8 +457,12 @@ namespace Backstage.Core.Handler
             List<MySqlParameter> parameters = new List<MySqlParameter>();
             parameters.Add(new MySqlParameter("?userId", userId));
             parameters.Add(new MySqlParameter("?sellerId", sellerId));
-            parameters.Add(new MySqlParameter("?start", start));
-            parameters.Add(new MySqlParameter("?limit", limit));
+            if (limit != 0)
+            {
+                parameters.Add(new MySqlParameter("?start", start));
+                parameters.Add(new MySqlParameter("?limit", limit));
+            }
+
             parameters.Add(new MySqlParameter("?status", status > 1 ? "0,1" : status.ToString()));
 
             try
@@ -611,6 +608,7 @@ namespace Backstage.Core.Handler
                         c.Commentnum = (int)reader["Commentnum"];
                         c.Views = (int)reader["Views"];
                         c.SellerId = (int)reader["SellerId"];
+                        c.Enabled = (int)reader["Enabled"];
                     }
                 }
             }
@@ -694,6 +692,65 @@ namespace Backstage.Core.Handler
             List<MySqlParameter> parameters = new List<MySqlParameter>();
             parameters.Add(new MySqlParameter("?id", id));
             MySqlHelper.ExecuteNonQuery(GlobalConfig.DbConn, CommandType.Text, commandText, parameters.ToArray());
+        }
+
+        /// <summary>
+        /// 获取用户未领取的优惠券
+        /// </summary>
+        /// <param name="sellerId"></param>
+        /// <param name="ids"></param>
+        /// <param name="p"></param>
+        /// <param name="size"></param>
+        /// <returns></returns>
+        internal static PagResults<Coupon> GetPagingUnGetCoupon(int userId, int sellerId, int index, int size)
+        {
+            var results = new PagResults<Coupon>();
+            results.Results = new List<Coupon>();
+            string limitsql = size == 0 ? " limit ?index,?size" : string.Empty;
+            string commandText = @"select * from coupon where id not in (select couponid from usercoupon where sellerId = ?sellerId and userId = ?userId) and sellerId=?sellerId and Enabled=1 order by Expiry desc" + limitsql;//and a.GoodsIds not LIKE ?gids
+
+            List<MySqlParameter> parameters = new List<MySqlParameter>();
+            parameters.Add(new MySqlParameter("?userId", userId));
+            parameters.Add(new MySqlParameter("?sellerId", sellerId));
+            if (size == 0)
+            {
+                parameters.Add(new MySqlParameter("?index", index));
+                parameters.Add(new MySqlParameter("?size", size));
+            }
+
+            //parameters.Add(new MySqlParameter("?gids", gids + "%"));
+
+            try
+            {
+                using (var conn = new MySqlConnection(GlobalConfig.DbConn))
+                {
+                    MySqlDataReader reader = MySqlHelper.ExecuteReader(conn, CommandType.Text, commandText, parameters.ToArray());
+                    while (reader.Read())
+                    {
+                        var c = new Coupon();
+                        c.Id = reader.GetInt32(0);
+                        c.ImgId = (int)reader["ImgId"];
+                        c.ImgUrl = reader["ImgUrl"].ToString();
+                        c.Title = reader["Title"].ToString();
+                        c.Description = reader["Description"].ToString();
+                        c.Expiry = (DateTime)reader["Expiry"];
+                        c.Extcredit = (int)reader["Extcredit"];
+                        c.FullMoney = (int)reader["FullMoney"];
+                        c.DiscountMoney = (int)reader["DiscountMoney"];
+                        c.GoodsIds = Utility.GetListint(reader["GoodsIds"].ToString());
+                        c.Commentnum = (int)reader["Commentnum"];
+                        c.Views = (int)reader["Views"];
+                        c.SellerId = (int)reader["SellerId"];
+                        c.Enabled = (int)reader["Enabled"];
+                        results.Results.Add(c);
+                    }
+                }
+            }
+            catch (System.Exception ex)
+            {
+                throw;
+            }
+            return results;
         }
     }
 }

@@ -309,7 +309,7 @@
                         imglist.push(url);
                     });
                     imgs = imglist.join(",");
-                    staytime = $("#j-wifi-delay").val();
+                    staytime = $("#j-homeslide-delay").val();
                     if (staytime == "") {
                         Common.tip({ type: "error", content: "还没填写停留时间~" });
                         return;

@@ -41,14 +41,8 @@ namespace Backstage.Core
 
         public static string _md5open = System.Configuration.ConfigurationManager.AppSettings["md5open"];//是否验证md5加密
         public static string _desopen = System.Configuration.ConfigurationManager.AppSettings["desopen"];//是否des加密返回
-        public static string _register_message = System.Configuration.ConfigurationManager.AppSettings["register_message"];//注册短信格式
-        public static string _modifyphone_message = System.Configuration.ConfigurationManager.AppSettings["modifyphone_message"];//注册短信格式
-        public static string _message = System.Configuration.ConfigurationManager.AppSettings["message"];//注册短信格式
-        public static string _msg_url = System.Configuration.ConfigurationManager.AppSettings["msg_url"];//短信请求地址
         public static string _app_id = System.Configuration.ConfigurationManager.AppSettings["app_id"];//找回密码信息格式
         public static string _app_secret = System.Configuration.ConfigurationManager.AppSettings["app_secret"];//账号名
-        public static string _msg_password = System.Configuration.ConfigurationManager.AppSettings["msg_password"];//密码
-        public static string _msg_sms_type = System.Configuration.ConfigurationManager.AppSettings["msg_sms_type"];//通道ID
         public static string _msg_opensend = System.Configuration.ConfigurationManager.AppSettings["msg_opensend"];//是否开启短信发送验证码
         public static string _userdefaulthead = System.Configuration.ConfigurationManager.AppSettings["userdefaulthead"];//用户默认头像
         public static string _domainurl = System.Configuration.ConfigurationManager.AppSettings["domainurl"];//域名头

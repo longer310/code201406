@@ -173,7 +173,7 @@ namespace Backstage.Core.Handler.Backstage
             {
                 SendMsgClass4 jsobject = new SendMsgClass4();
 
-                jsobject.param1 = seller.Name;
+                jsobject.param1 = string.IsNullOrEmpty(seller.Name) ? "商户名称为空" : seller.Name;
                 jsobject.param2 = item.Money.ToString();
                 jsobject.param3 = "3~5";
                 jsobject.param4 = Utility._3vurl;

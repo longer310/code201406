@@ -175,7 +175,7 @@ namespace Backstage.Handler
             //Utility.SendMsg(verificationCode.Code, verificationCode.Phone, Utility._register_message);
             {
                 SendMsgClass3 jsobject = new SendMsgClass3();
-                jsobject.param1 = merchant.Name;
+                jsobject.param1 = string.IsNullOrEmpty(merchant.Name) ? "商户名称为空" : merchant.Name;
                 jsobject.param2 = verificationCode.Code;
                 jsobject.param3 = "30";
 
@@ -1112,10 +1112,12 @@ namespace Backstage.Handler
             if (Utility._msg_opensend == "1")
             {
                 SendMsgClass4 jsobject = new SendMsgClass4();
-                jsobject.param1 = string.IsNullOrEmpty(user.UserName) ? user.Phone : user.UserName;
+                jsobject.param1 = string.IsNullOrEmpty(user.UserName)
+                    ? string.IsNullOrEmpty(user.Phone) ? "用户名为空" : user.Phone
+                    : user.UserName;
                 jsobject.param2 = verificationCode.Code;
                 jsobject.param3 = "30";
-                jsobject.param4 = string.IsNullOrEmpty(merchant.Name) ? "" : merchant.Name;
+                jsobject.param4 = string.IsNullOrEmpty(merchant.Name) ? "商户名称为空" : merchant.Name;
 
                 if (Utility.SendMsg(verificationCode.Phone, MsgTempleId.UserModifyPwd, jsobject) != "发送成功")
                 {
@@ -1292,7 +1294,7 @@ namespace Backstage.Handler
             //Utility.SendMsg(verificationCode.Code, verificationCode.Phone, Utility._modifyphone_message);
             {
                 SendMsgClass3 jsobject = new SendMsgClass3();
-                jsobject.param1 = merchant.Name;
+                jsobject.param1 = string.IsNullOrEmpty(merchant.Name) ? "商户名称为空" : merchant.Name;
                 jsobject.param2 = verificationCode.Code;
                 jsobject.param3 = "30";
 
@@ -1721,7 +1723,7 @@ namespace Backstage.Handler
             if (Utility._msg_opensend == "1")
             {
                 SendMsgClass3 jsobject = new SendMsgClass3();
-                jsobject.param1 = merchant.Name;
+                jsobject.param1 = string.IsNullOrEmpty(merchant.Name) ? "商户名称为空" : merchant.Name;
                 jsobject.param2 = verificationCode.Code;
                 jsobject.param3 = "30";
 

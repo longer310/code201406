@@ -857,9 +857,11 @@ namespace Backstage.Handler
                     {
                         //发送短信给商户
                         SendMsgClass5 jsobject = new SendMsgClass5();
-                        jsobject.param1 = merchant.Name;
+                        jsobject.param1 = string.IsNullOrEmpty(merchant.Name) ? "商户名称为空" : merchant.Name;
                         jsobject.param2 = Utility._domainurl + "/view/dev/Index.aspx";
-                        jsobject.param3 = user.UserName;
+                        jsobject.param3 = string.IsNullOrEmpty(user.UserName)
+                            ? string.IsNullOrEmpty(user.Phone) ? "用户名为空" : user.Phone
+                            : user.UserName;
                         jsobject.param4 = user.Pwd;
                         jsobject.param5 = Utility._3vurl;
 

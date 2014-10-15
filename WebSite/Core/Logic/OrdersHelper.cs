@@ -243,7 +243,7 @@ namespace Backstage.Core.Logic
                         {
                             //订单付款  通知商户 有两个地方有
                             SendMsgClass3 jsobject = new SendMsgClass3();
-                            jsobject.param1 = merchant.Name;
+                            jsobject.param1 = string.IsNullOrEmpty(merchant.Name) ? "商户名称为空" : merchant.Name;
                             jsobject.param2 = orders.Id.ToString();
                             jsobject.param3 = Utility._domainurl + "/view/dev/Index.aspx";
 
@@ -261,7 +261,7 @@ namespace Backstage.Core.Logic
                                 jsobject2.param1 = string.IsNullOrEmpty(user.UserName) ? user.Phone : user.UserName;
                                 jsobject2.param2 = orders.Id.ToString();
                                 jsobject2.param3 = orders.TotalPrice.ToString();
-                                jsobject2.param4 = merchant.Name;
+                                jsobject2.param4 = string.IsNullOrEmpty(merchant.Name) ? "商户名称为空" : merchant.Name;
 
                                 if (Utility.SendMsg(user.Phone, MsgTempleId.OrdersFinish, jsobject2) != "发送成功")
                                 {

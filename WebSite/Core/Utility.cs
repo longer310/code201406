@@ -444,15 +444,15 @@ namespace Backstage.Core
             if (!url.ToLower().Contains("bg") && !url.ToLower().Contains("file") && !url.ToLower().Contains("images")) return url;//第三方的地址，直接返回，不做尺寸处理
             var index = url.LastIndexOf('.');
             var gindex = url.LastIndexOf('/');
-            if(gindex == -1)
+            if (gindex == -1)
                 gindex = url.LastIndexOf('\\');
             if (index < 0) return url;
             var result = "";
-            if(ifloginad == 0)
+            if (ifloginad == 0)
                 result = url.Substring(0, index) + "_" + width + "x" + height + url.Substring(index);
             else
             {
-                result = url.Substring(0, gindex+1) + width + "x" + height + url.Substring(index);
+                result = url.Substring(0, gindex + 1) + width + "x" + height + url.Substring(index);
             }
             if (needcheck == 1)
             {
@@ -487,14 +487,14 @@ namespace Backstage.Core
                         i++;
                     }
                     var filePath = "../../";
-                    for (int j = i+1; j < alist.Count(); j++)
+                    for (int j = i + 1; j < alist.Count(); j++)
                     {
                         filePath += alist[j] + "/";
                     }
                     filePath = filePath.TrimEnd("/".ToCharArray());
-                    
+
                     if (context != null) filePath = context.Server.MapPath(filePath);
-                    MakeThumNail(filePath, width, height,1);
+                    MakeThumNail(filePath, width, height, 1);
                 }
             }
             return result;
@@ -582,11 +582,11 @@ namespace Backstage.Core
         /// <returns></returns>
         public static string SendMsg(string mobile, MsgTempleId templeId, object jsobject)
         {
-            var access_token = GetAccessToken();
-            if (access_token == string.Empty) return "获取access_token出错";
-
             try
             {
+                var access_token = GetAccessToken();
+                if (access_token == string.Empty) return "获取access_token出错";
+
                 string url = "http://api.189.cn/v2/emp/templateSms/sendSms";
                 SortedDictionary<string, string> parameters = new SortedDictionary<string, string>();
                 parameters.Add("app_id", _app_id);
@@ -608,6 +608,9 @@ namespace Backstage.Core
             }
             catch (Exception ex)
             {
+                logger.ErrorFormat("发送短信失败：{0}", ex.Message);
+                logger.ErrorFormat("mobile:{0},templeId：{1},jsobject:{2}", mobile, (int)templeId,
+                    JsonConvert.SerializeObject(jsobject));
                 return "发送短信失败";
             }
         }
@@ -643,6 +646,7 @@ namespace Backstage.Core
             }
             catch (Exception ex)
             {
+                logger.ErrorFormat("发送短信失败：{0}", ex.Message);
                 return string.Empty;
             }
         }
@@ -744,7 +748,7 @@ namespace Backstage.Core
             if (url.StartsWith("/bg/File") || url.StartsWith("/bg/file"))
                 url = _onlydomainurl + url;
             if (string.IsNullOrEmpty(url))
-                url = _userdefaulthead; 
+                url = _userdefaulthead;
             return url;
         }
         public static List<string> GetPhoneNeedUrlList(List<string> urls)
@@ -764,7 +768,6 @@ namespace Backstage.Core
         #region 无线打印发送
         public static bool SendOrdersMsgToPrint(Orders orders)
         {
-
             var merchant = MerchantHelper.GetMerchant(orders.SellerId);
             if (merchant == null) return false;
             if (string.IsNullOrEmpty(merchant.MachineCode) || string.IsNullOrEmpty(merchant.MachineKey)) return false;
@@ -776,20 +779,29 @@ namespace Backstage.Core
             sb.AppendFormat("【{0}】{1}\n", merchanttype.Name, ordertypename);
 
             sb.AppendFormat("订单号：{0}\n", orders.Id);
-            sb.AppendFormat("订单类型：{0}\n", ordertypename);
+            if (merchant.MerType == MerchantTypes.Food) sb.AppendFormat("订单类型：{0}\n", ordertypename);
             sb.AppendFormat("订单时间：{0}\n", orders.CreateTime.ToString("yyyy-MM-dd hh:mm:ss"));
+            if (orders.OrderType == OrderType.Shop)
+                sb.AppendFormat("到店时间：{0}\n", orders.OrderTime.ToString("yyyy-MM-dd hh:mm:ss"));
 
             sb.Append("【收货信息】\n");
             sb.AppendFormat("联系人：{0}\n", orders.LinkMan);
             sb.AppendFormat("联系电话：{0}\n", orders.Mobile);
-            sb.AppendFormat("地址：{0}\n", orders.Address);
+            if ((merchant.MerType == MerchantTypes.Food && orders.OrderType != OrderType.Shop) ||
+                merchant.MerType == MerchantTypes.Company)
+                sb.AppendFormat("地址：{0}\n", orders.Address);
+            else if (merchant.MerType == MerchantTypes.Night)
+            {
+                sb.AppendFormat("包厢号：{0}\n", orders.Boxno);
+            }
 
             sb.Append("【订单详情】\n");
             sb.Append("******************************\n");
             var i = 0;
             foreach (var order in orders.GidList)
             {
-                sb.AppendFormat("{0}   {1}   {2}\n", i + 1, orders.TitleList[i], orders.NumList[i]);
+                sb.AppendFormat("{0}   {1}份   {2}元\n"
+                    , orders.TitleList[i], orders.NumList[i], orders.NumList[i] * orders.NowPriceList[i]);
                 i++;
             }
             sb.Append("******************************\n");
@@ -1005,7 +1017,7 @@ namespace Backstage.Core
             graphic.DrawImage(originalImage, new System.Drawing.Rectangle(0, 0, thumWidth, thumHeight), new System.Drawing.Rectangle(x, y, originalWidth, originalHeight), System.Drawing.GraphicsUnit.Pixel);
             try
             {
-                
+
                 //新建bmp图片副本
                 bitmap.Save(thumNailPath, System.Drawing.Imaging.ImageFormat.Jpeg);
             }
@@ -1023,6 +1035,7 @@ namespace Backstage.Core
 
         # endregion
 
+        #region 获取图片高度
         internal static int GetImgHeight(string url, HttpContext context)
         {
             var alist = url.Split(new char[] { '/' }, StringSplitOptions.RemoveEmptyEntries);
@@ -1049,5 +1062,6 @@ namespace Backstage.Core
 
             return heght;
         }
+        #endregion
     }
 }

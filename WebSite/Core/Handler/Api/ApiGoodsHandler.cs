@@ -517,7 +517,7 @@ namespace Backstage.Handler
             var userlist = AccountHelper.GetUserList(wheresql, "", start * limit, limit).Results;
 
             var data = new CommentResponse();
-            data.commentnum = totalcount;
+            data.commentnum = commentResult.TotalCount;
             foreach (var comment in commentlist)
             {
                 var item = new CommentItem();

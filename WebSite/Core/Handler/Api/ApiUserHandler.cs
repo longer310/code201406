@@ -629,7 +629,7 @@ namespace Backstage.Handler
             data.name = merchant.Name;
             data.address = merchant.Address;
             data.phone = merchant.Phone;
-            data.description = merchant.Description;
+            data.description = Utility.GetNoHtmlStr(merchant.Description);
             data.mapurl = merchant.Mapurl;
             data.appid = merchant.AppId;
             data.appsecret = merchant.AppSecret;

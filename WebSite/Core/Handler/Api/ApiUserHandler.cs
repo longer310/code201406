@@ -112,6 +112,9 @@ namespace Backstage.Handler
                 case "thirdbindphone"://第三方绑定手机 7.29
                     ThirdBindPhone();
                     break;
+                case "getversioninfo"://获取商户app版本信息 7.30
+                    GetVersionInfo();
+                    break;
                 default: break;
             }
         }
@@ -1806,6 +1809,55 @@ namespace Backstage.Handler
             {
                 ReturnCorrectMsg("重绑定手机号码失败");
             }
+        }
+        #endregion
+
+        #region 商户app版本信息 7.30
+        public class VersionInfoData
+        {
+            /// <summary>
+            /// IOS版本号
+            /// </summary>
+            public string iosversion { get; set; }
+            /// <summary>
+            /// IOS最新下载地址
+            /// </summary>
+            public string iosurl { get; set; }
+            /// <summary>
+            /// Android版本号
+            /// </summary>
+            public string androidversion { get; set; }
+            /// <summary>
+            /// Android最新下载地址
+            /// </summary>
+            public string androidurl { get; set; }
+        }
+        public void GetVersionInfo()
+        {
+            var sellerid = GetInt("sellerid");
+
+            var user = AccountHelper.GetUser(sellerid);
+            if (user == null || user.RoleType != RoleType.Merchant)
+            {
+                ReturnErrorMsg("不存在该商户");
+                return;
+            }
+
+            var merchant = MerchantHelper.GetMerchant(sellerid);
+            if (merchant == null)
+            {
+                ReturnErrorMsg("没有商户信息");
+                return;
+            }
+
+            var data = new VersionInfoData();
+            data.iosversion = merchant.IosVersion;
+            data.iosurl = merchant.IosUrl;
+            data.androidversion = merchant.AndroidVersion;
+            data.androidurl = merchant.AndroidUrl;
+
+            //返回信息
+            ReturnCorrectData(data);
         }
         #endregion
     }

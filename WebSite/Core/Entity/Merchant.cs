@@ -271,6 +271,8 @@ namespace Backstage.Core.Entity
             ServerEndTime = DateTime.Now;
             CreateTime = DateTime.Now;
             CnameList = new List<string>();
+            IosVersion = "0";
+            AndroidVersion = "0";
             Sid = 1;//默认一个签约id
         }
 

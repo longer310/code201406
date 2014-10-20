@@ -21,7 +21,7 @@
                 <div class="widget-content">
                     <form action="#" method="get" class="form-horizontal" id="j-ad-addForm" />
                     <div class="control-group">
-                        <label class="control-label">图片 <b class="text-error">*640x1138</b></label>
+                        <label class="control-label">图片<b class="text-error">640x1138(png格式！)</b></label>
                         <div class="controls">
 
                             <a class="btn btn-info j-btn-imageUpload" href="javascript:;"><i class="icon-folder-open icon-white"></i>本地上传</a>
@@ -370,7 +370,7 @@
                     //图片上传编辑
                     mpage.image_editor = image_editor = K.editor({
                         uploadJson: '<%=DomainUrl %>/Handler/FileManager/UploadHandler.ashx?type=107&sellerid=' + sellerId,
-                        fileManagerJson: '<%=DomainUrl %>/Handler/FileManager/FileManagerHandler.ashx?type=0&sellerid=' + sellerId,
+                        fileManagerJson: '<%=DomainUrl %>/Handler/FileManager/FileManagerHandler.ashx?type=107&sellerid=' + sellerId,
                     });
                     //图片上传编辑
                     mpage.image_editor_homeslide = image_editor_homeslide = K.editor({

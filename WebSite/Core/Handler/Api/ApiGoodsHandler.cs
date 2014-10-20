@@ -877,6 +877,8 @@ namespace Backstage.Handler
             orders.SendPrice = 0;
             orders.FreeSendPrice = 100;
             //orders.SendPrice = 5;
+
+            orders.SellerId = sellerId;
             var merchant = MerchantHelper.GetMerchant(orders.SellerId);
             orders.HasDelivery = 0;
             if (merchant != null)
@@ -885,8 +887,6 @@ namespace Backstage.Handler
                 orders.FreeSendPrice = merchant.NeedToFreeFreight;
                 orders.HasDelivery = merchant.HasDelivery;
             }
-
-            orders.SellerId = sellerId;
 
             var orderid = OrdersHelper.SaveOrders(orders);
             if (orderid == 0)

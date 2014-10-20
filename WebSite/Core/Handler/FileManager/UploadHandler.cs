@@ -51,16 +51,22 @@ namespace Backstage.Handler
 
             //文件保存目录路径
             String savePath = "../../File/" + userFileName + "/";// "../attached/";
+            UploadType type = (UploadType)Convert.ToInt32(context.Request.QueryString["type"]);
 
             //文件保存目录URL
             String saveUrl = Utility._domainurl + "/File/" + userFileName + "/"; ;// "../attached/";
 
             //定义允许上传的文件扩展名
             Hashtable extTable = new Hashtable();
-            extTable.Add("image", "gif,jpg,jpeg,png,bmp");
-            extTable.Add("flash", "swf,flv");
-            extTable.Add("media", "swf,flv,mp3,wav,wma,wmv,mid,avi,mpg,asf,rm,rmvb");
-            extTable.Add("file", "doc,docx,xls,xlsx,ppt,htm,html,txt,zip,rar,gz,bz2,apk,ipa");
+            if (type == UploadType.MerchantLoginAd)
+                extTable.Add("image","png");
+            else
+            {
+                extTable.Add("image", "gif,jpg,jpeg,png,bmp");
+                extTable.Add("flash", "swf,flv");
+                extTable.Add("media", "swf,flv,mp3,wav,wma,wmv,mid,avi,mpg,asf,rm,rmvb");
+                extTable.Add("file", "doc,docx,xls,xlsx,ppt,htm,html,txt,zip,rar,gz,bz2,apk,ipa");
+            }
 
             //最大文件大小
             int maxSize = 1073741824;
@@ -112,7 +118,6 @@ namespace Backstage.Handler
             {
                 Directory.CreateDirectory(dirPath);
             }
-            UploadType type = (UploadType)Convert.ToInt32(context.Request.QueryString["type"]);
             //管理员素材库统一到一个文件夹即可 登录页大图IOS那边需要固定地址图片http://XXX/{sellerid}/XXX/1280x800.jpg
             if (isManager == 0 && type != UploadType.MerchantLoginAd)
             {

@@ -43,8 +43,17 @@ namespace Backstage.Handler
             String rootPath = "../../File/" + userFileName + "/"; ;// "../attached/";
             //根目录URL，可以指定绝对路径，比如 http://www.yoursite.com/attached/
             String rootUrl = Utility._domainurl + "/File/" + userFileName + "/"; ;//aspxUrl + "../attached/";
+            UploadType type = (UploadType)Convert.ToInt32(context.Request.QueryString["type"]);
             //图片扩展名
-            String fileTypes = "gif,jpg,jpeg,png,bmp";
+            String fileTypes = "";
+            if (type == UploadType.MerchantLoginAd)
+            {
+                fileTypes = "png";
+            }
+            else
+            {
+                fileTypes = "gif,jpg,jpeg,png,bmp";
+            }
 
             String currentPath = "";
             String currentUrl = "";
@@ -158,11 +167,21 @@ namespace Backstage.Handler
                 hash["is_dir"] = false;
                 hash["has_file"] = false;
                 hash["filesize"] = file.Length;
-                hash["is_photo"] = (Array.IndexOf(fileTypes.Split(','), file.Extension.Substring(1).ToLower()) >= 0);
+                bool isphoto = (Array.IndexOf(fileTypes.Split(','), file.Extension.Substring(1).ToLower()) >= 0);
+                hash["is_photo"] = isphoto;
                 hash["filetype"] = file.Extension.Substring(1);
                 hash["filename"] = file.Name;
                 hash["datetime"] = file.LastWriteTime.ToString("yyyy-MM-dd HH:mm:ss");
-                dirFileList.Add(hash);
+                if (type == UploadType.MerchantLoginAd)
+                {
+                    //只下发PNG的图片，在登录页上传图片的时候
+                    if (isphoto == true)
+                        dirFileList.Add(hash);
+                }
+                else
+                {
+                    dirFileList.Add(hash);
+                }
             }
             context.Response.AddHeader("Content-Type", "application/json; charset=UTF-8");
             context.Response.Write(JsonMapper.ToJson(result));

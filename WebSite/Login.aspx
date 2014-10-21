@@ -3,76 +3,106 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-    <meta http-equiv="content-type" content="text/html; charset=gb2312" />
-    <title>我的站点</title>
-    <link rel="stylesheet" href="css/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="css/css/bootstrap-responsive.min.css" />
-    <link rel="stylesheet" href="css/css/unicorn.main.css" />
-    <link rel="stylesheet" href="css/css/unicorn.grey.css" />
+    <title>Unicorn Admin</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="<%=DomainUrl %>/css/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="<%=DomainUrl %>/css/css/bootstrap-responsive.min.css" />
+    <link rel="stylesheet" href="<%=DomainUrl %>/css/css/unicorn.main.css" />
+    <link rel="stylesheet" href="<%=DomainUrl %>/css/css/unicorn.grey.css" />
     <!--页面样式-->
-    <link rel="stylesheet" href="css/css/unicorn.login.css" />
+    <link rel="stylesheet" href="<%=DomainUrl %>/css/css/unicorn.login.css" />
 </head>
 <body>
     <div id="logo">
-        APP 商户管理系统
+        <h1>APP 商户管理系统</h1>
     </div>
     <div id="loginbox">
-       
-        <div id="loginform" class="form-vertical">
-             <p>请输入用户名和密码</p>
-            <div class="control-group">
-                <div class="controls">
-                    <div class="input-prepend">
-                        <span class="add-on"><i class="icon-user"></i></span>
-                        <input type="text" id="txt-username" placeholder="用户名" />
-                    </div>
-                </div>
-            </div>
-            <div class="control-group">
-                <div class="controls">
-                    <div class="input-prepend">
-                        <span class="add-on"><i class="icon-lock"></i></span>
-                        <input type="password" id="txt-pwd" placeholder="密码" />
-                    </div>
-                </div>
-            </div>
-            <div class="form-actions">
-                <span class="pull-left"><a href="#" class="flip-link" id="to-recover">找回密码?</a></span>
-                <span class="tip-error" style="display:none;">请输入正确帐号和密码</span>
-                <span class="pull-right">
+        <form id="loginform" class="form-vertical" action="get">
 
-                    <input type="submit" id="login-submit" class="btn btn-inverse" value="登陆" />
+            <div class="control-group">
+                <div class="controls">
+                    <div class="user-input">
+                        <input id="txt-username" type="text" placeholder="用户名" /></div>
+                </div>
+            </div>
+            <div class="control-group">
+                <div class="controls">
+                    <div class="pw-input">
+                        <input id="txt-pwd" type="password" placeholder="密码" /></div>
+                </div>
+            </div>
+            <div class="actions clearfix">
+                <span class="tip-error" style="display:none;">请输入正确帐号和密码</span>
+                <span class="pull-left"><a href="#" class="flip-link" id="to-recover">找回密码?</a></span>
+                <span class="pull-right">
+                    <a href="#" id="login-submit" class="s-btn">登陆</a>
                 </span>
             </div>
-        </div>
-        <div id="recoverform" class="form-vertical">
-            <p>请输入您注册时填写的邮箱地址。</p>
+        </form>
+
+        <form id="recoverform" action="#" class="form-vertical">
             <div class="control-group">
                 <div class="controls">
-                    <div class="input-prepend">
-                        <span class="add-on"><i class="icon-envelope"></i></span>
-                        <input type="text" placeholder="邮箱" id="txt-mail" />
-                    </div>
+                    <div class="phone-input">
+                        <input id="txt-getusername" type="text" placeholder="输入用户名" /></div>
                 </div>
             </div>
-            <div class="form-actions">
-
-                <span class="pull-left"><a href="#" class="flip-link" id="to-login">&lt; 返回登陆</a></span>
-                <span class="pull-right">
-                    <input type="submit" id="get-user-submit" class="btn btn-inverse" value="提交" /></span>
+            <div class="control-group">
+                <div class="controls">
+                    <a class="btn-g" id="getcode-submit" href="#">手机获取验证码</a>
+                </div>
             </div>
-        </div>
+            <div class="control-group">
+                <div class="controls">
+                    <div class="user-input">
+                        <input id="txt-code" type="text" placeholder="输入验证码" /></div>
+                </div>
+            </div>
+            <div class="actions clearfix">
+
+                <span class="pull-left"><a href="#" class="flip-link" id="to-login">返回登陆？</a></span>
+                <span class="pull-right"><a href="#" class="s-btn" id="to-reset">下一步</a></span>
+            </div>
+        </form>
+
+        <form id="resetform" action="#" class="form-vertical">
+            <div class="control-group">
+                <div class="controls">
+                    <div class="pw-input">
+                        <input type="text" id="txt-newpwd" placeholder="新密码" /></div>
+                </div>
+            </div>
+            <div class="control-group">
+                <div class="controls">
+                    <div class="pw-input">
+                        <input type="text" id="txt-confirmpwd" placeholder="确认新密码" /></div>
+                </div>
+            </div>
+            <div class="actions clearfix">
+                <span class="pull-left"><a href="#" class="s-btn" id="back-recover">上一步</a></span>
+                <span class="pull-right">
+                    <a href="#" id="updatepwd-submit" class="s-btn">提交</a>
+                </span>
+            </div>
+        </form>
     </div>
+    <div id="footer"></div>
     <!--公用js-->
-    <script src="Script/js/jquery.min.js"></script>
-    <script src="Script/js/jquery.ui.custom.js"></script>
-    <script src="Script/js/bootstrap.min.js"></script>
-    <script src="Script/js/unicorn.js"></script>
-    <script src="Script/js/jquery.tmpl.min.js"></script>
-    <script src="Script/js/common.js"></script>
+    <script type="text/javascript" src="<%=DomainUrl %>/script/js/jquery.min.js"></script>
+    <script type="text/javascript" src="<%=DomainUrl %>/script/js/jquery.ui.custom.js"></script>
+    <script type="text/javascript" src="<%=DomainUrl %>/script/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="<%=DomainUrl %>/script/js/unicorn.js"></script>
+    <script type="text/javascript" src="<%=DomainUrl %>/script/js/jquery.tmpl.min.js"></script>
+    <script type="text/javascript" src="<%=DomainUrl %>/script/js/common.js"></script>
 
     <!--页面js-->
-    <script src="Script/view/unicorn.login.js"></script>
+    <script type="text/javascript" src="<%=DomainUrl %>/script/js/unicorn.login.js"></script>
+    <script type="text/javascript">
+
+        
+
+    </script>
 </body>
 
 </html>

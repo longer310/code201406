@@ -22,17 +22,25 @@ namespace Backstage.Handler
                     Logout(); break;
                 case "getUserList":
                     GetUserList(); break;
-                case "getpwd":
-                    GetPwd();
+                case "getcode":
+                    GetCode();
+                    break;
+                case "updatepwd":
+                    UpdatePwd();
                     break;
                 default: break;
             }
         }
 
-        private void GetPwd()
+        private void UpdatePwd()
         {
-            string mail = GetString("mail");
-            //AccountHelper.GetUser()
+            throw new NotImplementedException();
+        }
+
+        private void GetCode()
+        {
+            string phone = GetString("phone");
+            //var user = AccountHelper.GetUserByPhone(phone);
 
             //var mSmtpClient = new SmtpClient();
             ////mSmtpClient.Host = "smtp." + mMailMessage.From.Host;

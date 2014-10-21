@@ -858,7 +858,7 @@ namespace Backstage.Handler
                 orders.GidList.Add(goods.Id);
                 orders.ImgList.Add(goods.LogoUrl);
                 orders.TitleList.Add(goods.Title);
-                orders.ContentList.Add(goods.Content.Substring(0, 50));
+                orders.ContentList.Add(Utility.GetNoHtmlStr(goods.Content).Substring(0, 50));
                 orders.NowPriceList.Add(goods.Nowprice);
                 orders.OriginalPriceList.Add(goods.OriginalPrice);
                 var num = Utility.GetValueByList(gidlist, numlist, goods.Id);

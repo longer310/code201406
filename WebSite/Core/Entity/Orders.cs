@@ -163,9 +163,9 @@ namespace Backstage.Core.Entity
 
         public ReqOrderStatus GetReqStatus()
         {
-            if(OrderType == OrderType.WaitDelivery)
-                return ReqOrderStatus.Pay;
-            else if (OrderType == OrderType.Deliveryed)
+            //if(OrderType == OrderType.WaitDelivery)
+            //    return ReqOrderStatus.Pay;
+            if (OrderType == OrderType.Deliveryed)
                 return ReqOrderStatus.DeliverGoodsed;
             else if (Status == OrderStatus.Pay)
                 return ReqOrderStatus.Pay;

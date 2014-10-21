@@ -425,6 +425,15 @@ namespace Backstage.Core.Logic
             try
             {
                 var num = MySqlHelper.ExecuteNonQuery(Utility._gameDbConn, CommandType.Text, cmdText, parameters.ToArray());
+                if (isadd > 0)
+                {
+                    //添加商户默认会员
+                    cmdText = "insert into userlevel (SellerId) values(?SellerId)";
+                    parameters.Clear();
+                    parameters.Add(new MySqlParameter("?SellerId", merchant.Id));
+
+                    MySqlHelper.ExecuteNonQuery(Utility._gameDbConn, CommandType.Text, cmdText, parameters.ToArray());
+                }
                 return num > 0;
             }
             catch (System.Exception ex)

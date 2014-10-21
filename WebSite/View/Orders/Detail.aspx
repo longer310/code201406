@@ -101,6 +101,10 @@
 
     <script type="text/jquery-tmpl-x" id="j-tmpl-orderDetail-user">
 			<dl class="dl-horizontal muted">
+        {{if Type == 0}}
+                <dt>到店时间</dt>
+				<dd class="text-info">${OrderTime}</dd>
+        {{/if}}
 				<dt>收货地址</dt>
 				<dd class="text-info">${Address}</dd>
 				<dt>联系方式</dt>

@@ -145,6 +145,7 @@ namespace Backstage.Handler
             /// </summary>
             public float StotalPrice { get; set; }
             public float SendPrice { get; set; }
+            public string OrderTime { get; set; }
 
             public List<OrdersGoodsItem> list { get; set; }
 
@@ -204,6 +205,7 @@ namespace Backstage.Handler
             data.TotalPrice = orders.TotalPrice;
             data.StotalPrice = orders.StotalPrice;
             data.SendPrice = merchant.Freight;
+            data.OrderTime = orders.OrderTime.ToString("yyyy-M-d HH:mm:ss");
             //var merchantCfg = ParamHelper.GetMerchantCfgData(orders.SellerId, merchant.Name);
             //if (merchantCfg != null)
             //{

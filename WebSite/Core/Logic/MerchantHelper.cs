@@ -101,6 +101,7 @@ namespace Backstage.Core.Logic
                         }
                     }
                 }
+                return null;
             }
             catch (System.Exception ex)
             {

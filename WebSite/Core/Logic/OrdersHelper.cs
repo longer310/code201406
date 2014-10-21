@@ -247,10 +247,10 @@ namespace Backstage.Core.Logic
                             jsobject.param2 = orders.Id.ToString();
                             jsobject.param3 = Utility._domainurl + "/view/dev/Index.aspx";
 
-                            if (Utility.SendMsg(merchant.Phone, MsgTempleId.OrdersRemindMerchant, jsobject) != "发送成功")
+                            if (Utility.SendMsg(merchant.ManagerPhone, MsgTempleId.OrdersRemindMerchant, jsobject) != "发送成功")
                             {
                                 logger.InfoFormat("短信模板：{0},Phone:{3},发送失败OrdersId：{1},SellerId:{2}",
-                                    (int)MsgTempleId.OrdersRemindMerchant, orders.Id, orders.SellerId, merchant.Phone);
+                                    (int)MsgTempleId.OrdersRemindMerchant, orders.Id, orders.SellerId, merchant.ManagerPhone);
                             }
 
                             //通知会员

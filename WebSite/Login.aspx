@@ -23,18 +23,20 @@
             <div class="control-group">
                 <div class="controls">
                     <div class="user-input">
-                        <input id="txt-username" type="text" placeholder="用户名" /></div>
+                        <input id="txt-username" type="text" placeholder="用户名" />
+                    </div>
                 </div>
             </div>
             <div class="control-group">
                 <div class="controls">
                     <div class="pw-input">
-                        <input id="txt-pwd" type="password" placeholder="密码" /></div>
+                        <input id="txt-pwd" type="password" placeholder="密码" />
+                    </div>
                 </div>
             </div>
             <div class="actions clearfix">
-                <span class="tip-error" style="display:none;">请输入正确帐号和密码</span>
                 <span class="pull-left"><a href="#" class="flip-link" id="to-recover">找回密码?</a></span>
+                <span class="tip-error flip-link" style="display: none;color:red;">请输入正确帐号和密码</span>
                 <span class="pull-right">
                     <a href="#" id="login-submit" class="s-btn">登陆</a>
                 </span>
@@ -45,7 +47,8 @@
             <div class="control-group">
                 <div class="controls">
                     <div class="phone-input">
-                        <input id="txt-getusername" type="text" placeholder="输入用户名" /></div>
+                        <input id="txt-getusername" type="text" placeholder="输入用户名" />
+                    </div>
                 </div>
             </div>
             <div class="control-group">
@@ -56,7 +59,8 @@
             <div class="control-group">
                 <div class="controls">
                     <div class="user-input">
-                        <input id="txt-code" type="text" placeholder="输入验证码" /></div>
+                        <input id="txt-code" type="text" placeholder="输入验证码" />
+                    </div>
                 </div>
             </div>
             <div class="actions clearfix">
@@ -70,13 +74,15 @@
             <div class="control-group">
                 <div class="controls">
                     <div class="pw-input">
-                        <input type="text" id="txt-newpwd" placeholder="新密码" /></div>
+                        <input type="text" id="txt-newpwd" placeholder="新密码" />
+                    </div>
                 </div>
             </div>
             <div class="control-group">
                 <div class="controls">
                     <div class="pw-input">
-                        <input type="text" id="txt-confirmpwd" placeholder="确认新密码" /></div>
+                        <input type="text" id="txt-confirmpwd" placeholder="确认新密码" />
+                    </div>
                 </div>
             </div>
             <div class="actions clearfix">

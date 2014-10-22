@@ -164,8 +164,18 @@ namespace Backstage.Core.Handler.Backstage
             seller.AccountName = item.AccountName;
             float fee = ParamHelper.PlatformCfgData.SignList.FirstOrDefault(s => s.Id == seller.Sid).Prec * item.Money /100;
             item.Fee = fee;
+            if (seller.Money < item.Money - item.Fee)
+                ReturnErrorMsg("提现失败，没有这么多的资金可以提现");
             seller.Money = seller.Money - item.Money - item.Fee;
             MerchantHelper.SaveMerchant(seller);
+
+           
+
+            //提现表更新
+            item.Balance = seller.Money;
+            item.UserAccount = user.UserName;//存储商户账户
+            ExtractMoneyHelper.Create(item);
+            ReturnCorrectMsg(string.Format("提现{0}申请成功，手续费：{1}，请耐心等待后台人员处理", item.Money, item.Fee));
 
             //发短信
             if (Utility._msg_opensend == "1")
@@ -182,15 +192,10 @@ namespace Backstage.Core.Handler.Backstage
                 {
                     logger.InfoFormat("短信模板：{0},Phone:{3},发送失败merchantId：{1},Name:{2}",
                         (int)MsgTempleId.MerchantWithdraw, seller.Id, seller.Name, seller.Phone);
-                    ReturnErrorMsg("短信发送失败");
-                    return;
+                    //ReturnErrorMsg("短信发送失败");
+                    //return;
                 }
             }
-
-            //提现表更新
-            item.Balance = seller.Money;
-            item.UserAccount = user.UserName;//存储商户账户
-            ExtractMoneyHelper.Create(item);
             ReturnCorrectMsg(string.Format("提现{0}申请成功，手续费：{1}，请耐心等待后台人员处理", item.Money, item.Fee));
         }
 

@@ -49,9 +49,9 @@
 					<td>￥${v.Money}</td>
                     <td>￥${v.Fee}</td>
 					<td>￥${v.Balance}</td>
-					<td>￥${v.Bank}</td>
-					<td>￥${v.CardNumber}</td>
-					<td>￥${v.Status}</td>
+					<td>${v.Bank}</td>
+					<td>${v.CardNumber}</td>
+					<td>${v.Status}</td>
 				</tr>
 			{{/each}}
         </script>

@@ -164,8 +164,12 @@ namespace Backstage.Core.Handler.Backstage
             seller.AccountName = item.AccountName;
             float fee = ParamHelper.PlatformCfgData.SignList.FirstOrDefault(s => s.Id == seller.Sid).Prec * item.Money /100;
             item.Fee = fee;
-            if (seller.Money < item.Money - item.Fee)
-                ReturnErrorMsg("提现失败，没有这么多的资金可以提现");
+            if (seller.Money < (item.Money + item.Fee))
+            {
+                ReturnErrorMsg(string.Format("提现失败，没有这么多的资金可以提现，提现金额:{0}，手续费:{1}", item.Money, item.Fee));
+                return;
+            }
+                
             seller.Money = seller.Money - item.Money - item.Fee;
             MerchantHelper.SaveMerchant(seller);
 

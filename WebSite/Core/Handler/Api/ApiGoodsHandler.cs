@@ -374,7 +374,7 @@ namespace Backstage.Handler
                 gitem.originalprice = goods.OriginalPrice;
                 gitem.sales = goods.Sales;
                 gitem.score = goods.Score;
-                gitem.content = goods.Content;
+                gitem.content = Utility.GetNoHtmlStr(goods.Content);
                 //gitem.cid = goods.Cid;
                 if (favorite != null && favorite.GidList.Contains(goods.Id))
                     gitem.isfav = 1;
@@ -453,7 +453,7 @@ namespace Backstage.Handler
             data.originalprice = goods.OriginalPrice;
             data.sales = goods.Sales;
             data.tag = goods.Tag;
-            data.content = goods.Content;
+            data.content = Utility.GetNoHtmlStr(goods.Content);
             if (favorite != null && favorite.GidList.Contains(goods.Id))
                 data.isfav = 1;
             data.favcount = goods.FavCount;
@@ -1172,7 +1172,7 @@ namespace Backstage.Handler
                         if (orders.TotalPrice >= coupon.FullMoney)
                             discount = coupon.DiscountMoney;
                         orders.Ccontent = coupon.Description;
-                            //string.Format("满{0}减{1}元电子券", coupon.FullMoney, coupon.DiscountMoney);
+                        //string.Format("满{0}减{1}元电子券", coupon.FullMoney, coupon.DiscountMoney);
                     }
                     coupon.UsedTimes++;
                     CouponHelper.Update(coupon);
@@ -1181,7 +1181,7 @@ namespace Backstage.Handler
                     orders.TotalPrice -= discount;
                     orders.CtotalPrice = discount;
                     orders.CouponTitle = coupon.Title;
-                    if (string.IsNullOrEmpty(orders.CouponTitle)) 
+                    if (string.IsNullOrEmpty(orders.CouponTitle))
                         orders.CouponTitle = string.Format("满{0}减{1}元电子券", coupon.FullMoney, coupon.DiscountMoney);
                     if (orders.TotalPrice < 0) orders.TotalPrice = 0;
                 }

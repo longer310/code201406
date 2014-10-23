@@ -150,7 +150,9 @@ namespace Backstage.Core.Handler.Backstage
             var user = AccountHelper.GetUser(item.SellerId);
             if (user == null)
                 throw new ArgumentNullException("user为空：" + item.SellerId);
-
+            if(item.CardNumber <= 0 || item.Bank.Length < 1 || item.AccountName.Length < 1) 
+                ReturnErrorMsg("提现失败，卡号、开户行、开户名等信息是必填项，请填写正确");
+                
            
             //目前商户的用户信息分三张表存储
             //提现确认打款后才扣钱

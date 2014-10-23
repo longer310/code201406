@@ -780,6 +780,11 @@ namespace Backstage.Handler
 
             var user = new Account();
 
+            if (MerchantHelper.JudgeMerchant(merchantinfo.Name, merchantinfo.Id))
+            {
+                ReturnErrorMsg(string.Format("已存在名称为【{0}】的商户", merchantinfo.Name));
+                return;
+            }
             var id = merchantinfo.Id;
             if (id == 0)
             {
@@ -788,6 +793,8 @@ namespace Backstage.Handler
                 user.RoleType = RoleType.Merchant;
                 user.Phone = merchantinfo.Phone;
                 user.Address = merchantinfo.Address;
+
+
 
                 merchantinfo.Id = AccountHelper.SaveAccount(user);
             }

@@ -1128,6 +1128,7 @@ namespace Backstage.Handler
                 return;
             }
 
+            orders.TotalPrice -= orders.SendPrice;
             if (orders.OrderType == OrderType.Shop)
             {
                 orders.SendPrice = 0;

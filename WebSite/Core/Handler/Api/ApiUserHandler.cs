@@ -345,6 +345,17 @@ namespace Backstage.Handler
                 ReturnErrorMsg(string.Format("不存在id为{0}的商户", sellerid));
                 return;
             }
+            if (string.IsNullOrEmpty(username))
+            {
+                ReturnErrorMsg("会员名称不能为空");
+                return;
+            }
+            var auser = AccountHelper.FindUser(username);
+            if (auser != null)
+            {
+                ReturnErrorMsg(string.Format("已存在名称为【{0}】的会员", auser.UserName));
+                return;
+            }
 
             var userbinding = AccountBindingHelper.GetAccountBindingByIdentity(openid, sellerid);
             var user = new Account();
@@ -1396,6 +1407,7 @@ namespace Backstage.Handler
                 return;
             }
             var data = new UserInfoData();
+            data.uid = uid;
             data.username = user.UserName;
             data.nickname = user.NickName;
             data.phone = user.Phone;

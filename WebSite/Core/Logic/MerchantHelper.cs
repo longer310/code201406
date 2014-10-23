@@ -12,6 +12,30 @@ namespace Backstage.Core.Logic
     public static class MerchantHelper
     {
         /// <summary>
+        /// 判断是否存在该名称商户
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public static bool JudgeMerchant(string name, int id)
+        {
+            var cmdText = string.Format("select * from Merchant where name='{0}' and id<>{1} limit 1;", name, id);
+            try
+            {
+                using (var conn = Utility.ObtainConn(Utility._gameDbConn))
+                {
+                    MySqlDataReader reader = MySqlHelper.ExecuteReader(conn, CommandType.Text, cmdText);
+                    return reader.HasRows;
+                }
+                return false;
+            }
+            catch (System.Exception ex)
+            {
+                throw;
+            }
+            return false;
+        }
+        /// <summary>
         /// 获取商户信息
         /// </summary>
         /// <param name="id"></param>
@@ -116,7 +140,7 @@ namespace Backstage.Core.Logic
         /// <param name="merchant"></param>
         /// <param name="isAdd"></param>
         /// <returns></returns>
-        public static bool SaveMerchant(Merchant merchant,int isadd = 0)
+        public static bool SaveMerchant(Merchant merchant, int isadd = 0)
         {
             var cmdText = string.Empty;
             List<MySqlParameter> parameters = new List<MySqlParameter>();
@@ -376,7 +400,7 @@ namespace Backstage.Core.Logic
                 parameters.Add(new MySqlParameter("?IosUrl", merchant.IosUrl));
                 parameters.Add(new MySqlParameter("?WxUrl", merchant.WxUrl));
                 parameters.Add(new MySqlParameter("?WxQRCode", merchant.WxQRCode));
-                
+
                 parameters.Add(new MySqlParameter("?PointX", merchant.PointX));
                 parameters.Add(new MySqlParameter("?PointY", merchant.PointY));
 

@@ -317,7 +317,8 @@ namespace Backstage.Handler
             var sourceId = DateTime.Today.GetUnixTime();
             if (ExtcreditLogHelper.JudgeExtcreditGet(ExtcreditSourceType.Register, sourceId, user.Id))
                 data.signin = 1;
-            data.signintegral = ParamHelper.ExtcreditCfgData.Register;
+            var setting = SystemHelper.GetMerchantExtend(data.sellerid);
+            data.signintegral = setting != null ? setting.RegisteIntegaral : 0;
 
             //修改登录次数
             user.TotalLoginCount++;
@@ -343,17 +344,6 @@ namespace Backstage.Handler
             if (merchant == null)
             {
                 ReturnErrorMsg(string.Format("不存在id为{0}的商户", sellerid));
-                return;
-            }
-            if (string.IsNullOrEmpty(username))
-            {
-                ReturnErrorMsg("会员名称不能为空");
-                return;
-            }
-            var auser = AccountHelper.FindUser(username);
-            if (auser != null)
-            {
-                ReturnErrorMsg(string.Format("已存在名称为【{0}】的会员", auser.UserName));
                 return;
             }
 
@@ -420,7 +410,8 @@ namespace Backstage.Handler
             var sourceId = DateTime.Today.GetUnixTime();
             if (ExtcreditLogHelper.JudgeExtcreditGet(ExtcreditSourceType.Register, sourceId, user.Id))
                 data.signin = 1;
-            data.signintegral = ParamHelper.ExtcreditCfgData.Register;
+            var setting = SystemHelper.GetMerchantExtend(data.sellerid);
+            data.signintegral = setting != null ? setting.RegisteIntegaral : 0;
 
             //修改登录次数
             user.TotalLoginCount++;
@@ -1407,7 +1398,7 @@ namespace Backstage.Handler
                 return;
             }
             var data = new UserInfoData();
-            data.uid = uid;
+            data.uid = user.Id;
             data.username = user.UserName;
             data.nickname = user.NickName;
             data.phone = user.Phone;
@@ -1419,7 +1410,9 @@ namespace Backstage.Handler
             var sourceId = DateTime.Today.GetUnixTime();
             if (ExtcreditLogHelper.JudgeExtcreditGet(ExtcreditSourceType.Register, sourceId, uid))
                 data.signin = 1;
-            data.signintegral = ParamHelper.ExtcreditCfgData.Register;
+            var setting = SystemHelper.GetMerchantExtend(data.sellerid);
+
+            data.signintegral = setting != null ? setting.RegisteIntegaral : 0;
 
             //返回信息
             ReturnCorrectData(data);
@@ -1448,11 +1441,13 @@ namespace Backstage.Handler
             var sourceId = DateTime.Today.GetUnixTime();
             if (!ExtcreditLogHelper.JudgeExtcreditGet(ExtcreditSourceType.Register, sourceId, uid))
             {
+                var setting = SystemHelper.GetMerchantExtend(user.SellerId);
+
                 //积分获得
                 log.UserId = uid;
                 log.SellerId = user.SellerId;
                 log.SourceId = sourceId;
-                log.Extcredit = ParamHelper.ExtcreditCfgData.Register;
+                log.Extcredit = setting != null ? setting.RegisteIntegaral : 0;
                 log.Type = ExtcreditSourceType.Register;
 
                 ExtcreditLogHelper.AddExtcreditLog(log);

@@ -78,6 +78,13 @@
 								
                         </div>
                     </div>
+                    <div class="control-group">
+                        <div class="controls">
+                            <label class="inline">签到积分</label>
+                            <input type="text" value="3" class="input-small" id="j-registe" />
+                            分 
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -182,10 +189,11 @@
                         levels: mpage.getsubmitLevels(),
                         cmi: $("#j-comment").val(),
                         costi: $("#j-cost").val(),
-                        ri: $("#j-charge").val(),
+                        ci: $("#j-charge").val(),
                         si: $("#j-share").val(),
                         fe: $("#j-freight").val(),
-                        nffe: $("#j-freefreight").val()
+                        nffe: $("#j-freefreight").val(),
+                        ri: $("#j-registe").val()
                     };
 
                     $.ajax({
@@ -201,16 +209,6 @@
                 });
 
                 mpage.initForm();
-                $.ajax({
-                    url: "../../Handler/Api/ApiGoodsHandler.ashx?action=getpageinfo",
-                    type: "POST",
-                    data: { sellerid: 100 },
-                    dataType: "json"
-                    //context: document.body
-                }).success(function (data) {
-                    console.log(data);
-                });
-
             },
             getsubmitLevels: function () {
                 var $arr = $(".css-levels");
@@ -259,6 +257,7 @@
                     $("#j-level_count").val(data.data.Userlevels.length);
                     $("#j-freight").val(data.data.Freight);
                     $("#j-freefreight").val(data.data.NeedToFreeFreight);
+                    $("#j-registe").val(data.data.RegisteIntegaral);
                     mpage.addLevel(data.data.Userlevels);
                 });
             },

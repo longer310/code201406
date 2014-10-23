@@ -141,7 +141,8 @@ namespace Backstage.Core.Handler
                 log.UserId = userId;
                 log.SellerId = user.SellerId;
                 log.SourceId = imgId;
-                log.Extcredit = ParamHelper.ExtcreditCfgData.Comment;
+                var setting = SystemHelper.GetMerchantExtend(user.SellerId);
+                log.Extcredit = setting != null ? setting.CommentIntegral : 0;
                 log.Type = ExtcreditSourceType.CommentImg;
                 log.CreateTime = DateTime.Now;
 

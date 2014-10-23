@@ -617,6 +617,7 @@
     <Compile Include="Core\Alipay\MD5.cs" />
     <Compile Include="Core\Alipay\RSA.cs" />
     <Compile Include="Core\Entity\ImgSizeCfg.cs" />
+    <Compile Include="Core\Entity\MerchantExtend.cs" />
     <Compile Include="Core\Entity\RechargeMonthStatistics.cs" />
     <Compile Include="Core\Entity\RechargeDateStatistics.cs" />
     <Compile Include="Core\Entity\Fastlinks.cs" />

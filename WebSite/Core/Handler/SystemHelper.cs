@@ -294,6 +294,99 @@ namespace Backstage.Core.Handler
             return results;
         }
 
-        
+        public static MerchantExtend GetMerchantExtend(int sellerId)
+        {
+            string cmd = @"select * from merchantextend where sellerId=?sellerId";
+
+            List<MySqlParameter> parameters = new List<MySqlParameter>();
+            parameters.Add(new MySqlParameter("?sellerId", sellerId));
+            MerchantExtend item = null;
+            try
+            {
+                using (var conn = Utility.ObtainConn(Utility._gameDbConn))
+                {
+                    MySqlDataReader reader = MySqlHelper.ExecuteReader(conn, CommandType.Text, cmd, parameters.ToArray());
+                    while (reader.Read())
+                    {
+                        item.SellerId = (int)reader["SellerId"];
+                        item.ChargeIntegral = (int)reader["ChargeIntegral"];
+                        item.CommentIntegral = (int)reader["CommentIntegral"];
+                        item.ConsumeIntegral = (int)reader["ConsumeIntegral"];
+                        item.RegisteIntegaral = (int)reader["RegisteIntegaral"];
+                        item.ShareIntegral = (int)reader["ShareIntegral"];
+                    }
+                }
+
+            }
+            catch (System.Exception ex)
+            {
+                throw;
+            }
+            return item;
+        }
+
+        public static void CreateMerchantExtend(MerchantExtend extend)
+        {
+            string connectionString = GlobalConfig.DbConn;
+            string commandText = @"INSERT INTO merchantextend 
+        	                                (
+         	                                SellerId, 
+        	                                Title, 
+        	                                PushType,
+        	                                Content, 
+        	                                TypeId,
+        	                                CreateTime
+        	                                )
+        	                                VALUES
+        	                                ( 
+      	                                    ?SellerId,
+        	                                ?Title, 
+        	                                ?PushType,
+        	                                ?Content, 
+        	                                ?TypeId,
+        	                                ?CreateTime
+        	                                )";
+
+            List<MySqlParameter> parameters = new List<MySqlParameter>();
+            parameters.Add(new MySqlParameter("?SellerId", extend.SellerId));
+            parameters.Add(new MySqlParameter("?ChargeIntegral", extend.ChargeIntegral));
+            parameters.Add(new MySqlParameter("?CommentIntegral", extend.CommentIntegral));
+            parameters.Add(new MySqlParameter("?ConsumeIntegral", extend.ConsumeIntegral));
+            parameters.Add(new MySqlParameter("?RegisteIntegaral", extend.RegisteIntegaral));
+            parameters.Add(new MySqlParameter("?ShareIntegral", extend.ShareIntegral));
+
+            MySqlHelper.ExecuteNonQuery(connectionString, CommandType.Text, commandText, parameters.ToArray());
+        }
+
+        public static void UpdateMerchantExtend(MerchantExtend extend)
+        {
+            string commandText = @"UPDATE merchantextend SET
+                                        ChargeIntegral = ?ChargeIntegral,
+                                        CommentIntegral = ?CommentIntegral,
+                                        RegisteIntegaral = ?RegisteIntegaral,
+                                        ConsumeIntegral = ?ConsumeIntegral,
+                                        ShareIntegral = ?ShareIntegral
+                                    WHERE
+                                        SellerId = ?SellerId";
+
+            List<MySqlParameter> parameters = new List<MySqlParameter>();
+            parameters.Add(new MySqlParameter("?SellerId", extend.SellerId));
+            parameters.Add(new MySqlParameter("?ChargeIntegral", extend.ChargeIntegral));
+            parameters.Add(new MySqlParameter("?CommentIntegral", extend.CommentIntegral));
+            parameters.Add(new MySqlParameter("?ConsumeIntegral", extend.ConsumeIntegral));
+            parameters.Add(new MySqlParameter("?RegisteIntegaral", extend.RegisteIntegaral));
+            parameters.Add(new MySqlParameter("?ShareIntegral", extend.ShareIntegral));
+
+            MySqlHelper.ExecuteNonQuery(GlobalConfig.DbConn, CommandType.Text, commandText, parameters.ToArray());
+        }
+
+        public static void DeleteMerchantExtend(int id)
+        {
+            string cmd = @"delete from merchantextend where id = ?id";
+            List<MySqlParameter> parameters = new List<MySqlParameter>();
+            parameters.Add(new MySqlParameter("?Id", id));
+            MySqlHelper.ExecuteNonQuery(GlobalConfig.DbConn, CommandType.Text, cmd, parameters.ToArray());
+        }
+
     }
 }

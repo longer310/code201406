@@ -17,6 +17,7 @@ using Backstage.Core.Entity;
 using Backstage.Core.Logic;
 using Com.Alipay;
 using log4net;
+using Backstage.Core.Handler;
 
 /// <summary>
 /// 功能：服务器异步通知页面
@@ -118,13 +119,14 @@ public partial class wap_notify_ordersurl : System.Web.UI.Page
                                     chargeLog.Num = orders.NumList.Sum(o => o);
                                     //记录消费记录
                                     ChargeLogHelper.AddChargeLog(chargeLog);
-
+                                    var setting = SystemHelper.GetMerchantExtend(chargeLog.SellerId);
                                     //积分获得
                                     var log = new ExtcreditLog();
                                     log.UserId = orders.UserId;
                                     log.SellerId = user.SellerId;
+                                    
                                     log.SourceId = orders.Id;
-                                    log.Extcredit = (int)(orders.TotalPrice * 1.0 / ParamHelper.ExtcreditCfgData.Consume);
+                                    log.Extcredit = (int)(orders.TotalPrice * 1.0 / (setting != null ? setting.ConsumeIntegral : 0));
                                     log.Type = ExtcreditSourceType.Consume;
                                     log.CreateTime = DateTime.Now;
 

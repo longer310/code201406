@@ -58,7 +58,7 @@ namespace Backstage.Core.Handler
                     throw new ArgumentNullException(string.Format("userId:{0}", cm.UserId));
                 var result = new ComentsForApi
                 {
-                    Avatar = Utility.GetSizePicUrl(user.Avatar,100,100,context),
+                    Avatar = Utility.GetSizePicUrl(user.Avatar, 100, 100, context),
                     UserName = user.UserName,
                     Sex = (int)user.Sex,
                     Dateline = cm.CreateTime.GetUnixTime(),
@@ -103,13 +103,14 @@ namespace Backstage.Core.Handler
                 throw;
             }
             ExtcreditLog log = new ExtcreditLog();
+            var merchantExtend = SystemHelper.GetMerchantExtend(user.SellerId);
             if (!ExtcreditLogHelper.JudgeExtcreditGet(ExtcreditSourceType.CommentActive, aid, uid))
             {
                 //积分获得
                 log.UserId = uid;
                 log.SellerId = user.SellerId;
                 log.SourceId = aid;
-                log.Extcredit = ParamHelper.ExtcreditCfgData.Comment;
+                log.Extcredit = merchantExtend != null ? merchantExtend.CommentIntegral : 0;
                 log.Type = ExtcreditSourceType.CommentActive;
                 log.CreateTime = DateTime.Now;
 
@@ -173,7 +174,7 @@ namespace Backstage.Core.Handler
                     url = Utility.GetSizePicUrl(r.CoverImgUrl, 450, 190, context);
                 else
                     url = Utility.GetSizePicUrl(r.CoverImgUrl, 180, 143, context);
-                    
+
                 var d = new
                 {
                     newid = r.Id,

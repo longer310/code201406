@@ -16,6 +16,7 @@ using Backstage.Core.Entity;
 using Backstage.Core.Logic;
 using Com.Alipay;
 using log4net;
+using Backstage.Core.Handler;
 
 /// <summary>
 /// 功能：服务器异步通知页面
@@ -102,12 +103,13 @@ public partial class notify_url : System.Web.UI.Page
                                 {
                                     //交易金额
                                     double total_fee = Convert.ToDouble(sPara["total_fee"]);
+                                    var setting = SystemHelper.GetMerchantExtend(chargeLog.SellerId);
 
                                     ExtcreditLog log = new ExtcreditLog();
                                     log.UserId = chargeLog.UserId;
                                     log.SellerId = chargeLog.SellerId;
                                     log.SourceId = DateTime.Now.GetUnixTime();
-                                    log.Extcredit = (int)(chargeLog.Money * 1.0 / ParamHelper.ExtcreditCfgData.Charge);
+                                    log.Extcredit = (int)(chargeLog.Money * 1.0 / (setting != null ? setting.ChargeIntegral : 0));
                                     log.Type = ExtcreditSourceType.Charge;
 
                                     ExtcreditLogHelper.AddExtcreditLog(log);

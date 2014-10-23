@@ -576,11 +576,12 @@ namespace Backstage.Handler
             ExtcreditLog log = new ExtcreditLog();
             if (!ExtcreditLogHelper.JudgeExtcreditGet(ExtcreditSourceType.CommentGoods, gid, uid))
             {
+                var setting = SystemHelper.GetMerchantExtend(user.SellerId);
                 //积分获得
                 log.UserId = uid;
                 log.SellerId = user.SellerId;
                 log.SourceId = gid;
-                log.Extcredit = ParamHelper.ExtcreditCfgData.Comment;
+                log.Extcredit = setting != null ? setting.CommentIntegral : 0;
                 log.Type = ExtcreditSourceType.CommentGoods;
                 log.CreateTime = DateTime.Now;
 
@@ -684,11 +685,12 @@ namespace Backstage.Handler
             ExtcreditLog log = new ExtcreditLog();
             if (!ExtcreditLogHelper.JudgeExtcreditGet(type, typeId, uid, platform))
             {
+                var setting = SystemHelper.GetMerchantExtend(user.SellerId);
                 //积分获得
                 log.UserId = uid;
                 log.SellerId = user.SellerId;
                 log.SourceId = typeId;
-                log.Extcredit = ParamHelper.ExtcreditCfgData.Share;
+                log.Extcredit = setting != null ? setting.ShareIntegral : 0;
                 log.Type = type;
                 log.PlatformType = platform;
 
@@ -981,8 +983,9 @@ namespace Backstage.Handler
                 ////    hasdelivery = merchant.HasDelivery;
                 //}
 
+                var setting = SystemHelper.GetMerchantExtend(orders.SellerId);
                 totalprice = orders.TotalPrice;
-                extcredit = (int)(orders.TotalPrice * 1.0 / ParamHelper.ExtcreditCfgData.Consume);
+                extcredit = (int)(orders.TotalPrice * 1.0 / (setting != null ? setting.ConsumeIntegral:0));
                 couponid = orders.CouponId;
                 coupontitle = orders.CouponTitle;
                 if (string.IsNullOrEmpty(coupontitle))
@@ -1269,10 +1272,11 @@ namespace Backstage.Handler
                 ChargeLogHelper.AddChargeLog(chargeLog);
 
                 //积分获得
+                var setting = SystemHelper.GetMerchantExtend(user.SellerId);
                 log.UserId = uid;
                 log.SellerId = user.SellerId;
                 log.SourceId = orders.Id;
-                log.Extcredit = (int)(orders.TotalPrice * 1.0 / ParamHelper.ExtcreditCfgData.Consume);
+                log.Extcredit = (int)(orders.TotalPrice * 1.0 / (setting != null ? setting.ConsumeIntegral : 0));
                 log.Type = ExtcreditSourceType.Consume;
                 log.CreateTime = DateTime.Now;
 

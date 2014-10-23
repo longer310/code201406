@@ -182,7 +182,9 @@ namespace Backstage.Core.Handler
                 log.UserId = uid;
                 log.SellerId = user.SellerId;
                 log.SourceId = cid;
-                log.Extcredit = ParamHelper.ExtcreditCfgData.Comment;
+                var setting = SystemHelper.GetMerchantExtend(user.SellerId);
+
+                log.Extcredit = setting != null ? setting.CommentIntegral : 0;
                 log.Type = ExtcreditSourceType.CommentCoupon;
                 log.CreateTime = DateTime.Now;
 

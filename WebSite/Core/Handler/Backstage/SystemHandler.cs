@@ -31,7 +31,7 @@ namespace Backstage.Core.Handler.Backstage
                 case "withdraw": //提现
                     Withdraw(); break;
                 case "bankedit":
-                    BankEdit();break;
+                    BankEdit(); break;
                 case "getannouncement":
                     GetAnnouncement(); break;
                 case "getpushs":
@@ -150,10 +150,10 @@ namespace Backstage.Core.Handler.Backstage
             var user = AccountHelper.GetUser(item.SellerId);
             if (user == null)
                 throw new ArgumentNullException("user为空：" + item.SellerId);
-            if(item.CardNumber <= 0 || item.Bank.Length < 1 || item.AccountName.Length < 1) 
+            if (item.CardNumber <= 0 || item.Bank.Length < 1 || item.AccountName.Length < 1)
                 ReturnErrorMsg("提现失败，卡号、开户行、开户名等信息是必填项，请填写正确");
-                
-           
+
+
             //目前商户的用户信息分三张表存储
             //提现确认打款后才扣钱
             //user.Money -= item.Money;
@@ -164,18 +164,18 @@ namespace Backstage.Core.Handler.Backstage
             seller.CardNumber = item.CardNumber;
             seller.Bank = item.Bank;
             seller.AccountName = item.AccountName;
-            float fee = ParamHelper.PlatformCfgData.SignList.FirstOrDefault(s => s.Id == seller.Sid).Prec * item.Money /100;
+            float fee = ParamHelper.PlatformCfgData.SignList.FirstOrDefault(s => s.Id == seller.Sid).Prec * item.Money / 100;
             item.Fee = fee;
             if (seller.Money < (item.Money + item.Fee))
             {
                 ReturnErrorMsg(string.Format("提现失败，没有这么多的资金可以提现，提现金额:{0}，手续费:{1}", item.Money, item.Fee));
                 return;
             }
-                
+
             seller.Money = seller.Money - item.Money - item.Fee;
             MerchantHelper.SaveMerchant(seller);
 
-           
+
 
             //提现表更新
             item.Balance = seller.Money;
@@ -253,16 +253,18 @@ namespace Backstage.Core.Handler.Backstage
             var sellerId = GetInt("sellerid");
             var seller = MerchantHelper.GetMerchant(sellerId);
             var userlevels = SystemHelper.GetUserLevels(sellerId);
+            var setting = SystemHelper.GetMerchantExtend(sellerId);
 
             var data = new
             {
                 Userlevels = userlevels.ToList(),
-                CommentIntegral = ParamHelper.ExtcreditCfgData.Comment,
-                ConsumptionIntegral = ParamHelper.ExtcreditCfgData.Consume,
+                CommentIntegral = setting != null ? setting.CommentIntegral : 0,
+                ConsumptionIntegral = setting != null ? setting.ConsumeIntegral : 0,
                 Freight = seller.Freight,
                 NeedToFreeFreight = seller.NeedToFreeFreight,
-                ReChargeIntegral = ParamHelper.ExtcreditCfgData.Charge,
-                ShareIntegral = ParamHelper.ExtcreditCfgData.Share
+                ReChargeIntegral = setting != null ? setting.ChargeIntegral : 0,
+                ShareIntegral = setting != null ? setting.ShareIntegral : 0,
+                RegisteIntegaral = setting != null ? setting.RegisteIntegaral : 0
             };
             JsonTransfer jt = new JsonTransfer();
             jt.Add("data", data);
@@ -274,14 +276,30 @@ namespace Backstage.Core.Handler.Backstage
         {
             var sellerId = GetInt("sellerid");
             var seller = MerchantHelper.GetMerchant(sellerId);
-            
+
             //var userlevels = SystemHelper.GetUserLevels(sellerId);
             var userlevels = Newtonsoft.Json.JsonConvert.DeserializeObject<List<UserLevel>>(GetString("levels"));
-            ParamHelper.ExtcreditCfgData.Comment = GetInt("cmi");
-            ParamHelper.ExtcreditCfgData.Consume = GetInt("costi");
-            ParamHelper.ExtcreditCfgData.Charge = GetInt("ri");
-            ParamHelper.ExtcreditCfgData.Share = GetInt("si");
-            ParamHelper.UpdateParamvalue("ExtcreditCfg", ParamHelper.ExtcreditCfgData);
+            var merchantExtend = SystemHelper.GetMerchantExtend(sellerId);
+            if (merchantExtend == null)
+            {
+                merchantExtend = new MerchantExtend();
+                merchantExtend.SellerId = sellerId;
+                merchantExtend.CommentIntegral = GetInt("cmi");
+                merchantExtend.ConsumeIntegral = GetInt("costi");
+                merchantExtend.ChargeIntegral = GetInt("ci");
+                merchantExtend.ShareIntegral = GetInt("si");
+                merchantExtend.RegisteIntegaral = GetInt("ri");
+                SystemHelper.CreateMerchantExtend(merchantExtend);
+            }
+            else
+            {
+                merchantExtend.CommentIntegral = GetInt("cmi");
+                merchantExtend.ConsumeIntegral = GetInt("costi");
+                merchantExtend.ChargeIntegral = GetInt("ci");
+                merchantExtend.ShareIntegral = GetInt("si");
+                merchantExtend.RegisteIntegaral = GetInt("ri");
+                SystemHelper.UpdateMerchantExtend(merchantExtend);
+            }
 
             seller.Freight = GetInt("fe");
             seller.NeedToFreeFreight = GetInt("nffe");

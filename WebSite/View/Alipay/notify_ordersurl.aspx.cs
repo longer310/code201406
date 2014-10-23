@@ -121,10 +121,11 @@ public partial class notify_ordersurl : System.Web.UI.Page
 
                                     //积分获得
                                     var log = new ExtcreditLog();
+                                    var setting = SystemHelper.GetMerchantExtend(orders.SellerId);
                                     log.UserId = orders.UserId;
                                     log.SellerId = user.SellerId;
                                     log.SourceId = orders.Id;
-                                    log.Extcredit = (int)(orders.TotalPrice * 1.0 / ParamHelper.ExtcreditCfgData.Consume);
+                                    log.Extcredit = (int)(orders.TotalPrice * 1.0 / (setting != null ? setting.ConsumeIntegral : 0));
                                     log.Type = ExtcreditSourceType.Consume;
                                     log.CreateTime = DateTime.Now;
 

@@ -300,7 +300,7 @@ namespace Backstage.Core.Handler
 
             List<MySqlParameter> parameters = new List<MySqlParameter>();
             parameters.Add(new MySqlParameter("?sellerId", sellerId));
-            MerchantExtend item = null;
+            MerchantExtend item = new MerchantExtend();
             try
             {
                 using (var conn = Utility.ObtainConn(Utility._gameDbConn))
@@ -308,7 +308,7 @@ namespace Backstage.Core.Handler
                     MySqlDataReader reader = MySqlHelper.ExecuteReader(conn, CommandType.Text, cmd, parameters.ToArray());
                     while (reader.Read())
                     {
-                        item.SellerId = (int)reader["SellerId"];
+                        item.SellerId = reader.GetInt32(0);
                         item.ChargeIntegral = (int)reader["ChargeIntegral"];
                         item.CommentIntegral = (int)reader["CommentIntegral"];
                         item.ConsumeIntegral = (int)reader["ConsumeIntegral"];

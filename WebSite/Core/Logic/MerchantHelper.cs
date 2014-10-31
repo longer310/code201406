@@ -559,6 +559,7 @@ namespace Backstage.Core.Logic
                         merchant.IosVersion = reader["IosVersion"].ToString();
 
                         merchant.SlideAdStayTime = (int)reader["SlideAdStayTime"];
+                        merchant.CreateTime = (DateTime)reader["CreateTime"];
                         merchant.SlideAds = JsonTransfer.DeserializeObject<List<SlideAdItem>>(reader["SlideAds"].ToString());
 
                         result.Results.Add(merchant);

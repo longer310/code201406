@@ -109,12 +109,14 @@ public partial class notify_url : System.Web.UI.Page
                                     log.UserId = chargeLog.UserId;
                                     log.SellerId = chargeLog.SellerId;
                                     log.SourceId = DateTime.Now.GetUnixTime();
-                                    log.Extcredit = (int)(chargeLog.Money * 1.0 / (setting != null ? setting.ChargeIntegral : 0));
+                                    log.Extcredit = (int)(chargeLog.Money * 1.0 * (setting != null ? setting.ChargeIntegral : 0));
                                     log.Type = ExtcreditSourceType.Charge;
 
                                     ExtcreditLogHelper.AddExtcreditLog(log);
 
-                                    user.Integral = log.Extcredit;
+
+                                    logger.InfoFormat("充值之前;Integral={0},充值之后:Integral:{1}", user.Integral, user.Integral + log.Extcredit);
+                                    user.Integral = user.Integral + log.Extcredit;
                                     var money = user.Money + chargeLog.Money;
                                     logger.InfoFormat("充值之前;Money={0},充值之后:Money:{1}", user.Money, money);
                                     user.Money = money;

@@ -985,7 +985,7 @@ namespace Backstage.Handler
 
                 var setting = SystemHelper.GetMerchantExtend(orders.SellerId);
                 totalprice = orders.TotalPrice;
-                extcredit = (int)(orders.TotalPrice * 1.0 / (setting != null ? setting.ConsumeIntegral:0));
+                extcredit = (int)(orders.TotalPrice * 1.0 * (setting != null ? setting.ConsumeIntegral:0));
                 couponid = orders.CouponId;
                 coupontitle = orders.CouponTitle;
                 if (string.IsNullOrEmpty(coupontitle))

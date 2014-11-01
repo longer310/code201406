@@ -52,7 +52,7 @@ namespace Backstage.Core.Handler
             var data = new List<object>();
             foreach (var r in results.Results)
             {
-                var imgurl = Utility.GetSizePicUrl(r.Url,200,0,context);
+                var imgurl = Utility.GetSizePicUrl(r.Url, 200, 0, context);
                 var d = new
                 {
                     pid = r.Id,
@@ -85,14 +85,16 @@ namespace Backstage.Core.Handler
                 return;
             }
 
+            var url = Utility.GetSizePicUrl(sm.Url, 500, 0, context);
             var data = new
             {
                 pid = sm.Id,
                 title = sm.Title,
-                img = Utility.GetSizePicUrl(sm.Url,500,0,context),
+                img = url,
                 description = sm.Description,
                 views = sm.Views,
-                commentnum = sm.Commentnum
+                commentnum = sm.Commentnum,
+                height = Utility.GetImgHeight(url, context)
             };
             sm.Views += 1;
             SourceMaterialHelper.Update(sm);
@@ -175,7 +177,7 @@ namespace Backstage.Core.Handler
                 return;
             }
             SourceMaterial sm = SourceMaterialHelper.GetItem(pid);
-            var cms = CommentHelper.GetPagings(sm.SellerId, CommentType.Img, pid, index * size, size,"order by CreateTime desc");
+            var cms = CommentHelper.GetPagings(sm.SellerId, CommentType.Img, pid, index * size, size, "order by CreateTime desc");
             var data = new CommentsForApis();
             data.Commentnum = cms.TotalCount;
             JsonTransfer jt = new JsonTransfer();
@@ -188,7 +190,7 @@ namespace Backstage.Core.Handler
                 return;
             }
             var users = AccountHelper.GetUserList(cms.Results.Select(c => c.UserId).ToList());
-            
+
             foreach (var cm in cms.Results)
             {
                 var user = users.FirstOrDefault(u => u.Id == cm.UserId);
@@ -196,7 +198,7 @@ namespace Backstage.Core.Handler
                     throw new ArgumentNullException(string.Format("userId:{0}", cm.UserId));
                 var result = new ComentsForApi
                 {
-                    Avatar = Utility.GetSizePicUrl(user.Avatar,100,100,context),
+                    Avatar = Utility.GetSizePicUrl(user.Avatar, 100, 100, context),
                     UserName = user.UserName,
                     Sex = (int)user.Sex,
                     Dateline = cm.CreateTime.GetUnixTime(),
@@ -204,7 +206,7 @@ namespace Backstage.Core.Handler
                 };
                 data.Comments.Add(result);
             }
-            
+
             jt.AddSuccessParam();
             jt.Add("data", data);
             Response.Write(DesEncrypt(jt).ToLower());

@@ -166,7 +166,11 @@ namespace Backstage.Handler
             foreach (var slideAdItem in merchant.SlideAds)
             {
                 var s = new SlideItem();
-                s.img = Utility.GetSizePicUrl(slideAdItem.img, 540, 224, context);
+                //企业幻灯大小要改成540*420大小 modify by hql at 2014.11.10
+                if (merchant.MerType == MerchantTypes.Company)
+                    s.img = Utility.GetSizePicUrl(slideAdItem.img, 540, 420, context);
+                else
+                    s.img = Utility.GetSizePicUrl(slideAdItem.img, 540, 224, context);
                 s.type = slideAdItem.type;
                 s.typeid = slideAdItem.typeid;
                 s.title = "";

@@ -62,6 +62,7 @@ namespace Backstage.Core.Entity
         /// </summary>
         public string AnnouncementContent { get; set; }
 
+
     }
 
 

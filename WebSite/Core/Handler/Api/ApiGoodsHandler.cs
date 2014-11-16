@@ -864,7 +864,9 @@ namespace Backstage.Handler
                 orders.GidList.Add(goods.Id);
                 orders.ImgList.Add(goods.LogoUrl);
                 orders.TitleList.Add(goods.Title);
-                orders.ContentList.Add(Utility.GetNoHtmlStr(goods.Content).Substring(0, 50));
+                var html = Utility.GetNoHtmlStr(goods.Content);
+                html = html.Length > 50 ? html.Substring(0, 50) : html;
+                orders.ContentList.Add(html);
                 orders.NowPriceList.Add(goods.Nowprice);
                 orders.OriginalPriceList.Add(goods.OriginalPrice);
                 var num = Utility.GetValueByList(gidlist, numlist, goods.Id);
@@ -1156,44 +1158,46 @@ namespace Backstage.Handler
             if (!string.IsNullOrEmpty(phone)) orders.Mobile = phone;
             orders.Boxno = boxno;//添加包厢号（夜场）
             float discount = 0;
-            if (orders.CouponId == 0)
-            {//获取优惠券优惠的价格
+            if (couponid != 0)
                 orders.CouponId = couponid;
-                if (orders.CouponId > 0)
-                {
-                    var coupon = CouponHelper.GetCoupon(orders.CouponId, uid, user.SellerId);
-                    if (coupon == null)
-                    {
-                        ReturnErrorMsg("未找到相应的优惠券或优惠券已被使用了");
-                        return;
-                    }
-                    bool ifdiscount = true;
-                    var gidlist = orders.GidList;
-                    foreach (var i in gidlist)
-                    {
-                        if (coupon.GoodsIds.Contains(i))
-                            ifdiscount = false;
-                    }
-                    if (ifdiscount)
-                    {
-                        //discount = (float)(coupon.Extcredit * 1.0) / 100;
-                        if (orders.TotalPrice >= coupon.FullMoney)
-                            discount = coupon.DiscountMoney;
-                        orders.Ccontent = coupon.Description;
-                        //string.Format("满{0}减{1}元电子券", coupon.FullMoney, coupon.DiscountMoney);
-                    }
-                    coupon.UsedTimes++;
-                    CouponHelper.Update(coupon);
-                    CouponHelper.UpdateUserCouponStatus(couponid, 1); //更新优惠券已使用
 
-                    orders.TotalPrice -= discount;
-                    orders.CtotalPrice = discount;
-                    orders.CouponTitle = coupon.Title;
-                    if (string.IsNullOrEmpty(orders.CouponTitle))
-                        orders.CouponTitle = string.Format("满{0}减{1}元电子券", coupon.FullMoney, coupon.DiscountMoney);
-                    if (orders.TotalPrice < 0) orders.TotalPrice = 0;
+
+            orders.CouponId = couponid;
+            if (orders.CouponId > 0)
+            {
+                var coupon = CouponHelper.GetCoupon(orders.CouponId, uid, user.SellerId);
+                if (coupon == null)
+                {
+                    ReturnErrorMsg("未找到相应的优惠券或优惠券已被使用了");
+                    return;
                 }
+                bool ifdiscount = true;
+                var gidlist = orders.GidList;
+                foreach (var i in gidlist)
+                {
+                    if (coupon.GoodsIds.Contains(i))
+                        ifdiscount = false;
+                }
+                if (ifdiscount)
+                {
+                    //discount = (float)(coupon.Extcredit * 1.0) / 100;
+                    if (orders.TotalPrice >= coupon.FullMoney)
+                        discount = coupon.DiscountMoney;
+                    orders.Ccontent = coupon.Description;
+                    //string.Format("满{0}减{1}元电子券", coupon.FullMoney, coupon.DiscountMoney);
+                }
+                coupon.UsedTimes++;
+                CouponHelper.Update(coupon);
+                CouponHelper.UpdateUserCouponStatus(couponid, 1); //更新优惠券已使用
+
+                orders.TotalPrice -= discount;
+                orders.CtotalPrice = discount;
+                orders.CouponTitle = coupon.Title;
+                if (string.IsNullOrEmpty(orders.CouponTitle))
+                    orders.CouponTitle = string.Format("满{0}减{1}元电子券", coupon.FullMoney, coupon.DiscountMoney);
+                if (orders.TotalPrice < 0) orders.TotalPrice = 0;
             }
+
             orders.Pid = pid;
             if (!string.IsNullOrEmpty(remark)) orders.Remark = remark;
             orders.Status = OrderStatus.Update;

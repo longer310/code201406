@@ -80,7 +80,7 @@
                     </div>
                     <div class="control-group">
                         <div class="controls">
-                            <label class="inline">签到积分</label>
+                            <label class="inline">签到积分：</label>
                             <input type="text" value="3" class="input-small" id="j-registe" />
                             分 
                         </div>

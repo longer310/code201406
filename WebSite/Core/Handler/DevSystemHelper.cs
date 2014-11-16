@@ -159,7 +159,7 @@ namespace Backstage.Core.Handler
                 string commandText = string.Format(@"select count(*) from {0}", stat);
                 if (stat == "money")
                     commandText = string.Format(@"select count(TotalPrice) from orders where Status=2");
-
+                
                 try
                 {
                     using (var conn = Utility.ObtainConn(Utility._gameDbConn))
